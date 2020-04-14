@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Popup PlacementTarget="target" Placement="Right" IsOpen="true">
+      <Grid>
+        <Rectangle FillColor="#ff00ff00"/>
+        <Button Name="popup1" Margin="16 16 48 16" Width="64" Height="64" Content="1"/>
+        <Popup PlacementTarget="popup1" Placement="Right" IsOpen="true">
+          <Button Name="popup2" Width="32" Height="32"/>
+        </Popup>
+      </Grid>
+    </Popup>
+
+    <Button Name="target" HorizontalAlignment="Center" VerticalAlignment="Center" Width="128" Height="128" Content="T"/>
+
+  </View>
+</UIPanelDefinition>

@@ -11,16 +11,7 @@ namespace UvDebug
         /// <inheritdoc/>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
-            InitializeProfilingFactoryMethods(owner, factory);
-        }
 
-        /// <summary>
-        /// Initializes factory methods used for performance profiling.
-        /// </summary>
-        [Conditional("ENABLE_PROFILING")]
-        private void InitializeProfilingFactoryMethods(UltravioletContext owner, UltravioletFactory factory)
-        {
-            // dotTraceProfiler.RegisterProfiler(owner, factory);
         }
     }
 }

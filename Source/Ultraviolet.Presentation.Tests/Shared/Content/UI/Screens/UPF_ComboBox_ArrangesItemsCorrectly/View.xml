@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_ComboBox_ArrangesItemsCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685"/>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <ComboBox VerticalAlignment="Top" SelectedIndex="0" Margin="8 8 4 8" IsDropDownOpen="true" Grid.Row="0" Grid.Column="0">
+        <ComboBoxItem>
+          <StackPanel Orientation="Horizontal">
+            <Rectangle Width="24" Margin="0 0 8 0" FillColor="#ffff0000"/>
+            <TextBlock VerticalAlignment="Center">Red</TextBlock>
+          </StackPanel>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <StackPanel Orientation="Horizontal">
+            <Rectangle Width="24" Margin="0 0 8 0" FillColor="#ff00ff00"/>
+            <TextBlock VerticalAlignment="Center">Green</TextBlock>
+          </StackPanel>
+        </ComboBoxItem>
+        <ComboBoxItem>
+          <StackPanel Orientation="Horizontal">
+            <Rectangle Width="24" Margin="0 0 8 0" FillColor="#ff0000ff"/>
+            <TextBlock VerticalAlignment="Center">Blue</TextBlock>
+          </StackPanel>
+        </ComboBoxItem>
+      </ComboBox>
+
+      <ComboBox VerticalAlignment="Top" SelectedIndex="1" Margin="4 8 4 8" IsDropDownOpen="true" Grid.Row="0" Grid.Column="1"
+                ItemsSource="{{TestItemsSource}}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_ComboBox_ArrangesItemsCorrectly_VM+CustomItemModel, Ultraviolet.Presentation.Tests.ViewModels">
+            <StackPanel Orientation="Horizontal">
+              <Rectangle FillColor="{{Color}}" Width="24" Margin="0 0 8 0"/>
+              <TextBlock>{{Name}}</TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+      <ComboBox Initialized="ComboBoxInitialized"
+                VerticalAlignment="Top" Margin="4 8 4 8" IsDropDownOpen="true" Grid.Row="0" Grid.Column="2"/>
+
+      <ComboBox VerticalAlignment="Top" Margin="4 8 8 8" IsDropDownOpen="true" Grid.Row="0" Grid.Column="3">
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+        <ComboBoxItem>CB Item</ComboBoxItem>
+      </ComboBox>
+
+    </Grid>
+
+  </View>
+</UIPanelDefinition>

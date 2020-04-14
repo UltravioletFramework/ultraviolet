@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_UIElement_DrawsCorrectly_WithRenderTransform_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffffffff"/>
+    
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <StackPanel.RenderTransform>
+        <RotateTransform Angle="30"/>
+      </StackPanel.RenderTransform>
+      <Button>
+        <Button.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleX="1.5" ScaleY="2"/>
+            <RotateTransform Angle="45"/>
+            <TranslateTransform X="100"/>
+          </TransformGroup>
+        </Button.RenderTransform>
+        <Button>
+          <Button.RenderTransform>
+            <RotateTransform Angle="45"/>
+          </Button.RenderTransform>
+          Hello, world!
+        </Button>
+      </Button>
+      <ComboBox HorizontalAlignment="Left" Margin="0 50 0 0" SelectedIndex="1" IsDropDownOpen="true">
+        <ComboBox.RenderTransform>
+          <RotateTransform Angle="-15"/>
+        </ComboBox.RenderTransform>
+        <ComboBoxItem>Item 1</ComboBoxItem>
+        <ComboBoxItem>Item 2</ComboBoxItem>
+        <ComboBoxItem>Item 3</ComboBoxItem>
+      </ComboBox>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

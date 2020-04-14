@@ -28,4 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FixupBindingSettersRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlTypeAnalysis.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

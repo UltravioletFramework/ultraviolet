@@ -18,7 +18,7 @@ namespace Ultraviolet.Presentation
             {
                 StringDatabase.LoadFromStream(stream);
             }
-            using (var stream = asm.GetManifestResourceStream("Ultraviolet.Presentation.Resources.Commands.xml"))
+            using (var stream = asm.GetManifestResourceStream("Ultraviolet.Presentation.Resources.Strings_Commands.xml"))
             {
                 StringDatabase.LoadFromStream(stream);
             }

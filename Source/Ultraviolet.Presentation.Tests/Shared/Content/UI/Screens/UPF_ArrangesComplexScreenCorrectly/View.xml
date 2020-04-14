@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_ArrangesComplexScreenCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+    
+    <DockPanel Name="foo" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="true">
+      <Grid DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="8">
+        <StackPanel Orientation="Horizontal">
+          <StackPanel>
+            <RadioButton>RadioButton 1</RadioButton>
+            <RadioButton>RadioButton 2</RadioButton>
+            <RadioButton>RadioButton 3</RadioButton>
+          </StackPanel>
+          <StackPanel Margin="8 0 0 0">
+            <CheckBox>CheckBox 1</CheckBox>
+            <CheckBox>CheckBox 2</CheckBox>
+            <CheckBox IsThreeState="true" IsChecked="{{null}}">CheckBox 3</CheckBox>
+          </StackPanel>
+          <StackPanel Margin="8 0 0 0" VerticalAlignment="Center">
+            <TextBox Width="90">Hello, world!</TextBox>
+          </StackPanel>
+          <StackPanel Margin="8 0 0 0" VerticalAlignment="Center">
+            <NumericUpDown Width="100"/>
+          </StackPanel>
+        </StackPanel>
+      </Grid>
+      <Grid DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="8">
+        <ProgressBar>{{SomeValue}}</ProgressBar>
+      </Grid>
+      <Grid DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="8">
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="200"/>
+          </Grid.ColumnDefinitions>
+          <HSlider Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Minimum="0" Maximum="100">{{SomeValue}}</HSlider>
+          <ComboBox Grid.Column="2" Width="200" SelectedIndex="3">
+            <ComboBoxItem>ComboBox Item 1</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 2</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 3</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 4</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 5</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 6</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 7</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 8</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 9</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 10</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 11</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 12</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 13</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 14</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 15</ComboBoxItem>
+            <ComboBoxItem>ComboBox Item 16</ComboBoxItem>
+          </ComboBox>
+        </Grid>
+      </Grid>
+      <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Margin="8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Column="0">
+          <ToggleButton Width="50">A</ToggleButton>
+          <ToggleButton Width="50" Margin="8 0 0 0">B</ToggleButton>
+          <ToggleButton Width="50" Margin="8 0 0 0">C</ToggleButton>
+          <ToggleButton Width="50" Margin="8 0 0 0" IsEnabled="false">D</ToggleButton>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1">
+          <Button Width="100" IsEnabled="false">Settings</Button>
+          <Button Width="75" Margin="8 0 0 0">Exit</Button>
+        </StackPanel>
+      </Grid>
+      <Grid DockPanel.Dock="Left" VerticalAlignment="Stretch" Margin="8">
+        <VSlider VerticalAlignment="Stretch"/>
+      </Grid>
+      <Grid DockPanel.Dock="Right" VerticalAlignment="Stretch" Margin="8">
+        <VSlider VerticalAlignment="Stretch"/>
+      </Grid>
+      <Grid VerticalAlignment="Stretch" Margin="8">
+        <ListBox Width="200" VerticalAlignment="Stretch">
+          <ListBoxItem>The quick brown fox jumps over the lazy dog</ListBoxItem>
+          <ListBoxItem>List Box Item 1</ListBoxItem>
+          <ListBoxItem>List Box Item 2</ListBoxItem>
+          <ListBoxItem>List Box Item 3</ListBoxItem>
+          <ListBoxItem>List Box Item 4</ListBoxItem>
+          <ListBoxItem>List Box Item 5</ListBoxItem>
+          <ListBoxItem>List Box Item 6</ListBoxItem>
+          <ListBoxItem>List Box Item 7</ListBoxItem>
+          <ListBoxItem>List Box Item 8</ListBoxItem>
+          <ListBoxItem>List Box Item 9</ListBoxItem>
+          <ListBoxItem>List Box Item 10</ListBoxItem>
+          <ListBoxItem>List Box Item 11</ListBoxItem>
+          <ListBoxItem>List Box Item 12</ListBoxItem>
+          <ListBoxItem>List Box Item 13</ListBoxItem>
+          <ListBoxItem>List Box Item 14</ListBoxItem>
+          <ListBoxItem>List Box Item 15</ListBoxItem>
+          <ListBoxItem>List Box Item 16</ListBoxItem>
+          <ListBoxItem>List Box Item 17</ListBoxItem>
+          <ListBoxItem>List Box Item 18</ListBoxItem>
+        </ListBox>
+      </Grid>
+      <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8">
+        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto">
+          <Button Margin="8" Width="1000" Height="1000">Hello, world!</Button>
+        </ScrollViewer>
+      </Grid>
+    </DockPanel>
+ 
+  </View>
+</UIPanelDefinition>

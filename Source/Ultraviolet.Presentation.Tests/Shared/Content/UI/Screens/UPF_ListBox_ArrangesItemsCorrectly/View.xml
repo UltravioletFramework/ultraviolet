@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_ListBox_ArrangesItemsCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685"/>
+
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <ListBox SelectedIndex="0" Margin="8 8 4 4" Grid.Row="0" Grid.Column="0">
+        <ListBoxItem>
+          <StackPanel Orientation="Horizontal">
+            <Rectangle Width="24" Margin="0 0 8 0" FillColor="#ffff0000"/>
+            <TextBlock VerticalAlignment="Center">Red</TextBlock>
+          </StackPanel>
+        </ListBoxItem>
+        <ListBoxItem>
+          <StackPanel Orientation="Horizontal">
+            <Rectangle Width="24" Margin="0 0 8 0" FillColor="#ff00ff00"/>
+            <TextBlock VerticalAlignment="Center">Green</TextBlock>
+          </StackPanel>
+        </ListBoxItem>
+        <ListBoxItem>
+          <StackPanel Orientation="Horizontal">
+            <Rectangle Width="24" Margin="0 0 8 0" FillColor="#ff0000ff"/>
+            <TextBlock VerticalAlignment="Center">Blue</TextBlock>
+          </StackPanel>
+        </ListBoxItem>
+      </ListBox>
+
+      <ListBox SelectedIndex="1" Margin="4 8 8 4" Grid.Row="0" Grid.Column="1"
+               ItemsSource="{{TestItemsSource}}">
+        <ListBox.ItemTemplate>
+          <DataTemplate ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_ListBox_ArrangesItemsCorrectly_VM+CustomItemModel, Ultraviolet.Presentation.Tests.ViewModels">
+            <StackPanel Orientation="Horizontal">
+              <Rectangle FillColor="{{Color}}" Width="24" Margin="0 0 8 0"/>
+              <TextBlock>{{Name}}</TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <ListBox Initialized="ListBoxInitialized"
+               SelectedIndex="0" Margin="8 4 4 8" Grid.Row="1" Grid.Column="0"/>
+
+      <ListBox Margin="4 4 8 8" Grid.Row="1" Grid.Column="1">
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+        <ListBoxItem>List box item</ListBoxItem>
+      </ListBox>
+
+    </Grid>
+
+  </View>
+</UIPanelDefinition>

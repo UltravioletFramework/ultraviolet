@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_KeyNav_TabIndicesLocal_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+      <StackPanel Name="sp1" Orientation="Vertical">
+        <TextBox Name="tb1" Width="200"/>
+      </StackPanel>
+      <StackPanel KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.ControlTabNavigation="Local" Name="sp2" Orientation="Vertical">
+        <TextBox Name="tb2" Width="200" KeyboardNavigation.TabIndex="1"/>
+        <TextBox Name="tb3" Width="200"/>
+        <TextBox Name="tb4" Width="200" KeyboardNavigation.TabIndex="3"/>
+      </StackPanel>
+      <StackPanel Name="sp3" Orientation="Vertical">
+        <TextBox Name="tb5" Width="200" KeyboardNavigation.TabIndex="2"/>
+      </StackPanel>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

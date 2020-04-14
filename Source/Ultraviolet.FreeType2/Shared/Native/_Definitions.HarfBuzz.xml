@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.FreeType2.Native" ClassName="HarfBuzzNative" SharedLibrary="libharfbuzz">
+  <Names Default="harfbuzz" Android="harfbuzz" Unix="libharfbuzz"/>
+  <Imports/>
+  <Constants/>
+  <FunctionPointers/>
+  <Functions CallingConvention="Cdecl">
+    <Function Name="hb_buffer_create" ReturnType="IntPtr"/>
+    <Function Name="hb_buffer_destroy" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_pre_allocate" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="size" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_length" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_set_length" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="size" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_reset" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_clear_contents" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_add_utf16" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="text" Type="IntPtr"/>
+        <Parameter Name="textLength" Type="Int32"/>
+        <Parameter Name="item_offset" Type="UInt32"/>
+        <Parameter Name="item_length" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_guess_segment_properties" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_script" ReturnType="hb_script_t">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_set_script" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="script" Type="hb_script_t"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_language" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_set_language" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="language" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_direction" ReturnType="hb_direction_t">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_set_direction" ReturnType="void">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="direction" Type="hb_direction_t"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_language_to_string" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="language" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_language_from_string" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="str" Type="IntPtr"/>
+        <Parameter Name="len" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_glyph_infos" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="length" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_glyph_positions" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="length" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_buffer_get_content_type" ReturnType="hb_buffer_content_type_t">
+      <Parameters>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_shape" ReturnType="void">
+      <Parameters>
+        <Parameter Name="font" Type="IntPtr"/>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="features" Type="IntPtr"/>
+        <Parameter Name="num_features" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_ft_font_create" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="ft_face" Type="IntPtr"/>
+        <Parameter Name="destroy" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_font_destroy" ReturnType="void">
+      <Parameters>
+        <Parameter Name="font" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="hb_ft_font_set_load_flags" ReturnType="void">
+      <Parameters>
+        <Parameter Name="font" Type="IntPtr"/>
+        <Parameter Name="load_flags" Type="Int32"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_UIElement_DrawsCorrectly_WithEffect_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Button Margin="16" Width="64" Height="64" Content="1">
+        <Button.Effect>
+          <DropShadowEffect/>
+        </Button.Effect>
+      </Button>
+      <Button Margin="16" Width="64" Height="64" Content="2">
+        <Button.Effect>
+          <BlurEffect/>
+        </Button.Effect>
+      </Button>
+      <Button Margin="16" Width="64" Height="64">
+        <Button.Effect>
+          <DropShadowEffect/>
+        </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <BlurEffect/>
+          </Button.Effect>
+        </Button>
+      </Button>
+      <Button Margin="16" Width="64" Height="64">
+        <Button.Effect>
+          <BlurEffect/>
+        </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
+      </Button>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

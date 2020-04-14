@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Canvas_ArrangesChildrenCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+      <Rectangle FillColor="#ffff0000"
+                 Canvas.Left="8" Canvas.Top="8" Canvas.Right="8" Height="32"/>
+
+      <Rectangle FillColor="#ff00ff00"
+                 Canvas.Left="8" Canvas.Bottom="8" Canvas.Right="8" Height="32"/>
+
+      <Rectangle FillColor="#ff0000ff"
+                 Canvas.Left="8" Canvas.Top="48" Width="32" Height="32"/>
+
+      <Rectangle FillColor="#ffff00ff"
+                 Canvas.Right="8" Canvas.Top="48" Width="32" Height="32"/>
+
+      <Rectangle FillColor="#ffffffff"
+                 Canvas.Left="8" Canvas.Bottom="48" Width="32" Height="32"/>
+
+      <Rectangle FillColor="#ffffff00"
+                 Canvas.Right="8" Canvas.Bottom="48" Width="32" Height="32"/>
+      
+    </Canvas>
+    
+  </View>
+</UIPanelDefinition>

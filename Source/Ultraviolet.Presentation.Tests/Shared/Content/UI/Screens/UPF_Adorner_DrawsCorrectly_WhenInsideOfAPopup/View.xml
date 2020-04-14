@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup_VM, Ultraviolet.Presentation.Tests.ViewModels" Loaded="HandleViewLoaded">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Popup PlacementTarget="target" Placement="Right" IsOpen="true">
+      <Popup.RenderTransform>
+        <RotateTransform Angle="33"/>
+      </Popup.RenderTransform>
+      <Grid>
+        <Rectangle FillColor="#ff808080"/>
+        <Button Name="button" Width="64" Height="64" Margin="32" Content="1"/>
+      </Grid>
+    </Popup>
+
+    <Button Name="target" Content="Target" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Button.RenderTransform>
+        <RotateTransform Angle="20"/>
+      </Button.RenderTransform>
+    </Button>
+
+  </View>
+</UIPanelDefinition>

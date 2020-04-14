@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="STREAMS_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Loading this resource from a stream is not supported.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_CURRENTLY_VALID">
+    <en-US>
+      <Variant>That operation is not currently valid on this resource.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_FIND_PLATFORM_SHIM_CLASS">
+    <en-US>
+      <Variant>The class which implements this platform's shim for FMOD could not be found within the shim assembly.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

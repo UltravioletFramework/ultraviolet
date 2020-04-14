@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_KeyNav_SuppressTab_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBox Name="tb1" Width="200"/>
+      <TextBox Name="tb2" Width="200" KeyDown="SuppressTab"/>
+      <TextBox Name="tb3" Width="200"/>
+      <TextBox Name="tb4" Width="200"/>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

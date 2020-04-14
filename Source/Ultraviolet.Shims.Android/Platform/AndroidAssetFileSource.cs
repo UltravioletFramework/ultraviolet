@@ -12,7 +12,6 @@ namespace Ultraviolet.Shims.Android.Platform
     /// <summary>
     /// Represents a <see cref="FileSource"/> which uses the Android asset system.
     /// </summary>
-    [CLSCompliant(false)]
     public class AndroidAssetFileSource : FileSource
     {
         /// <summary>

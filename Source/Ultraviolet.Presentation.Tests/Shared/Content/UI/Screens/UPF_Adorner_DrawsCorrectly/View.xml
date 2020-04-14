@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Adorner_DrawsCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels" Loaded="HandleViewLoaded">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Button Name="button" Width="128" Height="128" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Hello, world!">
+      <Button.RenderTransform>
+        <RotateTransform Angle="45"/>
+      </Button.RenderTransform>
+      <Button.Effect>
+        <DropShadowEffect/>
+      </Button.Effect>
+    </Button>
+    
+  </View>
+</UIPanelDefinition>

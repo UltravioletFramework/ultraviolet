@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button Width="64" Height="64" Content="1"/>
+        <Button Width="64" Height="64" Content="2"/>
+        <Button Width="64" Height="64" Content="3"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button Width="64" Height="64" Content="4"/>
+        <Button Width="64" Height="64" Content="5">
+          <Button.LayoutTransform>
+            <ScaleTransform ScaleX="1.5" ScaleY="2"/>
+          </Button.LayoutTransform>
+          <Button.RenderTransform>
+            <RotateTransform Angle="45"/>
+          </Button.RenderTransform>
+        </Button>
+        <Button Width="64" Height="64" Content="6"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button Width="64" Height="64" Content="7"/>
+        <Button Width="64" Height="64" Content="8"/>
+        <Button Width="64" Height="64" Content="9"/>
+      </StackPanel>
+    </StackPanel>
+
+  </View>
+</UIPanelDefinition>

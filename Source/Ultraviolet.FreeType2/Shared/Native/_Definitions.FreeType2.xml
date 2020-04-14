@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.FreeType2.Native" ClassName="FreeTypeNative" SharedLibrary="libfreetype">
+  <Names Default="freetype" Android="freetype" Unix="libfreetype"/>
+  <Imports/>
+  <Constants/>
+  <FunctionPointers/>
+  <Functions CallingConvention="Cdecl">
+    <Function Name="FT_Init_FreeType" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="alibrary" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Done_FreeType" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="library" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_New_Face" Alias="FT_New_Face32" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="library" Type="IntPtr"/>
+        <Parameter Name="filepathname" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="face_index" Type="Int32"/>
+        <Parameter Name="aface" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_New_Face" Alias="FT_New_Face64" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="library" Type="IntPtr"/>
+        <Parameter Name="filepathname" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="face_index" Type="Int64"/>
+        <Parameter Name="aface" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_New_Memory_Face" Alias="FT_New_Memory_Face32" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="library" Type="IntPtr"/>
+        <Parameter Name="file_base" Type="IntPtr"/>
+        <Parameter Name="file_size" Type="Int32"/>
+        <Parameter Name="face_index" Type="Int32"/>
+        <Parameter Name="aface" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_New_Memory_Face" Alias="FT_New_Memory_Face64" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="library" Type="IntPtr"/>
+        <Parameter Name="file_base" Type="IntPtr"/>
+        <Parameter Name="file_size" Type="Int64"/>
+        <Parameter Name="face_index" Type="Int64"/>
+        <Parameter Name="aface" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Done_Face" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Set_Char_Size" Alias="FT_Set_Char_Size32" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="char_width" Type="Int32"/>
+        <Parameter Name="char_height" Type="Int32"/>
+        <Parameter Name="horz_resolution" Type="UInt32"/>
+        <Parameter Name="vert_resolution" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Set_Char_Size" Alias="FT_Set_Char_Size64" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="char_width" Type="Int64"/>
+        <Parameter Name="char_height" Type="Int64"/>
+        <Parameter Name="horz_resolution" Type="UInt32"/>
+        <Parameter Name="vert_resolution" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Select_Size" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="strike_index" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Get_Char_Index" Alias="FT_Get_Char_Index32" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="charcode" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Get_Char_Index" Alias="FT_Get_Char_Index64" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="charcode" Type="UInt64"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Load_Glyph" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="glyph_index" Type="UInt32"/>
+        <Parameter Name="load_flags" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Get_Kerning" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="face" Type="IntPtr"/>
+        <Parameter Name="left_glyph" Type="UInt32"/>
+        <Parameter Name="right_glyph" Type="UInt32"/>
+        <Parameter Name="kern_mode" Type="UInt32"/>
+        <Parameter Name="akerning" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Get_Glyph" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="slot" Type="IntPtr"/>
+        <Parameter Name="aglyph" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Done_Glyph" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="glyph" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Render_Glyph" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="slot" Type="IntPtr"/>
+        <Parameter Name="render_mode" Type="FT_Render_Mode"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Stroker_New" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="library" Type="IntPtr"/>
+        <Parameter Name="astroker" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Stroker_Done" ReturnType="void">
+      <Parameters>
+        <Parameter Name="stroker" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Stroker_Set" Alias="FT_Stroker_Set32" ReturnType="void">
+      <Parameters>
+        <Parameter Name="stroker" Type="IntPtr"/>
+        <Parameter Name="radius" Type="Int32"/>
+        <Parameter Name="line_cap" Type="FT_Stroker_LineCap"/>
+        <Parameter Name="line_join" Type="FT_Stroker_LineJoin"/>
+        <Parameter Name="miter_limit" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Stroker_Set" Alias="FT_Stroker_Set64" ReturnType="void">
+      <Parameters>
+        <Parameter Name="stroker" Type="IntPtr"/>
+        <Parameter Name="radius" Type="Int64"/>
+        <Parameter Name="line_cap" Type="FT_Stroker_LineCap"/>
+        <Parameter Name="line_join" Type="FT_Stroker_LineJoin"/>
+        <Parameter Name="miter_limit" Type="Int64"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Glyph_StrokeBorder" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="pglyph" Type="IntPtr"/>
+        <Parameter Name="stroker" Type="IntPtr"/>
+        <Parameter Name="inside" Type="Boolean"/>
+        <Parameter Name="destroy" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="FT_Glyph_To_Bitmap" ReturnType="FT_Error">
+      <Parameters>
+        <Parameter Name="the_glyph" Type="IntPtr"/>
+        <Parameter Name="render_mode" Type="FT_Render_Mode"/>
+        <Parameter Name="origin" Type="IntPtr"/>
+        <Parameter Name="destroy" Type="Boolean"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>

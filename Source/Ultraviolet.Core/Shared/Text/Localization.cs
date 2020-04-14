@@ -346,7 +346,7 @@ namespace Ultraviolet.Core.Text
         /// <returns>The <see cref="LocalizedString"/> that was retrieved.</returns>
         public static LocalizedString Get(String culture, String key)
         {
-            return strings.Get(culture, key);
+            return Strings.Get(culture, key);
         }
 
         /// <summary>
@@ -356,23 +356,25 @@ namespace Ultraviolet.Core.Text
         /// <returns>The <see cref="LocalizedString"/> that was retrieved.</returns>
         public static LocalizedString Get(String key)
         {
-            return strings.Get(key);
+            return Strings.Get(key);
         }
 
         /// <summary>
         /// Gets the application's default localization database.
         /// </summary>
-        public static LocalizationDatabase Strings
-        {
-            get { return strings; }
-        }
+        public static LocalizationDatabase Strings { get; } = new LocalizationDatabase();
 
         /// <summary>
         /// Gets or sets the current culture.
         /// </summary>
         public static String CurrentCulture
         {
-            get { return Thread.CurrentThread.CurrentCulture.Name; }
+            get 
+            {
+                var culture = Thread.CurrentThread.CurrentCulture;
+                UpdateCurrentCulture(culture);
+                return currentCultureName;
+            }
             set { Thread.CurrentThread.CurrentCulture = new CultureInfo(value ?? "en-US"); }
         }
 
@@ -381,7 +383,12 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         public static String CurrentLanguage
         {
-            get { return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName; }
+            get 
+            {
+                var culture = Thread.CurrentThread.CurrentCulture;
+                UpdateCurrentCulture(culture);
+                return currentCultureLanguage;
+            }
         }
 
         /// <summary>
@@ -389,7 +396,12 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         public static String CurrentCultureDisplayName
         {
-            get { return Thread.CurrentThread.CurrentCulture.DisplayName; }
+            get
+            {
+                var culture = Thread.CurrentThread.CurrentCulture;
+                UpdateCurrentCulture(culture);
+                return currentCultureDisplayName;
+            }
         }
 
         /// <summary>
@@ -398,6 +410,64 @@ namespace Ultraviolet.Core.Text
         public static String PseudolocalizedCulture
         {
             get { return "qpos-ploc"; }
+        }
+
+        /// <summary>
+        /// Updates the cached culture info.
+        /// </summary>
+        private static void UpdateCurrentCulture(CultureInfo current)
+        {
+            if (currentCulture == current)
+                return;
+
+            currentCulture = current;
+
+            var name = currentCulture.Name;
+            if (!String.IsNullOrWhiteSpace(name))
+            {
+                currentCultureName = name;
+            }
+            else
+            {
+                var currentRegion = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                var currentLanguage = currentCulture.TwoLetterISOLanguageName;
+                if (!String.IsNullOrWhiteSpace(currentRegion) && !String.IsNullOrWhiteSpace(currentLanguage))
+                {
+                    currentCultureName = $"{currentLanguage}-{currentRegion}";
+                }
+                else
+                {
+                    currentCultureName = "en-US";
+                }
+            }
+
+            var lang = currentCulture.TwoLetterISOLanguageName;
+            if (!String.IsNullOrWhiteSpace(lang))
+            {
+                currentCultureLanguage = lang;
+            }
+            else
+            {
+                currentCultureLanguage = "en";
+            }
+
+            var displayName = currentCulture.DisplayName;
+            if (!String.IsNullOrWhiteSpace(displayName))
+            {
+                currentCultureDisplayName = displayName;
+            }
+            else
+            {
+                displayName = currentCulture.EnglishName;
+                if (!String.IsNullOrWhiteSpace(displayName))
+                {
+                    currentCultureDisplayName = displayName;
+                }
+                else
+                {
+                    currentCultureDisplayName = "Unknown";
+                }
+            }
         }
 
         /// <summary>
@@ -496,7 +566,10 @@ namespace Ultraviolet.Core.Text
         private static readonly Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>> registeredMatchEvaluatorsByLanguage =
             new Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>>();
 
-        // The default localization database for the application.
-        private static readonly LocalizationDatabase strings = new LocalizationDatabase();
+        // Cached culture info.
+        private static CultureInfo currentCulture;
+        private static String currentCultureName;
+        private static String currentCultureLanguage;
+        private static String currentCultureDisplayName;
     }
 }

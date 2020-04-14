@@ -1,0 +1,2812 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.ImGuiViewProvider.Bindings" ClassName="ImGuiNative">
+  <Names Default="cimgui" Android="cimgui" Unix="libcimgui"/>
+  <Imports/>
+  <Constants/>
+  <FunctionPointers/>
+  <Functions CallingConvention="Cdecl">
+    <Function Name="igGetFrameHeight" ReturnType="float"/>
+    <Function Name="igCreateContext" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="shared_font_atlas" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTextUnformatted" ReturnType="void">
+      <Parameters>
+        <Parameter Name="text" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPopFont" ReturnType="void"/>
+    <Function Name="igCombo" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="current_item" Type="int*"/>
+        <Parameter Name="items" Type="byte**"/>
+        <Parameter Name="items_count" Type="int"/>
+        <Parameter Name="popup_max_height_in_items" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igComboStr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="current_item" Type="int*"/>
+        <Parameter Name="items_separated_by_zeros" Type="byte*"/>
+        <Parameter Name="popup_max_height_in_items" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCaptureKeyboardFromApp" ReturnType="void">
+      <Parameters>
+        <Parameter Name="capture" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsWindowFocused" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="flags" Type="ImGuiFocusedFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igRender" ReturnType="void"/>
+    <Function Name="ImDrawList_ChannelsSetCurrent" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="channel_index" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragFloat4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector4*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_ChannelsSplit" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="channels_count" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsMousePosValid" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="mouse_pos" Type="Vector2*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetCursorScreenPos" ReturnType="Vector2"/>
+    <Function Name="igDebugCheckVersionAndDataLayout" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="version_str" Type="byte*"/>
+        <Parameter Name="sz_io" Type="uint"/>
+        <Parameter Name="sz_style" Type="uint"/>
+        <Parameter Name="sz_vec2" Type="uint"/>
+        <Parameter Name="sz_vec4" Type="uint"/>
+        <Parameter Name="sz_drawvert" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetScrollHere" ReturnType="void">
+      <Parameters>
+        <Parameter Name="center_y_ratio" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetScrollY" ReturnType="void">
+      <Parameters>
+        <Parameter Name="scroll_y" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetColorEditOptions" ReturnType="void">
+      <Parameters>
+        <Parameter Name="flags" Type="ImGuiColorEditFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetScrollFromPosY" ReturnType="void">
+      <Parameters>
+        <Parameter Name="pos_y" Type="float"/>
+        <Parameter Name="center_y_ratio" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetStyleColorVec4" ReturnType="Vector4*">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiCol"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsMouseHoveringRect" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="r_min" Type="Vector2"/>
+        <Parameter Name="r_max" Type="Vector2"/>
+        <Parameter Name="clip" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImVec4_ImVec4" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Vector4*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImVec4_ImVec4Float" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Vector4*"/>
+        <Parameter Name="_x" Type="float"/>
+        <Parameter Name="_y" Type="float"/>
+        <Parameter Name="_z" Type="float"/>
+        <Parameter Name="_w" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_SetHSV" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+        <Parameter Name="h" Type="float"/>
+        <Parameter Name="s" Type="float"/>
+        <Parameter Name="v" Type="float"/>
+        <Parameter Name="a" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragFloat3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector3*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddPolyline" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="points" Type="Vector2*"/>
+        <Parameter Name="num_points" Type="int"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="closed" Type="byte"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igValueBool" ReturnType="void">
+      <Parameters>
+        <Parameter Name="prefix" Type="byte*"/>
+        <Parameter Name="b" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igValueInt" ReturnType="void">
+      <Parameters>
+        <Parameter Name="prefix" Type="byte*"/>
+        <Parameter Name="v" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igValueUint" ReturnType="void">
+      <Parameters>
+        <Parameter Name="prefix" Type="byte*"/>
+        <Parameter Name="v" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igValueFloat" ReturnType="void">
+      <Parameters>
+        <Parameter Name="prefix" Type="byte*"/>
+        <Parameter Name="v" Type="float"/>
+        <Parameter Name="float_format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextFilter_Build" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextFilter*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetItemRectMax" ReturnType="Vector2"/>
+    <Function Name="igIsItemDeactivated" ReturnType="byte"/>
+    <Function Name="igPushStyleVarFloat" ReturnType="void">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiStyleVar"/>
+        <Parameter Name="val" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushStyleVarVec2" ReturnType="void">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiStyleVar"/>
+        <Parameter Name="val" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSaveIniSettingsToMemory" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="out_ini_size" Type="uint*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragIntRange2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v_current_min" Type="int*"/>
+        <Parameter Name="v_current_max" Type="int*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="format_max" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igUnindent" ReturnType="void">
+      <Parameters>
+        <Parameter Name="indent_w" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_AddFontFromMemoryCompressedBase85TTF" ReturnType="ImFont*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="compressed_font_data_base85" Type="byte*"/>
+        <Parameter Name="size_pixels" Type="float"/>
+        <Parameter Name="font_cfg" Type="ImFontConfig*"/>
+        <Parameter Name="glyph_ranges" Type="ushort*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPopAllowKeyboardFocus" ReturnType="void"/>
+    <Function Name="igLoadIniSettingsFromDisk" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ini_filename" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetCursorStartPos" ReturnType="Vector2"/>
+    <Function Name="igSetCursorScreenPos" ReturnType="void">
+      <Parameters>
+        <Parameter Name="screen_pos" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputInt4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_AddRemapChar" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="dst" Type="ushort"/>
+        <Parameter Name="src" Type="ushort"/>
+        <Parameter Name="overwrite_dst" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_AddGlyph" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="c" Type="ushort"/>
+        <Parameter Name="x0" Type="float"/>
+        <Parameter Name="y0" Type="float"/>
+        <Parameter Name="x1" Type="float"/>
+        <Parameter Name="y1" Type="float"/>
+        <Parameter Name="u0" Type="float"/>
+        <Parameter Name="v0" Type="float"/>
+        <Parameter Name="u1" Type="float"/>
+        <Parameter Name="v1" Type="float"/>
+        <Parameter Name="advance_x" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsRectVisible" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsRectVisibleVec2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="rect_min" Type="Vector2"/>
+        <Parameter Name="rect_max" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_GrowIndex" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="new_size" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_Build" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igLabelText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_RenderText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="draw_list" Type="ImDrawList*"/>
+        <Parameter Name="size" Type="float"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="clip_rect" Type="Vector4"/>
+        <Parameter Name="text_begin" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+        <Parameter Name="wrap_width" Type="float"/>
+        <Parameter Name="cpu_fine_clip" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igLogFinish" ReturnType="void"/>
+    <Function Name="igIsKeyPressed" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="user_key_index" Type="int"/>
+        <Parameter Name="repeat" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetColumnOffset" ReturnType="float">
+      <Parameters>
+        <Parameter Name="column_index" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PopClipRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_FindGlyphNoFallback" ReturnType="ImFontGlyph*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowCollapsed" ReturnType="void">
+      <Parameters>
+        <Parameter Name="collapsed" Type="byte"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetCurrentContext" ReturnType="IntPtr"/>
+    <Function Name="igSmallButton" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igOpenPopupOnItemClick" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="mouse_button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsAnyMouseDown" ReturnType="byte"/>
+    <Function Name="ImFont_CalcWordWrapPositionA" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="scale" Type="float"/>
+        <Parameter Name="text" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+        <Parameter Name="wrap_width" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_CalcTextSizeA" ReturnType="Vector2">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="size" Type="float"/>
+        <Parameter Name="max_width" Type="float"/>
+        <Parameter Name="wrap_width" Type="float"/>
+        <Parameter Name="text_begin" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+        <Parameter Name="remaining" Type="byte**"/>
+      </Parameters>
+    </Function>
+    <Function Name="GlyphRangesBuilder_SetBit" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+        <Parameter Name="n" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_IsLoaded" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_GetCharAdvance" ReturnType="float">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="igImageButton" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="user_texture_id" Type="IntPtr"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="uv0" Type="Vector2"/>
+        <Parameter Name="uv1" Type="Vector2"/>
+        <Parameter Name="frame_padding" Type="int"/>
+        <Parameter Name="bg_col" Type="Vector4"/>
+        <Parameter Name="tint_col" Type="Vector4"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_SetFallbackChar" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndFrame" ReturnType="void"/>
+    <Function Name="igSliderFloat2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector2*"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_RenderChar" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="draw_list" Type="ImDrawList*"/>
+        <Parameter Name="size" Type="float"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="igRadioButtonBool" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="active" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igRadioButtonIntPtr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PushClipRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="clip_rect_min" Type="Vector2"/>
+        <Parameter Name="clip_rect_max" Type="Vector2"/>
+        <Parameter Name="intersect_with_current_clip_rect" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_FindGlyph" ReturnType="ImFontGlyph*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsItemDeactivatedAfterEdit" ReturnType="byte"/>
+    <Function Name="igGetWindowDrawList" ReturnType="ImDrawList*"/>
+    <Function Name="ImFontAtlas_AddFont" ReturnType="ImFont*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="font_cfg" Type="ImFontConfig*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathBezierCurveTo" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="p1" Type="Vector2"/>
+        <Parameter Name="p2" Type="Vector2"/>
+        <Parameter Name="p3" Type="Vector2"/>
+        <Parameter Name="num_segments" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiPayload_Clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiPayload*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igNewLine" ReturnType="void"/>
+    <Function Name="igIsItemFocused" ReturnType="byte"/>
+    <Function Name="igLoadIniSettingsFromMemory" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ini_data" Type="byte*"/>
+        <Parameter Name="ini_size" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderInt2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowSizeVec2" ReturnType="void">
+      <Parameters>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowSizeStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="name" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputFloat" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="float*"/>
+        <Parameter Name="step" Type="float"/>
+        <Parameter Name="step_fast" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_ImFont" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_SetFloat" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="val" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorConvertRGBtoHSV" ReturnType="void">
+      <Parameters>
+        <Parameter Name="r" Type="float"/>
+        <Parameter Name="g" Type="float"/>
+        <Parameter Name="b" Type="float"/>
+        <Parameter Name="out_h" Type="float*"/>
+        <Parameter Name="out_s" Type="float*"/>
+        <Parameter Name="out_v" Type="float*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginMenuBar" ReturnType="byte"/>
+    <Function Name="igIsPopupOpen" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsItemVisible" ReturnType="byte"/>
+    <Function Name="ImFontAtlas_CalcCustomRectUV" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="rect" Type="CustomRect*"/>
+        <Parameter Name="out_uv_min" Type="Vector2*"/>
+        <Parameter Name="out_uv_max" Type="Vector2*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetCustomRectByIndex" ReturnType="CustomRect*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="index" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="GlyphRangesBuilder_AddText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+        <Parameter Name="text" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_UpdateTextureID" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_AddCustomRectRegular" ReturnType="int">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="id" Type="uint"/>
+        <Parameter Name="width" Type="int"/>
+        <Parameter Name="height" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowCollapsedBool" ReturnType="void">
+      <Parameters>
+        <Parameter Name="collapsed" Type="byte"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowCollapsedStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="name" Type="byte*"/>
+        <Parameter Name="collapsed" Type="byte"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetMouseDragDelta" ReturnType="Vector2">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+        <Parameter Name="lock_threshold" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igAcceptDragDropPayload" ReturnType="ImGuiPayload*">
+      <Parameters>
+        <Parameter Name="type" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiDragDropFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginDragDropSource" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="flags" Type="ImGuiDragDropFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="CustomRect_IsPacked" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="CustomRect*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPlotLines" ReturnType="void">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="values" Type="float*"/>
+        <Parameter Name="values_count" Type="int"/>
+        <Parameter Name="values_offset" Type="int"/>
+        <Parameter Name="overlay_text" Type="byte*"/>
+        <Parameter Name="scale_min" Type="float"/>
+        <Parameter Name="scale_max" Type="float"/>
+        <Parameter Name="graph_size" Type="Vector2"/>
+        <Parameter Name="stride" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_IsBuilt" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImVec2_ImVec2" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Vector2*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImVec2_ImVec2Float" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Vector2*"/>
+        <Parameter Name="_x" Type="float"/>
+        <Parameter Name="_y" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiPayload_ImGuiPayload" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiPayload*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_Clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="GlyphRangesBuilder_AddRanges" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+        <Parameter Name="ranges" Type="ushort*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetFrameCount" ReturnType="int"/>
+    <Function Name="ImFont_GetDebugName" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igListBoxFooter" ReturnType="void"/>
+    <Function Name="igPopClipRect" ReturnType="void"/>
+    <Function Name="ImDrawList_AddBezierCurve" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="pos0" Type="Vector2"/>
+        <Parameter Name="cp0" Type="Vector2"/>
+        <Parameter Name="cp1" Type="Vector2"/>
+        <Parameter Name="pos1" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="thickness" Type="float"/>
+        <Parameter Name="num_segments" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="GlyphRangesBuilder_GlyphRangesBuilder" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetWindowSize" ReturnType="Vector2"/>
+    <Function Name="ImFontAtlas_GetGlyphRangesThai" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCheckboxFlags" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="flags" Type="uint*"/>
+        <Parameter Name="flags_value" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetGlyphRangesCyrillic" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsWindowHovered" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="flags" Type="ImGuiHoveredFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetGlyphRangesChineseSimplifiedCommon" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPlotHistogramFloatPtr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="values" Type="float*"/>
+        <Parameter Name="values_count" Type="int"/>
+        <Parameter Name="values_offset" Type="int"/>
+        <Parameter Name="overlay_text" Type="byte*"/>
+        <Parameter Name="scale_min" Type="float"/>
+        <Parameter Name="scale_max" Type="float"/>
+        <Parameter Name="graph_size" Type="Vector2"/>
+        <Parameter Name="stride" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginPopupContextVoid" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="mouse_button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetGlyphRangesChineseFull" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igShowStyleEditor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="@ref" Type="ImGuiStyle*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCheckbox" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetWindowPos" ReturnType="Vector2"/>
+    <Function Name="ImGuiInputTextCallbackData_ImGuiInputTextCallbackData" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiInputTextCallbackData*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowContentSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTextColored" ReturnType="void">
+      <Parameters>
+        <Parameter Name="col" Type="Vector4"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igLogToFile" ReturnType="void">
+      <Parameters>
+        <Parameter Name="max_depth" Type="int"/>
+        <Parameter Name="filename" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igButton" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsItemEdited" ReturnType="byte"/>
+    <Function Name="ImDrawList_PushTextureID" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="texture_id" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeAdvanceToLabelPos" ReturnType="void"/>
+    <Function Name="ImGuiInputTextCallbackData_DeleteChars" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiInputTextCallbackData*"/>
+        <Parameter Name="pos" Type="int"/>
+        <Parameter Name="bytes_count" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragInt2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetGlyphRangesDefault" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsAnyItemActive" ReturnType="byte"/>
+    <Function Name="ImFontAtlas_SetTexID" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="id" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="igMenuItemBool" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="shortcut" Type="byte*"/>
+        <Parameter Name="selected" Type="byte"/>
+        <Parameter Name="enabled" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igMenuItemBoolPtr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="shortcut" Type="byte*"/>
+        <Parameter Name="p_selected" Type="byte*"/>
+        <Parameter Name="enabled" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderFloat4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector4*"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetCursorPosX" ReturnType="float"/>
+    <Function Name="ImFontAtlas_ClearTexData" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_ClearFonts" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetColumnsCount" ReturnType="int"/>
+    <Function Name="igPopButtonRepeat" ReturnType="void"/>
+    <Function Name="igDragScalarN" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="components" Type="int"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="void*"/>
+        <Parameter Name="v_max" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiPayload_IsPreview" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiPayload*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSpacing" ReturnType="void"/>
+    <Function Name="ImFontAtlas_Clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsAnyItemFocused" ReturnType="byte"/>
+    <Function Name="ImDrawList_AddRectFilled" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="rounding" Type="float"/>
+        <Parameter Name="rounding_corners_flags" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_AddFontFromMemoryCompressedTTF" ReturnType="ImFont*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="compressed_font_data" Type="void*"/>
+        <Parameter Name="compressed_font_size" Type="int"/>
+        <Parameter Name="size_pixels" Type="float"/>
+        <Parameter Name="font_cfg" Type="ImFontConfig*"/>
+        <Parameter Name="glyph_ranges" Type="ushort*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igMemFree" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ptr" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetFontTexUvWhitePixel" ReturnType="Vector2"/>
+    <Function Name="ImDrawList_AddDrawCmd" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsItemClicked" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="mouse_button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_AddFontFromMemoryTTF" ReturnType="ImFont*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="font_data" Type="void*"/>
+        <Parameter Name="font_size" Type="int"/>
+        <Parameter Name="size_pixels" Type="float"/>
+        <Parameter Name="font_cfg" Type="ImFontConfig*"/>
+        <Parameter Name="glyph_ranges" Type="ushort*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_AddFontFromFileTTF" ReturnType="ImFont*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="filename" Type="byte*"/>
+        <Parameter Name="size_pixels" Type="float"/>
+        <Parameter Name="font_cfg" Type="ImFontConfig*"/>
+        <Parameter Name="glyph_ranges" Type="ushort*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igProgressBar" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fraction" Type="float"/>
+        <Parameter Name="size_arg" Type="Vector2"/>
+        <Parameter Name="overlay" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_AddFontDefault" ReturnType="ImFont*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="font_cfg" Type="ImFontConfig*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowBgAlpha" ReturnType="void">
+      <Parameters>
+        <Parameter Name="alpha" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginPopup" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiWindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_BuildLookupTable" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetScrollX" ReturnType="float"/>
+    <Function Name="igGetKeyIndex" ReturnType="int">
+      <Parameters>
+        <Parameter Name="imgui_key" Type="ImGuiKey"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetOverlayDrawList" ReturnType="ImDrawList*"/>
+    <Function Name="igGetIDStr" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetIDRange" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="str_id_begin" Type="byte*"/>
+        <Parameter Name="str_id_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetIDPtr" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="ptr_id" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetGlyphRangesJapanese" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igListBoxHeaderVec2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igListBoxHeaderInt" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="items_count" Type="int"/>
+        <Parameter Name="height_in_items" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontConfig_ImFontConfig" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontConfig*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsMouseReleased" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawData_ScaleClipRects" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawData*"/>
+        <Parameter Name="sc" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetItemRectMin" ReturnType="Vector2"/>
+    <Function Name="ImDrawData_DeIndexAllBuffers" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawData*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igLogText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawData_Clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawData*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_GetVoidPtr" ReturnType="void*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTextWrapped" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_UpdateClipRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PrimVtx" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="uv" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndGroup" ReturnType="void"/>
+    <Function Name="igGetFont" ReturnType="ImFont*"/>
+    <Function Name="igTreePushStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreePushPtr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ptr_id" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTextDisabled" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PrimRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddQuad" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="c" Type="Vector2"/>
+        <Parameter Name="d" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_ClearFreeMemory" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextTreeNodeOpen" ReturnType="void">
+      <Parameters>
+        <Parameter Name="is_open" Type="byte"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igLogToTTY" ReturnType="void">
+      <Parameters>
+        <Parameter Name="max_depth" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="GlyphRangesBuilder_BuildRanges" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+        <Parameter Name="out_ranges" Type="ImVector*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_CloneOutput" ReturnType="ImDrawList*">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetIO" ReturnType="ImGuiIO*"/>
+    <Function Name="igDragInt4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igNextColumn" ReturnType="void"/>
+    <Function Name="ImDrawList_AddRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="rounding" Type="float"/>
+        <Parameter Name="rounding_corners_flags" Type="int"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="TextRange_split" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="TextRange*"/>
+        <Parameter Name="separator" Type="byte"/>
+        <Parameter Name="@out" Type="ImVector*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetCursorPos" ReturnType="void">
+      <Parameters>
+        <Parameter Name="local_pos" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginPopupModal" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="name" Type="byte*"/>
+        <Parameter Name="p_open" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiWindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderInt4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddCallback" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="callback" Type="IntPtr"/>
+        <Parameter Name="callback_data" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igShowMetricsWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="p_open" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetScrollMaxY" ReturnType="float"/>
+    <Function Name="igBeginTooltip" ReturnType="void"/>
+    <Function Name="igSetScrollX" ReturnType="void">
+      <Parameters>
+        <Parameter Name="scroll_x" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetDrawData" ReturnType="ImDrawData*"/>
+    <Function Name="igGetTextLineHeight" ReturnType="float"/>
+    <Function Name="igSeparator" ReturnType="void"/>
+    <Function Name="igBeginChild" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="border" Type="byte"/>
+        <Parameter Name="flags" Type="ImGuiWindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginChildID" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="id" Type="uint"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="border" Type="byte"/>
+        <Parameter Name="flags" Type="ImGuiWindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="rect_min" Type="Vector2"/>
+        <Parameter Name="rect_max" Type="Vector2"/>
+        <Parameter Name="rounding" Type="float"/>
+        <Parameter Name="rounding_corners_flags" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsMouseClicked" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+        <Parameter Name="repeat" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCalcItemWidth" ReturnType="float"/>
+    <Function Name="ImDrawList_PathArcToFast" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="centre" Type="Vector2"/>
+        <Parameter Name="radius" Type="float"/>
+        <Parameter Name="a_min_of_12" Type="int"/>
+        <Parameter Name="a_max_of_12" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndChildFrame" ReturnType="void"/>
+    <Function Name="igIndent" ReturnType="void">
+      <Parameters>
+        <Parameter Name="indent_w" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetDragDropPayload" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="type" Type="byte*"/>
+        <Parameter Name="data" Type="void*"/>
+        <Parameter Name="size" Type="uint"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="GlyphRangesBuilder_GetBit" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+        <Parameter Name="n" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextFilter_Draw" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextFilter*"/>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="width" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igShowDemoWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="p_open" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathStroke" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="closed" Type="byte"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathFillConvex" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathLineToMergeDuplicate" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="pos" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndMenu" ReturnType="void"/>
+    <Function Name="igColorButton" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="desc_id" Type="byte*"/>
+        <Parameter Name="col" Type="Vector4"/>
+        <Parameter Name="flags" Type="ImGuiColorEditFlags"/>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetTexDataAsAlpha8" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="out_pixels" Type="byte**"/>
+        <Parameter Name="out_width" Type="int*"/>
+        <Parameter Name="out_height" Type="int*"/>
+        <Parameter Name="out_bytes_per_pixel" Type="int*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsKeyReleased" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="user_key_index" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetClipboardText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="text" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathArcTo" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="centre" Type="Vector2"/>
+        <Parameter Name="radius" Type="float"/>
+        <Parameter Name="a_min" Type="float"/>
+        <Parameter Name="a_max" Type="float"/>
+        <Parameter Name="num_segments" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddConvexPolyFilled" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="points" Type="Vector2*"/>
+        <Parameter Name="num_points" Type="int"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsWindowCollapsed" ReturnType="byte"/>
+    <Function Name="igShowFontSelector" ReturnType="void">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddImageQuad" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="user_texture_id" Type="IntPtr"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="c" Type="Vector2"/>
+        <Parameter Name="d" Type="Vector2"/>
+        <Parameter Name="uv_a" Type="Vector2"/>
+        <Parameter Name="uv_b" Type="Vector2"/>
+        <Parameter Name="uv_c" Type="Vector2"/>
+        <Parameter Name="uv_d" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowFocus" ReturnType="void"/>
+    <Function Name="igSameLine" ReturnType="void">
+      <Parameters>
+        <Parameter Name="pos_x" Type="float"/>
+        <Parameter Name="spacing_w" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBegin" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="name" Type="byte*"/>
+        <Parameter Name="p_open" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiWindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorEdit3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="col" Type="Vector3*"/>
+        <Parameter Name="flags" Type="ImGuiColorEditFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddImage" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="user_texture_id" Type="IntPtr"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="uv_a" Type="Vector2"/>
+        <Parameter Name="uv_b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiIO_AddInputCharactersUTF8" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiIO*"/>
+        <Parameter Name="utf8_chars" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="text_begin" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddTextFontPtr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="font" Type="ImFont*"/>
+        <Parameter Name="font_size" Type="float"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="text_begin" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+        <Parameter Name="wrap_width" Type="float"/>
+        <Parameter Name="cpu_fine_clip_rect" Type="Vector4*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddCircleFilled" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="centre" Type="Vector2"/>
+        <Parameter Name="radius" Type="float"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="num_segments" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputFloat2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector2*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushButtonRepeat" ReturnType="void">
+      <Parameters>
+        <Parameter Name="repeat" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPopItemWidth" ReturnType="void"/>
+    <Function Name="ImDrawList_AddCircle" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="centre" Type="Vector2"/>
+        <Parameter Name="radius" Type="float"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="num_segments" Type="int"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddTriangleFilled" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="c" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddTriangle" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="c" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddQuadFilled" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="c" Type="Vector2"/>
+        <Parameter Name="d" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetFontSize" ReturnType="float"/>
+    <Function Name="igInputDouble" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="double*"/>
+        <Parameter Name="step" Type="double"/>
+        <Parameter Name="step_fast" Type="double"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PrimReserve" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="idx_count" Type="int"/>
+        <Parameter Name="vtx_count" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddRectFilledMultiColor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="col_upr_left" Type="uint"/>
+        <Parameter Name="col_upr_right" Type="uint"/>
+        <Parameter Name="col_bot_right" Type="uint"/>
+        <Parameter Name="col_bot_left" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndPopup" ReturnType="void"/>
+    <Function Name="ImFontAtlas_ClearInputData" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddLine" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="thickness" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputTextMultiline" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="buf" Type="byte*"/>
+        <Parameter Name="buf_size" Type="uint"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="flags" Type="ImGuiInputTextFlags"/>
+        <Parameter Name="callback" Type="ImGuiInputTextCallback"/>
+        <Parameter Name="user_data" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSelectable" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="selected" Type="byte"/>
+        <Parameter Name="flags" Type="ImGuiSelectableFlags"/>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSelectableBoolPtr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="p_selected" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiSelectableFlags"/>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igListBoxStr_arr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="current_item" Type="int*"/>
+        <Parameter Name="items" Type="byte**"/>
+        <Parameter Name="items_count" Type="int"/>
+        <Parameter Name="height_in_items" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetCursorPos" ReturnType="Vector2"/>
+    <Function Name="ImDrawList_GetClipRectMin" ReturnType="Vector2">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PopTextureID" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputFloat4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector4*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetCursorPosY" ReturnType="void">
+      <Parameters>
+        <Parameter Name="y" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetVersion" ReturnType="byte*"/>
+    <Function Name="igEndCombo" ReturnType="void"/>
+    <Function Name="igPushIDStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushIDRange" ReturnType="void">
+      <Parameters>
+        <Parameter Name="str_id_begin" Type="byte*"/>
+        <Parameter Name="str_id_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushIDPtr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ptr_id" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushIDInt" ReturnType="void">
+      <Parameters>
+        <Parameter Name="int_id" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_ImDrawList" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="shared_data" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawCmd_ImDrawCmd" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawCmd*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiListClipper_End" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiListClipper*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igAlignTextToFramePadding" ReturnType="void"/>
+    <Function Name="igPopStyleColor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="count" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiListClipper_Begin" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiListClipper*"/>
+        <Parameter Name="items_count" Type="int"/>
+        <Parameter Name="items_height" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiListClipper_Step" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiListClipper*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetTextLineHeightWithSpacing" ReturnType="float"/>
+    <Function Name="ImGuiStorage_GetFloatRef" ReturnType="float*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndTooltip" ReturnType="void"/>
+    <Function Name="ImGuiListClipper_ImGuiListClipper" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiListClipper*"/>
+        <Parameter Name="items_count" Type="int"/>
+        <Parameter Name="items_height" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragInt" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderFloat" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="float*"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorConvertFloat4ToU32" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="@in" Type="Vector4"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiIO_ClearInputCharacters" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiIO*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushClipRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="clip_rect_min" Type="Vector2"/>
+        <Parameter Name="clip_rect_max" Type="Vector2"/>
+        <Parameter Name="intersect_with_current_clip_rect" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetColumnWidth" ReturnType="void">
+      <Parameters>
+        <Parameter Name="column_index" Type="int"/>
+        <Parameter Name="width" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiPayload_IsDataType" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiPayload*"/>
+        <Parameter Name="type" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginMainMenuBar" ReturnType="byte"/>
+    <Function Name="CustomRect_CustomRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="CustomRect*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiInputTextCallbackData_HasSelection" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiInputTextCallbackData*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiInputTextCallbackData_InsertChars" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiInputTextCallbackData*"/>
+        <Parameter Name="pos" Type="int"/>
+        <Parameter Name="text" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetMouseCursorTexData" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="cursor" Type="ImGuiMouseCursor"/>
+        <Parameter Name="out_offset" Type="Vector2*"/>
+        <Parameter Name="out_size" Type="Vector2*"/>
+        <Parameter Name="out_uv_border" Type="Vector2*"/>
+        <Parameter Name="out_uv_fill" Type="Vector2*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igVSliderScalar" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="v_min" Type="void*"/>
+        <Parameter Name="v_max" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_SetAllInt" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="val" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_GetVoidPtrRef" ReturnType="void**">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igStyleColorsLight" ReturnType="void">
+      <Parameters>
+        <Parameter Name="dst" Type="ImGuiStyle*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderFloat3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector3*"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragFloat" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="float*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_GetBoolRef" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetWindowHeight" ReturnType="float"/>
+    <Function Name="igGetMousePosOnOpeningCurrentPopup" ReturnType="Vector2"/>
+    <Function Name="ImGuiStorage_GetIntRef" ReturnType="int*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCalcListClipping" ReturnType="void">
+      <Parameters>
+        <Parameter Name="items_count" Type="int"/>
+        <Parameter Name="items_height" Type="float"/>
+        <Parameter Name="out_items_display_start" Type="int*"/>
+        <Parameter Name="out_items_display_end" Type="int*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_SetVoidPtr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="val" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndDragDropSource" ReturnType="void"/>
+    <Function Name="ImGuiStorage_BuildSortByKey" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_GetFloat" ReturnType="float">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_SetBool" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="val" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_GetBool" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetFrameHeightWithSpacing" ReturnType="float"/>
+    <Function Name="ImGuiStorage_SetInt" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="val" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCloseCurrentPopup" ReturnType="void"/>
+    <Function Name="ImGuiTextBuffer_clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginGroup" ReturnType="void"/>
+    <Function Name="ImGuiStorage_Clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+      </Parameters>
+    </Function>
+    <Function Name="Pair_PairInt" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Pair*"/>
+        <Parameter Name="_key" Type="uint"/>
+        <Parameter Name="_val_i" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="Pair_PairFloat" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Pair*"/>
+        <Parameter Name="_key" Type="uint"/>
+        <Parameter Name="_val_f" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="Pair_PairPtr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="Pair*"/>
+        <Parameter Name="_key" Type="uint"/>
+        <Parameter Name="_val_p" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_appendf" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_c_str" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_reserve" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+        <Parameter Name="capacity" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_empty" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderScalar" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="v_min" Type="void*"/>
+        <Parameter Name="v_max" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginCombo" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="preview_value" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiComboFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_size" ReturnType="int">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginMenu" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="enabled" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsItemHovered" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="flags" Type="ImGuiHoveredFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PrimWriteVtx" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="uv" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBullet" ReturnType="void"/>
+    <Function Name="igInputText" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="buf" Type="byte*"/>
+        <Parameter Name="buf_size" Type="uint"/>
+        <Parameter Name="flags" Type="ImGuiInputTextFlags"/>
+        <Parameter Name="callback" Type="ImGuiInputTextCallback"/>
+        <Parameter Name="user_data" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputInt3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiIO_ImGuiIO" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiIO*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igStyleColorsDark" ReturnType="void">
+      <Parameters>
+        <Parameter Name="dst" Type="ImGuiStyle*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputInt" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="step" Type="int"/>
+        <Parameter Name="step_fast" Type="int"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowFontScale" ReturnType="void">
+      <Parameters>
+        <Parameter Name="scale" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderInt" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="TextRange_end" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="TextRange*"/>
+      </Parameters>
+    </Function>
+    <Function Name="TextRange_begin" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="TextRange*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowPos" ReturnType="void">
+      <Parameters>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+        <Parameter Name="pivot" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragInt3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igOpenPopup" ReturnType="void">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="TextRange_TextRange" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="TextRange*"/>
+      </Parameters>
+    </Function>
+    <Function Name="TextRange_TextRangeStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="TextRange*"/>
+        <Parameter Name="_b" Type="byte*"/>
+        <Parameter Name="_e" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_GetClipRectMax" ReturnType="Vector2">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCalcTextSize" ReturnType="Vector2">
+      <Parameters>
+        <Parameter Name="text" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+        <Parameter Name="hide_text_after_double_hash" Type="byte"/>
+        <Parameter Name="wrap_width" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetDrawListSharedData" ReturnType="IntPtr"/>
+    <Function Name="igColumns" ReturnType="void">
+      <Parameters>
+        <Parameter Name="count" Type="int"/>
+        <Parameter Name="id" Type="byte*"/>
+        <Parameter Name="border" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsItemActive" ReturnType="byte"/>
+    <Function Name="ImGuiTextFilter_ImGuiTextFilter" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextFilter*"/>
+        <Parameter Name="default_filter" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiOnceUponAFrame_ImGuiOnceUponAFrame" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiOnceUponAFrame*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginDragDropTarget" ReturnType="byte"/>
+    <Function Name="TextRange_empty" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="TextRange*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiPayload_IsDelivery" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiPayload*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiIO_AddInputCharacter" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiIO*"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_AddImageRounded" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="user_texture_id" Type="IntPtr"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="uv_a" Type="Vector2"/>
+        <Parameter Name="uv_b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+        <Parameter Name="rounding" Type="float"/>
+        <Parameter Name="rounding_corners" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStyle_ImGuiStyle" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStyle*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorPicker3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="col" Type="Vector3*"/>
+        <Parameter Name="flags" Type="ImGuiColorEditFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetContentRegionMax" ReturnType="Vector2"/>
+    <Function Name="igBeginChildFrame" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="id" Type="uint"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="flags" Type="ImGuiWindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSaveIniSettingsToDisk" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ini_filename" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFont_ClearOutputData" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFont*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetClipboardText" ReturnType="byte*"/>
+    <Function Name="ImDrawList_PrimQuadUV" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="c" Type="Vector2"/>
+        <Parameter Name="d" Type="Vector2"/>
+        <Parameter Name="uv_a" Type="Vector2"/>
+        <Parameter Name="uv_b" Type="Vector2"/>
+        <Parameter Name="uv_c" Type="Vector2"/>
+        <Parameter Name="uv_d" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndDragDropTarget" ReturnType="void"/>
+    <Function Name="ImFontAtlas_GetGlyphRangesKorean" ReturnType="ushort*">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetKeyPressedAmount" ReturnType="int">
+      <Parameters>
+        <Parameter Name="key_index" Type="int"/>
+        <Parameter Name="repeat_delay" Type="float"/>
+        <Parameter Name="rate" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_GetTexDataAsRGBA32" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="out_pixels" Type="byte**"/>
+        <Parameter Name="out_width" Type="int*"/>
+        <Parameter Name="out_height" Type="int*"/>
+        <Parameter Name="out_bytes_per_pixel" Type="int*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igNewFrame" ReturnType="void"/>
+    <Function Name="igResetMouseDragDelta" ReturnType="void">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetTreeNodeToLabelSpacing" ReturnType="float"/>
+    <Function Name="igGetMousePos" ReturnType="Vector2"/>
+    <Function Name="GlyphRangesBuilder_AddChar" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="GlyphRangesBuilder*"/>
+        <Parameter Name="c" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPopID" ReturnType="void"/>
+    <Function Name="igIsMouseDoubleClicked" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igStyleColorsClassic" ReturnType="void">
+      <Parameters>
+        <Parameter Name="dst" Type="ImGuiStyle*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextFilter_IsActive" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextFilter*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathClear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowFocus" ReturnType="void"/>
+    <Function Name="igSetWindowFocusStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="name" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorConvertHSVtoRGB" ReturnType="void">
+      <Parameters>
+        <Parameter Name="h" Type="float"/>
+        <Parameter Name="s" Type="float"/>
+        <Parameter Name="v" Type="float"/>
+        <Parameter Name="out_r" Type="float*"/>
+        <Parameter Name="out_g" Type="float*"/>
+        <Parameter Name="out_b" Type="float*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_ImColor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_ImColorInt" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+        <Parameter Name="r" Type="int"/>
+        <Parameter Name="g" Type="int"/>
+        <Parameter Name="b" Type="int"/>
+        <Parameter Name="a" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_ImColorU32" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+        <Parameter Name="rgba" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_ImColorFloat" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+        <Parameter Name="r" Type="float"/>
+        <Parameter Name="g" Type="float"/>
+        <Parameter Name="b" Type="float"/>
+        <Parameter Name="a" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_ImColorVec4" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+        <Parameter Name="col" Type="Vector4"/>
+      </Parameters>
+    </Function>
+    <Function Name="igVSliderFloat" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="v" Type="float*"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorConvertU32ToFloat4" ReturnType="Vector4">
+      <Parameters>
+        <Parameter Name="@in" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPopTextWrapPos" ReturnType="void"/>
+    <Function Name="ImGuiTextFilter_Clear" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextFilter*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetStateStorage" ReturnType="ImGuiStorage*"/>
+    <Function Name="igGetColumnWidth" ReturnType="float">
+      <Parameters>
+        <Parameter Name="column_index" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndMenuBar" ReturnType="void"/>
+    <Function Name="igSetStateStorage" ReturnType="void">
+      <Parameters>
+        <Parameter Name="storage" Type="ImGuiStorage*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetStyleColorName" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiCol"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsMouseDragging" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+        <Parameter Name="lock_threshold" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PrimWriteIdx" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="idx" Type="ushort"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStyle_ScaleAllSizes" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStyle*"/>
+        <Parameter Name="scale_factor" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushStyleColorU32" ReturnType="void">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiCol"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushStyleColor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiCol"/>
+        <Parameter Name="col" Type="Vector4"/>
+      </Parameters>
+    </Function>
+    <Function Name="igMemAlloc" ReturnType="void*">
+      <Parameters>
+        <Parameter Name="size" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetCurrentContext" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ctx" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPushItemWidth" ReturnType="void">
+      <Parameters>
+        <Parameter Name="item_width" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsWindowAppearing" ReturnType="byte"/>
+    <Function Name="igGetStyle" ReturnType="ImGuiStyle*"/>
+    <Function Name="igSetItemAllowOverlap" ReturnType="void"/>
+    <Function Name="igEndChild" ReturnType="void"/>
+    <Function Name="igCollapsingHeader" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiTreeNodeFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igCollapsingHeaderBoolPtr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="p_open" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiTreeNodeFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragFloatRange2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v_current_min" Type="float*"/>
+        <Parameter Name="v_current_max" Type="float*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="format_max" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetMouseCursor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="type" Type="ImGuiMouseCursor"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetWindowContentRegionMax" ReturnType="Vector2"/>
+    <Function Name="igInputScalar" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="step" Type="void*"/>
+        <Parameter Name="step_fast" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PushClipRectFullScreen" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetColorU32" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="idx" Type="ImGuiCol"/>
+        <Parameter Name="alpha_mul" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetColorU32Vec4" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="col" Type="Vector4"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetColorU32U32" ReturnType="uint">
+      <Parameters>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetTime" ReturnType="double"/>
+    <Function Name="ImDrawList_ChannelsMerge" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetColumnIndex" ReturnType="int"/>
+    <Function Name="igBeginPopupContextItem" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="mouse_button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetCursorPosX" ReturnType="void">
+      <Parameters>
+        <Parameter Name="x" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetItemRectSize" ReturnType="Vector2"/>
+    <Function Name="igArrowButton" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="dir" Type="ImGuiDir"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetMouseCursor" ReturnType="ImGuiMouseCursor"/>
+    <Function Name="igPushAllowKeyboardFocus" ReturnType="void">
+      <Parameters>
+        <Parameter Name="allow_keyboard_focus" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetScrollY" ReturnType="float"/>
+    <Function Name="igSetColumnOffset" ReturnType="void">
+      <Parameters>
+        <Parameter Name="column_index" Type="int"/>
+        <Parameter Name="offset_x" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_begin" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowPosVec2" ReturnType="void">
+      <Parameters>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetWindowPosStr" ReturnType="void">
+      <Parameters>
+        <Parameter Name="name" Type="byte*"/>
+        <Parameter Name="pos" Type="Vector2"/>
+        <Parameter Name="cond" Type="ImGuiCond"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetKeyboardFocusHere" ReturnType="void">
+      <Parameters>
+        <Parameter Name="offset" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetCursorPosY" ReturnType="float"/>
+    <Function Name="ImFontAtlas_AddCustomRectFontGlyph" ReturnType="int">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+        <Parameter Name="font" Type="ImFont*"/>
+        <Parameter Name="id" Type="ushort"/>
+        <Parameter Name="width" Type="int"/>
+        <Parameter Name="height" Type="int"/>
+        <Parameter Name="advance_x" Type="float"/>
+        <Parameter Name="offset" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igEndMainMenuBar" ReturnType="void"/>
+    <Function Name="igGetContentRegionAvailWidth" ReturnType="float"/>
+    <Function Name="igIsKeyDown" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="user_key_index" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsMouseDown" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="button" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetWindowContentRegionMin" ReturnType="Vector2"/>
+    <Function Name="igLogButtons" ReturnType="void"/>
+    <Function Name="igGetWindowContentRegionWidth" ReturnType="float"/>
+    <Function Name="igSliderAngle" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v_rad" Type="float*"/>
+        <Parameter Name="v_degrees_min" Type="float"/>
+        <Parameter Name="v_degrees_max" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeNodeExStr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiTreeNodeFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeNodeExStrStr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="flags" Type="ImGuiTreeNodeFlags"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeNodeExPtr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="ptr_id" Type="void*"/>
+        <Parameter Name="flags" Type="ImGuiTreeNodeFlags"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetWindowWidth" ReturnType="float"/>
+    <Function Name="igPushTextWrapPos" ReturnType="void">
+      <Parameters>
+        <Parameter Name="wrap_pos_x" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiStorage_GetInt" ReturnType="int">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiStorage*"/>
+        <Parameter Name="key" Type="uint"/>
+        <Parameter Name="default_val" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSliderInt3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igShowUserGuide" ReturnType="void"/>
+    <Function Name="igSliderScalarN" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="components" Type="int"/>
+        <Parameter Name="v_min" Type="void*"/>
+        <Parameter Name="v_max" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImColor_HSV" ReturnType="ImColor">
+      <Parameters>
+        <Parameter Name="self" Type="ImColor*"/>
+        <Parameter Name="h" Type="float"/>
+        <Parameter Name="s" Type="float"/>
+        <Parameter Name="v" Type="float"/>
+        <Parameter Name="a" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PathLineTo" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="pos" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igImage" ReturnType="void">
+      <Parameters>
+        <Parameter Name="user_texture_id" Type="IntPtr"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="uv0" Type="Vector2"/>
+        <Parameter Name="uv1" Type="Vector2"/>
+        <Parameter Name="tint_col" Type="Vector4"/>
+        <Parameter Name="border_col" Type="Vector4"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetNextWindowSizeConstraints" ReturnType="void">
+      <Parameters>
+        <Parameter Name="size_min" Type="Vector2"/>
+        <Parameter Name="size_max" Type="Vector2"/>
+        <Parameter Name="custom_callback" Type="ImGuiSizeCallback"/>
+        <Parameter Name="custom_callback_data" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDummy" ReturnType="void">
+      <Parameters>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igVSliderInt" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="v_min" Type="int"/>
+        <Parameter Name="v_max" Type="int"/>
+        <Parameter Name="format" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_ImGuiTextBuffer" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBulletText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorEdit4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="col" Type="Vector4*"/>
+        <Parameter Name="flags" Type="ImGuiColorEditFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igColorPicker4" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="col" Type="Vector4*"/>
+        <Parameter Name="flags" Type="ImGuiColorEditFlags"/>
+        <Parameter Name="ref_col" Type="float*"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImDrawList_PrimRectUV" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawList*"/>
+        <Parameter Name="a" Type="Vector2"/>
+        <Parameter Name="b" Type="Vector2"/>
+        <Parameter Name="uv_a" Type="Vector2"/>
+        <Parameter Name="uv_b" Type="Vector2"/>
+        <Parameter Name="col" Type="uint"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInvisibleButton" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="size" Type="Vector2"/>
+      </Parameters>
+    </Function>
+    <Function Name="igLogToClipboard" ReturnType="void">
+      <Parameters>
+        <Parameter Name="max_depth" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="igBeginPopupContextWindow" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="mouse_button" Type="int"/>
+        <Parameter Name="also_over_items" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImFontAtlas_ImFontAtlas" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImFontAtlas*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragScalar" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="void*"/>
+        <Parameter Name="v_max" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+    <Function Name="igSetItemDefaultFocus" ReturnType="void"/>
+    <Function Name="igCaptureMouseFromApp" ReturnType="void">
+      <Parameters>
+        <Parameter Name="capture" Type="byte"/>
+      </Parameters>
+    </Function>
+    <Function Name="igIsAnyItemHovered" ReturnType="byte"/>
+    <Function Name="igPushFont" ReturnType="void">
+      <Parameters>
+        <Parameter Name="font" Type="ImFont*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputInt2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="int*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreePop" ReturnType="void"/>
+    <Function Name="igEnd" ReturnType="void"/>
+    <Function Name="ImDrawData_ImDrawData" ReturnType="void">
+      <Parameters>
+        <Parameter Name="self" Type="ImDrawData*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDestroyContext" ReturnType="void">
+      <Parameters>
+        <Parameter Name="ctx" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextBuffer_end" ReturnType="byte*">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextBuffer*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igPopStyleVar" ReturnType="void">
+      <Parameters>
+        <Parameter Name="count" Type="int"/>
+      </Parameters>
+    </Function>
+    <Function Name="ImGuiTextFilter_PassFilter" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="self" Type="ImGuiTextFilter*"/>
+        <Parameter Name="text" Type="byte*"/>
+        <Parameter Name="text_end" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igShowStyleSelector" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igInputScalarN" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="data_type" Type="ImGuiDataType"/>
+        <Parameter Name="v" Type="void*"/>
+        <Parameter Name="components" Type="int"/>
+        <Parameter Name="step" Type="void*"/>
+        <Parameter Name="step_fast" Type="void*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeNodeStr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeNodeStrStr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="str_id" Type="byte*"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igTreeNodePtr" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="ptr_id" Type="void*"/>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetScrollMaxX" ReturnType="float"/>
+    <Function Name="igSetTooltip" ReturnType="void">
+      <Parameters>
+        <Parameter Name="fmt" Type="byte*"/>
+      </Parameters>
+    </Function>
+    <Function Name="igGetContentRegionAvail" ReturnType="Vector2"/>
+    <Function Name="igInputFloat3" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector3*"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="extra_flags" Type="ImGuiInputTextFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="igDragFloat2" ReturnType="byte">
+      <Parameters>
+        <Parameter Name="label" Type="byte*"/>
+        <Parameter Name="v" Type="Vector2*"/>
+        <Parameter Name="v_speed" Type="float"/>
+        <Parameter Name="v_min" Type="float"/>
+        <Parameter Name="v_max" Type="float"/>
+        <Parameter Name="format" Type="byte*"/>
+        <Parameter Name="power" Type="float"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>

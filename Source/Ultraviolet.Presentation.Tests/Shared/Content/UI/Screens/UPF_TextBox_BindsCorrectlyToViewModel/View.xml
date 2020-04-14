@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_TextBox_BindsCorrectlyToViewModel_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBox Width="200">{{BoundString}}</TextBox>
+      <TextBox Width="200">{{BoundStringBuilder}}</TextBox>
+    </StackPanel>
+
+  </View>
+</UIPanelDefinition>

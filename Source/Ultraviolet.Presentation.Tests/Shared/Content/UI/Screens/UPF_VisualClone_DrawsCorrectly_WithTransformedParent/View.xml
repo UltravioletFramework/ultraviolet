@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_VisualClone_DrawsCorrectly_WithTransformedParent_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <ComboBox Width="200" Margin="10" SelectedIndex="0">
+        <ComboBox.LayoutTransform>
+          <RotateTransform Angle="20"/>
+        </ComboBox.LayoutTransform>
+        <ComboBoxItem>
+          <Button Width="64" Height="64">
+            <Button.LayoutTransform>
+              <RotateTransform Angle="45"/>
+            </Button.LayoutTransform>
+            Hello, world!
+          </Button>
+        </ComboBoxItem>
+      </ComboBox>
+      <ComboBox Width="200" Margin="10" SelectedIndex="0">
+        <ComboBox.LayoutTransform>
+          <RotateTransform Angle="20"/>
+        </ComboBox.LayoutTransform>
+        <ComboBoxItem>
+          <Button Width="64" Height="64">
+            <Button.Effect>
+              <BlurEffect/>
+            </Button.Effect>
+            <Button.LayoutTransform>
+              <RotateTransform Angle="45"/>
+            </Button.LayoutTransform>
+            Hello, world!
+          </Button>
+        </ComboBoxItem>
+      </ComboBox>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

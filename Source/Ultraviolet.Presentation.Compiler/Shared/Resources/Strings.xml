@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="FAILED_EXPRESSION_VALIDATION_PASS">
+    <en-US>
+      <Variant>Expression compilation failed during the expression validation pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
+    </en-US>
+  </String>
+  <String Key="FAILED_FINAL_PASS">
+    <en-US>
+      <Variant>Expression compilation failed during the final compiler pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
+    </en-US>
+  </String>
+  <String Key="FAILED_EMIT">
+    <en-US>
+      <Variant>Expression compilation failed during the emit pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_TYPE_IS_NOT_FULLY_QUALIFIED">
+    <en-US>
+      <Variant>The view model type '{0}' is not valid because view model types must be assembly-qualified (e.g.: "Contoso.Game.ViewModelType, Contoso.Game").</Variant>
+    </en-US>
+  </String>
+  <String Key="ONLY_DEPENDENCY_PROPERTIES_CAN_BE_BOUND">
+    <en-US>
+      <Variant>Attempted to bind to '{0}', but '{0}' is not a dependency property.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_DOES_NOT_HAVE_DEFAULT_PROPERTY">
+    <en-US>
+      <Variant>Attempted to bind to the default property of '{0}', but '{0}' does not have a default property.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_DIRECTIVE_NOT_RECOGNIZED">
+    <en-US>
+      <Variant>View directive is invalid because it has an unrecognized Type attribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_DIRECTIVE_HAS_INVALID_VALUE">
+    <en-US>
+      <Variant>View directive is invalid because it has an invalid value.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_TARGET_IS_NOT_FOUND">
+    <en-US>
+      <Variant>The expression target '{0}' could not be found.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_TARGET_IS_AMBIGUOUS">
+    <en-US>
+      <Variant>The expression target '{0}' potentially matches multiple elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_TARGET_IS_UNRECOGNIZED_TYPE">
+    <en-US>
+      <Variant>The expression '{0}' targets an element of type '{1}' but that type has not been registered with the Presentation Foundation.</Variant>
+    </en-US>
+  </String>
+  <String Key="COULD_NOT_LOCATE_REFERENCE_ASSEMBLIES">
+    <en-US>
+      <Variant>Failed to locate the .NET Standard 2.0 reference assemblies. Install the .NET Framework 4.7.1 or .NET Core 2.0 SDKs.</Variant>
+    </en-US>
+  </String>
+  <String Key="COULD_NOT_LOCATE_REFERENCE_ASSEMBLIES_CORE3">
+    <en-US>
+      <Variant>Failed to locate the .NET Standard 2.1 reference assemblies. Install the .NET Core 3.0 SDK.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

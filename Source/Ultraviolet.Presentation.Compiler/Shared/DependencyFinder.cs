@@ -105,7 +105,7 @@ namespace Ultraviolet.Presentation.Compiler
         }
         
         /// <summary>
-        /// Gets the path to the .NET Standard 2.0 reference assemblies contained within the 
+        /// Gets the path to the .NET Standard reference assemblies contained within the 
         /// NuGet cache, if they exist there.
         /// </summary>
         /// <returns>The path to the reference assemblies, or <see langword="null"/> if they don't exist.</returns>
@@ -113,6 +113,24 @@ namespace Ultraviolet.Presentation.Compiler
         {
             additionalPaths.Clear();
 
+            // If the compiler is running under a runtime earlier than Core 3.0, we need to build as .NET Standard 2.0.
+            // Otherwise, build as .NET Standard 2.1.
+            if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR &&
+                UltravioletPlatformInfo.CurrentRuntimeVersion.Major == 2)
+            {
+                return GetNetStandardLibraryDirFromNuGetCache_Standard20(additionalPaths);
+            }
+            else
+            {
+                return GetNetStandardLibraryDirFromNuGetCache_Standard21(additionalPaths);
+            }
+        }
+
+        /// <summary>
+        /// Gets the path to the .NET Standard 2.0 assemblies.
+        /// </summary>
+        private static String GetNetStandardLibraryDirFromNuGetCache_Standard20(IList<String> additionalPaths)
+        {
             var cache = GetNuGetCacheDirectory();
             if (cache == null)
                 return null;
@@ -121,7 +139,7 @@ namespace Ultraviolet.Presentation.Compiler
             if (dir.Exists)
             {
                 var best = dir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "build", "netstandard2.0", "ref")), Version = TryParseVersion(x.Name) })
-                    .Where(x => x.Version != null && x.Version == new Version(2, 0, 1) && x.Target.Exists)
+                    .Where(x => x.Version != null && x.Version >= new Version(2, 0, 1) && x.Target.Exists)
                     .OrderByDescending(x => x.Version)
                     .FirstOrDefault();
                 if (best != null)
@@ -133,7 +151,31 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         /// <summary>
-        /// Gets the path to the .NET Standard 2.0 reference assemblies contained within the SDK
+        /// Gets the path to the .NET Standard 2.1 assemblies.
+        /// </summary>
+        private static String GetNetStandardLibraryDirFromNuGetCache_Standard21(IList<String> additionalPaths)
+        {
+            var cache = GetNuGetCacheDirectory();
+            if (cache == null)
+                return null;
+
+            var dir = new DirectoryInfo(Path.Combine(cache, "netstandard.library.ref"));
+            if (dir.Exists)
+            {
+                var best = dir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "build", "netstandard2.1", "ref")), Version = TryParseVersion(x.Name) })
+                    .Where(x => x.Version != null && x.Version >= new Version(2, 1, 0) && x.Target.Exists)
+                    .OrderByDescending(x => x.Version)
+                    .FirstOrDefault();
+                if (best != null)
+                {
+                    return best.Target.FullName;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the path to the .NET Standard reference assemblies contained within the SDK
         /// fallback directory, if they exist there.
         /// </summary>
         /// <returns>The path to the reference assemblies, or <see langword="null"/> if they don't exist.</returns>
@@ -141,6 +183,24 @@ namespace Ultraviolet.Presentation.Compiler
         {
             additionalPaths.Clear();
 
+            // If the compiler is running under a runtime earlier than Core 3.0, we need to build as .NET Standard 2.0.
+            // Otherwise, build as .NET Standard 2.1.
+            if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR &&
+                UltravioletPlatformInfo.CurrentRuntimeVersion.Major == 2)
+            {
+                return GetNetStandardLibraryDirFromFallback_Standard20(additionalPaths);
+            }
+            else
+            {
+                return GetNetStandardLibraryDirFromFallback_Standard21(additionalPaths);
+            }
+        }
+
+        /// <summary>
+        /// Gets the path to the .NET Standard 2.0 reference assemblies.
+        /// </summary>
+        private static String GetNetStandardLibraryDirFromFallback_Standard20(IList<String> additionalPaths)
+        {
             // On Windows, check for an installation of .NET Framework 4.7.1, which includes support
             // for the entirety of .NET Standard 2.0 as part of the base installation.
             if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows)
@@ -190,6 +250,48 @@ namespace Ultraviolet.Presentation.Compiler
                 if (nuGetFallbackBest != null)
                 {
                     return nuGetFallbackBest.Target.FullName;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the path to the .NET Standard 2.1 reference assemblies.
+        /// </summary>
+        private static String GetNetStandardLibraryDirFromFallback_Standard21(IList<String> additionalPaths)
+        {
+            // If the .NET Core SDK is installed, we can try the NETStandard.Library.Ref metapackage, which is in a 
+            // couple of different places depending on the current platform...
+            var refFolderDir = default(DirectoryInfo);
+            switch (UltravioletPlatformInfo.CurrentPlatform)
+            {
+                case UltravioletPlatform.Windows:
+                    {
+                        refFolderDir = new DirectoryInfo(Path.Combine(Environment.GetEnvironmentVariable("PROGRAMW6432"), "dotnet", "packs", "NETStandard.Library.Ref"));
+                    }
+                    break;
+
+                case UltravioletPlatform.Linux:
+                case UltravioletPlatform.macOS:
+                    {
+                        refFolderDir = new DirectoryInfo(Path.Combine("/", "usr", "local", "share", "dotnet", "packs", "NETStandard.Library.Ref"));
+                        if (refFolderDir.Exists)
+                            break;
+
+                        refFolderDir = new DirectoryInfo(Path.Combine("/", "usr", "share", "dotnet", "packs", "NETStandard.Library.Ref"));
+                    }
+                    break;
+            }
+
+            if (refFolderDir.Exists)
+            {
+                var refFolderBest = refFolderDir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "ref", "netstandard2.1")), Version = TryParseVersion(x.Name) })
+                    .Where(x => x.Version != null && x.Version >= new Version(2, 1, 0) && x.Target.Exists)
+                    .OrderByDescending(x => x.Version).FirstOrDefault();
+                if (refFolderBest != null)
+                {
+                    return refFolderBest.Target.FullName;
                 }
             }
 

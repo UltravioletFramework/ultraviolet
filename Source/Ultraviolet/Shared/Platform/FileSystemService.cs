@@ -61,14 +61,11 @@ namespace Ultraviolet.Platform
         {
             if (String.IsNullOrEmpty(root))
                 return path;
-
-            var isCoreClrUnix =
-                UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR &&
-                UltravioletPlatformInfo.CurrentPlatform != UltravioletPlatform.Windows;                
-            var kind = isCoreClrUnix ?
-                (root.StartsWith("/") ? UriKind.Absolute : UriKind.Relative) : UriKind.RelativeOrAbsolute;
             
             root = root.EndsWith("/") ? root : root + "/";
+
+            var kind = (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Android) ? 
+                UriKind.Relative : UriKind.Absolute;
 
             var rootFull = GetFullPath(root);
             var rootUri = new Uri(rootFull, kind);

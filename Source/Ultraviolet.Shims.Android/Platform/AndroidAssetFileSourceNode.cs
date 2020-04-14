@@ -29,7 +29,7 @@ namespace Ultraviolet.Shims.Android.Platform
 
             this.name = System.IO.Path.GetFileName(path);
             this.path = path;
-            
+
             if (aalist != null)
             {
                 if (aalist.TryGetValue(path, out var aalistEntry))
@@ -52,7 +52,7 @@ namespace Ultraviolet.Shims.Android.Platform
             }
 
             this.isFile = isFile ?? false;
-            this.isDirectory = !this.isFile;            
+            this.isDirectory = !this.isFile;
         }
 
         /// <inheritdoc/>

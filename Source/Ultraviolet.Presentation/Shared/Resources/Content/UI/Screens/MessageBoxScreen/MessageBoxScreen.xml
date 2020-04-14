@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition
+  DefaultOpenTransitionDuration="500.0"
+  DefaultCloseTransitionDuration="500.0">
+  <Directive Type="import">Ultraviolet.Core.Text</Directive>
+  <View Class="msgbox" ViewModelType="Ultraviolet.Presentation.MessageBoxViewModel, Ultraviolet.Presentation">
+
+    <Rectangle Class="msgbox-fade"/>
+    <Grid Class="msgbox-box" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.Effect>
+        <DropShadowEffect/>
+      </Grid.Effect>
+      <Grid.RenderTransform>
+        <TranslateTransform X="0" Y="0"/>
+      </Grid.RenderTransform>
+
+      <Image Class="msgbox-box-background"/>
+      <StackPanel Class="msgbox-box-content">
+        
+        <TextBlock Name="PART_TextBlockCaption"
+                   Class="msgbox-caption"
+                   Text="{{Caption}}"
+                   Visibility="{{CaptionVisibility}}"
+                   HorizontalAlignment="Center"/>
+
+        <Grid Class="msgbox-text-panel">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          
+          <Image Name="PART_Image" 
+                 Visibility="{{ImageVisibility}}"
+                 VerticalAlignment="Center"
+                 Grid.Column="0"/>
+          <TextBlock Name="PART_TextBlockText"
+                     Class="msgbox-text"
+                     Text="{{Text}}"
+                     Visibility="{{TextVisibility}}"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Grid.Column="1"/>
+
+        </Grid>
+
+        <StackPanel Class="msgbox-btn-panel"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+
+          <Button Name="PART_ButtonYes"
+                  Class="msgbox-btn msgbox-btn-yes"
+                  Click="HandleClickYes">{{StringYes}}</Button>
+          <Button Name="PART_ButtonNo"
+                  Class="msgbox-btn msgbox-btn-no"
+                  Click="HandleClickNo">{{StringNo}}</Button>
+          <Button Name="PART_ButtonOK"
+                  Class="msgbox-btn msgbox-btn-ok"
+                  Click="HandleClickOK">{{StringOK}}</Button>
+          <Button Name="PART_ButtonCancel"
+                  Class="msgbox-btn msgbox-btn-cancel"
+                  IsCancel="true"
+                  Click="HandleClickCancel">{{StringCancel}}</Button>
+
+        </StackPanel>
+
+      </StackPanel>
+
+    </Grid>
+
+  </View>
+</UIPanelDefinition>

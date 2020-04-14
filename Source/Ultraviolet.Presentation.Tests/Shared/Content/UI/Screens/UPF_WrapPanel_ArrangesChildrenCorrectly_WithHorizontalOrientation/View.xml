@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+      <Rectangle FillColor="#ffff0000" Width="32" Height="32" VerticalAlignment="Top"/>
+      <Rectangle FillColor="#ff00ff00" Width="32" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" Width="32" Height="32" VerticalAlignment="Bottom"/>
+
+    </WrapPanel>
+
+  </View>
+</UIPanelDefinition>

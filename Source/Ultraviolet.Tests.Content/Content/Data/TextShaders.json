@@ -1,0 +1,5 @@
+﻿{
+  "testshader": {
+    "$type": "Ultraviolet.Presentation.Tests.ViewModels.RainbowGlyphShader, Ultraviolet.Presentation.Tests.ViewModels"
+  }
+}

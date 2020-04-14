@@ -13,53 +13,54 @@
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the FreeType2 Font Plugin for Ultraviolet.</description>
     <tags>ultraviolet gamedev</tags>	
   </metadata>
-  <files>
-    <file src="Ultraviolet.FreeType2.Native\build\net461\Ultraviolet.FreeType2.Native.targets" target="build\net461\Ultraviolet.FreeType2.Native.targets"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" target="build\net461\x86\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" target="build\net461\x86\unix\libharfbuzz.so.0.10706.0"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" target="build\net461\x86\unix\libpng16.so.16.34.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" target="build\net461\x64\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" target="build\net461\x64\unix\libharfbuzz.so.0.10706.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" target="build\net461\x64\unix\libpng16.so.16.34.0"/>
-    <file src="..\Dependencies\FreeType2\x86\win32nt\freetype.dll" target="build\net461\x86\win32nt\freetype.dll"/>
-    <file src="..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" target="build\net461\x86\win32nt\harfbuzz.dll"/>
-    <file src="..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" target="build\net461\x86\win32nt\libpng16.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\win32nt\freetype.dll" target="build\net461\x64\win32nt\freetype.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll" target="build\net461\x64\win32nt\harfbuzz.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\win32nt\libpng16.dll" target="build\net461\x64\win32nt\libpng16.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib" target="build\net461\x64\osx\libfreetype.6.dylib"/>
-    <file src="..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib" target="build\net461\x64\osx\libharfbuzz.0.dylib"/>
-    <file src="..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib" target="build\net461\x64\osx\libpng16.16.dylib"/>
-  
-    <file src="Ultraviolet.FreeType2.Native\build\netcoreapp2.1\Ultraviolet.FreeType2.Native.targets" target="build\netcoreapp2.1\Ultraviolet.FreeType2.Native.targets"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" target="build\netcoreapp2.1\x86\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp2.1\x86\unix\libharfbuzz.so.0.10706.0"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" target="build\netcoreapp2.1\x86\unix\libpng16.so.16.34.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" target="build\netcoreapp2.1\x64\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp2.1\x64\unix\libharfbuzz.so.0.10706.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" target="build\netcoreapp2.1\x64\unix\libpng16.so.16.34.0"/>
-    <file src="..\Dependencies\FreeType2\x86\win32nt\freetype.dll" target="build\netcoreapp2.1\x86\win32nt\freetype.dll"/>
-    <file src="..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" target="build\netcoreapp2.1\x86\win32nt\harfbuzz.dll"/>
-    <file src="..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" target="build\netcoreapp2.1\x86\win32nt\libpng16.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\win32nt\freetype.dll" target="build\netcoreapp2.1\x64\win32nt\freetype.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll" target="build\netcoreapp2.1\x64\win32nt\harfbuzz.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\win32nt\libpng16.dll" target="build\netcoreapp2.1\x64\win32nt\libpng16.dll"/>
-    <file src="..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib" target="build\netcoreapp2.1\x64\osx\libfreetype.6.dylib"/>
-    <file src="..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib" target="build\netcoreapp2.1\x64\osx\libharfbuzz.0.dylib"/>
-    <file src="..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib" target="build\netcoreapp2.1\x64\osx\libpng16.16.dylib"/>
-    
+  <files>  
+    <!-- .NET Core 2.2 -->
+    <file src="Ultraviolet.FreeType2.Native\build\netcoreapp2.2\Ultraviolet.FreeType2.Native.targets" target="build\netcoreapp2.2\Ultraviolet.FreeType2.Native.targets"/>
+    <!-- x86 -->
+    <file src="..\Dependencies\FreeType2\x86\win32nt\freetype.dll" target="build\netcoreapp2.2\x86\win32nt\freetype.dll"/>
+    <file src="..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" target="build\netcoreapp2.2\x86\win32nt\harfbuzz.dll"/>
+    <file src="..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" target="build\netcoreapp2.2\x86\win32nt\libpng16.dll"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" target="build\netcoreapp2.2\x86\unix\libfreetype.so.6.16.0"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp2.2\x86\unix\libharfbuzz.so.0.10706.0"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" target="build\netcoreapp2.2\x86\unix\libpng16.so.16.34.0"/>
+    <!-- x64 -->
+    <file src="..\Dependencies\FreeType2\x64\win32nt\freetype.dll" target="build\netcoreapp2.2\x64\win32nt\freetype.dll"/>
+    <file src="..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll" target="build\netcoreapp2.2\x64\win32nt\harfbuzz.dll"/>
+    <file src="..\Dependencies\FreeType2\x64\win32nt\libpng16.dll" target="build\netcoreapp2.2\x64\win32nt\libpng16.dll"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" target="build\netcoreapp2.2\x64\unix\libfreetype.so.6.16.0"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp2.2\x64\unix\libharfbuzz.so.0.10706.0"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" target="build\netcoreapp2.2\x64\unix\libpng16.so.16.34.0"/>
+    <file src="..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib" target="build\netcoreapp2.2\x64\osx\libfreetype.6.dylib"/>
+    <file src="..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib" target="build\netcoreapp2.2\x64\osx\libharfbuzz.0.dylib"/>
+    <file src="..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib" target="build\netcoreapp2.2\x64\osx\libpng16.16.dylib"/>
+
+    <!-- .NET Core 3.1 -->
+    <file src="Ultraviolet.FreeType2.Native\build\netcoreapp3.1\Ultraviolet.FreeType2.Native.targets" target="build\netcoreapp3.1\Ultraviolet.FreeType2.Native.targets"/>
+    <!-- x86 -->
+    <file src="..\Dependencies\FreeType2\x86\win32nt\freetype.dll" target="build\netcoreapp3.1\x86\win32nt\freetype.dll"/>
+    <file src="..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" target="build\netcoreapp3.1\x86\win32nt\harfbuzz.dll"/>
+    <file src="..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" target="build\netcoreapp3.1\x86\win32nt\libpng16.dll"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" target="build\netcoreapp3.1\x86\unix\libfreetype.so.6.16.0"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp3.1\x86\unix\libharfbuzz.so.0.10706.0"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" target="build\netcoreapp3.1\x86\unix\libpng16.so.16.34.0"/>
+    <!-- x64 -->
+    <file src="..\Dependencies\FreeType2\x64\win32nt\freetype.dll" target="build\netcoreapp3.1\x64\win32nt\freetype.dll"/>
+    <file src="..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll" target="build\netcoreapp3.1\x64\win32nt\harfbuzz.dll"/>
+    <file src="..\Dependencies\FreeType2\x64\win32nt\libpng16.dll" target="build\netcoreapp3.1\x64\win32nt\libpng16.dll"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" target="build\netcoreapp3.1\x64\unix\libfreetype.so.6.16.0"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp3.1\x64\unix\libharfbuzz.so.0.10706.0"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" target="build\netcoreapp3.1\x64\unix\libpng16.so.16.34.0"/>
+    <file src="..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib" target="build\netcoreapp3.1\x64\osx\libfreetype.6.dylib"/>
+    <file src="..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib" target="build\netcoreapp3.1\x64\osx\libharfbuzz.0.dylib"/>
+    <file src="..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib" target="build\netcoreapp3.1\x64\osx\libpng16.16.dylib"/>
+
+    <!-- Android -->
     <file src="Ultraviolet.FreeType2.Native\build\MonoAndroid80\Ultraviolet.FreeType2.Native.targets" target="build\MonoAndroid80\Ultraviolet.FreeType2.Native.targets"/>
     <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so" target="build\MonoAndroid80\lib\armeabi-v7a\libfreetype.so"/>
     <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so" target="build\MonoAndroid80\lib\armeabi-v7a\libharfbuzz.so"/>	
     <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so" target="build\MonoAndroid80\lib\armeabi-v7a\libpng16.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\arm64\libfreetype.so" target="build\MonoAndroid80\lib\arm64\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\arm64\libharfbuzz.so" target="build\MonoAndroid80\lib\arm64\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\arm64\libpng16.so" target="build\MonoAndroid80\lib\arm64\libpng16.so"/>	
     <file src="..\Dependencies\FreeType2\Android\x86\libfreetype.so" target="build\MonoAndroid80\lib\x86\libfreetype.so"/>
     <file src="..\Dependencies\FreeType2\Android\x86\libharfbuzz.so" target="build\MonoAndroid80\lib\x86\libharfbuzz.so"/>	
     <file src="..\Dependencies\FreeType2\Android\x86\libpng16.so" target="build\MonoAndroid80\lib\x86\libpng16.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86_64\libfreetype.so" target="build\MonoAndroid80\lib\x86_64\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\x86_64\libharfbuzz.so" target="build\MonoAndroid80\lib\x86_64\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86_64\libpng16.so" target="build\MonoAndroid80\lib\x86_64\libpng16.so"/>	
   </files>  
 </package>

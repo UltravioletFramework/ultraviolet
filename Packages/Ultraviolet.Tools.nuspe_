@@ -12,19 +12,11 @@
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains Ultraviolet's command line tools, uvarchive and uvfont.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains Ultraviolet's command line tools, uvarchive and uvfont.
 
-This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the appropriate Ultraviolet.Game.* package for your target platform.
-
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
     <dependencies/>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Newtonsoft.Json.dll" target="tools\Newtonsoft.Json.dll"/>
-	  <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.dll" target="tools\Ultraviolet.dll"/>
-	  <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="tools\Ultraviolet.Core.dll"/>
-	  <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Tooling.dll" target="tools\Ultraviolet.Tooling.dll"/>
-    <file src="..\Binaries\AnyCPU\Signed\uvarchive.exe" target="tools\uvarchive.exe"/>
-    <file src="..\Binaries\AnyCPU\Signed\uvfont.exe" target="tools\uvfont.exe"/>
-    <file src="..\Binaries\AnyCPU\Signed\uvassetlist.exe" target="tools\uvassetlist.exe"/>
+    <file src="..\Binaries\NETCore3\Release\Tools\**\*.*" target="tools"/>
   </files>  
 </package>

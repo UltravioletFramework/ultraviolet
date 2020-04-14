@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Popup_LaidOutCorrectly_WithPlacementRectangle_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Popup PlacementRectangle="150 125 128 128" Placement="Top" IsOpen="true">
+      <Button Width="64" Height="64" Content="1"/>
+    </Popup>
+    <Popup PlacementRectangle="150 125 128 128" Placement="Bottom" IsOpen="true">
+      <Button Width="64" Height="64" Content="2"/>
+    </Popup>
+    <Popup PlacementRectangle="150 125 128 128" Placement="Left" IsOpen="true">
+      <Button Width="64" Height="64" Content="3"/>
+    </Popup>
+    <Popup PlacementRectangle="150 125 128 128" Placement="Right" IsOpen="true">
+      <Button Width="64" Height="64" Content="4"/>
+    </Popup>
+    <Popup PlacementRectangle="150 125 128 128" Placement="Center" IsOpen="true">
+      <Button Width="64" Height="64" Content="5"/>
+    </Popup>
+    <Popup HorizontalOffset="32" VerticalOffset="16" Placement="Absolute" IsOpen="true">
+      <Button Width="64" Height="64" Content="6"/>
+    </Popup>
+    <Popup PlacementRectangle="150 125 128 128" HorizontalOffset="150" VerticalOffset="64" Placement="Relative" IsOpen="true">
+      <Button Width="64" Height="64" Content="7"/>
+    </Popup>
+
+    <Rectangle Name="area" Width="128" Height="128" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150 125 0 0" FillColor="#ff00ff00"/>
+
+  </View>
+</UIPanelDefinition>

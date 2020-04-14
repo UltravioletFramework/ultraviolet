@@ -56,6 +56,7 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource EffectMustHaveVertexAndFragmentShader = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_VERTEX_AND_FRAGMENT_SHADER");
         public static readonly StringResource EffectMustHaveTechniques              = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_TECHNIQUES");
         public static readonly StringResource EffectTechniqueMustHavePasses         = new StringResource(StringDatabase, "EFFECT_TECHNIQUE_MUST_HAVE_PASSES");
+        public static readonly StringResource MissingAudioAssembly                  = new StringResource(StringDatabase, "MISSING_AUDIO_ASSEMBLY");
         public static readonly StringResource InvalidAudioAssembly                  = new StringResource(StringDatabase, "INVALID_AUDIO_ASSEMBLY");
         public static readonly StringResource TechniqueBelongsToDifferentEffect     = new StringResource(StringDatabase, "TECHNIQUE_BELONGS_TO_DIFFERENT_EFFECT");
         public static readonly StringResource DebugOutputNotSupported               = new StringResource(StringDatabase, "DEBUG_OUTPUT_NOT_SUPPORTED");

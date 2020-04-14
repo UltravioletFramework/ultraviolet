@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Grid_ArrangesStarCellsCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="3*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="3*"/>
+      </Grid.RowDefinitions>
+
+      <Rectangle FillColor="#ffff0000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="0" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ffffff00" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="1" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ffff00ff" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="2" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ff00ff00" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="0" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff00ffff" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="1" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff0000ff" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="2" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff800000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="0" Grid.Row="2"/>
+
+      <Rectangle FillColor="#ff008000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="1" Grid.Row="2"/>
+
+      <Rectangle FillColor="#ff000080" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Grid.Column="2" Grid.Row="2"/>
+      
+    </Grid>
+    
+  </View>
+</UIPanelDefinition>

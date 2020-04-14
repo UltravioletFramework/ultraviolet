@@ -8,8 +8,6 @@ namespace Ultraviolet.Core
     /// </summary>
     internal static unsafe class UltravioletNative
     {
-        #region Native Methods
-
         [StructLayout(LayoutKind.Sequential)]
         public struct utsname_darwin
         {
@@ -27,7 +25,5 @@ namespace Ultraviolet.Core
 
         [DllImport("libc")]
         public static extern int uname(IntPtr buf);        
-
-        #endregion
     }
 }

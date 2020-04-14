@@ -6,6 +6,7 @@
 *.user
 *.sln.docstates
 .vs/
+.idea/
 
 # Build results
 
@@ -33,8 +34,7 @@ build/
 *.pgc
 *.pgd
 *.rsp
-*.sbr
-*.tlb
+*.sbrLen
 *.tli
 *.tlh
 *.tmp

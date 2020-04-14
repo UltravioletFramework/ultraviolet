@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Grid_ArrangesAutoCellsCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <Rectangle FillColor="#ffff0000" Width="32" Height="16"
+                 Grid.Column="0" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ffffff00" Width="50" Height="50"
+                 Grid.Column="1" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ffff00ff" Width="50" Height="75"
+                 Grid.Column="2" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ff00ff00" Width="100" Height="75"
+                 Grid.Column="0" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff00ffff" Width="125" Height="20"
+                 Grid.Column="1" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff0000ff" Width="20" Height="100"
+                 Grid.Column="2" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff800000" Width="50" Height="60"
+                 Grid.Column="0" Grid.Row="2"/>
+
+      <Rectangle FillColor="#ff008000" Width="75" Height="33"
+                 Grid.Column="1" Grid.Row="2"/>
+
+      <Rectangle FillColor="#ff000080" Width="64" Height="64"
+                 Grid.Column="2" Grid.Row="2"/>
+      
+    </Grid>
+    
+  </View>
+</UIPanelDefinition>

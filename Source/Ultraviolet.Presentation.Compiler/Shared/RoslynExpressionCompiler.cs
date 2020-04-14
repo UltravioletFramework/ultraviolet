@@ -181,6 +181,9 @@ namespace Ultraviolet.Presentation.Compiler
                 for (var dataSourceType = model.DataSourceType; dataSourceType != null; dataSourceType = dataSourceType.BaseType)
                 {
                     var dataSourceAssembly = dataSourceType.Assembly;
+                    if (dataSourceAssembly.FullName.StartsWith("System."))
+                        break;
+
                     if (dataSourceAssembly != lastSeenDataSourceAssembly)
                     {
                         lastSeenDataSourceAssembly = dataSourceAssembly;
@@ -304,13 +307,23 @@ namespace Ultraviolet.Presentation.Compiler
                 Directory.CreateDirectory(state.GetWorkingDirectory());
 
                 DependencyFinder.DownloadNuGetExecutable();
-                DependencyFinder.InstallNuGetPackage(state, "NETStandard.Library", "2.0.1");
+                DependencyFinder.InstallNuGetPackage(state, "NETStandard.Library", "2.0.3");
 
                 netStandardRefAsmDir = DependencyFinder.GetNetStandardLibraryDirFromWorkingDir(state.GetWorkingDirectory());
             }
 
             if (netStandardRefAsmDir == null)
-                throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssemblies);
+            {
+                if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR &&
+                    UltravioletPlatformInfo.CurrentRuntimeVersion.Major > 2)
+                {
+                    throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssembliesCore3);
+                }
+                else
+                {
+                    throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssemblies);
+                }
+            }
 
             var refDllFiles = Directory.GetFiles(netStandardRefAsmDir, "*.dll");
             foreach (var refDllFile in refDllFiles)

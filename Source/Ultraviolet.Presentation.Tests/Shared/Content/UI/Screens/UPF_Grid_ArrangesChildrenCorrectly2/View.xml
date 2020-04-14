@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Grid_ArrangesChildrenCorrectly2_VM, Ultraviolet.Presentation.Tests.ViewModels">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="64"/>
+      </Grid.RowDefinitions>
+
+      <Rectangle FillColor="#ffff0000" HorizontalAlignment="Stretch" Height="16"
+           Grid.Column="0" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ff00ff00" HorizontalAlignment="Stretch" Height="200"
+           Grid.Column="0" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff800000" HorizontalAlignment="Stretch" Height="64"
+           Grid.Column="0" Grid.Row="2"/>
+      
+    </Grid>
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="64"/>
+      </Grid.RowDefinitions>
+
+      <Rectangle FillColor="#ffff0000" HorizontalAlignment="Stretch" Height="16"
+           Grid.Column="0" Grid.Row="0"/>
+
+      <Rectangle FillColor="#ff00ff00" HorizontalAlignment="Stretch" Height="200"
+           Grid.Column="0" Grid.Row="1"/>
+
+      <Rectangle FillColor="#ff800000" HorizontalAlignment="Stretch" Height="64"
+           Grid.Column="0" Grid.Row="2"/>
+
+    </Grid>
+    
+  </View>
+</UIPanelDefinition>

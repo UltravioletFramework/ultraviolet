@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Android.App;
 using Android.Util;
 using Ultraviolet.Platform;
@@ -39,9 +39,9 @@ namespace Ultraviolet.Shims.Android.Platform
                 oldDensityScale != DensityScale ||
                 oldDensityX != DensityX ||
                 oldDensityY != DensityY ||
-                oldDensityBucket != DensityBucket;            
+                oldDensityBucket != DensityBucket;
         }
-        
+
         /// <inheritdoc/>
         public override Single DeviceScale
         {

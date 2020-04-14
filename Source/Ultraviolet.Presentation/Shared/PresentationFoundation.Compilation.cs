@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
+using Ultraviolet.Platform;
 using Ultraviolet.Presentation.Controls;
 
 namespace Ultraviolet.Presentation
@@ -222,7 +223,7 @@ namespace Ultraviolet.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            Assembly compiledExpressionsAssembly = null;
+            Assembly compiledExpressionsAssembly;
             try
             {
                 if (inMemoryBindingExpressionsAsm != null)
@@ -231,29 +232,8 @@ namespace Ultraviolet.Presentation
                 }
                 else
                 {
-                    switch (Ultraviolet.Platform)
-                    {
-                        case UltravioletPlatform.Windows:
-                        case UltravioletPlatform.Linux:
-                        case UltravioletPlatform.macOS:
-                            compiledExpressionsAssembly = Assembly.LoadFrom(CompiledExpressionsAssemblyName);
-                            break;
-
-                        case UltravioletPlatform.Android:
-                            LoadCompiledExpressions_Android(ref compiledExpressionsAssembly);
-                            if (compiledExpressionsAssembly == null)
-                            {
-                                compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
-                            }
-                            break;
-
-                        case UltravioletPlatform.iOS:
-                            compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
-                            break;
-
-                        default:
-                            throw new NotSupportedException();
-                    }
+                    var loader = AssemblyLoaderService.Create();
+                    compiledExpressionsAssembly = loader.Load(CompiledExpressionsAssemblyName);
                 }
             }
             catch (FileNotFoundException e)

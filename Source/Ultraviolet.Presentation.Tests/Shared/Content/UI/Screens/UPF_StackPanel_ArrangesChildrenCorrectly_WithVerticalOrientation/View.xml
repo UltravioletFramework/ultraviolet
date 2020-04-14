@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+      <Rectangle FillColor="#ffff0000" HorizontalAlignment="Stretch" Height="32"/>
+      <Rectangle FillColor="#ff00ff00" HorizontalAlignment="Left" Width="32" Height="32"/>
+      <Rectangle FillColor="#ffffffff" HorizontalAlignment="Center" Width="128" Height="128"/>
+      <Rectangle FillColor="#ff0000ff" HorizontalAlignment="Right" Width="32" Height="64"/>
+      <Rectangle FillColor="#ffff00ff" HorizontalAlignment="Stretch" Height="32"/>
+
+    </StackPanel>
+
+  </View>
+</UIPanelDefinition>

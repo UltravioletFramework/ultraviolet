@@ -30,7 +30,7 @@ namespace Ultraviolet.SDL2.Platform
 
             this.uv = uv;
 
-            InitializePrimaryWindow(uvconfig, winconfig);
+            InitializePrimaryWindow(uv, uvconfig, winconfig);
         }
         
         /// <summary>
@@ -437,7 +437,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Initializes the context's primary window.
         /// </summary>
-        private void InitializePrimaryWindow(UltravioletConfiguration uvconfig, SDL2PlatformConfiguration sdlconfig)
+        private void InitializePrimaryWindow(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration sdlconfig)
         {
             // Initialize the rendering API.
             if (sdlconfig.RenderingAPI != SDL2PlatformRenderingAPI.OpenGL)
@@ -445,10 +445,6 @@ namespace Ultraviolet.SDL2.Platform
 
             InitializeRenderingAPI(sdlconfig);
             renderingAPI = sdlconfig.RenderingAPI;
-
-            // Retrieve the caption for our window.
-            var caption = Localization.Strings.Contains("WINDOW_CAPTION") ?
-                Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
 
             // If we're running on Android or iOS, we can't create a headless context.
             var isRunningOnMobile = (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS);
@@ -473,6 +469,7 @@ namespace Ultraviolet.SDL2.Platform
             }
 
             // Attempt to create the master window. If that fails, reduce our requirements and try again before failing.
+            var caption = String.IsNullOrEmpty(uv.Host.ApplicationName) ? (String)UltravioletStrings.DefaultWindowCaption : uv.Host.ApplicationName;
             var masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {

@@ -17,6 +17,7 @@ namespace Ultraviolet.Core
             CurrentPlatformMachineHardwareName = machineHardwareName;
             CurrentPlatformVersion = Environment.OSVersion.VersionString;
             CurrentRuntime = DetectCurrentRuntime();
+            CurrentRuntimeVersion = DetectCurrentRuntimeVersion();
         }
         
         /// <summary>
@@ -42,6 +43,11 @@ namespace Ultraviolet.Core
         }
 
         /// <summary>
+        /// Gets the version number associated with the executing runtime.
+        /// </summary>
+        public static Version CurrentRuntimeVersion { get; }
+
+        /// <summary>
         /// Gets an <see cref="UltravioletRuntime"/> value indicating which of Ultraviolet's supported
         /// runtimes is currently executing this application.
         /// </summary>
@@ -62,6 +68,15 @@ namespace Ultraviolet.Core
         /// Gets the string which contains the version information for the current platform.
         /// </summary>
         public static String CurrentPlatformVersion { get; }
+
+        /// <summary>
+        /// Attempts to detect the version number of the current runtime.
+        /// </summary>
+        private static Version DetectCurrentRuntimeVersion()
+        {
+            return (Environment.Version.Major == 4) ?
+                new Version(2, 0, 0) : Environment.Version;
+        }
 
         /// <summary>
         /// Attempts to detect the current runtime.

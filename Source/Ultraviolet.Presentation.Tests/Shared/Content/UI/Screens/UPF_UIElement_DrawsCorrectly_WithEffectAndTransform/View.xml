@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_UIElement_DrawsCorrectly_WithEffectAndTransform_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Button Width="256" Height="256" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Button.RenderTransform>
+        <RotateTransform Angle="45"/>
+      </Button.RenderTransform>
+      <Button.Effect>
+        <BlurEffect/>
+      </Button.Effect>
+      <Button Width="128" Height="128" Button.Content="Hello, world!">
+        <Button.RenderTransform>
+          <RotateTransform Angle="22"/>
+        </Button.RenderTransform>
+        <Button.Effect>
+          <DropShadowEffect/>
+        </Button.Effect>
+      </Button>
+    </Button>
+
+  </View>
+</UIPanelDefinition>

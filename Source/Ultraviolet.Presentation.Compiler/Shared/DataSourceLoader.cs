@@ -196,10 +196,15 @@ namespace Ultraviolet.Presentation.Compiler
         /// XML does not contain a valid view.</returns>
         public static DataSourceDefinition? CreateDataSourceDefinitionFromFile(String @namespace, String name, String path)
         {
-            var xdocument = default(XDocument);
+            XDocument xdocument;
             try
             {
                 xdocument = XDocument.Load(path, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+                if (!String.Equals("UIPanelDefinition", xdocument.Root.Name.LocalName, StringComparison.InvariantCulture) ||
+                    !String.Equals("Upf", (String)xdocument.Root.Attribute("Provider") ?? "Upf", StringComparison.InvariantCulture))
+                {
+                    return null;
+                }
             }
             catch (IOException) { return null; }
             catch (XmlException) { return null; }

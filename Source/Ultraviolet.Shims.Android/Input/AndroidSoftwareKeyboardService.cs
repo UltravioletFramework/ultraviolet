@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Android.Text;
 using Ultraviolet.Input;
 
@@ -69,7 +69,7 @@ namespace Ultraviolet.Shims.Android.Input
                 }
             }
         }
-        
+
         // Property values.
         private Rectangle? textInputRegion;
     }

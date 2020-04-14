@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+    
+    <Popup PlacementTarget="target" Placement="Right" IsOpen="true">
+      <Button Name="popup1" Width="64" Height="64">
+        <Button.Effect>
+          <DropShadowEffect/>
+        </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
+      </Button>
+    </Popup>
+    <Popup PlacementTarget="popup1" Placement="Bottom" IsOpen="true">
+      <Button Name="popup2" Width="64" Height="64">
+        <Button.Effect>
+          <DropShadowEffect/>
+        </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
+      </Button>
+    </Popup>
+    <Popup PlacementTarget="popup2" Placement="Right" IsOpen="true">
+      <Button Name="popup3" Width="64" Height="64">
+        <Button.Effect>
+          <DropShadowEffect/>
+        </Button.Effect>
+        <Button Width="32" Height="32">
+          <Button.Effect>
+            <DropShadowEffect/>
+          </Button.Effect>
+        </Button>
+      </Button>
+    </Popup>
+
+    <Button Name="target" HorizontalAlignment="Center" VerticalAlignment="Center" Width="128" Height="128" Content="T"/>
+
+  </View>
+</UIPanelDefinition>

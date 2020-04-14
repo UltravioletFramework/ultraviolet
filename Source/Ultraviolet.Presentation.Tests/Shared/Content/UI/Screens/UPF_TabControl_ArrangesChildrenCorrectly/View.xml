@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_TabControl_ArrangesChildrenCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685"/>
+
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <TabControl TabStripPlacement="Top" SelectedIndex="0" Grid.Row="0" Grid.Column="0">
+        <TabItem Header="Tab 1">
+          <Rectangle FillColor="#ffff0000"/>
+        </TabItem>
+        <TabItem Header="Tab 2">
+          <Rectangle FillColor="#ff00ff00"/>
+        </TabItem>
+        <TabItem Header="Tab 3">
+          <Rectangle FillColor="#ff0000ff"/>
+        </TabItem>
+        <TabItem Header="Tab 4">
+          <Rectangle FillColor="#ffff00ff"/>
+        </TabItem>
+      </TabControl>
+
+      <TabControl TabStripPlacement="Left" SelectedIndex="1" Grid.Row="0" Grid.Column="1">
+        <TabItem Header="Tab 1">
+          <Rectangle FillColor="#ffff0000"/>
+        </TabItem>
+        <TabItem Header="Tab 2">
+          <Rectangle FillColor="#ff00ff00"/>
+        </TabItem>
+        <TabItem Header="Tab 3">
+          <Rectangle FillColor="#ff0000ff"/>
+        </TabItem>
+        <TabItem Header="Tab 4">
+          <Rectangle FillColor="#ffff00ff"/>
+        </TabItem>
+      </TabControl>
+
+      <TabControl TabStripPlacement="Right" SelectedIndex="2" Grid.Row="1" Grid.Column="0">
+        <TabItem Header="Tab 1">
+          <Rectangle FillColor="#ffff0000"/>
+        </TabItem>
+        <TabItem Header="Tab 2">
+          <Rectangle FillColor="#ff00ff00"/>
+        </TabItem>
+        <TabItem Header="Tab 3">
+          <Rectangle FillColor="#ff0000ff"/>
+        </TabItem>
+        <TabItem Header="Tab 4">
+          <Rectangle FillColor="#ffff00ff"/>
+        </TabItem>
+      </TabControl>
+
+      <TabControl TabStripPlacement="Bottom" SelectedIndex="3" Grid.Row="1" Grid.Column="1">
+        <TabItem Header="Tab 1">
+          <Rectangle FillColor="#ffff0000"/>
+        </TabItem>
+        <TabItem Header="Tab 2">
+          <Rectangle FillColor="#ff00ff00"/>
+        </TabItem>
+        <TabItem Header="Tab 3">
+          <Rectangle FillColor="#ff0000ff"/>
+        </TabItem>
+        <TabItem Header="Tab 4">
+          <Rectangle FillColor="#ffff00ff"/>
+        </TabItem>
+      </TabControl>
+      
+    </Grid>
+    
+  </View>
+</UIPanelDefinition>

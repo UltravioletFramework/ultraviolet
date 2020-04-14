@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.DotNet.PlatformAbstractions;
@@ -17,6 +18,10 @@ namespace Ultraviolet.Core.Native
     /// <remarks>This code is based on a prototype by Eric Mellinoe (https://github.com/mellinoe/nativelibraryloader/tree/master/NativeLibraryLoader).</remarks>
     public class DefaultPathResolver : PathResolver
     {
+        private static readonly String[] KnownExtensions_Win = new[] { "dll" };
+        private static readonly String[] KnownExtensions_Mac = new[] { "so", "dylib" };
+        private static readonly String[] KnownExtensions_Unix = new[] { "so" };
+
         /// <inheritdoc/>
         public override IEnumerable<String> EnumeratePossibleLibraryLoadTargets(String name)
         {
@@ -29,6 +34,27 @@ namespace Ultraviolet.Core.Native
             if (TryLocateNativeAssetFromDeps(name, out var depsResolvedPath))
             {
                 yield return depsResolvedPath;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified string is either an integer or one of the known library extensions for the current platform.
+        /// </summary>
+        private static Boolean IsNumberOrKnownExtension(String str)
+        {
+            if (Int32.TryParse(str, out _))
+                return true;
+
+            switch (UltravioletPlatformInfo.CurrentPlatform)
+            {
+                case UltravioletPlatform.Windows:
+                    return KnownExtensions_Win.Contains(str, StringComparer.InvariantCultureIgnoreCase);
+
+                case UltravioletPlatform.macOS:
+                    return KnownExtensions_Mac.Contains(str, StringComparer.InvariantCultureIgnoreCase);
+
+                default:
+                    return KnownExtensions_Unix.Contains(str, StringComparer.InvariantCultureIgnoreCase);
             }
         }
 
@@ -58,12 +84,27 @@ namespace Ultraviolet.Core.Native
                     break;
             }
 
+            var nameFile = Path.GetFileNameWithoutExtension(name);
+            var nameExt = Path.GetExtension(name);
+
             foreach (var file in Directory.GetFiles(dir))
             {
-                if (Path.GetFileName(file) == name || Path.GetFileNameWithoutExtension(file) == name)
+                var fileName = Path.GetFileName(file);
+                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                if (fileName == name || fileNameWithoutExt == name)
                 {
-                    platformResolvedPath = Path.Combine(dir, Path.GetFileName(file));
+                    platformResolvedPath = Path.Combine(dir, fileName);
                     return true;
+                }
+
+                if (fileName.StartsWith(nameFile))
+                {
+                    var fileNameParts = fileName.Substring(nameFile.Length).Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (fileNameParts.All(x => IsNumberOrKnownExtension(x)))
+                    {
+                        platformResolvedPath = Path.Combine(dir, fileName);
+                        return true;
+                    }
                 }
             }
 

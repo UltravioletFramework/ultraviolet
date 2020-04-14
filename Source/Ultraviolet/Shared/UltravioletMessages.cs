@@ -17,6 +17,11 @@ namespace Ultraviolet
         public static readonly UltravioletMessageID OrientationChanged = UltravioletMessageID.Acquire(nameof(OrientationChanged));
 
         /// <summary>
+        /// An event indicating that the application has been created by the operating system.
+        /// </summary>
+        public static readonly UltravioletMessageID ApplicationCreated = UltravioletMessageID.Acquire(nameof(ApplicationCreated));
+
+        /// <summary>
         /// An event indicating that the application is being terminated by the operating system.
         /// </summary>
         public static readonly UltravioletMessageID ApplicationTerminating = UltravioletMessageID.Acquire(nameof(ApplicationTerminating));

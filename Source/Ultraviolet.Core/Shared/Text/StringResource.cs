@@ -6,7 +6,6 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// Represents a localizable string resource.
     /// </summary>
-    [JsonConverter(typeof(CoreJsonConverter))]
     public sealed class StringResource
     {
         /// <summary>

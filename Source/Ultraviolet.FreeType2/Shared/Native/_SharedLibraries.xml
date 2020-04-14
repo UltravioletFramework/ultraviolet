@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SharedNativeLibraries Namespace="Ultraviolet.FreeType2.Native">
+  <SharedNativeLibrary Name="libpng">
+    <Names Default="libpng16"/>
+  </SharedNativeLibrary>
+  <SharedNativeLibrary Name="libharfbuzz">
+    <Names Default="harfbuzz" Unix="libharfbuzz"/>
+  </SharedNativeLibrary>
+  <SharedNativeLibrary Name="libfreetype">
+    <Names Default="freetype" Unix="libfreetype"/>
+  </SharedNativeLibrary>
+</SharedNativeLibraries>

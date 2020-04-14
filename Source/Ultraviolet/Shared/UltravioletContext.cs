@@ -71,8 +71,6 @@ namespace Ultraviolet
 
             AcquireContext();
 
-            ConfigurePlugins(configuration);
-
             this.isRunningInServiceMode = configuration.EnableServiceMode;
 
             this.Properties = new UltravioletContextProperties();
@@ -100,6 +98,62 @@ namespace Ultraviolet
             this.taskFactory = new TaskFactory(taskScheduler);
 
             InitializeFactory(configuration);
+        }
+
+        /// <summary>
+        /// Ensures that the specified function produces a valid instance of <see cref="UltravioletContext"/>. If it does not,
+        /// then the current context is immediately disposed. This method should only be called by Ultraviolet host implementations.
+        /// </summary>
+        /// <param name="fn">The function which will create the Ultraviolet context.</param>
+        /// <returns>The Ultraviolet context that was created.</returns>
+        public static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
+        {
+            Contract.Require(fn, nameof(fn));
+
+            try
+            {
+                var context = fn();
+                if (context == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                return context;
+            }
+            catch (Exception e1)
+            {
+                try
+                {
+                    var current = RequestCurrent();
+                    if (current != null)
+                    {
+                        current.Dispose();
+                    }
+                }
+                catch (Exception e2)
+                {
+                    var error = new StringBuilder();
+                    error.AppendLine(Assembly.GetEntryAssembly().FullName);
+                    error.AppendLine();
+                    error.AppendLine($"An exception occurred while creating the Ultraviolet context, and Ultraviolet failed to cleanly shut down.");
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during context creation:");
+                    error.AppendLine();
+                    error.AppendLine(e1.ToString());
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during shutdown:");
+                    error.AppendLine();
+                    error.AppendLine(e2.ToString());
+
+                    try
+                    {
+                        var errorDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                        var errorPath = $"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt";
+                        File.WriteAllText(Path.Combine(errorDir, errorPath), error.ToString());
+                    }
+                    catch (IOException) { }
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -474,6 +528,11 @@ namespace Ultraviolet
         public UltravioletContextProperties Properties { get; }
 
         /// <summary>
+        /// Gets the version of the runtime on which this context is running.
+        /// </summary>
+        public Version RuntimeVersion => UltravioletPlatformInfo.CurrentRuntimeVersion;
+
+        /// <summary>
         /// Gets the runtime on which this context is running.
         /// </summary>
         public UltravioletRuntime Runtime => UltravioletPlatformInfo.CurrentRuntime;
@@ -593,62 +652,6 @@ namespace Ultraviolet
         /// Occurs when the Ultraviolet context is being shut down.
         /// </summary>
         public event UltravioletContextEventHandler Shutdown;
-
-        /// <summary>
-        /// Ensures that the specified function produces a valid instance of <see cref="UltravioletContext"/>. If it does not,
-        /// then the current context is immediately disposed.
-        /// </summary>
-        /// <param name="fn">The function which will create the Ultraviolet context.</param>
-        /// <returns>The Ultraviolet context that was created.</returns>
-        internal static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
-        {
-            Contract.Require(fn, nameof(fn));
-
-            try
-            {
-                var context = fn();
-                if (context == null)
-                {
-                    throw new InvalidOperationException();
-                }
-                return context;
-            }
-            catch (Exception e1)
-            {
-                try
-                {
-                    var current = RequestCurrent();
-                    if (current != null)
-                    {
-                        current.Dispose();
-                    }
-                }
-                catch (Exception e2)
-                {
-                    var error = new StringBuilder();
-                    error.AppendLine(Assembly.GetEntryAssembly().FullName);
-                    error.AppendLine();
-                    error.AppendLine($"An exception occurred while creating the Ultraviolet context, and Ultraviolet failed to cleanly shut down.");
-                    error.AppendLine();
-                    error.AppendLine($"Exception which occurred during context creation:");
-                    error.AppendLine();
-                    error.AppendLine(e1.ToString());
-                    error.AppendLine();
-                    error.AppendLine($"Exception which occurred during shutdown:");
-                    error.AppendLine();
-                    error.AppendLine(e2.ToString());
-
-                    try
-                    {
-                        var errorDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                        var errorPath = $"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt";
-                        File.WriteAllText(Path.Combine(errorDir, errorPath), error.ToString());
-                    }
-                    catch (IOException) { }
-                }
-                throw;
-            }
-        }
         
         /// <summary>
         /// Acquires an exclusive context claim, preventing other instances from being instantiated.
@@ -675,25 +678,6 @@ namespace Ultraviolet
                 {
                     current = null;
                     OnContextInvalidated();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Configures the context's plugins.
-        /// </summary>
-        private void ConfigurePlugins(UltravioletConfiguration configuration)
-        {
-            while (configuration.Plugins.Any(x => !x.Configured))
-            {
-                var plugins = configuration.Plugins.ToList();
-                foreach (var plugin in plugins)
-                {
-                    if (plugin.Configured)
-                        continue;
-
-                    plugin.Configure(configuration);
-                    plugin.Configured = true;
                 }
             }
         }
@@ -778,29 +762,34 @@ namespace Ultraviolet
             if (Disposed)
                 return;
 
-            if (disposing)
+            try
             {
-                SafeDispose.Dispose(GetUI());
-                SafeDispose.Dispose(GetInput());
-                SafeDispose.Dispose(GetContent());
-                SafeDispose.Dispose(GetPlatform());
-                SafeDispose.Dispose(GetGraphics());
-                SafeDispose.Dispose(GetAudio());
+                if (disposing)
+                {
+                    SafeDispose.Dispose(GetUI());
+                    SafeDispose.Dispose(GetInput());
+                    SafeDispose.Dispose(GetContent());
+                    SafeDispose.Dispose(GetPlatform());
+                    SafeDispose.Dispose(GetGraphics());
+                    SafeDispose.Dispose(GetAudio());
+                }
+
+                WaitForPendingTasks(true);
+
+                this.Disposing = true;
+
+                ProcessWorkItems();
+                OnShutdown();
             }
+            finally
+            {
+                ChangeSynchronizationContext(null);
 
-            WaitForPendingTasks(true);
+                this.Disposed = true;
+                this.Disposing = false;
 
-            this.Disposing = true;
-
-            ProcessWorkItems();
-            OnShutdown();
-
-            ChangeSynchronizationContext(null);
-
-            this.Disposed = true;
-            this.Disposing = false;
-
-            ReleaseContext();
+                ReleaseContext();
+            }
         }
 
         /// <summary>
@@ -918,31 +907,30 @@ namespace Ultraviolet
         /// </summary>
         private void InitializeFactoryMethodsInCompatibilityShim()
         {
+            var publicKeyString = String.Join(String.Empty,
+                typeof(UltravioletContext).Assembly.GetName().GetPublicKey().Select(x => x.ToString("x2")));
+
             try
             {
                 var shim = default(Assembly);
 
                 if (Runtime == UltravioletRuntime.CoreCLR)
                 {
-                    shim = Assembly.Load("Ultraviolet.Shims.NETCore");
+                    switch (RuntimeVersion?.Major ?? 0)
+                    {
+                        case 2:
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore2, PublicKey=" + publicKeyString);
+                            break;
+
+                        case 3:
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore3, PublicKey=" + publicKeyString);
+                            break;
+                    }
                 }
                 else
                 {
                     switch (Platform)
                     {
-                        case UltravioletPlatform.Windows:
-                        case UltravioletPlatform.Linux:
-                            shim = Assembly.Load("Ultraviolet.Shims.Desktop");
-                            break;
-
-                        case UltravioletPlatform.macOS:
-#if MACOS_MODERN
-                            shim = Assembly.Load("Ultraviolet.Shims.macOSModern");
-#else
-                            shim = Assembly.Load("Ultraviolet.Shims.macOS");
-#endif
-                            break;
-
                         case UltravioletPlatform.Android:
                             shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
                             break;

@@ -1,98 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <IsMac>false</IsMac>
-    <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
-    <AssemblyName>UvDebug</AssemblyName>
-    <RootNamespace>UvDebug</RootNamespace>
-  </PropertyGroup>
-  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}</ProjectGuid>
+    <ProjectGuid>{BFEBD22B-7789-43A8-A1EA-550C316C29FD}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{122416d6-6b49-4ee2-a1e8-b825f31c79fe}</TemplateGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UvDebug</RootNamespace>
     <AssemblyName>UvDebug</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidApplication>true</AndroidApplication>
-    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <IncludeUltravioletContentFiles>false</IncludeUltravioletContentFiles>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>portable</DebugType>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ANDROID;IMGUI</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
-    <Debugger>Xamarin</Debugger>
-    <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ANDROID;IMGUI</DefineConstants>
+    <DefineConstants>TRACE;ANDROID;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
-    <OutputPath>bin\Signed\</OutputPath>
-    <DefineConstants>TRACE;ANDROID;SIGNED;IMGUI</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <ErrorReport>prompt</ErrorReport>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkSkip />
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
-    <AndroidStoreUncompressedFileExtensions />
-    <MandroidI18n />
-    <Debugger>Xamarin</Debugger>
-    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
-    <Reference Include="mscorlib" />
     <Reference Include="org.libsdl.app">
       <HintPath>..\..\..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Presentation.CompiledExpressions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,45 +84,6 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so">
       <Link>lib\armeabi-v7a\libbass_fx.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass.so">
-      <Link>lib\x86\libbass.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass_fx.so">
-      <Link>lib\x86\libbass_fx.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
-      <Link>lib\armeabi-v7a\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
-      <Link>lib\x86\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidAsset Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
-      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
-      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
-      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
-      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
-      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIStyles.uvss">
-      <Link>Content\UI\DefaultUIStyles.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\GameStyles.uvss">
-      <Link>Content\UI\GameStyles.uvss</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Sprites\InterfaceIcons.sprite">
-      <Link>Content\Sprites\InterfaceIcons.sprite</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
-      <Link>Content\Manifests\Global.manifest</Link>
-    </AndroidAsset>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so">
       <Link>lib\armeabi-v7a\libfreetype.so</Link>
     </AndroidNativeLibrary>
@@ -149,6 +92,18 @@
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so">
       <Link>lib\armeabi-v7a\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so">
+      <Link>lib\armeabi-v7a\libcimgui.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
+      <Link>lib\armeabi-v7a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass.so">
+      <Link>lib\x86\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass_fx.so">
+      <Link>lib\x86\libbass_fx.so</Link>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libfreetype.so">
       <Link>lib\x86\libfreetype.so</Link>
@@ -159,221 +114,125 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libpng16.so">
       <Link>lib\x86\libpng16.so</Link>
     </AndroidNativeLibrary>
-    <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata-Bold.ttf">
-      <Link>Content\Fonts\Inconsolata-Bold.ttf</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf">
-      <Link>Content\Fonts\Inconsolata-Regular.ttf</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
-      <Link>Content\Fonts\Inconsolata.uvmeta</Link>
-    </AndroidAsset>
-    <EmbeddedResource Include="AndroidAssets.aalist" />
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so">
-      <Link>lib\armeabi-v7a\libcimgui.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\x86\libcimgui.so">
       <Link>lib\x86\libcimgui.so</Link>
     </AndroidNativeLibrary>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
+      <Link>lib\x86\libSDL2.so</Link>
+    </AndroidNativeLibrary>
     <None Include="Resources\AboutResources.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Assets\AboutAssets.txt" />
+    <AndroidAsset Include="Ultraviolet.Presentation.CompiledExpressions.dll" />
+    <EmbeddedResource Include="Content.uvarc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Android\Ultraviolet.FreeType2.Android.csproj">
-      <Project>{39f2c819-57d5-419e-aa90-bc92d55f0749}</Project>
-      <Name>Ultraviolet.FreeType2.Android</Name>
+    <AndroidResource Include="Resources\layout\activity_main.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
+    <AndroidResource Include="Resources\values\strings.xml" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher.xml" />
+    <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher_round.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_round.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_foreground.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\drawable\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard21\Ultraviolet.BASS.NETStandard21.csproj">
+      <Project>{69adb61d-c5b5-4e5e-82d6-8afd9216d28e}</Project>
+      <Name>Ultraviolet.BASS.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Android\Ultraviolet.ImGuiViewProvider.Bindings.Android.csproj">
-      <Project>{f4acde7a-ffc9-4fdf-beaa-5e5b24debda3}</Project>
-      <Name>Ultraviolet.ImGuiViewProvider.Bindings.Android</Name>
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj">
+      <Project>{5084f479-1233-477c-87d8-9df47055dd80}</Project>
+      <Name>Ultraviolet.Core.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Android\Ultraviolet.ImGuiViewProvider.Android.csproj">
-      <Project>{094943c7-04b2-461c-aa72-04b105a31193}</Project>
-      <Name>Ultraviolet.ImGuiViewProvider.Android</Name>
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard21\Ultraviolet.FreeType2.NETStandard21.csproj">
+      <Project>{9e47b77d-b108-4954-b441-2569fa888041}</Project>
+      <Name>Ultraviolet.FreeType2.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Android\Ultraviolet.OpenGL.Bindings.Android.csproj">
-      <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
-      <Name>Ultraviolet.OpenGL.Bindings.Android</Name>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\NETStandard21\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard21.csproj">
+      <Project>{2c86ec33-c71f-4369-940d-f9fdb69eb165}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Bindings.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
-      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
-      <Name>Ultraviolet.Core.Android</Name>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard21\Ultraviolet.ImGuiViewProvider.NETStandard21.csproj">
+      <Project>{195eae48-23a4-47cd-84f8-6fdc61faa236}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet\Android\Ultraviolet.Android.csproj">
-      <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
-      <Name>Ultraviolet.Android</Name>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard21\Ultraviolet.OpenGL.Bindings.NETStandard21.csproj">
+      <Project>{083ebc74-51be-46e4-981f-09f5384ea856}</Project>
+      <Name>Ultraviolet.OpenGL.Bindings.NETStandard21</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard21\Ultraviolet.OpenGL.NETStandard21.csproj">
+      <Project>{2102c259-b359-465f-93dc-3a317ff09762}</Project>
+      <Name>Ultraviolet.OpenGL.NETStandard21</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard21\Ultraviolet.Presentation.Uvss.NETStandard21.csproj">
+      <Project>{c51252da-60c9-4b3b-a08e-c94f9d1a9f35}</Project>
+      <Name>Ultraviolet.Presentation.Uvss.NETStandard21</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard21\Ultraviolet.Presentation.NETStandard21.csproj">
+      <Project>{73860779-6975-440d-9f01-dce0fba2f703}</Project>
+      <Name>Ultraviolet.Presentation.NETStandard21</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard21\Ultraviolet.SDL2.NETStandard21.csproj">
+      <Project>{4eff1892-2cdf-45a4-8bb0-61cec0875963}</Project>
+      <Name>Ultraviolet.SDL2.NETStandard21</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
-      <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
+      <Project>{19bc2d12-6e14-4a15-9f33-5c6dc92bdeaf}</Project>
       <Name>Ultraviolet.Shims.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.BASS\Android\Ultraviolet.BASS.Android.csproj">
-      <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
-      <Name>Ultraviolet.BASS.Android</Name>
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj">
+      <Project>{60ecc362-96e4-4a54-b280-23cb5cdb6903}</Project>
+      <Name>Ultraviolet.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Android\Ultraviolet.OpenGL.Android.csproj">
-      <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
-      <Name>Ultraviolet.OpenGL.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Profiler.dotTrace\Android\Ultraviolet.Profiler.dotTrace.Android.csproj">
-      <Project>{003be843-db95-40d7-a4d9-e50f599e59e1}</Project>
-      <Name>Ultraviolet.Profiler.dotTrace.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.SDL2\Android\Ultraviolet.SDL2.Android.csproj">
-      <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
-      <Name>Ultraviolet.SDL2.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation\Android\Ultraviolet.Presentation.Android.csproj">
-      <Project>{35bfcf7e-1756-4fe1-864c-6a0aaff97799}</Project>
-      <Name>Ultraviolet.Presentation.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\Android\Ultraviolet.Presentation.Uvss.Android.csproj">
-      <Project>{c9da531d-4fdc-4c41-8e2c-f3c68dae5aea}</Project>
-      <Name>Ultraviolet.Presentation.Uvss.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Presentation\Ultraviolet.Presentation.CompiledExpressions.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
-      <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\layout\" />
-    <Folder Include="Resources\values\" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
-      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
-      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
-      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUI-mdpi.png">
-      <Link>Content\UI\DefaultUI-mdpi.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUI.png">
-      <Link>Content\UI\DefaultUI.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIBackground.png">
-      <Link>Content\UI\DefaultUIBackground.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIFont-mdpi.xml">
-      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIFont.xml">
-      <Link>Content\UI\DefaultUIFont.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\Textures\Logo-mdpi.png">
-      <Link>Content\Textures\Logo-mdpi.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Textures\Logo.png">
-      <Link>Content\Textures\Logo.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Textures\test_0.png">
-      <Link>Content\Textures\test_0.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Textures\test_1.png">
-      <Link>Content\Textures\test_1.png</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Textures\test_2.png">
-      <Link>Content\Textures\test_2.png</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\SoundEffects\Click1.wav">
-      <Link>Content\SoundEffects\Click1.wav</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover1.wav">
-      <Link>Content\SoundEffects\rollover1.wav</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover2.wav">
-      <Link>Content\SoundEffects\rollover2.wav</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover3.wav">
-      <Link>Content\SoundEffects\rollover3.wav</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\Localization\GameStrings.xml">
-      <Link>Content\Localization\GameStrings.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI.xml">
-      <Link>Content\Fonts\SegoeUI.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
-      <Link>Content\Fonts\SegoeUITexture.png</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\Cursors\Cursors.xml">
-      <Link>Content\Cursors\Cursors.xml</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\Cursors\CursorsImage.png">
-      <Link>Content\Cursors\CursorsImage.png</Link>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
-      <Link>Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml</Link>
-    </AndroidAsset>
   </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
-    </VisualStudio>
-  </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IsMac)' == 'false' ">
-    <DesktopProjectName>Desktop</DesktopProjectName>
-    <DesktopProjectDir>Desktop/bin/$(ConfigurationName)</DesktopProjectDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(IsMac)' == 'true' ">
-    <DesktopProjectName>macOS</DesktopProjectName>
-    <DesktopProjectDir>macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources</DesktopProjectDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(OS)' == 'Unix' AND '$(ConfigurationName)' != 'Signed'">
-    <PreBuildEvent>mono $(ProjectDir)../../UvAssetList/bin/$(ConfigurationName)/UvAssetList.exe "$(ProjectPath)"</PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(OS)' != 'Unix' AND '$(ConfigurationName)' != 'Signed'">
-    <PreBuildEvent>$(ProjectDir)..\..\UvAssetList\bin\$(ConfigurationName)\UvAssetList.exe "$(ProjectPath)"</PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-     Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+    Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
   -->
+  <Target Name="BeforeBuild">
+    <Exec Command="dotnet run -compile:content -compile:expressions" WorkingDirectory="$(SolutionDir)UvDebug\NETCore3" />
+  </Target>
+  <Target Name="BeforeBuildCopyResults" AfterTargets="BeforeBuild">
+    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore3\bin\Debug\netcoreapp3.1\Content.uvarc" DestinationFolder="$(SolutionDir)UvDebug\Android" />
+    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore3\bin\Debug\netcoreapp3.1\Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(SolutionDir)UvDebug\Android" />
+  </Target>
+  <Target Name="BeforeBuildValidation" AfterTargets="BeforeBuildCopyResults">
+    <Error Condition="!Exists('Content.uvarc')" Text="Failed to generate content archive for UvDebug.Android." />
+    <Error Condition="!Exists('Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Failed to generate compiled expressions assembly for UvDebug.Android." />
+  </Target>
 </Project>

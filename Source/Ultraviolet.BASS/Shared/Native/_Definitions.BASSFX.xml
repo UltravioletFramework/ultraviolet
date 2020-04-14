@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.BASS.Native" ClassName="BASSFXNative">
+  <Names Default="bass_fx" Android="bass_fx" Unix="libbass_fx"/>
+  <Imports/>
+  <Constants>
+    <Constant Name="BASS_FX_FREESOURCE" Type="UInt32" Value="0x10000"/>
+  </Constants>
+  <FunctionPointers/>
+  <Functions CallingConvention="StdCall">
+    <Function Name="BASS_FX_TempoCreate" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="chan" Type="UInt32"/>
+        <Parameter Name="flags" Type="UInt32"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>

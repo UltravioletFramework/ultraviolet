@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition Provider="ImGui">
+  <View ViewModelType="UvDebug.UI.Screens.ImGuiViewModel, UvDebug"/>
+</UIPanelDefinition>

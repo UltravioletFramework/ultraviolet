@@ -1,4 +1,4 @@
-using Ultraviolet.Platform;
+﻿using Ultraviolet.Platform;
 
 namespace Ultraviolet.Shims.Android.Platform
 {

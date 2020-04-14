@@ -14,11 +14,7 @@ namespace Ultraviolet.Presentation
         public PresentationFoundationConfiguration()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-#if SIGNED
             BindingExpressionCompilerAssembly = String.Format("Ultraviolet.Presentation.Compiler, Version={0}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
-#else
-            BindingExpressionCompilerAssembly = String.Format("Ultraviolet.Presentation.Compiler, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
-#endif
         }
 
         /// <summary>

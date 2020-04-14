@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_DirNav_Once_VM, Ultraviolet.Presentation.Tests.ViewModels" View.Opening="HandleViewOpening">
+
+    <Button Name="btnL" Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Center" Content="L"/>
+    <Button Name="btnR" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Content="R"/>
+
+    <Grid KeyboardNavigation.DirectionalNavigation="Once" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <Button Name="btn1" Width="64" Height="64" Grid.Column="0" Grid.Row="1" Content="1"/>
+
+      <Button Name="btn2" Width="64" Height="64" Grid.Column="1" Grid.Row="0" Content="2"/>
+      <Button Name="btn3" Width="64" Height="64" Grid.Column="1" Grid.Row="1" Content="3"/>
+      <Button Name="btn4" Width="64" Height="64" Grid.Column="1" Grid.Row="2" Content="4"/>
+
+      <Button Name="btn5" Width="64" Height="64" Grid.Column="2" Grid.Row="1" Content="5"/>
+    </Grid>
+    
+  </View>
+</UIPanelDefinition>

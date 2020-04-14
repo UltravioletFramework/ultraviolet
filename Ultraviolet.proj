@@ -1,607 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildMacOS">
-  <PropertyGroup>
-    <IsMac>false</IsMac>
-    <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
-  </PropertyGroup>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildNETCore3">
   <PropertyGroup Condition="'$(Configuration)' == ''">
     <Configuration>Debug</Configuration>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == ''">
     <Platform>Any CPU</Platform>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(iOSPlatform)' == ''">
-    <iOSPlatform>iPhoneSimulator</iOSPlatform>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(AndroidSdkDirectory)' == ''">
-    <AndroidSdkDirectory>$(ANDROID_HOME)</AndroidSdkDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(JavaSdkDirectory)' == ''">
-    <JavaSdkDirectory>$(JAVA_HOME)</JavaSdkDirectory>
-  </PropertyGroup>
 
   <ItemGroup>
-    <Ultraviolet_Windows_Solution Include="Source/Ultraviolet.Windows.sln">
+    <Ultraviolet_NETCore2_Solution Include="Source/Ultraviolet.NETCore2.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Windows_Solution>
-    <Ultraviolet_Desktop_Solution Include="Source/Ultraviolet.Desktop.sln">
+    </Ultraviolet_NETCore2_Solution>
+    <Ultraviolet_NETCore3_Solution Include="Source/Ultraviolet.NETCore3.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Desktop_Solution>
-    <Ultraviolet_MacOS_Solution Include="Source/Ultraviolet.macOS.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_MacOS_Solution>
-    <Ultraviolet_MacOS_Bamboo_Solution Include="Source/Ultraviolet.MacOS.Bamboo.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_MacOS_Bamboo_Solution>
+    </Ultraviolet_NETCore3_Solution>
     <Ultraviolet_Android_Solution Include="Source/Ultraviolet.Android.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform);AndroidSdkDirectory=$(AndroidSdkDirectory);JavaSdkDirectory=$(JavaSdkDirectory)</Properties>
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Android_Solution>
-    <Ultraviolet_iOS_Bamboo_Solution Include="Source/Ultraviolet.iOS.Bamboo.sln"/>
-    <Ultraviolet_iOS_Solution Include="Source/Ultraviolet.iOS.sln"/>
-    <Ultraviolet_NETCore_Solution Include="Source/Ultraviolet.NETCore.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_NETCore_Solution>
-    <Ultraviolet_Tools_Solution Include="Source/Ultraviolet.Tools.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Tools_Solution>
   </ItemGroup>
-  
-  <!-- DESKTOP -->	
-  <Target Name="RestoreWindows">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
-  </Target>
-  <Target Name="RestoreLinux">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
-  </Target>
-  <Target Name="RestoreMacOS">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
-  </Target>
-  <Target Name="RestoreNETCore">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_NETCore_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_NETCore_Solution)&quot;"/>
-  </Target>
-  <Target Name="RestoreTools">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Tools_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Tools_Solution)&quot;"/>
-  </Target>
-  
-  <Target Name="CleanWindows" Condition="'$(OS)' == 'Windows_NT'">
-    <RemoveDir Directories="Binaries/AnyCPU"/>
-    <MSBuild Projects="@(Ultraviolet_Windows_Solution)" Targets="Clean"/>
-    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Clean"/>
-  </Target>
-  <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
-    <CallTarget Targets="RestoreWindows"/>
-    <MSBuild Projects="@(Ultraviolet_Windows_Solution)"/>
-    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Publish"/>
-    <CallTarget Targets="CopyWindowsBinaries"/>
-    <CallTarget Targets="CopyDesktopBinaries"/>
-  </Target>
-  <Target Name="CleanLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
-    <RemoveDir Directories="Binaries/AnyCPU"/>
-    <MSBuild Projects="@(Ultraviolet_Desktop_Solution)" Targets="Clean"/>
-    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Clean"/>
-  </Target>
-  <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
-    <CallTarget Targets="RestoreLinux"/>
-    <MSBuild Projects="@(Ultraviolet_Desktop_Solution)"/>
-    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Publish"/>
-    <CallTarget Targets="CopyDesktopBinaries"/>
-  </Target>
-  <Target Name="CleanMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
-    <RemoveDir Directories="Binaries/AnyCPU"/>
-    <MSBuild Projects="@(Ultraviolet_MacOS_Solution)" Targets="Clean"/>
-    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Clean"/>
-  </Target>
-  <Target Name="BuildMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
-    <CallTarget Targets="RestoreMacOS"/>
-    <MSBuild Projects="@(Ultraviolet_MacOS_Solution)"/>
-    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Publish"/>
-    <CallTarget Targets="CopyMacOSModernBinaries"/>
-    <CallTarget Targets="CopyMacOSBinaries"/>
-    <CallTarget Targets="CopyDesktopBinaries"/>
-  </Target>
-  <Target Name="BuildMacOSBamboo" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
-    <CallTarget Targets="RestoreMacOS"/>
-    <MSBuild Projects="@(Ultraviolet_MacOS_Bamboo_Solution)"/>
-    <CallTarget Targets="CopyMacOSModernBinaries"/>
-    <CallTarget Targets="CopyMacOSBinaries"/>
-    <CallTarget Targets="CopyDesktopBinaries"/>
-  </Target>
-  <Target Name="CleanNETCore">
-    <RemoveDir Directories="Binaries/netstandard2.0"/>
-    <MSBuild Projects="@(Ultraviolet_NETCore_Solution)" Targets="Clean"/>
-  </Target>
-  <Target Name="BuildNETCore">
-    <CallTarget Targets="RestoreNETCore"/>
-    <MSBuild Projects="@(Ultraviolet_NETCore_Solution)" Targets="Publish"/>
-    <CallTarget Targets="CopyNETCoreBinaries"/>
+
+  <!-- STANDARD BINARIES -->
+  <Target Name="CopyStandardBinaries">
+    <CreateItem Include="Source/Ultraviolet.Core/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Core.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Core"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Bindings.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.BASS/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.BASS.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_BASS"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FMOD/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FMOD.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.OpenGL/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.SDL2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.SDL2.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.Bindings.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Presentation/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Uvss.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Presentation.Compiler/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Compiler.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.RoslynCompiler.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FreeType2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FreeType2.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Tooling/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Tooling.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
+    </CreateItem>
+    <Copy SourceFiles="@(Ultraviolet_Core)" DestinationFiles="@(Ultraviolet_Core->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet)" DestinationFiles="@(Ultraviolet->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_BASS)" DestinationFiles="@(Ultraviolet_BASS->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FMOD)" DestinationFiles="@(Ultraviolet_FMOD->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_OpenGL)" DestinationFiles="@(Ultraviolet_OpenGL->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_SDL2)" DestinationFiles="@(Ultraviolet_SDL2->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProver_Bindings)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation)" DestinationFiles="@(Ultraviolet_Presentation->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss)" DestinationFiles="@(Ultraviolet_Presentation_Uvss->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Compiler)" DestinationFiles="@(Ultraviolet_Presentation_Compiler->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_RoslynCompiler)" DestinationFiles="@(Ultraviolet_Presentation_RoslynCompiler->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FreeType2)" DestinationFiles="@(Ultraviolet_FreeType2->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>  
+
+  <!-- TOOLS BINARIES -->
+  <Target Name="CopyToolsBinaries">
+    <CreateItem Include="Source/UvFont/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
+        <Output TaskParameter="Include" ItemName="uvfont"/>
+    </CreateItem>
+    <CreateItem Include="Source/UvArchive/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
+        <Output TaskParameter="Include" ItemName="uvarchive"/>
+    </CreateItem>
+    <CreateItem Include="Source/UvAssetList/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
+        <Output TaskParameter="Include" ItemName="uvassetlist"/>
+    </CreateItem>
+    <Copy SourceFiles="@(uvfont)" DestinationFiles="@(uvfont->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvfont/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(uvarchive)" DestinationFiles="@(uvarchive->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvarchive/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(uvassetlist)" DestinationFiles="@(uvassetlist->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvassetlist/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 
-  <Target Name="CopyDesktopBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Newtonsoft.Json.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Ultraviolet.Core.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/Desktop/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/Desktop/bin/$(Configuration)/Ultraviolet.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/Desktop/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.Desktop/bin/$(Configuration)/Ultraviolet.Shims.Desktop.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/Desktop/bin/$(Configuration)/Ultraviolet.BASS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/Desktop/bin/$(Configuration)/Ultraviolet.FMOD.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/Desktop/bin/$(Configuration)/Ultraviolet.OpenGL.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/Desktop/bin/$(Configuration)/Ultraviolet.SDL2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/Desktop/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/Desktop/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Compiler/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Compiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FreeType2/Desktop/bin/$(Configuration)/Ultraviolet.FreeType2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_Desktop"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.Tooling.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvFont/bin/$(Configuration)/uvfont.exe">
-        <Output TaskParameter="Include" ItemName="uvfont_exe"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvArchive/bin/$(Configuration)/uvarchive.exe">
-        <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvAssetList/bin/$(Configuration)/uvassetlist.exe">
-        <Output TaskParameter="Include" ItemName="uvassetlist_exe"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_Desktop)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_Desktop)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Core_Desktop)" DestinationFiles="@(Ultraviolet_Core_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Desktop)" DestinationFiles="@(Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Shims_Desktop)" DestinationFiles="@(Ultraviolet_Shims_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_Desktop)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_BASS_Desktop)" DestinationFiles="@(Ultraviolet_BASS_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FMOD_Desktop)" DestinationFiles="@(Ultraviolet_FMOD_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_SDL2_Desktop)" DestinationFiles="@(Ultraviolet_SDL2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Desktop)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProver_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Compiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_RoslynCompiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_RoslynCompiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FreeType2_Desktop)" DestinationFiles="@(Ultraviolet_FreeType2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(uvassetlist_exe)" DestinationFiles="@(uvassetlist_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-  </Target>  
-  <Target Name="CopyNETCoreBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Newtonsoft.Json.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Microsoft.DotNet.PlatformAbstractions.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Microsoft.Extensions.DependencyModel.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.Core.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.OpenGL.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.Profiler.dotTrace.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.NETCore/bin/$(Configuration)/netcoreapp2.1/publish/Ultraviolet.Shims.NETCore.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_NETCore"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.BASS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.FMOD.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.OpenGL.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.SDL2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.ImGuiViewProvider.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.ImGuiViewProvider.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FreeType2/NETStandard/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.FreeType2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_NETStandard"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/publish/Ultraviolet.Tooling.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_NETStandard)" DestinationFiles="@(Newtonsoft_Json_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_NETStandard)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_NETStandard)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Core_NETStandard)" DestinationFiles="@(Ultraviolet_Core_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_NETStandard)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_NETStandard)" DestinationFiles="@(Ultraviolet_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Shims_NETCore)" DestinationFiles="@(Ultraviolet_Shims_NETCore->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_NETStandard)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_BASS_NETStandard)" DestinationFiles="@(Ultraviolet_BASS_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FMOD_NETStandard)" DestinationFiles="@(Ultraviolet_FMOD_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_NETStandard)" DestinationFiles="@(Ultraviolet_OpenGL_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_SDL2_NETStandard)" DestinationFiles="@(Ultraviolet_SDL2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_NETStandard)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProver_Bindings_NETStandard)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FreeType2_NETStandard)" DestinationFiles="@(Ultraviolet_FreeType2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  <!-- NETCORE 2 -->
+  <Target Name="SetNETCore2BuildParameters">
+    <PropertyGroup>
+        <BinaryDir>NETCore2</BinaryDir>
+        <UvLibPlatform>NETStandard20</UvLibPlatform>
+        <UvAppPlatform>NETCore2</UvAppPlatform>
+        <NETStandardSuffix>/netstandard2.0</NETStandardSuffix>
+        <NETCoreSuffix>/netcoreapp2.2</NETCoreSuffix>
+    </PropertyGroup>
   </Target>
-  <Target Name="CopyWindowsBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core.Design/bin/$(Configuration)/Ultraviolet.Core.Design.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Design"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Design/bin/$(Configuration)/Ultraviolet.Design.*">		
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Design"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Windows.Forms/bin/$(Configuration)/Ultraviolet.Windows.Forms.*">	
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Windows_Forms"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Ultraviolet_Core_Design)" DestinationFiles="@(Ultraviolet_Core_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Design)" DestinationFiles="@(Ultraviolet_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Windows_Forms)" DestinationFiles="@(Ultraviolet_Windows_Forms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+  <Target Name="CleanNETCore2">
+    <Exec Command="dotnet clean &quot;@(Ultraviolet_NETCore2_Solution)&quot;"/>
   </Target>
-  <Target Name="CopyMacOSModernBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/macOSModern/bin/$(Configuration)/Newtonsoft.Json.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/macOSModern/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/macOSModern/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/macOSModern/bin/$(Configuration)/Ultraviolet.Core.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/macOSModern/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/macOSModern/bin/$(Configuration)/Ultraviolet.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.macOSModern/bin/$(Configuration)/Ultraviolet.Shims.macOSModern.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/macOSModern/bin/$(Configuration)/Ultraviolet.BASS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/macOSModern/bin/$(Configuration)/Ultraviolet.FMOD.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/macOSModern/bin/$(Configuration)/Ultraviolet.OpenGL.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/macOSModern/bin/$(Configuration)/Ultraviolet.SDL2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/macOSModern/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/macOSModern/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/macOSModern/bin/$(Configuration)/Ultraviolet.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/macOSModern/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Compiler/macOSModern/bin/$(Configuration)/Ultraviolet.Presentation.Compiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/macOSModern/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FreeType2/macOSModern/bin/$(Configuration)/Ultraviolet.FreeType2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_macOSModern"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/Ultraviolet.Tooling.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvFont/bin/$(Configuration)/uvfont.exe">
-        <Output TaskParameter="Include" ItemName="uvfont_exe"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvArchive/bin/$(Configuration)/uvarchive.exe">
-        <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvAssetList/bin/$(Configuration)/uvassetlist.exe">
-        <Output TaskParameter="Include" ItemName="uvassetlist_exe"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_macOSModern)" DestinationFiles="@(Newtonsoft_Json_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_macOSModern)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_macOSModern)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Core_macOSModern)" DestinationFiles="@(Ultraviolet_Core_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_macOSModern)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_macOSModern)" DestinationFiles="@(Ultraviolet_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Shims_macOSModern)" DestinationFiles="@(Ultraviolet_Shims_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_BASS_macOSModern)" DestinationFiles="@(Ultraviolet_BASS_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FMOD_macOSModern)" DestinationFiles="@(Ultraviolet_FMOD_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_macOSModern)" DestinationFiles="@(Ultraviolet_OpenGL_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_SDL2_macOSModern)" DestinationFiles="@(Ultraviolet_SDL2_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_macOSModern)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProver_Bindings_macOSModern)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_macOSModern)" DestinationFiles="@(Ultraviolet_Presentation_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_macOSModern)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Compiler_macOSModern)" DestinationFiles="@(Ultraviolet_Presentation_Compiler_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_RoslynCompiler_macOSModern)" DestinationFiles="@(Ultraviolet_Presentation_RoslynCompiler_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FreeType2_macOSModern)" DestinationFiles="@(Ultraviolet_FreeType2_macOSModern->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(uvassetlist_exe)" DestinationFiles="@(uvassetlist_exe->'Binaries/macOSModern/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-  </Target>  
-  <Target Name="CopyMacOSBinaries">
-    <CreateItem	Include="Source/Ultraviolet.Shims.macOS/bin/$(Configuration)/Ultraviolet.Shims.macOS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_macOS"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Ultraviolet_Shims_macOS)" DestinationFiles="@(Ultraviolet_Shims_macOS->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  <Target Name="BuildNETCore2" DependsOnTargets="SetNETCore2BuildParameters">
+    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore2_Solution)&quot; -c $(Configuration)"/>
   </Target>
-  
+  <Target Name="CopyNETCore2Binaries" AfterTargets="BuildNETCore2">
+    <CreateItem Include="Source/Ultraviolet.Shims.NETCore2/bin/$(Configuration)$(NETCoreSuffix)/Ultraviolet.Shims.NETCore2.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_NETCore2"/>
+    </CreateItem>
+    <CallTarget Targets="CopyStandardBinaries"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_NETCore2)" DestinationFiles="@(Ultraviolet_Shims_NETCore2->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+
+  <!-- NETCORE 3 -->
+  <Target Name="SetNETCore3BuildParameters">
+    <PropertyGroup>
+        <BinaryDir>NETCore3</BinaryDir>
+        <UvLibPlatform>NETStandard21</UvLibPlatform>
+        <UvAppPlatform>NETCore3</UvAppPlatform>
+        <NETStandardSuffix>/netstandard2.1</NETStandardSuffix>
+        <NETCoreSuffix>/netcoreapp3.1</NETCoreSuffix>
+    </PropertyGroup>
+  </Target>
+  <Target Name="CleanNETCore3">
+    <Exec Command="dotnet clean &quot;@(Ultraviolet_NETCore3_Solution)&quot;"/>
+  </Target>
+  <Target Name="BuildNETCore3" DependsOnTargets="SetNETCore3BuildParameters">
+    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore3_Solution)&quot; -c $(Configuration)"/>
+  </Target>
+  <Target Name="BuildNETCore3Tools" AfterTargets="BuildNETCore3" Condition="'$(BuildTools)' == 'true'">
+    <Exec Command="dotnet publish &quot;Source/UvFont/NETCore3/UvFont.NETCore3.csproj&quot; -c $(Configuration)" />
+    <Exec Command="dotnet publish &quot;Source/UvArchive/NETCore3/UvArchive.NETCore3.csproj&quot; -c $(Configuration)" />
+    <Exec Command="dotnet publish &quot;Source/UvAssetList/NETCore3/UvAssetList.NETCore3.csproj&quot; -c $(Configuration)" />
+  </Target>
+  <Target Name="CopyNETCore3Binaries" AfterTargets="BuildNETCore3">
+    <CreateItem Include="Source/Ultraviolet.Shims.NETCore3/bin/$(Configuration)$(NETCoreSuffix)/Ultraviolet.Shims.NETCore3.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_NETCore3"/>
+    </CreateItem>
+    <CallTarget Targets="CopyStandardBinaries"/>
+    <CallTarget Targets="CopyToolsBinaries" Condition=" '$(BuildTools)' == 'true' "/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_NETCore3)" DestinationFiles="@(Ultraviolet_Shims_NETCore3->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+  <Target Name="CopyWindowsFormsBinaries" AfterTargets="BuildNETCore3" Condition="'$(BuildWindowsForms)' == 'true'">
+    <CreateItem Include="Source/Ultraviolet.Windows.Forms/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/Ultraviolet.Windows.Forms.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Windows_Forms"/>
+    </CreateItem>
+    <Copy SourceFiles="@(Ultraviolet_Windows_Forms)" DestinationFiles="@(Ultraviolet_Windows_Forms->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+
   <!-- ANDROID -->
-  <Target Name="RestoreAndroid">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
+  <Target Name="SetAndroidBuildParameters">
+    <PropertyGroup>
+        <BinaryDir>Android</BinaryDir>
+        <UvLibPlatform>NETStandard21</UvLibPlatform>
+        <UvAppPlatform>NETCore3</UvAppPlatform>
+        <NETStandardSuffix>/netstandard2.1</NETStandardSuffix>
+        <NETCoreSuffix>/netcoreapp3.1</NETCoreSuffix>
+    </PropertyGroup>
   </Target>
-
-  <Target Name="CleanAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
-    <RemoveDir Directories="Binaries/Android"/>
+  <Target Name="CleanAndroid">
     <MSBuild Projects="@(Ultraviolet_Android_Solution)" Targets="Clean"/>
-  </Target>  
-  <Target Name="BuildAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
-    <CallTarget Targets="RestoreAndroid"/>
-    <MSBuild Projects="@(Ultraviolet_Android_Solution)"/>
-    <CallTarget Targets="CopyAndroidBinaries"/>
   </Target>
-      
-  <Target Name="CopyAndroidBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Newtonsoft.Json.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Ultraviolet.Core.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/Android/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/Android/bin/$(Configuration)/Ultraviolet.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Android"/>
-    </CreateItem>
+  <Target Name="BuildAndroid" DependsOnTargets="SetAndroidBuildParameters">
+    <MSBuild Projects="@(Ultraviolet_Android_Solution)" Properties="Configuration=$(Configuration)" Targets="Restore;Build"/>
+  </Target>
+  <Target Name="CopyAndroidBinaries" AfterTargets="BuildAndroid">
     <CreateItem Include="Source/Ultraviolet.Shims.Android/bin/$(Configuration)/Ultraviolet.Shims.Android.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/Android/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_Android"/>
+    <CreateItem Include="Source/Ultraviolet.Shims.Android.FMOD/bin/$(Configuration)/Ultraviolet.Shims.Android.FMOD.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android_FMOD"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/Android/bin/$(Configuration)/Ultraviolet.BASS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/Android/bin/$(Configuration)/Ultraviolet.FMOD.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/Android.Bindings/bin/$(Configuration)/Ultraviolet.FMOD.Android.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_Android_Bindings"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/Android/bin/$(Configuration)/Ultraviolet.OpenGL.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/Android/bin/$(Configuration)/Ultraviolet.SDL2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/Android/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/Android/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/Android/bin/$(Configuration)/Ultraviolet.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FreeType2/Android/bin/$(Configuration)/Ultraviolet.FreeType2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_Android"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_Android)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_Android)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Android)" DestinationFiles="@(Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Shims_Android)" DestinationFiles="@(Ultraviolet_Shims_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_Android)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_BASS_Android)" DestinationFiles="@(Ultraviolet_BASS_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FMOD_Android)" DestinationFiles="@(Ultraviolet_FMOD_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FMOD_Android_Bindings)" DestinationFiles="@(Ultraviolet_FMOD_Android_Bindings->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_SDL2_Android)" DestinationFiles="@(Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Android)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_Android)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Android)" DestinationFiles="@(Ultraviolet_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Android)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FreeType2_Android)" DestinationFiles="@(Ultraviolet_FreeType2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-  </Target>
-  
-  <!-- IOS -->	
-  <Target Name="RestoreiOS">
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
-    <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
-  </Target>
-  
-  <Target Name="CleaniOS" Condition="$(IsMac)">
-    <RemoveDir Directories="Binaries/iOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Targets="Clean"/>
-  </Target>    
-  <Target Name="BuildiOS" Condition="$(IsMac)">
-    <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
-    <CallTarget Targets="CopyiOSBinaries"/>
-  </Target>
-  <Target Name="BuildiOSBamboo" Condition="$(IsMac) Or '$(ServerAddress)'!=''">
-    <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo_Solution)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)"/>
-    <CallTarget Targets="CopyiOSBinaries"/>
-  </Target>
-        
-  <Target Name="CopyiOSBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Newtonsoft.Json.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
-        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Ultraviolet.Core.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/iOS/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/iOS/bin/$(Configuration)/Ultraviolet.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.iOS/bin/$(Configuration)/Ultraviolet.Shims.iOS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/iOS/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.iOS.Bindings/bin/$(Configuration)/Ultraviolet.iOS.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_iOS_Bindings"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/iOS/bin/$(Configuration)/Ultraviolet.BASS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/iOS/bin/$(Configuration)/Ultraviolet.FMOD.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/iOS/bin/$(Configuration)/Ultraviolet.OpenGL.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/iOS/bin/$(Configuration)/Ultraviolet.SDL2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2.UIKit_iOS/bin/$(Configuration)/Ultraviolet.SDL2.UIKit.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_UIKit_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/iOS/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/iOS/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/iOS/bin/$(Configuration)/Ultraviolet.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
-    </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FreeType2/iOS/bin/$(Configuration)/Ultraviolet.FreeType2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_iOS"/>
-    </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_iOS)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_iOS)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_iOS)" DestinationFiles="@(Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Shims_iOS)" DestinationFiles="@(Ultraviolet_Shims_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_iOS_Bindings)" DestinationFiles="@(Ultraviolet_iOS_Bindings->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_iOS)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_BASS_iOS)" DestinationFiles="@(Ultraviolet_BASS_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FMOD_iOS)" DestinationFiles="@(Ultraviolet_FMOD_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_OpenGL_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_SDL2_iOS)" DestinationFiles="@(Ultraviolet_SDL2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_SDL2_UIKit_iOS)" DestinationFiles="@(Ultraviolet_SDL2_UIKit_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_iOS)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_iOS)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_iOS)" DestinationFiles="@(Ultraviolet_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_iOS)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_FreeType2_iOS)" DestinationFiles="@(Ultraviolet_FreeType2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <CallTarget Targets="CopyStandardBinaries"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_Android)" DestinationFiles="@(Ultraviolet_Shims_Android->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_Android_FMOD)" DestinationFiles="@(Ultraviolet_Shims_Android_FMOD->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 </Project>

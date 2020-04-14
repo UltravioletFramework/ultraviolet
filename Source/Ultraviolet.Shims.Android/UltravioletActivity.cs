@@ -1,11 +1,12 @@
+﻿using Android.App;
+using Android.OS;
+using Android.Text;
+using Org.Libsdl.App;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml;
-using Android.OS;
-using Android.Text;
-using Org.Libsdl.App;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
@@ -18,7 +19,6 @@ namespace Ultraviolet
     /// <summary>
     /// Represents an <see cref="Activity"/> which hosts and runs an Ultraviolet application.
     /// </summary>
-    [CLSCompliant(false)]
     public abstract class UltravioletActivity : SDLActivity,
         IMessageSubscriber<UltravioletMessageID>,
         IUltravioletComponent,
@@ -48,17 +48,17 @@ namespace Ultraviolet
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletActivity"/> class.
         /// </summary>
-        /// <param name="company">The name of the company that produced the application.</param>
-        /// <param name="application">The name of the application </param>
-        protected UltravioletActivity(String company, String application)
+        /// <param name="developerName">The name of the company or developer who built this application.</param>
+        /// <param name="applicationName">The name of the application </param>
+        protected UltravioletActivity(String developerName, String applicationName)
         {
-            Contract.RequireNotEmpty(company, nameof(company));
-            Contract.RequireNotEmpty(application, nameof(application));
+            Contract.RequireNotEmpty(developerName, nameof(developerName));
+            Contract.RequireNotEmpty(applicationName, nameof(applicationName));
 
             PreserveApplicationSettings = true;
 
-            this.company = company;
-            this.application = application;
+            this.DeveloperName = developerName;
+            this.ApplicationName = applicationName;
         }
 
         /// <summary>
@@ -154,6 +154,12 @@ namespace Ultraviolet
                 return uv;
             }
         }
+
+        /// <inheritdoc/>
+        public String DeveloperName { get; }
+
+        /// <inheritdoc/>
+        public String ApplicationName { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the application's primary window is synchronized
@@ -285,7 +291,7 @@ namespace Ultraviolet
             get { return (InputTypes)MCurrentInputType; }
             set { MCurrentInputType = (Int32)value; }
         }
-        
+
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
@@ -298,9 +304,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /*TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityCreate, data);
+                */
             }
             base.OnCreate(savedInstanceState);
         }
@@ -311,9 +319,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /*TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityStart, data);
+                */
             }
             base.OnStart();
         }
@@ -324,9 +334,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /*TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityResume, data);
+                */
             }
             base.OnResume();
         }
@@ -337,9 +349,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /*TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityPause, data);
+                */
             }
             base.OnPause();
         }
@@ -350,9 +364,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /* TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityStop, data);
+                */
             }
             base.OnStop();
         }
@@ -363,9 +379,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /*TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityDestroy, data);
+                */
             }
             base.OnDestroy();
         }
@@ -376,9 +394,11 @@ namespace Ultraviolet
             var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
+                /*TODO
                 var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
                 data.Activity = this;
                 uv.Messages.Publish(UltravioletMessages.AndroidActivityRestart, data);
+                */
             }
             base.OnRestart();
         }
@@ -601,7 +621,7 @@ namespace Ultraviolet
                 Finish();
             }
         }
-        
+
         /// <summary>
         /// Ensures that the assembly which contains the specified type is linked on platforms
         /// which require ahead-of-time compilation.
@@ -679,7 +699,7 @@ namespace Ultraviolet
         /// <returns>The directory that contains the application's local configuration files.</returns>
         protected String GetLocalApplicationSettingsDirectory()
         {
-            var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), company, application);
+            var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), DeveloperName, ApplicationName);
             Directory.CreateDirectory(path);
             return path;
         }
@@ -691,7 +711,7 @@ namespace Ultraviolet
         /// <returns>The directory that contains the application's roaming configuration files.</returns>
         protected String GetRoamingApplicationSettingsDirectory()
         {
-            var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), company, application);
+            var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), DeveloperName, ApplicationName);
             Directory.CreateDirectory(path);
             return path;
         }
@@ -712,7 +732,7 @@ namespace Ultraviolet
         private void CreateUltravioletContext()
         {
             LoadSettings();
-            
+
             uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext);
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
@@ -899,10 +919,6 @@ namespace Ultraviolet
         private Boolean isFixedTimeStep = UltravioletTimingLogic.DefaultIsFixedTimeStep;
         private TimeSpan targetElapsedTime = UltravioletTimingLogic.DefaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = UltravioletTimingLogic.DefaultInactiveSleepTime;
-
-        // The application's name.
-        private readonly String company;
-        private readonly String application;
 
         // The application's settings.
         private UltravioletActivitySettings settings;

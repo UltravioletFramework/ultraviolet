@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <StyleSheet>ScreenStyles</StyleSheet>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_LoadsTextFormattingParameters_AsViewResources_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock Width="400" HorizontalAlignment="Center" HorizontalContentAlignment="Center">Lorem ipsum dolor sit amet, |style:teststyle|consectetur adipiscing elit|style|. Praesent et dictum sapien |icon:testicon|. Nunc vel blandit augue, eu tempor augue. |font:segoe|Donec mauris sem, bibendum vitae fermentum volutpat, porta nec metus|font|. Proin pharetra elit felis, at vestibulum turpis consectetur ut. |shader:testshader|Morbi at ornare purus. Nam quis magna blandit, tempus orci ut, venenatis metus|shader|. Nullam egestas, risus placerat malesuada congue, mi sapien tempor turpis, in tristique massa nisi ut tortor.</TextBlock>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_DockPanel_ArrangesChildrenCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="true">
+
+      <Rectangle FillColor="#ffff0000" HorizontalAlignment="Stretch" Height="32" DockPanel.Dock="Top"/>
+      <Rectangle FillColor="#ff800000" HorizontalAlignment="Stretch" Height="32" DockPanel.Dock="Top"/>
+
+      <Rectangle FillColor="#ff00ff00" HorizontalAlignment="Stretch" Height="32" DockPanel.Dock="Bottom"/>
+      <Rectangle FillColor="#ff008000" HorizontalAlignment="Stretch" Height="32" DockPanel.Dock="Bottom"/>
+
+      <Rectangle FillColor="#ff0000ff" VerticalAlignment="Stretch" Width="32" DockPanel.Dock="Left"/>
+      <Rectangle FillColor="#ff000080" VerticalAlignment="Stretch" Width="32" DockPanel.Dock="Left"/>
+
+      <Rectangle FillColor="#ffff00ff" VerticalAlignment="Stretch" Width="32" DockPanel.Dock="Right"/>
+      <Rectangle FillColor="#ff800080" VerticalAlignment="Stretch" Width="32" DockPanel.Dock="Right"/>
+      
+      <Rectangle FillColor="#ffffffff" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    </DockPanel>
+
+  </View>
+</UIPanelDefinition>

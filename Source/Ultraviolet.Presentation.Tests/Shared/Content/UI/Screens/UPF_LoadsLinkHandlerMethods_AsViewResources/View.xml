@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <StyleSheet>ScreenStyles</StyleSheet>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_LoadsLinkHandlerMethods_AsViewResources_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock HorizontalAlignment="Center">This is an |link:unvisited|unvisited link|link|.</TextBlock>
+      <TextBlock HorizontalAlignment="Center">This is a |link:visited|visited link|link|.</TextBlock>
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

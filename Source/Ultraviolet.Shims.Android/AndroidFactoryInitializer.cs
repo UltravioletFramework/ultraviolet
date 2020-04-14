@@ -15,15 +15,13 @@ namespace Ultraviolet.Shims.Android
         /// <inheritdoc/>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
-            var androidActivityService = new AndroidActivityServiceImpl();
-            factory.SetFactoryMethod<AndroidActivityServiceFactory>(() => androidActivityService);
-
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new AndroidSurfaceSource(stream));
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new AndroidSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new AndroidIconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new AndroidScreenRotationService(display));
             factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new AndroidScreenDensityService(display));
+            factory.SetFactoryMethod<AssemblyLoaderServiceFactory>(() => new AndroidAssemblyLoaderService());
 
             var softwareKeyboardService = new AndroidSoftwareKeyboardService();
             factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);

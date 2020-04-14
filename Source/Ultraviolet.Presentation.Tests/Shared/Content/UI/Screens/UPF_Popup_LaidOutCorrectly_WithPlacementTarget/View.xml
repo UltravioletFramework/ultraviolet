@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Popup_LaidOutCorrectly_WithPlacementTarget_VM, Ultraviolet.Presentation.Tests.ViewModels">
+
+    <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Popup PlacementTarget="target" Placement="Top" IsOpen="true">
+      <Button Width="64" Height="64" Content="1"/>
+    </Popup>
+    <Popup PlacementTarget="target" Placement="Bottom" IsOpen="true">
+      <Button Width="64" Height="64" Content="2"/>
+    </Popup>
+    <Popup PlacementTarget="target" Placement="Left" IsOpen="true">
+      <Button Width="64" Height="64" Content="3"/>
+    </Popup>
+    <Popup PlacementTarget="target" Placement="Right" IsOpen="true">
+      <Button Width="64" Height="64" Content="4"/>
+    </Popup>
+    <Popup PlacementTarget="target" Placement="Center" IsOpen="true">
+      <Button Width="64" Height="64" Content="5"/>
+    </Popup>
+    <Popup HorizontalOffset="32" VerticalOffset="16" Placement="Absolute" IsOpen="true">
+      <Button Width="64" Height="64" Content="6"/>
+    </Popup>
+    <Popup PlacementTarget="target" HorizontalOffset="150" VerticalOffset="64" Placement="Relative" IsOpen="true">
+      <Button Width="64" Height="64" Content="7"/>
+    </Popup>
+
+    <Button Name="target" Width="128" Height="128" HorizontalAlignment="Center" VerticalAlignment="Center" Content="T"/>
+
+  </View>
+</UIPanelDefinition>

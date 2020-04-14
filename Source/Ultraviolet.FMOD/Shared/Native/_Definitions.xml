@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.FMOD.Native" ClassName="FMODNative">
+  <Names Default="fmodL, fmod" Android="fmod" Unix="libfmodL, libfmod"/>
+  <Imports>
+    <Import Name="System.Text"/>
+  </Imports>
+  <Constants>
+    <Constant Name="FMOD_VERSION" Type="UInt32" Value="0x00011003"/>
+  </Constants>
+  <OpaqueTypes>
+    <OpaqueType Name="FMOD_SYSTEM"/>
+    <OpaqueType Name="FMOD_SOUND"/>
+    <OpaqueType Name="FMOD_CHANNELCONTROL"/>
+    <OpaqueType Name="FMOD_CHANNEL"/>
+    <OpaqueType Name="FMOD_CHANNELGROUP"/>
+    <OpaqueType Name="FMOD_SOUNDGROUP"/>
+    <OpaqueType Name="FMOD_REVERB3D"/>
+    <OpaqueType Name="FMOD_DSP"/>
+    <OpaqueType Name="FMOD_DSPCONNECTION"/>
+    <OpaqueType Name="FMOD_POLYGON"/>
+    <OpaqueType Name="FMOD_GEOMETRY"/>
+    <OpaqueType Name="FMOD_SYNCPOINT"/>
+  </OpaqueTypes>
+  <FunctionPointers>
+    <FunctionPointer Name="FMOD_DEBUG_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="flags" Type="FMOD_DEBUG_FLAGS"/>
+        <Parameter Name="file" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="line" Type="Int32"/>
+        <Parameter Name="func" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="message" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_OPEN_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="name" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="filesize" Type="UInt32*"/>
+        <Parameter Name="handle" Type="void**"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_CLOSE_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="handle" Type="void*"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_READ_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="handle" Type="void*"/>
+        <Parameter Name="buffer" Type="void*"/>
+        <Parameter Name="sizebytes" Type="UInt32"/>
+        <Parameter Name="bytesread" Type="UInt32*"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_SEEK_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="handle" Type="void*"/>
+        <Parameter Name="pos" Type="UInt32"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>   
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_ASYNCREAD_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="info" Type="FMOD_ASYNCREADINFO*"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_ASYNCCANCEL_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="info" Type="FMOD_ASYNCREADINFO*"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>
+    </FunctionPointer>
+    <FunctionPointer Name="FMOD_FILE_ASYNCDONE_FUNC" ReturnType="void">
+      <Parameters>
+        <Parameter Name="info" Type="FMOD_ASYNCREADINFO*"/>
+        <Parmaeter Name="result" Type="FMOD_RESULT"/>
+      </Parameters>
+    </FunctionPointer>
+  </FunctionPointers>
+  <Functions CallingConvention="StdCall">
+    <Function Name="FMOD_Debug_Initialize" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="flags" Type="FMOD_DEBUG_FLAGS"/>
+        <Parameter Name="mode" Type="FMOD_DEBUG_MODE"/>
+        <Parameter Name="callback" Type="FMOD_DEBUG_CALLBACK"/>
+        <Parameter Name="filename" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_Create" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM**"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_Release" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_GetVersion" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="version" Type="UInt32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_GetNumDrivers" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="numdrivers" Type="Int32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_GetDriverInfo" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="id" Type="Int32"/>
+        <Parameter Name="name" Type="StringBuilder" MarshalAs="LPStr"/>
+        <Parameter Name="namelen" Type="Int32"/>
+        <Parameter Name="guid" Type="Guid*"/>
+        <Parameter Name="systemrate" Type="Int32*"/>
+        <Parameter Name="speakermode" Type="FMOD_SPEAKERMODE*"/>
+        <Parameter Name="speakermodechannels" Type="Int32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_SetDriver" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="driver" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_GetDriver" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="driver" Type="Int32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_Init" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="maxchannels" Type="Int32"/>
+        <Parameter Name="flags" Type="FMOD_INITFLAGS"/>
+        <Parameter Name="extradriverdata" Type="void*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_PlaySound" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="sound" Type="FMOD_SOUND*"/>
+        <Parameter Name="channelgroup" Type="FMOD_CHANNELGROUP*"/>
+        <Parameter Name="paused" Type="Boolean"/>
+        <Parameter Name="channel" Type="FMOD_CHANNEL**"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_Close" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_Update" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_MixerSuspend" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_MixerResume" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_CreateSound" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="name_or_data" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="mode" Type="FMOD_MODE"/>
+        <Parameter Name="exinfo" Type="FMOD_CREATESOUNDEXINFO*"/>
+        <Parameter Name="sound" Type="FMOD_SOUND**"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_CreateStream" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="name_or_data" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="mode" Type="FMOD_MODE"/>
+        <Parameter Name="exinfo" Type="FMOD_CREATESOUNDEXINFO*"/>
+        <Parameter Name="sound" Type="FMOD_SOUND**"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_CreateChannelGroup" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="name" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="channelgroup" Type="FMOD_CHANNELGROUP**"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_SetFileSystem" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="useropen" Type="FMOD_FILE_OPEN_CALLBACK"/>
+        <Parameter Name="userclose" Type="FMOD_FILE_CLOSE_CALLBACK"/>
+        <Parameter Name="userread" Type="FMOD_FILE_READ_CALLBACK"/>
+        <Parameter Name="userseek" Type="FMOD_FILE_SEEK_CALLBACK"/>
+        <Parameter Name="userasyncread" Type="FMOD_FILE_ASYNCREAD_CALLBACK"/>
+        <Parameter Name="userasynccancel" Type="FMOD_FILE_ASYNCCANCEL_CALLBACK"/>
+        <Parameter Name="bloackalign" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Sound_GetLength" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="sound" Type="FMOD_SOUND*"/>
+        <Parameter Name="length" Type="UInt32*"/>
+        <Parameter Name="lengthtype" Type="FMOD_TIMEUNIT"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Sound_GetNumTags" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="sound" Type="FMOD_SOUND*"/>
+        <Parameter Name="numtags" Type="Int32*"/>
+        <Parameter Name="numtagsupdated" Type="Int32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Sound_GetTag" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="sound" Type="FMOD_SOUND*"/>
+        <Parameter Name="name" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="index" Type="Int32"/>
+        <Parameter Name="tag" Type="FMOD_TAG*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Sound_Release" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="sound" Type="FMOD_SOUND*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_ChannelGroup_SetVolume" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channelgroup" Type="FMOD_CHANNELGROUP*"/>
+        <Parameter Name="volume" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_ChannelGroup_Release" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channelgroup" Type="FMOD_CHANNELGROUP*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_Stop" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetPaused" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="paused" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetPaused" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="paused" Type="Boolean*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetVolume" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="volume" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetVolume" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="volume" Type="Single*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetVolumeRamp" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="ramp" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetVolumeRamp" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="ramp" Type="Boolean*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetAudibility" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="audibility" Type="Single*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetPitch" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="pitch" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetPitch" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="pitch" Type="Single*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetMute" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="mute" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetMute" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="mute" Type="Boolean*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetMode" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="mode" Type="FMOD_MODE"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetMode" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="mode" Type="FMOD_MODE*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_IsPlaying" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="isplaying" Type="Boolean*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetPan" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="pan" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetPosition" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="position" Type="UInt32"/>
+        <Parameter Name="postype" Type="FMOD_TIMEUNIT"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetPosition" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="position" Type="UInt32*"/>
+        <Parameter Name="postype" Type="FMOD_TIMEUNIT"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_SetLoopPoints" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="loopstart" Type="UInt32"/>
+        <Parameter Name="loopstarttype" Type="FMOD_TIMEUNIT"/>
+        <Parameter Name="loopend" Type="UInt32"/>
+        <Parameter Name="loopendtype" Type="FMOD_TIMEUNIT"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_Channel_GetLoopPoints" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="channel" Type="FMOD_CHANNEL*"/>
+        <Parameter Name="loopstart" Type="UInt32*"/>
+        <Parameter Name="loopstarttype" Type="FMOD_TIMEUNIT"/>
+        <Parameter Name="loopend" Type="UInt32*"/>
+        <Parameter Name="loopendtype" Type="FMOD_TIMEUNIT"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>

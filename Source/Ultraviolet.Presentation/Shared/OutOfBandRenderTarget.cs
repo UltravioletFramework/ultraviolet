@@ -60,7 +60,8 @@ namespace Ultraviolet.Presentation
         {
             Contract.Require(element, nameof(element));
 
-            if (element.View == null)
+            var display = element.View?.Display;
+            if (display == null)
             {
                 bounds = RectangleD.Empty;
                 return false;
@@ -74,7 +75,6 @@ namespace Ultraviolet.Presentation
                 effect.ModifyVisualBounds(ref bounds);
             }
 
-            var display = element.View.Display;
             var width   = Math.Max(1, (Int32)Math.Ceiling(display.DipsToPixels(bounds.Width)));
             var height  = Math.Max(1, (Int32)Math.Ceiling(display.DipsToPixels(bounds.Height)));
 

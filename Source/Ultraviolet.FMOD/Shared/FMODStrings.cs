@@ -23,8 +23,9 @@ namespace Ultraviolet.FMOD
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
 
 #pragma warning disable 1591
-        public static readonly StringResource FMODVersionMismatch   = new StringResource(StringDatabase, "FMOD_VERSION_MISMATCH");
-        public static readonly StringResource NotCurrentlyValid     = new StringResource(StringDatabase, "NOT_CURRENTLY_VALID");
+        public static readonly StringResource FMODVersionMismatch         = new StringResource(StringDatabase, "FMOD_VERSION_MISMATCH");
+        public static readonly StringResource NotCurrentlyValid           = new StringResource(StringDatabase, "NOT_CURRENTLY_VALID");
+        public static readonly StringResource CannotFindPlatformShimClass = new StringResource(StringDatabase, "CANNOT_FIND_PLATFORM_SHIM_CLASS");
 #pragma warning restore 1591
     }
 }

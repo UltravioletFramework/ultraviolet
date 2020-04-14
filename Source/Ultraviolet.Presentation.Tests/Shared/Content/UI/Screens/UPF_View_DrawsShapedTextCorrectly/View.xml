@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <View FlowDirection="RightToLeft" ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_View_DrawsShapedTextCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
+    <TextElement.Font>#Global:FreeTypeFonts:FiraGO</TextElement.Font>
+    <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
+    <TextOptions.TextScript>Arabic</TextOptions.TextScript>
+    <TextOptions.TextLanguage>ar</TextOptions.TextLanguage>
+
+    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Text="مرحبا بالعالم"/>
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Text="مرحبا بالعالم"/>
+
+    <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="مرحبا بالعالم"/>
+
+    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="مرحبا بالعالم"/>    
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="مرحبا بالعالم"/>
+
+  </View>
+</UIPanelDefinition>

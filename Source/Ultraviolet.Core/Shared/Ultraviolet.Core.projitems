@@ -36,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contract.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreJsonContractResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreJsonSerializerSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\PrimitiveUnion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistries.cs" />
@@ -92,9 +93,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\LibraryLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\PathResolver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.NativeMethods.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Performance\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinkerSafeAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\ISegmentableStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\IStringSource.cs" />
@@ -110,16 +108,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlatformInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PreserveAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SafeDispose.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\NamespaceDoc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\StackExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\QueueExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\HashSetExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ObservableDictionaryExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\DictionaryExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ObservableListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\PooledLinkedListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\LinkedListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\ILocalizationPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationDatabase.cs" />
@@ -169,5 +157,8 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizedStringVariant.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizedStringVariantCollection.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\StringResource.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
   </ItemGroup>
 </Project>
