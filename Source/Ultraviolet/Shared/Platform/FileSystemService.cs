@@ -64,14 +64,17 @@ namespace Ultraviolet.Platform
             
             root = root.EndsWith("/") ? root : root + "/";
 
+            var kind = (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Android) ? 
+                UriKind.Relative : UriKind.Absolute;
+
             var rootFull = GetFullPath(root);
-            var rootUri = new Uri(rootFull, UriKind.Absolute);
+            var rootUri = new Uri(rootFull, kind);
 
             if (!rootUri.IsAbsoluteUri && source != null)
                 rootUri = new Uri("file://" + rootFull);
 
             var pathFull = GetFullPath(path);
-            var pathUri = new Uri(pathFull, UriKind.Absolute);
+            var pathUri = new Uri(pathFull, kind);
 
             if (!pathUri.IsAbsoluteUri && source != null)
                 pathUri = new Uri("file://" + pathFull);
