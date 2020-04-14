@@ -18,6 +18,10 @@ namespace Ultraviolet.Core.Native
     /// <remarks>This code is based on a prototype by Eric Mellinoe (https://github.com/mellinoe/nativelibraryloader/tree/master/NativeLibraryLoader).</remarks>
     public class DefaultPathResolver : PathResolver
     {
+        private static readonly String[] KnownExtensions_Win = new[] { "dll" };
+        private static readonly String[] KnownExtensions_Mac = new[] { "so", "dylib" };
+        private static readonly String[] KnownExtensions_Unix = new[] { "so" };
+
         /// <inheritdoc/>
         public override IEnumerable<String> EnumeratePossibleLibraryLoadTargets(String name)
         {
@@ -30,6 +34,27 @@ namespace Ultraviolet.Core.Native
             if (TryLocateNativeAssetFromDeps(name, out var depsResolvedPath))
             {
                 yield return depsResolvedPath;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified string is either an integer or one of the known library extensions for the current platform.
+        /// </summary>
+        private static Boolean IsNumberOrKnownExtension(String str)
+        {
+            if (Int32.TryParse(str, out _))
+                return true;
+
+            switch (UltravioletPlatformInfo.CurrentPlatform)
+            {
+                case UltravioletPlatform.Windows:
+                    return KnownExtensions_Win.Contains(str, StringComparer.InvariantCultureIgnoreCase);
+
+                case UltravioletPlatform.macOS:
+                    return KnownExtensions_Mac.Contains(str, StringComparer.InvariantCultureIgnoreCase);
+
+                default:
+                    return KnownExtensions_Unix.Contains(str, StringComparer.InvariantCultureIgnoreCase);
             }
         }
 
@@ -71,10 +96,11 @@ namespace Ultraviolet.Core.Native
                     platformResolvedPath = Path.Combine(dir, fileName);
                     return true;
                 }
-                if (fileName.StartsWith(nameFile) && fileName.EndsWith(nameExt))
+
+                if (fileName.StartsWith(nameFile))
                 {
-                    var extra = fileNameWithoutExt.Substring(nameFile.Length, fileNameWithoutExt.Length - nameFile.Length);
-                    if (extra.All(x => Char.IsDigit(x) || x == '.'))
+                    var fileNameParts = fileName.Substring(nameFile.Length).Split('.');
+                    if (fileNameParts.All(x => IsNumberOrKnownExtension(x)))
                     {
                         platformResolvedPath = Path.Combine(dir, fileName);
                         return true;
