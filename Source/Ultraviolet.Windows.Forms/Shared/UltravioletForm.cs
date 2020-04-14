@@ -62,6 +62,12 @@ namespace Ultraviolet.Windows.Forms
             }
         }
 
+        /// <inheritdoc/>
+        public String DeveloperName { get; set; }
+
+        /// <inheritdoc/>
+        public String ApplicationName { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether the application's primary window is synchronized
         /// to the vertical retrace when rendering (i.e., whether vsync is enabled).

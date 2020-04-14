@@ -31,17 +31,17 @@ namespace Ultraviolet
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletApplication"/> class.
         /// </summary>
-        /// <param name="company">The name of the company that produced the application.</param>
-        /// <param name="application">The name of the application </param>
-        protected UltravioletApplication(String company, String application)
+        /// <param name="developerName">The name of the company or developer that built this application.</param>
+        /// <param name="applicationName">The name of the application </param>
+        protected UltravioletApplication(String developerName, String applicationName)
         {
-            Contract.RequireNotEmpty(company, nameof(company));
-            Contract.RequireNotEmpty(application, nameof(application));
+            Contract.RequireNotEmpty(developerName, nameof(developerName));
+            Contract.RequireNotEmpty(applicationName, nameof(applicationName));
 
             PreserveApplicationSettings = true;
 
-            this.company = company;
-            this.application = application;
+            this.DeveloperName = developerName;
+            this.ApplicationName = applicationName;
 
             InitializeApplication();
         }
@@ -125,6 +125,12 @@ namespace Ultraviolet
                 return uv;
             }
         }
+
+        /// <inheritdoc/>
+        public String DeveloperName { get; }
+
+        /// <inheritdoc/>
+        public String ApplicationName { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the application's primary window is synchronized
@@ -546,7 +552,7 @@ namespace Ultraviolet
         /// <returns>The directory that contains the application's local configuration files.</returns>
         protected String GetLocalApplicationSettingsDirectory()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), company, application);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DeveloperName, ApplicationName);
             Directory.CreateDirectory(path);
             return path;
         }
@@ -558,7 +564,7 @@ namespace Ultraviolet
         /// <returns>The directory that contains the application's roaming configuration files.</returns>
         protected String GetRoamingApplicationSettingsDirectory()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), company, application);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DeveloperName, ApplicationName);
             Directory.CreateDirectory(path);
             return path;
         }
@@ -744,9 +750,5 @@ namespace Ultraviolet
         private Boolean isFixedTimeStep = UltravioletTimingLogic.DefaultIsFixedTimeStep;
         private TimeSpan targetElapsedTime = UltravioletTimingLogic.DefaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = UltravioletTimingLogic.DefaultInactiveSleepTime;
-
-        // The application's name.
-        private String company;
-        private String application;
     }
 }

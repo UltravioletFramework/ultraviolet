@@ -21,6 +21,16 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets the name of the company or developer who built this application.
+        /// </summary>
+        String DeveloperName { get; }
+
+        /// <summary>
+        /// Gets the name of the application.
+        /// </summary>
+        String ApplicationName { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the application's primary window is currently active.
         /// </summary>
         Boolean IsActive
