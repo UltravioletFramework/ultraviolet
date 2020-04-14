@@ -170,6 +170,7 @@ gen/
 # =========================
 /Packages/*.nuspec
 /Packages/*.nupkg
+/Packages/*.snupkg
 /Samples/packages
 /Samples/Dependencies/*
 !/Samples/Dependencies/x86
