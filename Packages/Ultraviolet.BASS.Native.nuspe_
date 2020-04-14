@@ -48,10 +48,10 @@ Quick start guides for development using the Ultraviolet Framework are available
     <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\netcoreapp3.1\x64\osx\libbass_fx.dylib"/>
     
     <!-- Android -->
-    <file src="Ultraviolet.BASS.Native\build\MonoAndroid90\Ultraviolet.BASS.Native.targets" target="build\MonoAndroid90\Ultraviolet.BASS.Native.targets"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid90\lib\armeabi-v7a\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid90\lib\armeabi-v7a\libbass_fx.so"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid90\lib\x86\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid90\lib\x86\libbass_fx.so"/>
+    <file src="Ultraviolet.BASS.Native\build\MonoAndroid80\Ultraviolet.BASS.Native.targets" target="build\MonoAndroid80\Ultraviolet.BASS.Native.targets"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid80\lib\armeabi-v7a\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid80\lib\armeabi-v7a\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid80\lib\x86\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid80\lib\x86\libbass_fx.so"/>
   </files>  
 </package>

@@ -55,12 +55,12 @@
     <file src="..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib" target="build\netcoreapp3.1\x64\osx\libpng16.16.dylib"/>
 
     <!-- Android -->
-    <file src="Ultraviolet.FreeType2.Native\build\MonoAndroid90\Ultraviolet.FreeType2.Native.targets" target="build\MonoAndroid90\Ultraviolet.FreeType2.Native.targets"/>
-    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so" target="build\MonoAndroid90\lib\armeabi-v7a\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so" target="build\MonoAndroid90\lib\armeabi-v7a\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so" target="build\MonoAndroid90\lib\armeabi-v7a\libpng16.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86\libfreetype.so" target="build\MonoAndroid90\lib\x86\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\x86\libharfbuzz.so" target="build\MonoAndroid90\lib\x86\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86\libpng16.so" target="build\MonoAndroid90\lib\x86\libpng16.so"/>	
+    <file src="Ultraviolet.FreeType2.Native\build\MonoAndroid80\Ultraviolet.FreeType2.Native.targets" target="build\MonoAndroid80\Ultraviolet.FreeType2.Native.targets"/>
+    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so" target="build\MonoAndroid80\lib\armeabi-v7a\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so" target="build\MonoAndroid80\lib\armeabi-v7a\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so" target="build\MonoAndroid80\lib\armeabi-v7a\libpng16.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86\libfreetype.so" target="build\MonoAndroid80\lib\x86\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\x86\libharfbuzz.so" target="build\MonoAndroid80\lib\x86\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86\libpng16.so" target="build\MonoAndroid80\lib\x86\libpng16.so"/>	
   </files>  
 </package>

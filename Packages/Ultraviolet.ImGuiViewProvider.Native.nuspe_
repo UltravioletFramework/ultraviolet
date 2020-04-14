@@ -38,8 +38,8 @@ Quick start guides for development using the Ultraviolet Framework are available
     <file src="..\Dependencies\ImGui\x64\osx\libcimgui.dylib" target="build\netcoreapp3.1\x64\osx\libcimgui.dylib"/>
 
     <!-- Android -->  
-    <file src="Ultraviolet.ImGuiViewProvider.Native\build\MonoAndroid90\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\MonoAndroid90\Ultraviolet.ImGuiViewProvider.Native.targets"/>
-    <file src="..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so" target="build\MonoAndroid90\lib\armeabi-v7a\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\Android\x86\libcimgui.so" target="build\MonoAndroid90\lib\x86\libcimgui.so"/>
+    <file src="Ultraviolet.ImGuiViewProvider.Native\build\MonoAndroid80\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\MonoAndroid80\Ultraviolet.ImGuiViewProvider.Native.targets"/>
+    <file src="..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so" target="build\MonoAndroid80\lib\armeabi-v7a\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\Android\x86\libcimgui.so" target="build\MonoAndroid80\lib\x86\libcimgui.so"/>
   </files>  
 </package>
