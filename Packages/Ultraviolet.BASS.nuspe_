@@ -5,14 +5,16 @@
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
-    <licenseUrl>http://ultraviolet.tl/licenses</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the BASS implementation of the Framework's audio subsystem.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the BASS implementation of the Framework's audio subsystem.
 
-Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
+Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki
+
+Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <group>

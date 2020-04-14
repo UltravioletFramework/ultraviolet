@@ -5,12 +5,14 @@
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
-    <licenseUrl>http://ultraviolet.tl/licenses</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet.FreeType2 Native Dependencies</title>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the FreeType2 Font Plugin for Ultraviolet.</description>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the FreeType2 Font Plugin for Ultraviolet.
+
+Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
   </metadata>
   <files>  
