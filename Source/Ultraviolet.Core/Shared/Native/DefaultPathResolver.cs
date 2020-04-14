@@ -99,7 +99,7 @@ namespace Ultraviolet.Core.Native
 
                 if (fileName.StartsWith(nameFile))
                 {
-                    var fileNameParts = fileName.Substring(nameFile.Length).Split('.', StringSplitOptions.RemoveEmptyEntries);
+                    var fileNameParts = fileName.Substring(nameFile.Length).Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                     if (fileNameParts.All(x => IsNumberOrKnownExtension(x)))
                     {
                         platformResolvedPath = Path.Combine(dir, fileName);
