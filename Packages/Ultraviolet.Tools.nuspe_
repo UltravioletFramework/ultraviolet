@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
+    <icon>images\uv.ico</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains Ultraviolet's command line tools, uvarchive and uvfont.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains Ultraviolet's command line tools, uvarchive and uvfont.
@@ -19,6 +19,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <dependencies/>
   </metadata>
   <files>
+    <file src="..\Images\uv.ico" target="images\"/>
     <file src="..\Binaries\NETCore3\Release\Tools\**\*.*" target="tools"/>
   </files>  
 </package>

@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
+    <icon>images\uv.ico</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package implements the FreeType2 Font Plugin for Ultraviolet.
 
@@ -23,6 +23,8 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </dependencies>
   </metadata>
   <files>
+    <file src="..\Images\uv.ico" target="images\"/>
+
     <!-- .NET Standard 2.0 -->
     <file src="..\Binaries\NETCore2\Release\Ultraviolet.FreeType2.dll" target="lib\netstandard2.0\"/>
     <file src="..\Binaries\NETCore2\Release\Ultraviolet.FreeType2.xml" target="lib\netstandard2.0\"/>

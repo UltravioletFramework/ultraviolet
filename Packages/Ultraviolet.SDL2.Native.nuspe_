@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
+    <icon>images\uv.ico</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet.SDL2 Native Dependencies</title>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the SDL2 implementation of the Framework's platform and input subsystems.</summary>
@@ -19,6 +19,8 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <tags>ultraviolet gamedev</tags>	
   </metadata>
   <files>    
+    <file src="..\Images\uv.ico" target="images\"/>
+
     <!-- .NET Core 2.2 -->
     <file src="Ultraviolet.SDL2.Native\build\netcoreapp2.2\Ultraviolet.SDL2.Native.targets" target="build\netcoreapp2.2\Ultraviolet.SDL2.Native.targets"/>
     <!-- x86 -->

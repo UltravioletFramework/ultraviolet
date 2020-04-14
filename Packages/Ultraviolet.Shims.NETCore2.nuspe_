@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
+    <icon>images\uv.ico</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for the .NET Core 2.2 platform.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for the .NET Core 2.2 platform.
@@ -23,6 +23,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </dependencies>
   </metadata>
   <files>
+    <file src="..\Images\uv.ico" target="images\"/>
     <file src="..\Binaries\NETCore2\Release\Ultraviolet.Shims.NETCore2.dll" target="lib\netcoreapp2.2\"/>
     <file src="..\Binaries\NETCore2\Release\Ultraviolet.Shims.NETCore2.pdb" target="lib\netcoreapp2.2\"/>
   </files>  

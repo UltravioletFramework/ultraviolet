@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
+    <icon>images\uv.ico</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet.ImGuiViewProvider Native Dependencies</title>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the Dear ImGui Plugin for Ultraviolet.</summary>
@@ -19,6 +19,8 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <tags>ultraviolet gamedev</tags>	
   </metadata>
   <files>
+    <file src="..\Images\uv.ico" target="images\"/>
+
     <!-- .NET Core 2.2  -->  
     <file src="Ultraviolet.ImGuiViewProvider.Native\build\netcoreapp2.2\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\netcoreapp2.2\Ultraviolet.ImGuiViewProvider.Native.targets"/>
     <!-- x86 -->
