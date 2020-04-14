@@ -17,9 +17,11 @@ Quick start guides for development using the Ultraviolet Framework are available
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-    <dependency id="Ultraviolet" version="UV_VERSION" />
-    <dependency id="System.Drawing.Common" version="4.7.0" />
+    <group targetFramework="netcoreapp3.1">
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+      <dependency id="System.Drawing.Common" version="4.7.0" />
+    </group>
   </dependencies>
   </metadata>
   <files>

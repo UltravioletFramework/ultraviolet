@@ -16,11 +16,18 @@ Quick start guides for development using the Ultraviolet Framework are available
 
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
-  <dependencies>
-    <dependency id="Newtonsoft.Json" version="12.0.3"/>        
-    <dependency id="Microsoft.Extensions.DependencyModel" version="3.1.0"/>   
-    <dependency id="Microsoft.DotNet.PlatformAbstractions" version="3.1.0"/>           
-  </dependencies>
+    <dependencies>
+      <group targetFramework="netstandard2.0">
+        <dependency id="Newtonsoft.Json" version="12.0.3"/>        
+        <dependency id="Microsoft.Extensions.DependencyModel" version="3.1.0"/>   
+        <dependency id="Microsoft.DotNet.PlatformAbstractions" version="3.1.0"/>           
+      </group>
+      <group targetFramework="netstandard2.1">
+        <dependency id="Newtonsoft.Json" version="12.0.3"/>        
+        <dependency id="Microsoft.Extensions.DependencyModel" version="3.1.0"/>   
+        <dependency id="Microsoft.DotNet.PlatformAbstractions" version="3.1.0"/>           
+      </group>
+    </dependencies>
   </metadata>
   <files>
     <file src="..\Images\uv.ico" target="images\"/>

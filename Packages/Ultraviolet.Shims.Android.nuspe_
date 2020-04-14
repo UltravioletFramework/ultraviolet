@@ -17,13 +17,15 @@ Quick start guides for development using the Ultraviolet Framework are available
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-    <dependency id="Ultraviolet" version="UV_VERSION" />
+    <group targetFramework="MonoAndroid80">
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+    </group>
   </dependencies>
   </metadata>
   <files>
     <file src="..\Images\uv.ico" target="images\"/>
-    <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.dll" target="lib\MonoAndroid90\"/>
-    <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.pdb" target="lib\MonoAndroid90\"/>
+    <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.dll" target="lib\MonoAndroid80\Ultraviolet.Shims.Android.dll"/>
+    <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.pdb" target="lib\MonoAndroid80\Ultraviolet.Shims.Android.pdb"/>
   </files>  
 </package>

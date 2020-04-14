@@ -168,6 +168,8 @@ gen/
 # =========================
 # Ultraviolet stuff
 # =========================
+!/Packages/*.nuspe_
+!/Packages/_._
 /Packages/*.nuspec
 /Packages/*.nupkg
 /Packages/*.snupkg

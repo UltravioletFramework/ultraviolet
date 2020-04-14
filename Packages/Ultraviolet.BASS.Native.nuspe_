@@ -17,12 +17,18 @@ Quick start guides for development using the Ultraviolet Framework are available
 
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
+    <dependencies>
+      <group targetFramework="netcoreapp2.2"/>
+      <group targetFramework="netcoreapp3.1"/>
+      <group targetFramework="MonoAndroid80"/>
+    </dependencies>
   </metadata>
   <files>
     <file src="..\Images\uv.ico" target="images\"/>
 
     <!-- .NET Core 2.2 -->
     <file src="Ultraviolet.BASS.Native\build\netcoreapp2.2\Ultraviolet.BASS.Native.targets" target="build\netcoreapp2.2\Ultraviolet.BASS.Native.targets"/>
+    <file src="_._" target="lib\netcoreapp2.2\_._"/>
     <!-- x86 -->
     <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\netcoreapp2.2\x86\win32nt\bass.dll"/>
     <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\netcoreapp2.2\x86\win32nt\bass_fx.dll"/>
@@ -38,6 +44,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
 
     <!-- .NET Core 3.1 -->
     <file src="Ultraviolet.BASS.Native\build\netcoreapp3.1\Ultraviolet.BASS.Native.targets" target="build\netcoreapp3.1\Ultraviolet.BASS.Native.targets"/>
+    <file src="_._" target="lib\netcoreapp3.1\_._"/>
     <!-- x86 -->
     <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\netcoreapp3.1\x86\win32nt\bass.dll"/>
     <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\netcoreapp3.1\x86\win32nt\bass_fx.dll"/>
@@ -53,6 +60,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     
     <!-- Android -->
     <file src="Ultraviolet.BASS.Native\build\MonoAndroid80\Ultraviolet.BASS.Native.targets" target="build\MonoAndroid80\Ultraviolet.BASS.Native.targets"/>
+    <file src="_._" target="lib\MonoAndroid80\_._"/>
     <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid80\lib\armeabi-v7a\libbass.so"/>
     <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid80\lib\armeabi-v7a\libbass_fx.so"/>
     <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid80\lib\x86\libbass.so"/>
