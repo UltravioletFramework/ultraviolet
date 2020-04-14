@@ -139,7 +139,7 @@
   <Target Name="BuildNETCore3" DependsOnTargets="SetNETCore3BuildParameters">
     <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore3_Solution)&quot; -c $(Configuration)"/>
   </Target>
-  <Target Name="BuildNETCore3Tools" AfterTargets="BuildNETCore3" Condition="'$(BuildTools)' == 'true' ">
+  <Target Name="BuildNETCore3Tools" AfterTargets="BuildNETCore3" Condition="'$(BuildTools)' == 'true'">
     <Exec Command="dotnet publish &quot;Source/UvFont/NETCore3/UvFont.NETCore3.csproj&quot; -c $(Configuration)" />
     <Exec Command="dotnet publish &quot;Source/UvArchive/NETCore3/UvArchive.NETCore3.csproj&quot; -c $(Configuration)" />
     <Exec Command="dotnet publish &quot;Source/UvAssetList/NETCore3/UvAssetList.NETCore3.csproj&quot; -c $(Configuration)" />
@@ -151,6 +151,12 @@
     <CallTarget Targets="CopyStandardBinaries"/>
     <CallTarget Targets="CopyToolsBinaries" Condition=" '$(BuildTools)' == 'true' "/>
     <Copy SourceFiles="@(Ultraviolet_Shims_NETCore3)" DestinationFiles="@(Ultraviolet_Shims_NETCore3->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+  <Target Name="CopyWindowsFormsBinaries" AfterTargets="BuildNETCore3" Condition="'$(BuildWindowsForms)' == 'true'">
+    <CreateItem Include="Source/Ultraviolet.Windows.Forms/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/Ultraviolet.Windows.Forms.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Windows_Forms"/>
+    </CreateItem>
+    <Copy SourceFiles="@(Ultraviolet_Windows_Forms)" DestinationFiles="@(Ultraviolet_Windows_Forms->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 
   <!-- ANDROID -->
