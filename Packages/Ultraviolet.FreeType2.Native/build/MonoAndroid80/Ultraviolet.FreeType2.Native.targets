@@ -24,6 +24,7 @@
       <Link>lib\x86\libpng16.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>  
+  </ItemGroup>
   <PropertyGroup>  
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
