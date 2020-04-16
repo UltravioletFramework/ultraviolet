@@ -3,7 +3,7 @@ using Android.Content.PM;
 
 namespace UvDebug
 {
-    [Activity(Label = "UvDebug Foo Bar Baz", MainLauncher = true, ConfigurationChanges =
+    [Activity(Label = "UvDebug", MainLauncher = true, ConfigurationChanges =
         ConfigChanges.Orientation |
         ConfigChanges.ScreenSize |
         ConfigChanges.KeyboardHidden)]
