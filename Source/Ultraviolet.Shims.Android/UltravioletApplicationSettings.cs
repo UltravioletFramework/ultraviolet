@@ -7,12 +7,12 @@ namespace Ultraviolet
     /// <summary>
     /// Represents an Ultraviolet activity's internal settings.
     /// </summary>
-    internal class UltravioletActivitySettings
+    internal class UltravioletApplicationSettings
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UltravioletActivitySettings"/> class.
+        /// Initializes a new instance of the <see cref="UltravioletApplicationSettings"/> class.
         /// </summary>
-        private UltravioletActivitySettings()
+        private UltravioletApplicationSettings()
         {
 
         }
@@ -22,11 +22,11 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="path">The path to the file in which to save the application settings.</param>
         /// <param name="settings">The <see cref="UltravioletApplicationSettings"/> to serialize to the specified file.</param>
-        public static void Save(String path, UltravioletActivitySettings settings)
+        public static void Save(String path, UltravioletApplicationSettings settings)
         {
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement("Settings",
-                    UltravioletActivityAudioSettings.Save(settings.Audio)
+                    UltravioletApplicationAudioSettings.Save(settings.Audio)
                 ));
             xml.Save(path);
         }
@@ -36,13 +36,13 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="path">The path to the file from which to load the application settings.</param>
         /// <returns>The <see cref="UltravioletApplicationSettings"/> which were deserialized from the specified file.</returns>
-        public static UltravioletActivitySettings Load(String path)
+        public static UltravioletApplicationSettings Load(String path)
         {
             var xml = XDocument.Load(path);
 
-            var settings = new UltravioletActivitySettings();
+            var settings = new UltravioletApplicationSettings();
 
-            settings.Audio = UltravioletActivityAudioSettings.Load(xml.Root.Element("Audio"));
+            settings.Audio = UltravioletApplicationAudioSettings.Load(xml.Root.Element("Audio"));
 
             if (settings.Audio == null)
                 return null;
@@ -55,13 +55,13 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <returns>The <see cref="UltravioletApplicationSettings"/> which was retrieved.</returns>
-        public static UltravioletActivitySettings FromCurrentSettings(UltravioletContext uv)
+        public static UltravioletApplicationSettings FromCurrentSettings(UltravioletContext uv)
         {
             Contract.Require(uv, nameof(uv));
 
-            var settings = new UltravioletActivitySettings();
+            var settings = new UltravioletApplicationSettings();
 
-            settings.Audio = UltravioletActivityAudioSettings.FromCurrentSettings(uv);
+            settings.Audio = UltravioletApplicationAudioSettings.FromCurrentSettings(uv);
 
             return settings;
         }
@@ -79,7 +79,7 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the activity's audio settings.
         /// </summary>
-        public UltravioletActivityAudioSettings Audio
+        public UltravioletApplicationAudioSettings Audio
         {
             get;
             private set;

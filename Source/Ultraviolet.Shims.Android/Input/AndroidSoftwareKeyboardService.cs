@@ -12,7 +12,7 @@ namespace Ultraviolet.Shims.Android.Input
         /// <inheritdoc/>
         public override Boolean ShowSoftwareKeyboard(KeyboardMode mode)
         {
-            var activity = UltravioletActivity.Instance;
+            var activity = UltravioletApplication.Instance;
             if (activity == null)
                 return false;
 
@@ -46,7 +46,7 @@ namespace Ultraviolet.Shims.Android.Input
         /// <inheritdoc/>
         public override Boolean HideSoftwareKeyboard()
         {
-            var activity = UltravioletActivity.Instance;
+            var activity = UltravioletApplication.Instance;
             if (activity == null)
                 return false;
 

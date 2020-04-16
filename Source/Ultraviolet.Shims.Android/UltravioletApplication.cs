@@ -19,16 +19,16 @@ namespace Ultraviolet
     /// <summary>
     /// Represents an <see cref="Activity"/> which hosts and runs an Ultraviolet application.
     /// </summary>
-    public abstract class UltravioletActivity : SDLActivity,
+    public abstract class UltravioletApplication : SDLActivity,
         IMessageSubscriber<UltravioletMessageID>,
         IUltravioletComponent,
         IUltravioletHost,
         IDisposable
     {
         /// <summary>
-        /// Initializes the <see cref="UltravioletActivity"/> type.
+        /// Initializes the <see cref="UltravioletApplication"/> type.
         /// </summary>
-        static UltravioletActivity()
+        static UltravioletApplication()
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
             {
@@ -46,11 +46,11 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UltravioletActivity"/> class.
+        /// Initializes a new instance of the <see cref="UltravioletApplication"/> class.
         /// </summary>
         /// <param name="developerName">The name of the company or developer who built this application.</param>
         /// <param name="applicationName">The name of the application </param>
-        protected UltravioletActivity(String developerName, String applicationName)
+        protected UltravioletApplication(String developerName, String applicationName)
         {
             Contract.RequireNotEmpty(developerName, nameof(developerName));
             Contract.RequireNotEmpty(applicationName, nameof(applicationName));
@@ -276,11 +276,11 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the current instance of the <see cref="UltravioletActivity"/> class.
+        /// Gets the current instance of the <see cref="UltravioletApplication"/> class.
         /// </summary>
-        internal static UltravioletActivity Instance
+        internal static UltravioletApplication Instance
         {
-            get { return MSingleton as UltravioletActivity; }
+            get { return MSingleton as UltravioletApplication; }
         }
 
         /// <summary>
@@ -799,7 +799,7 @@ namespace Ultraviolet
 
                 try
                 {
-                    var settings = UltravioletActivitySettings.Load(path);
+                    var settings = UltravioletApplicationSettings.Load(path);
                     if (settings == null)
                         return;
 
@@ -823,8 +823,8 @@ namespace Ultraviolet
 
                 var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
 
-                this.settings = UltravioletActivitySettings.FromCurrentSettings(Ultraviolet);
-                UltravioletActivitySettings.Save(path, settings);
+                this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
+                UltravioletApplicationSettings.Save(path, settings);
             }
         }
 
@@ -921,6 +921,6 @@ namespace Ultraviolet
         private TimeSpan inactiveSleepTime = UltravioletTimingLogic.DefaultInactiveSleepTime;
 
         // The application's settings.
-        private UltravioletActivitySettings settings;
+        private UltravioletApplicationSettings settings;
     }
 }

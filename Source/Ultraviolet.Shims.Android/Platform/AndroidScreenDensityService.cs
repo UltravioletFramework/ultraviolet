@@ -115,7 +115,7 @@ namespace Ultraviolet.Shims.Android.Platform
         /// </summary>
         private void EnsureMetrics()
         {
-            var activity = UltravioletActivity.Instance;
+            var activity = UltravioletApplication.Instance;
             if (activity == this.activity)
                 return;
 

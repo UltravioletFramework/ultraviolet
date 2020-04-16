@@ -9,14 +9,14 @@ namespace Ultraviolet
     /// <summary>
     /// Represents an Ultraviolet activity's internal audio settings.
     /// </summary>
-    internal class UltravioletActivityAudioSettings
+    internal class UltravioletApplicationAudioSettings
     {
         /// <summary>
         /// Saves the specified audio settings to XML.
         /// </summary>
         /// <param name="settings">The audio settings to save.</param>
         /// <returns>An XML element that represents the specified audio settings.</returns>
-        public static XElement Save(UltravioletActivityAudioSettings settings)
+        public static XElement Save(UltravioletApplicationAudioSettings settings)
         {
             if (settings == null)
                 return null;
@@ -38,14 +38,14 @@ namespace Ultraviolet
         /// <param name="xml">The XML element that contains the audio settings to load.</param>
         /// <returns>The audio settings that were loaded from the specified XML element or <see langword="null"/> if 
         /// settings could not be loaded correctly.</returns>
-        public static UltravioletActivityAudioSettings Load(XElement xml)
+        public static UltravioletApplicationAudioSettings Load(XElement xml)
         {
             if (xml == null)
                 return null;
 
             try
             {
-                var settings = new UltravioletActivityAudioSettings();
+                var settings = new UltravioletApplicationAudioSettings();
 
                 settings.PlaybackDeviceName = xml.ElementValue<String>(nameof(PlaybackDeviceName));
                 settings.AudioMasterVolume = xml.ElementValue<Single>(nameof(AudioMasterVolume));
@@ -76,12 +76,12 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <returns>The audio settings which were retrieved.</returns>
-        public static UltravioletActivityAudioSettings FromCurrentSettings(UltravioletContext uv)
+        public static UltravioletApplicationAudioSettings FromCurrentSettings(UltravioletContext uv)
         {
             Contract.Require(uv, nameof(uv));
 
             var audio = uv.GetAudio();
-            var settings = new UltravioletActivityAudioSettings();
+            var settings = new UltravioletApplicationAudioSettings();
 
             settings.PlaybackDeviceName = audio.PlaybackDevice?.Name;
             settings.AudioMasterVolume = audio.AudioMasterVolume;

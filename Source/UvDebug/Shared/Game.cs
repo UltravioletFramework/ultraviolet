@@ -20,15 +20,7 @@ namespace UvDebug
     /// <summary>
     /// Represents the main application object.
     /// </summary>
-#if ANDROID
-    [Android.App.Activity(Label = "UvDebug", MainLauncher = true, ConfigurationChanges =
-        Android.Content.PM.ConfigChanges.Orientation |
-        Android.Content.PM.ConfigChanges.ScreenSize |
-        Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public partial class Game : UltravioletActivity
-#else
     public partial class Game : UltravioletApplication
-#endif
     {
         /// <summary>
         /// Initializes a new instance of the Game 

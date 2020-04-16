@@ -65,9 +65,9 @@
     <Compile Include="Platform\AndroidScreenRotationService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UltravioletActivity.cs" />
-    <Compile Include="UltravioletActivityAudioSettings.cs" />
-    <Compile Include="UltravioletActivitySettings.cs" />
+    <Compile Include="UltravioletApplication.cs" />
+    <Compile Include="UltravioletApplicationAudioSettings.cs" />
+    <Compile Include="UltravioletApplicationSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
