@@ -193,7 +193,7 @@ namespace Ultraviolet.Core.Text
                     unchecked
                     {
                         for (int count = 0, ix = start; count < length; count++, ix++)
-                            hash = hash * 32 + sb[ix].GetHashCode();
+                            hash = hash * 31 + sb[ix].GetHashCode();
                     }
                     break;
 
