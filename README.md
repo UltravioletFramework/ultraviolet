@@ -41,23 +41,23 @@ Some core features of the Ultraviolet Framework:
    
    Ultraviolet's object loader allows you to easily create complicated hierarchies of objects from simple XML files. This is more than just an XML serializer&mdash;because it is integrated with Ultraviolet, it has direct knowledge of your game's content assets and object lists, making it possible to reference them in a simple, flexible, and readable way.
 
-The Ultraviolet Framework's source code is [available on GitHub](https://github.com/tlgkccampbell/ultraviolet). If you're developing on Windows, and you just want to get started making games, you can use the installer provided as part of the [latest release](https://github.com/tlgkccampbell/ultraviolet/releases). It will ensure that you have the necessary DLLs and install Visual Studio templates for developing Ultraviolet applications. 
+The Ultraviolet Framework's source code is [available on GitHub](https://github.com/tlgkccampbell/ultraviolet).
 
 Getting Started
 ===============
 
-If you don't want to build Ultraviolet yourself, official packages are available through [NuGet](https://www.nuget.org/packages?q=ultraviolet). There are packages for each of Ultraviolet's individual libraries, as well as several packages which aggregate all of the packages required by a particular target platform.
+If you don't want to build Ultraviolet yourself, official packages are available through [NuGet](https://www.nuget.org/packages?q=ultraviolet).
 
-The wiki contains a quick start guide for development on both [Windows](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-on-Windows) and [macOS](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-on-macOS).
+The wiki contains a [quick start guide](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-with-.NET-Core-3.1) for development using .NET Core 3.1.
 
 A [dedicated repository](https://github.com/tlgkccampbell/ultraviolet-samples) contains a number of sample projects which demonstrate various features of the Framework.
 
 Requirements
 ============
 
-Using Ultraviolet requires that your project is targeted against .NET Framework 4.7 or later, or an equivalent Mono or Xamarin runtime.
+Ultraviolet can be used with any version of .NET which supports .NET Standard 2.0 or .NET Standard 2.1.
 
-Building Ultraviolet requires Visual Studio 2017 or later, or an equivalent version of the Mono development tools.
+Building Ultraviolet requires .NET Core SDK 3.1.
 
 Building the mobile projects requires the appropriate Xamarin tools to be installed.
 
@@ -66,9 +66,8 @@ The following platforms are supported for building the Framework:
 * Linux (Ubuntu)
 * Android
 * macOS
-* iOS
 
-Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work, assuming that they can run Mono and you can provide appropriate versions of the native dependencies, but only Ubuntu has been thoroughly tested.
+Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work, assuming that they can run .NET Core 3.1 and you can provide appropriate versions of the native dependencies, but only Ubuntu has been thoroughly tested.
 
 Building
 ========
@@ -79,10 +78,6 @@ The `Sources` folder contains several solution files for the various platforms w
 
 __Mobile Platforms__
 
-Building Ultraviolet for iOS and Android requires that Xamarin be installed. As with the desktop version of the Framework, you can either build the appropriate solution file or `Ultraviolet.proj`, but in the latter case you must also explicitly specify that you want to use one of the mobile build targets, i.e.:
+Building Ultraviolet for Android requires that Xamarin be installed. As with the desktop version of the Framework, you can either build the appropriate solution file or `Ultraviolet.proj`, but in the latter case you must also explicitly specify that you want to use one of the mobile build targets, i.e.:
 
     msbuild Ultraviolet.proj /t:BuildAndroid
-    
-or
-
-    msbuild Ultraviolet.proj /t:BuildiOS
