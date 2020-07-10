@@ -256,7 +256,7 @@ namespace Ultraviolet.Presentation.Compiler
                 lock (syncObject)
                     semanticModel = result.GetSemanticModel(oldTree, true);
 
-                newTree = RewriteSyntaxTree(oldTree, semanticModel, semanticModel => new FixupExpressionPropertiesRewriter(semanticModel));
+                newTree = RewriteSyntaxTree(oldTree, semanticModel, sm => new FixupExpressionPropertiesRewriter(sm));
                 if (newTree != oldTree)
                 {
                     lock (syncObject)
@@ -269,7 +269,7 @@ namespace Ultraviolet.Presentation.Compiler
                 lock (syncObject)
                     semanticModel = result.GetSemanticModel(oldTree, true);
 
-                newTree = RewriteSyntaxTree(oldTree, semanticModel, semanticModel => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(semanticModel));
+                newTree = RewriteSyntaxTree(oldTree, semanticModel, sm => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(sm));
                 if (newTree != oldTree)
                 {
                     lock (syncObject)
