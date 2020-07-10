@@ -38,5 +38,11 @@ namespace Ultraviolet.Presentation
         /// of in the application's working directory.
         /// </summary>
         WorkInTemporaryDirectory = 0x0008,
+
+        /// <summary>
+        /// The expression compiler will write its source code files out to the working directory. If
+        /// the <see cref="WorkInTemporaryDirectory"/> flag is specified, this flag is ignored.
+        /// </summary>
+        WriteCompiledFilesToWorkingDirectory = 0x0010,
     }
 }

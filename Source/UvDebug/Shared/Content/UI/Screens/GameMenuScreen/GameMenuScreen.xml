@@ -23,7 +23,9 @@
           <Grid>
             <Rectangle Name="mainmenu-panel-background"/>
             <StackPanel Name="mainmenu-panel-options">
+              <HSlider Name="foo"/>
               <Button Name="btn-start" Click="Click_Start">Start</Button>
+              <Button CommandParameter="{{foo->Value}}">Click Me?</Button>
               <Button Name="btn-exit" Click="Click_Exit">Exit</Button>
             </StackPanel>
           </Grid>

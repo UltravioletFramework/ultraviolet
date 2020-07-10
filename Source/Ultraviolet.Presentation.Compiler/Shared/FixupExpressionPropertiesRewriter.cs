@@ -66,7 +66,7 @@ namespace Ultraviolet.Presentation.Compiler
                 node = node.ReplaceNode(propertyGetterReturn, 
                     propertyGetterReturn.WithExpression(
                         SyntaxFactory.CastExpression(
-                            SyntaxFactory.IdentifierName(propertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)), 
+                            SyntaxFactory.ParseTypeName(propertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)), 
                             propertyGetterReturn.Expression)
                     )
                 );
@@ -112,7 +112,7 @@ namespace Ultraviolet.Presentation.Compiler
                         node = node.ReplaceNode(propertyAssignment,
                             propertyAssignment.WithRight(
                                 SyntaxFactory.CastExpression(
-                                    SyntaxFactory.IdentifierName(propertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
+                                    SyntaxFactory.ParseTypeName(propertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
                                     propertyAssignment.Right
                                 )
                             )
@@ -156,7 +156,7 @@ namespace Ultraviolet.Presentation.Compiler
                                         node = node.ReplaceNode(arg,
                                             arg.WithExpression(
                                                 SyntaxFactory.CastExpression(
-                                                    SyntaxFactory.IdentifierName(candidate.Parameters[j].Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
+                                                    SyntaxFactory.ParseTypeName(candidate.Parameters[j].Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
                                                     arg.Expression
                                                 )
                                             )

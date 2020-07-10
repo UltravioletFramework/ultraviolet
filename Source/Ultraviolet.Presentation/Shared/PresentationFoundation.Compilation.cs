@@ -264,15 +264,15 @@ namespace Ultraviolet.Presentation
         /// </summary>
         private static BindingExpressionCompilerOptions CreateCompilerOptions(String root, CompileExpressionsFlags flags)
         {
-            var generateInMemory = (flags & CompileExpressionsFlags.GenerateInMemory) == CompileExpressionsFlags.GenerateInMemory;
             var options = new BindingExpressionCompilerOptions()
             {
-                GenerateInMemory = generateInMemory,
+                GenerateInMemory = flags.HasFlag(CompileExpressionsFlags.GenerateInMemory),
                 WriteErrorsToFile = true,
+                WriteCompiledFilesToWorkingDirectory = flags.HasFlag(CompileExpressionsFlags.WriteCompiledFilesToWorkingDirectory),
                 Input = root,
                 Output = CompiledExpressionsAssemblyName,
-                IgnoreCache = generateInMemory || (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache,
-                WorkInTemporaryDirectory = (flags & CompileExpressionsFlags.WorkInTemporaryDirectory) == CompileExpressionsFlags.WorkInTemporaryDirectory
+                IgnoreCache = flags.HasFlag(CompileExpressionsFlags.GenerateInMemory) || flags.HasFlag(CompileExpressionsFlags.IgnoreCache),
+                WorkInTemporaryDirectory = flags.HasFlag(CompileExpressionsFlags.WorkInTemporaryDirectory),
             };
             return options;
         }
