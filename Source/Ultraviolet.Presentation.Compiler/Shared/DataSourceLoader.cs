@@ -415,7 +415,7 @@ namespace Ultraviolet.Presentation.Compiler
             {
                 try
                 {
-                    var name = $"__Wrapper_{Guid.NewGuid().ToString("N")}";
+                    var name = $"__Wrapper_{Path.GetFileNameWithoutExtension(file)}_{Guid.NewGuid():N}";
                     var definition = CreateDataSourceDefinitionFromFile(null, name, file);
                     if (definition != null)
                     {

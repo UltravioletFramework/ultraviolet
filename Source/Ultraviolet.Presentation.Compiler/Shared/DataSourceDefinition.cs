@@ -56,7 +56,7 @@ namespace Ultraviolet.Presentation.Compiler
         public static DataSourceDefinition FromComponentTemplate(Type templatedControl, XElement definition)
         {
             var dataSourceIdentifier = templatedControl.Name;
-            var dataSourceWrapperName = $"__Wrapper_{Guid.NewGuid().ToString("N")}";
+            var dataSourceWrapperName = $"__Wrapper_{templatedControl.Name}_{Guid.NewGuid():N}";
             var dataSourceWrapperNamespace = PresentationFoundationView.DataSourceWrapperNamespaceForComponentTemplates;
 
             return new DataSourceDefinition(templatedControl.FullName,
