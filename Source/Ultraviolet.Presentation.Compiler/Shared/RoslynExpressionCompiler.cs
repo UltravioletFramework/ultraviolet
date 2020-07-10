@@ -125,7 +125,7 @@ namespace Ultraviolet.Presentation.Compiler
                 PerformInitialCompilationPass(state, models, referencedAssemblies, debug);
 
             var fixupPassResult =
-                PerformSyntaxTreeFixup(initialPassResult);
+                PerformSyntaxTreeFixup(initialPassResult, models);
 
             if (fixupPassResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
             {
@@ -233,41 +233,56 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Performs fixup steps on the specified compilation.
         /// </summary>
-        private static Compilation PerformSyntaxTreeFixup(Compilation compilation)
+        private static Compilation PerformSyntaxTreeFixup(Compilation compilation, IEnumerable<DataSourceWrapperInfo> infos)
         {
             var syncObject = new Object();
             var trees = compilation.SyntaxTrees.ToList();
-            var result = compilation;
+            var result = compilation.Clone();
 
             Parallel.ForEach(trees, tree =>
             {
-                var treeCompilation = compilation;
-
                 var changed = false;
-                var originalTree = (CSharpSyntaxTree)tree;
+
+                var semanticModel = default(SemanticModel);
                 var oldTree = (CSharpSyntaxTree)tree;
                 var newTree = (CSharpSyntaxTree)tree;
 
-                oldTree = newTree;
-                newTree = RewriteSyntaxTree(treeCompilation, newTree, semanticModel => new FixupExpressionPropertiesRewriter(semanticModel));
+                var info = infos.Where(x => String.Equals(x.UniqueID.ToString(),
+                    Path.GetFileNameWithoutExtension(oldTree.FilePath), StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
+                
+                if (info == null)
+                    return;
+
+                lock (syncObject)
+                    semanticModel = result.GetSemanticModel(oldTree, true);
+
+                newTree = RewriteSyntaxTree(oldTree, semanticModel, semanticModel => new FixupExpressionPropertiesRewriter(semanticModel));
                 if (newTree != oldTree)
                 {
-                    treeCompilation = treeCompilation.ReplaceSyntaxTree(oldTree, newTree);
+                    lock (syncObject)
+                        result = result.ReplaceSyntaxTree(oldTree, newTree);
+
+                    oldTree = newTree;
                     changed = true;
                 }
 
-                oldTree = newTree;
-                newTree = RewriteSyntaxTree(treeCompilation, newTree, semanticModel => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(semanticModel));
+                lock (syncObject)
+                    semanticModel = result.GetSemanticModel(oldTree, true);
+
+                newTree = RewriteSyntaxTree(oldTree, semanticModel, semanticModel => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(semanticModel));
                 if (newTree != oldTree)
                 {
-                    treeCompilation = treeCompilation.ReplaceSyntaxTree(oldTree, newTree);
+                    lock (syncObject)
+                        result = result.ReplaceSyntaxTree(oldTree, newTree);
+
+                    oldTree = newTree;
                     changed = true;
                 }
 
                 if (changed)
                 {
                     lock (syncObject)
-                        result = result.ReplaceSyntaxTree(originalTree, newTree);
+                        info.DataSourceWrapperSourceCode = newTree.ToString();
                 }
             });
             
@@ -277,10 +292,8 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Rewrites a syntax tree using the specified rewriter.
         /// </summary>
-        private static CSharpSyntaxTree RewriteSyntaxTree(Compilation compilation, CSharpSyntaxTree tree, Func<SemanticModel, CSharpSyntaxRewriter> rewriter)
+        private static CSharpSyntaxTree RewriteSyntaxTree(CSharpSyntaxTree tree, SemanticModel semanticModel, Func<SemanticModel, CSharpSyntaxRewriter> rewriter)
         {
-            var semanticModel = compilation.GetSemanticModel(tree, true);
-
             var rewrittenRoot = rewriter(semanticModel).Visit(tree.GetRoot());
             if (rewrittenRoot != tree.GetRoot())
             {

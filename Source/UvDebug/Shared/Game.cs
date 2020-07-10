@@ -331,7 +331,7 @@ namespace UvDebug
             {
                 var upf = Ultraviolet.GetUI().GetPresentationFoundation();
 
-                var flags = CompileExpressionsFlags.None;
+                var flags = CompileExpressionsFlags.None;// WriteCompiledFilesToWorkingDirectory;
 
                 if (resolveContent)
                     flags |= CompileExpressionsFlags.ResolveContentFiles;
