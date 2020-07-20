@@ -230,9 +230,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (surface.Width != Width || surface.Height != Height)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
-
-            var nativesurf = ((SDL2.Graphics.SDL2Surface2D)surface).NativePtr;
-            SetRawDataInternal(0, null, (IntPtr)nativesurf->pixels, 0, Width * Height * nativesurf->format->BytesPerPixel);
+            
+            SetRawDataInternal(0, null, surface.Pixels, 0, Width * Height * surface.BytesPerPixel);
         }
 
         /// <inheritdoc/>
