@@ -21,11 +21,13 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
       <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />  
+      <dependency id="Ultraviolet.OpenGL.Environment" version="UV_VERSION" />  
     </group>
     <group targetFramework="netstandard2.1">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
       <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />  
+      <dependency id="Ultraviolet.OpenGL.Environment" version="UV_VERSION" />  
     </group>
   </dependencies>
   </metadata>
