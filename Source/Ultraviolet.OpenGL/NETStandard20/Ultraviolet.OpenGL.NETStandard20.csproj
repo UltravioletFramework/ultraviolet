@@ -42,6 +42,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard20\Ultraviolet.OpenGL.Bindings.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Environment\NETStandard20\Ultraviolet.OpenGL.Environment.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard20\Ultraviolet.SDL2.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>

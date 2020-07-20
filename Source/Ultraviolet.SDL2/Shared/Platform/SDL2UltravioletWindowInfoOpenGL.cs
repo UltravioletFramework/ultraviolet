@@ -23,25 +23,6 @@ namespace Ultraviolet.SDL2.Platform
         {
 
         }
-
-        /// <summary>
-        /// Draws the current window.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        public void Draw(UltravioletTime time)
-        {
-            var oglwin = (SDL2UltravioletWindow)GetCurrent();
-            oglwin.Draw(time);
-        }
-
-        /// <summary>
-        /// Swaps the back buffer and the front buffer.
-        /// </summary>
-        public void Swap()
-        {
-            var oglwin = (SDL2UltravioletWindow)GetCurrent();
-            SDL_GL_SwapWindow((IntPtr)oglwin);
-        }
         
         /// <summary>
         /// Makes the specified window the current window.

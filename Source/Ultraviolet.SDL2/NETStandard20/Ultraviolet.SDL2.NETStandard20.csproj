@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Environment\NETStandard20\Ultraviolet.OpenGL.Environment.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
 

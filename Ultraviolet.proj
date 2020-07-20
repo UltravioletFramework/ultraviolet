@@ -39,6 +39,9 @@
     <CreateItem Include="Source/Ultraviolet.OpenGL/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.OpenGL.Environment/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Environment.*">
+      <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Environment"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.SDL2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.SDL2.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2"/>
     </CreateItem>
@@ -71,6 +74,7 @@
     <Copy SourceFiles="@(Ultraviolet_BASS)" DestinationFiles="@(Ultraviolet_BASS->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_FMOD)" DestinationFiles="@(Ultraviolet_FMOD->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL)" DestinationFiles="@(Ultraviolet_OpenGL->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_OpenGL_Environment)" DestinationFiles="@(Ultraviolet_OpenGL_Environment->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2)" DestinationFiles="@(Ultraviolet_SDL2->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

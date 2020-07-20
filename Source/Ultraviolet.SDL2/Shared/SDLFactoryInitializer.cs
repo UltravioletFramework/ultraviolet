@@ -1,11 +1,11 @@
 ﻿using Ultraviolet.Graphics;
+using Ultraviolet.OpenGL;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Platform;
 
 namespace Ultraviolet.SDL2
 {
-
     /// <summary>
     /// Initializes factory methods for the SDL implementation of the graphics subsystem.
     /// </summary>
@@ -31,6 +31,9 @@ namespace Ultraviolet.SDL2
 
             var powerManagementService = new SDL2PowerManagementService();
             factory.SetFactoryMethod<PowerManagementServiceFactory>(() => powerManagementService);
+
+            // Graphics API services
+            factory.SetFactoryMethod<OpenGLEnvironmentFactory>((uv) => new SDL2OpenGLEnvironment(uv));
         }
     }
 }

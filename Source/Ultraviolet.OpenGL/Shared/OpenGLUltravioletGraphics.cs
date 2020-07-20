@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.OpenGL.Graphics;
-using Ultraviolet.SDL2;
-using Ultraviolet.SDL2.Platform;
-using static Ultraviolet.SDL2.Native.SDL_GLattr;
-using static Ultraviolet.SDL2.Native.SDL_GLcontextFlag;
-using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.OpenGL
 {
@@ -23,26 +17,28 @@ namespace Ultraviolet.OpenGL
         /// Initializes a new instance of the OpenGLUltravioletGraphics class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="environment">The interface with which OpenGL communicates with the underlying platform environment.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
         /// <param name="versionRequested">The OpenGL context version which is requested by the application.</param>
         /// <param name="versionRequired">The OpenGL context version which is required by the Ultraviolet Framework.</param>
-        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested, Version versionRequired)
-            : base(uv)
+        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLEnvironment environment,
+            OpenGLUltravioletConfiguration configuration, Version versionRequested, Version versionRequired) : base(uv)
         {
+            this.environment = environment;
+
             if (this.context == IntPtr.Zero && configuration.Debug)
-                this.context = TryCreateOpenGLContext(uv, versionRequested, versionRequired, true, false) ?? IntPtr.Zero;
+                this.context = TryCreateOpenGLContext(uv, environment, versionRequested, versionRequired, true, false) ?? IntPtr.Zero;
 
             if (this.context == IntPtr.Zero)
-                this.context = TryCreateOpenGLContext(uv, versionRequested, versionRequired, false, true) ?? IntPtr.Zero;
+                this.context = TryCreateOpenGLContext(uv, environment, versionRequested, versionRequired, false, true) ?? IntPtr.Zero;
 
-            if (SDL_GL_SetSwapInterval(1) < 0 && uv.Platform != UltravioletPlatform.iOS)
-                throw new SDL2Exception();
+            if (!environment.SetSwapInterval(1) && uv.Platform != UltravioletPlatform.iOS)
+                environment.ThrowPlatformErrorException();
 
             if (gl.Initialized)
-            {
                 gl.Uninitialize();
-            }
-            gl.Initialize(new OpenGLInitializer());
+
+            gl.Initialize(new OpenGLInitializer(environment));
             
             if (!gl.IsVersionAtLeast(versionRequested ?? versionRequired))
                 throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(gl.MajorVersion, gl.MinorVersion, versionRequested.Major, versionRequested.Minor));
@@ -784,7 +780,7 @@ namespace Ultraviolet.OpenGL
             if (gl.Initialized)
                 gl.Uninitialize();
 
-            SDL_GL_DeleteContext(context);
+            environment.DeleteOpenGLContext(context);
             context = IntPtr.Zero;
 
             base.Dispose(disposing);
@@ -793,14 +789,12 @@ namespace Ultraviolet.OpenGL
         /// <summary>
         /// Attempts to create an OpenGL context.
         /// </summary>
-        private static IntPtr? TryCreateOpenGLContext(UltravioletContext uv, Version versionRequested, Version versionRequired, Boolean debug, Boolean throwOnFailure)
+        private static IntPtr? TryCreateOpenGLContext(UltravioletContext uv, OpenGLEnvironment environment,
+            Version versionRequested, Version versionRequired, Boolean debug, Boolean throwOnFailure)
         {
-            if (debug)
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, (int)SDL_GL_CONTEXT_DEBUG_FLAG);
-            else
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+            if (!environment.RequestDebugContext(debug))
+                environment.ThrowPlatformErrorException();
 
-            var masterptr = ((SDL2UltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
             var gles = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
             var versionArray = gles ? KnownOpenGLESVersions : KnownOpenGLVersions;
             var versionMin = versionRequested ?? versionRequired;
@@ -818,15 +812,12 @@ namespace Ultraviolet.OpenGL
                     return null;
                 }
 
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionCurrent.Major) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionCurrent.Minor) < 0)
-                    throw new SDL2Exception();
+                if (!environment.RequestOpenGLVersion(versionCurrent))
+                    environment.ThrowPlatformErrorException();
 
                 versionCurrent = versionArray[++versionCurrentIndex];
             }
-            while ((context = SDL_GL_CreateContext(masterptr)) == IntPtr.Zero);
+            while ((context = environment.CreateOpenGLContext()) == IntPtr.Zero);
 
             return context;
         }
@@ -1079,6 +1070,9 @@ namespace Ultraviolet.OpenGL
             new Version(2, 0),
             new Version(1, 0),
         };
+
+        // Platform environment interface.
+        private readonly OpenGLEnvironment environment;
 
         // Device state.
         private IntPtr context;

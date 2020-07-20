@@ -1,6 +1,6 @@
 ﻿using System;
+using Ultraviolet.Core;
 using Ultraviolet.OpenGL.Bindings;
-using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.OpenGL
 {
@@ -10,22 +10,26 @@ namespace Ultraviolet.OpenGL
     /// </summary>
     public sealed class OpenGLInitializer : IOpenGLInitializer
     {
-        /// <inheritdoc/>
-        public void Prepare()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLInitializer"/> class.
+        /// </summary>
+        /// <param name="environment">The interface with which OpenGL communicates with its underlying platform environment.</param>
+        public OpenGLInitializer(OpenGLEnvironment environment)
         {
-
+            Contract.Require(environment, nameof(environment));
+            this.environment = environment;
         }
 
         /// <inheritdoc/>
-        public void Cleanup()
-        {
-            SDL_ClearError();
-        }
+        public void Prepare() { }
 
         /// <inheritdoc/>
-        public IntPtr GetProcAddress(String name)
-        {
-            return SDL_GL_GetProcAddress(name);
-        }
+        public void Cleanup() => environment.ClearErrors();
+
+        /// <inheritdoc/>
+        public IntPtr GetProcAddress(String factoryName) => environment.GetProcAddress(factoryName);
+
+        // The interface with which OpenGL communicates with its underlying platform environment.
+        private readonly OpenGLEnvironment environment;
     }
 }

@@ -7,11 +7,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
-using Ultraviolet.SDL2.Platform;
 using Ultraviolet.UI;
-using static Ultraviolet.SDL2.Native.SDL_GLattr;
-using static Ultraviolet.SDL2.Native.SDL_GLprofile;
-using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.OpenGL
 {
@@ -46,13 +42,14 @@ namespace Ultraviolet.OpenGL
             if (!InitSDL(configuration))
                 throw new SDL2Exception();
 
+            var sdlAssembly = typeof(SDLNative).Assembly;
+            InitializeFactoryMethodsInAssembly(sdlAssembly);
+
+            this.environment = Factory.GetFactoryMethod<OpenGLEnvironmentFactory>()(this);
             InitOpenGLVersion(configuration, out var versionRequested, out var versionRequired, out var isGLEs);
 
             if (!configuration.EnableServiceMode)
-                InitOpenGLAttributes(configuration, isGLEs);
-
-            var sdlAssembly = typeof(SDLNative).Assembly;
-            InitializeFactoryMethodsInAssembly(sdlAssembly);
+                InitOpenGLEnvironment(configuration, isGLEs);
 
             var sdlconfig = new SDL2PlatformConfiguration();
             sdlconfig.RenderingAPI = SDL2PlatformRenderingAPI.OpenGL;
@@ -71,7 +68,7 @@ namespace Ultraviolet.OpenGL
             }
             else
             {
-                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested, versionRequired);
+                this.graphics = new OpenGLUltravioletGraphics(this, environment, configuration, versionRequested, versionRequired);
                 ((OpenGLUltravioletGraphics)this.graphics).ResetDeviceStates();
                 this.audio = InitializeAudioSubsystem(configuration);
                 this.input = new SDL2UltravioletInput(this);
@@ -109,27 +106,26 @@ namespace Ultraviolet.OpenGL
             if (graphics is OpenGLUltravioletGraphics oglgfx)
             {
                 var glcontext = oglgfx.OpenGLContext;
-                var windowInfo = (SDL2UltravioletWindowInfoOpenGL)platform.Windows;
                 foreach (var window in platform.Windows)
                 {
-                    windowInfo.DesignateCurrent(window, glcontext);
+                    environment.DesignateCurrentWindow(window, glcontext);
 
                     window.Compositor.BeginFrame();
                     window.Compositor.BeginContext(CompositionContext.Scene);
 
                     OnWindowDrawing(time, window);
 
-                    windowInfo.Draw(time);
+                    environment.DrawFramebuffer(time);
 
                     OnWindowDrawn(time, window);
 
                     window.Compositor.Compose();
                     window.Compositor.Present();
 
-                    windowInfo.Swap();
+                    environment.SwapFramebuffers();
                 }
 
-                windowInfo.DesignateCurrent(null, glcontext);
+                environment.DesignateCurrentWindow(null, glcontext);
 
                 oglgfx.SetRenderTargetToBackBuffer();
                 oglgfx.UpdateFrameCount();
@@ -155,6 +151,16 @@ namespace Ultraviolet.OpenGL
 
         /// <inheritdoc/>
         public override IUltravioletUI GetUI() => ui;
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(environment);
+            }
+            base.Dispose(disposing);
+        }
 
         /// <summary>
         /// Gets the assembly that implements the audio subsystem.
@@ -231,65 +237,42 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <summary>
-        /// Sets the SDL2 attributes which correspond to the application's OpenGL settings.
+        /// Sets the OpenGL environment attributes which correspond to the application's OpenGL settings.
         /// </summary>
-        private void InitOpenGLAttributes(OpenGLUltravioletConfiguration configuration, Boolean isGLES)
+        private void InitOpenGLEnvironment(OpenGLUltravioletConfiguration configuration, Boolean isGLES)
         {
-            var profile = isGLES ? SDL_GL_CONTEXT_PROFILE_ES : SDL_GL_CONTEXT_PROFILE_CORE;
+            if (!environment.RequestOpenGLProfile(isGLES))
+                environment.ThrowPlatformErrorException();
 
-            if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, (Int32)profile) < 0)
-                throw new SDL2Exception();
+            if (!environment.RequestDepthSize(configuration.BackBufferDepthSize))
+                environment.ThrowPlatformErrorException();
 
-            if (SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
-                throw new SDL2Exception();
-
-            if (SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
-                throw new SDL2Exception();
-
-            if (SDL_GL_SetAttribute(SDL_GL_RETAINED_BACKING, 0) < 0)
-                throw new SDL2Exception();
+            if (!environment.RequestStencilSize(configuration.BackBufferStencilSize))
+                environment.ThrowPlatformErrorException();
 
             if (configuration.Use32BitFramebuffer)
             {
-                if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8) < 0)
-                    throw new SDL2Exception();
+                if (!environment.Request32BitFramebuffer())
+                    environment.ThrowPlatformErrorException();
             }
             else
             {
-                if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5) < 0)
-                    throw new SDL2Exception();
+                if (!environment.Request24BitFramebuffer())
+                    environment.ThrowPlatformErrorException();
             }
 
             if (configuration.SrgbBuffersEnabled)
             {
-                if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1) < 0)
-                    throw new SDL2Exception();
+                if (!environment.RequestSrgbCapableFramebuffer())
+                    environment.ThrowPlatformErrorException();
 
-                unsafe
-                {
-                    var value = 0;
-                    if (SDL_GL_GetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, &value) < 0)
-                        throw new SDL2Exception();
-
-                    if (value != 1)
-                        configuration.SrgbBuffersEnabled = false;
-                }
+                if (!environment.IsFramebufferSrgbCapable)
+                    configuration.SrgbBuffersEnabled = false;
             }
         }
 
         // Ultraviolet subsystems.
+        private readonly OpenGLEnvironment environment;
         private readonly IUltravioletPlatform platform;
         private readonly IUltravioletContent content;
         private readonly IUltravioletGraphics graphics;
