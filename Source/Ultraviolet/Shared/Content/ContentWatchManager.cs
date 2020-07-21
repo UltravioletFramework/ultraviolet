@@ -16,7 +16,7 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="contentManager">The <see cref="ContentManager"/> instance that owns this file watcher.</param>
-        public ContentWatchManager(UltravioletContext uv, ContentManager contentManager)
+        internal ContentWatchManager(UltravioletContext uv, ContentManager contentManager)
             : base(uv)
         {
             Contract.Require(contentManager, nameof(contentManager));

@@ -17,7 +17,7 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="contentManager">The content manager that owns this dependency manager.</param>
-        public ContentDependencyManager(UltravioletContext uv, ContentManager contentManager)
+        internal ContentDependencyManager(UltravioletContext uv, ContentManager contentManager)
             : base(uv)
         {
             Contract.Require(contentManager, nameof(contentManager));
