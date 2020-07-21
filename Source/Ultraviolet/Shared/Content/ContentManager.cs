@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using Newtonsoft.Json;
@@ -38,9 +37,11 @@ namespace Ultraviolet.Content
         {
             this.RootDirectory = rootDirectory;
             this.FullRootDirectory = (rootDirectory == null) ? Directory.GetCurrentDirectory() : Path.GetFullPath(rootDirectory);
+
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
             this.watchers = new ContentWatchManager(Ultraviolet, this);
+            this.dependencies = new ContentDependencyManager(Ultraviolet, this);
 
             uv.Messages.Subscribe(this, UltravioletMessages.LowMemory, UltravioletMessages.DisplayDensityChanged);
         }
@@ -146,7 +147,7 @@ namespace Ultraviolet.Content
                     return;
 
                 assetCache.Remove(asset);
-                ClearAssetDependencies(asset);
+                dependencies.ClearAssetDependencies(asset);
             }
         }
 
@@ -189,7 +190,7 @@ namespace Ultraviolet.Content
                         continue;
 
                     assetCache.Remove(asset);
-                    ClearAssetDependencies(asset);
+                    dependencies.ClearAssetDependencies(asset);
                 }
             }
         }
@@ -256,287 +257,6 @@ namespace Ultraviolet.Content
 
             lock (cacheSyncObject)
                 return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
-        }
-
-        /// <summary>
-        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
-        /// changes to the specified dependency will also cause the main asset to be reloaded.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to add a dependency.</param>
-        /// <param name="dependency">The asset path of the dependency to add to the specified asset.</param>
-        public void AddAssetDependency(String asset, String dependency)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            AddAssetDependencyInternal(asset, dependency, primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
-        /// changes to the specified dependency will also cause the main asset to be reloaded.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to add a dependency.</param>
-        /// <param name="dependency">The asset identifier of the dependency to add to the specified asset.</param>
-        public void AddAssetDependency(AssetID asset, AssetID dependency)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            AddAssetDependencyInternal(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency), primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
-        /// changes to the specified dependency will also cause the main asset to be reloaded.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to add a dependency.</param>
-        /// <param name="dependency">The asset path of the dependency to add to the specified asset.</param>
-        /// <param name="density">The screen density of the assets for which to add a dependency.</param>
-        public void AddAssetDependency(String asset, String dependency, ScreenDensityBucket density)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            AddAssetDependencyInternal(asset, dependency, density);
-        }
-
-        /// <summary>
-        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
-        /// changes to the specified dependency will also cause the main asset to be reloaded.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to add a dependency.</param>
-        /// <param name="dependency">The asset identifier of the dependency to add to the specified asset.</param>
-        /// <param name="density">The screen density of the assets for which to add a dependency.</param>
-        public void AddAssetDependency(AssetID asset, AssetID dependency, ScreenDensityBucket density)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            AddAssetDependencyInternal(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency), density);
-        }
-
-        /// <summary>
-        /// Clears all of the registered dependencies for the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to clear dependencies.</param>
-        public void ClearAssetDependencies(String asset)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-            {
-                if (assetDependencies == null)
-                    return;
-                
-                foreach (var dependents in assetDependencies)
-                    dependents.Value.DependentAssets.Remove(asset);
-            }
-        }
-
-        /// <summary>
-        /// Clears all of the registered dependencies for the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to clear dependencies.</param>
-        public void ClearAssetDependencies(AssetID asset)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            ClearAssetDependencies(AssetID.GetAssetPath(asset));
-        }
-
-        /// <summary>
-        /// Clears all of the registered dependencies for this content manager.
-        /// </summary>
-        public void ClearAssetDependencies()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-                assetDependencies?.Clear();
-        }
-
-        /// <summary>
-        /// Removes the specified dependency from an asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset from which to remove a dependency.</param>
-        /// <param name="dependency">The asset path of the dependency to remove from the specified asset.</param>
-        /// <returns></returns>
-        public Boolean RemoveAssetDependency(String asset, String dependency)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return RemoveAssetDependencyInternal(asset, dependency, primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Removes the specified dependency from an asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to remove a dependency.</param>
-        /// <param name="dependency">The asset identifier of the dependency to remove from the specified asset.</param>
-        public Boolean RemoveAssetDependency(AssetID asset, AssetID dependency)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return RemoveAssetDependencyInternal(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency), primaryDisplayDensity);
-        }
-        
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the main asset to evaluate.</param>
-        /// <param name="dependency">The asset path of the dependency asset to evaluate.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependency(String asset, String dependency)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return IsAssetDependencyInternal(asset, dependency, primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
-        /// <param name="dependency">The asset identifier of the dependency asset to evaluate.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependency(AssetID asset, AssetID dependency)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return IsAssetDependencyInternal(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency), primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the main asset to evaluate.</param>
-        /// <param name="dependency">The asset path of the dependency asset to evaluate.</param>
-        /// <param name="density">The screen density for which to query dependency relationships.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependency(String asset, String dependency, ScreenDensityBucket density)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            return IsAssetDependencyInternal(asset, dependency, density);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
-        /// <param name="dependency">The asset identifier of the dependency asset to evaluate.</param>
-        /// <param name="density">The screen density for which to query dependency relationships.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependency(AssetID asset, AssetID dependency, ScreenDensityBucket density)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            return IsAssetDependencyInternal(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency), density);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified file path is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the main asset to evaluate.</param>
-        /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependencyPath(String asset, String dependency)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return IsAssetDependencyPathInternal(asset, dependency, primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
-        /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependencyPath(AssetID asset, String dependency)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return IsAssetDependencyPathInternal(AssetID.GetAssetPath(asset), dependency, primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified file path is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the main asset to evaluate.</param>
-        /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
-        /// <param name="density">The screen density for which to query dependency relationships.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependencyPath(String asset, String dependency, ScreenDensityBucket density)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            return IsAssetDependencyPathInternal(asset, dependency, density);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
-        /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
-        /// <param name="density">The screen density for which to query dependency relationships.</param>
-        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsAssetDependencyPath(AssetID asset, String dependency, ScreenDensityBucket density)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-            Contract.Require(dependency, nameof(dependency));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            return IsAssetDependencyPathInternal(AssetID.GetAssetPath(asset), dependency, density);
         }
 
         /// <summary>
@@ -1305,10 +1025,22 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets the dependency manager for this content manager.
+        /// </summary>
+        public ContentDependencyManager Dependencies
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                return dependencies;
+            }
+        }
+
+        /// <summary>
         /// Gets the content manager's synchronization object.
         /// </summary>
         /// <returns>The content manager's synchronization object.</returns>
-        internal Object GetSyncObject() => cacheSyncObject;
+        internal Object GetCacheSyncObject() => cacheSyncObject;
 
         /// <summary>
         /// Implements the <see cref="Load"/> method.
@@ -1358,8 +1090,7 @@ namespace Ultraviolet.Content
         internal void OnFileReloaded(String fullPath)
         {
             var assetWatchersForFile = Watchers.GetAssetWatchersForFile(fullPath);
-            var assetDependenciesForFile = default(IAssetDependencyCollection);
-            assetDependencies?.TryGetValue(fullPath, out assetDependenciesForFile);
+            var assetDependenciesForFile = Dependencies.GetAssetDependenciesForFile(fullPath);
             
             // Reload the file if it already exists in our cache
             var assetPath = assetWatchersForFile?.AssetPath ?? assetDependenciesForFile?.AssetPath;
@@ -1476,94 +1207,6 @@ namespace Ultraviolet.Content
         }
         
         /// <summary>
-        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
-        /// changes to the specified dependency will also cause the main asset to be reloaded.
-        /// </summary>
-        private Boolean AddAssetDependencyInternal(String asset, String dependency, ScreenDensityBucket density)
-        {
-            if (IsDependencyTrackingSuppressed)
-                return false;
-
-            var dependencyAssetPath = dependency;
-            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependencyAssetPath, density, true));
-
-            lock (cacheSyncObject)
-            {
-                if (assetDependencies == null)
-                    assetDependencies = new Dictionary<String, IAssetDependencyCollection>();
-
-                assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents);
-
-                if (dependents == null)
-                {
-                    dependents = new AssetDependencyCollection(this, dependencyAssetPath, dependencyAssetFilePath);
-                    assetDependencies[dependencyAssetFilePath] = dependents;
-                }
-
-                dependents.DependentAssets.Add(asset);
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Removes the specified dependency from an asset.
-        /// </summary>
-        private Boolean RemoveAssetDependencyInternal(String asset, String dependency, ScreenDensityBucket density)
-        {
-            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependency, density, true));
-
-            lock (cacheSyncObject)
-            {
-                if (assetDependencies == null)
-                    return false;
-
-                if (assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents))
-                    return dependents.DependentAssets.Remove(asset);
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        private Boolean IsAssetDependencyInternal(String asset, String dependency, ScreenDensityBucket density)
-        {
-            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependency, density, true));
-
-            lock (cacheSyncObject)
-            {
-                if (assetDependencies == null)
-                    return false;
-
-                if (assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents))
-                    return dependents.DependentAssets.Contains(asset);
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
-        /// </summary>
-        private Boolean IsAssetDependencyPathInternal(String asset, String dependency, ScreenDensityBucket density)
-        {
-            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependency, density, true));
-
-            lock (cacheSyncObject)
-            {
-                if (assetDependencies == null)
-                    return false;
-
-                if (assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents))
-                    return dependents.DependentAssets.Contains(asset);
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Loads the specified content file.
         /// </summary>
         private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, ScreenDensityBucket density, out Object result)
@@ -1646,10 +1289,10 @@ namespace Ultraviolet.Content
 
                 if (changed)
                 {
-                    ClearAssetDependencies(asset);
+                    dependencies.ClearAssetDependencies(asset);
 
                     foreach (var dependency in metadata.AssetDependencies)
-                        AddAssetDependency(asset, dependency, density);
+                        dependencies.AddAssetDependency(asset, dependency, density);
                 }
             }
 
@@ -2334,26 +1977,14 @@ namespace Ultraviolet.Content
                 PurgeCache(purgedCacheEntry, false);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether dependency tracking is suppressed for this content manager.
-        /// </summary>
-        private Boolean IsDependencyTrackingSuppressed
-        {
-            get
-            {
-                return (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS) ||
-                    GloballySuppressDependencyTracking || SuppressDependencyTracking;
-            }
-        }
-
         // State values.
         private readonly ContentWatchManager watchers;
+        private readonly ContentDependencyManager dependencies;
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
         private readonly Dictionary<String, AssetCacheEntry> assetCache = new Dictionary<String, AssetCacheEntry>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
-        private Dictionary<String, IAssetDependencyCollection> assetDependencies;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";

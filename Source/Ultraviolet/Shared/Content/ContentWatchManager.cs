@@ -231,7 +231,7 @@ namespace Ultraviolet.Content
 
             if (disposing)
             {
-                lock (ContentManager.GetSyncObject())
+                lock (ContentManager.GetCacheSyncObject())
                 {
                     if (sharedWatchedAssets != null)
                     {
@@ -271,7 +271,7 @@ namespace Ultraviolet.Content
             if (!ContentManager.IsWatchedContentSupported)
                 return false;
 
-            lock (ContentManager.GetSyncObject())
+            lock (ContentManager.GetCacheSyncObject())
             {
                 if (rootFileSystemWatcher == null)
                 {
@@ -294,7 +294,7 @@ namespace Ultraviolet.Content
         /// </summary>
         private Boolean AddWatcherInternal<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
         {
-            lock (ContentManager.GetSyncObject())
+            lock (ContentManager.GetCacheSyncObject())
             {
                 if (CreateFileSystemWatchers())
                 {
@@ -325,7 +325,7 @@ namespace Ultraviolet.Content
         /// </summary>
         private Boolean RemoveWatcherInternal<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
         {
-            lock (ContentManager.GetSyncObject())
+            lock (ContentManager.GetCacheSyncObject())
             {
                 if (assetWatchers == null)
                     return false;
@@ -342,7 +342,7 @@ namespace Ultraviolet.Content
         /// </summary>
         private WatchedAsset<TOutput> GetSharedWatchedAssetInternal<TOutput>(String asset, ScreenDensityBucket density)
         {
-            lock (ContentManager.GetSyncObject())
+            lock (ContentManager.GetCacheSyncObject())
             {
                 if (CreateFileSystemWatchers())
                 {
