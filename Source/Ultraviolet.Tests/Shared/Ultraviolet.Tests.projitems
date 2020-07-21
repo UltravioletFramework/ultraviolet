@@ -37,7 +37,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererTestContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextShaperTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface2DTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture2DTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasTests.cs" />
@@ -263,12 +262,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextTable_LoadsAndRendersCorrectly_FromJson.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Surface2D_RendersCorrectly_WhenFlipped.png">
