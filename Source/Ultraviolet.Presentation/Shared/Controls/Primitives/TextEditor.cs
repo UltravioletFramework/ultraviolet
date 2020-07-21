@@ -2053,7 +2053,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (View == null)
                 return;
 
-            View.Resources.TextRenderer.Parse((StringBuilder)bufferText, textParserStream, TextParserOptions.IgnoreCommandCodes);
+            View.Resources.TextRenderer.Parser.Parse((StringBuilder)bufferText, textParserStream, TextParserOptions.IgnoreCommandCodes);
             InvalidateMeasure();
 
             pendingTextLayout = true;

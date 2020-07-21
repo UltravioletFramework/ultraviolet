@@ -436,7 +436,7 @@ namespace Ultraviolet.Presentation.Controls
                     contentAsString = String.Format(contentFormat, content);
                 }
 
-                View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
+                View.Resources.TextRenderer.Parser.Parse(contentAsString, textParserResult);
             }
 
             InvalidateArrange();

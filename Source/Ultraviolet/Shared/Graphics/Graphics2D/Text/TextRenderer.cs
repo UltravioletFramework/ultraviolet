@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Ultraviolet.Core;
@@ -124,7 +123,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             input.ActivateLink(linkIndex);
             return input.ActiveLinkIndex.HasValue;
@@ -204,16 +203,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             input.Seek(0);
 
-            var line = default(Int32?);
-            var glyph = GetGlyphOrInsertionPointAtPosition(input, x, y, out line, InsertionPointSearchMode.BeforeGlyph);
-
+            var glyph = GetGlyphOrInsertionPointAtPosition(input, x, y, out _, InsertionPointSearchMode.BeforeGlyph);
             if (glyph != null)
-                linkIndex = linkStack.Count > 0 ? linkStack.Peek() : (Int16?)null;
+                linkIndex = styleManager.LinkStack.Count > 0 ? styleManager.LinkStack.Peek() : (Int16?)null;
 
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             return linkIndex;
         }
@@ -227,10 +224,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// layout area, regardless of the line's actual width.</param>
         /// <returns>The index of the line of text at the specified layout-relative position, 
         /// or <see langword="null"/> if the specified position is not contained by any line.</returns>
-        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean stretch = false)
-        {
-            return GetLineAtPosition(input, (Int32)position.X, (Int32)position.Y);
-        }
+        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean stretch = false) =>
+            GetLineAtPosition(input, (Int32)position.X, (Int32)position.Y, stretch);
 
         /// <summary>
         /// Gets the index of the line of text at the specified layout-relative position.
@@ -241,10 +236,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// layout area, regardless of the line's actual width.</param>
         /// <returns>The index of the line of text at the specified layout-relative position, 
         /// or <see langword="null"/> if the specified position is not contained by any line.</returns>
-        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Point2 position, Boolean stretch = false)
-        {
-            return GetLineAtPosition(input, position.X, position.Y);
-        }
+        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Point2 position, Boolean stretch = false) =>
+            GetLineAtPosition(input, position.X, position.Y, stretch);
 
         /// <summary>
         /// Gets the index of the line of text at the specified layout-relative position.
@@ -308,11 +301,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position to evaluate.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
-        {
-            Int32? lineAtPosition;
-            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, false, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position) =>
+            GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, false, out _);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -323,10 +313,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// whether the position corresponds to an actual glyph.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32? lineAtPosition)
-        {
-            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, false, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32? lineAtPosition) =>
+            GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, false, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -338,10 +326,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// whether the position corresponds to an actual glyph.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean snapToLine, out Int32? lineAtPosition)
-        {
-            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, snapToLine, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean snapToLine, out Int32? lineAtPosition) =>
+            GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, snapToLine, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -350,11 +336,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position to evaluate.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
-        {
-            Int32? lineAtPosition;
-            return GetGlyphAtPosition(input, position.X, position.Y, false, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position) =>
+            GetGlyphAtPosition(input, position.X, position.Y, false, out _);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -365,10 +348,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// whether the position corresponds to an actual glyph.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, out Int32? lineAtPosition)
-        {
-            return GetGlyphAtPosition(input, position.X, position.Y, false, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, out Int32? lineAtPosition) =>
+            GetGlyphAtPosition(input, position.X, position.Y, false, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -380,10 +361,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// whether the position corresponds to an actual glyph.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, Boolean snapToLine, out Int32? lineAtPosition)
-        {
-            return GetGlyphAtPosition(input, position.X, position.Y, snapToLine, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, Boolean snapToLine, out Int32? lineAtPosition) =>
+            GetGlyphAtPosition(input, position.X, position.Y, snapToLine, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -393,11 +372,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="y">The y-coordinate to evaluate.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
-        {
-            Int32? lineAtPosition;
-            return GetGlyphAtPosition(input, x, y, false, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y) => 
+            GetGlyphAtPosition(input, x, y, false, out _);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -409,10 +385,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// whether the position corresponds to an actual glyph.</param>
         /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
-        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition)
-        {
-            return GetGlyphAtPosition(input, x, y, false, out lineAtPosition);
-        }
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition) =>
+            GetGlyphAtPosition(input, x, y, false, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the glyph at the specified layout-relative position.
@@ -439,7 +413,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             return result;
         }
@@ -578,7 +552,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             return bestMatchFound ? bestMatchGlyph : input.TotalGlyphLength - 1;
         }
@@ -591,10 +565,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
         /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
-        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Vector2 position)
-        {
-            return GetInsertionPointAtPosition(input, (Int32)position.X, (Int32)position.Y);
-        }
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Vector2 position) =>
+            GetInsertionPointAtPosition(input, (Int32)position.X, (Int32)position.Y);
 
         /// <summary>
         /// Gets the index of the insertion point which is closest to the specified layout-relative position.
@@ -605,10 +577,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position to evaluate.</param>
         /// <param name="lineAtPosition">The index of the line of text that contains the specified insertion point.</param>
         /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
-        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32 lineAtPosition)
-        {
-            return GetInsertionPointAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
-        }
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32 lineAtPosition) =>
+            GetInsertionPointAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the insertion point which is closest to the specified layout-relative position.
@@ -618,10 +588,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
         /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
-        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Point2 position)
-        {
-            return GetInsertionPointAtPosition(input, position.X, position.Y);
-        }
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Point2 position) =>
+            GetInsertionPointAtPosition(input, position.X, position.Y);
 
         /// <summary>
         /// Gets the index of the insertion point which is closest to the specified layout-relative position.
@@ -632,10 +600,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="position">The position to evaluate.</param>
         /// <param name="lineAtPosition">The index of the line of text that contains the specified insertion point.</param>
         /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
-        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Point2 position, out Int32 lineAtPosition)
-        {
-            return GetInsertionPointAtPosition(input, position.X, position.Y, out lineAtPosition);
-        }
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Point2 position, out Int32 lineAtPosition) =>
+            GetInsertionPointAtPosition(input, position.X, position.Y, out lineAtPosition);
 
         /// <summary>
         /// Gets the index of the insertion point which is closest to the specified layout-relative position.
@@ -646,11 +612,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
         /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
-        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
-        {
-            Int32 lineAtPosition;
-            return GetInsertionPointAtPosition(input, x, y, out lineAtPosition);
-        }
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y) =>
+            GetInsertionPointAtPosition(input, x, y, out _);
 
         /// <summary>
         /// Gets the index of the insertion point which is closest to the specified layout-relative position.
@@ -670,15 +633,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 input.AcquirePointers();
 
-            var lineAtPositionTemp = default(Int32?);
-            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPositionTemp, InsertionPointSearchMode.BeforeOrAfterGlyph) ?? 0;
-
+            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out var lineAtPositionTemp, InsertionPointSearchMode.BeforeOrAfterGlyph) ?? 0;
             lineAtPosition = lineAtPositionTemp ?? 0;
 
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             return result;
         }
@@ -729,11 +690,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
         /// <param name="spanLineHeight">A value indicating whether the returned bounds should span the height of the line.</param>
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
-        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, Boolean spanLineHeight = false)
-        {
-            LineInfo lineInfo;
-            return GetGlyphBounds(input, index, out lineInfo, spanLineHeight);
-        }
+        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, Boolean spanLineHeight = false) =>
+            GetGlyphBounds(input, index, out _, spanLineHeight);
 
         /// <summary>
         /// Gets a layout-relative bounding box for the specified glyph.
@@ -803,7 +761,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         break;
 
                     default:
-                        GetGlyphBounds_Default(input, cmdType, ref drawState, ref seekState);
+                        GetGlyphBounds_Default(input, cmdType, ref drawState);
                         break;
                 }
 
@@ -817,7 +775,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             lineInfo = new LineInfo(input, 
                 seekState.LineIndex, seekState.LineStartInCommands, seekState.LineStartInSource, seekState.LineStartInGlyphs, 
@@ -831,7 +789,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Processes otherwise unhandled commands for GetGlyphBounds().
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void GetGlyphBounds_Default(TextLayoutCommandStream input, TextLayoutCommandType cmdType, ref TextDrawState drawState, ref TextSeekState seekState)
+        private void GetGlyphBounds_Default(TextLayoutCommandStream input, TextLayoutCommandType cmdType, ref TextDrawState drawState)
         {
             var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.Style | TextRendererStacks.Font, ref drawState.Bold, ref drawState.Italic, ref drawState.Source);
             if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
@@ -974,12 +932,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the insertion point for which to retrieve a bounding box.</param>
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
-        public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index)
-        {
-            var lineInfo = default(LineInfo);
-            var glyphBounds = default(Rectangle?);
-            return GetInsertionPointBounds(input, index, out lineInfo, out glyphBounds);
-        }
+        public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index) =>
+            GetInsertionPointBounds(input, index, out _, out _);
 
         /// <summary>
         /// Gets a layout-relative bounding box for the specified insertion point.
@@ -1016,234 +970,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Removes the registered text shaper.
-        /// </summary>
-        public void ClearTextShaper()
-        {
-            layoutEngine.ClearTextShaper();
-        }
-
-        /// <summary>
-        /// Registers a text shaper.
-        /// </summary>
-        /// <param name="shaper">The text shaper to register.</param>
-        public void RegisterTextShaper(TextShaper shaper)
-        {
-            layoutEngine.RegisterTextShaper(shaper);
-        }
-
-        /// <summary>
-        /// Unregisters the text shaper.
-        /// </summary>
-        /// <returns><see langword="true"/> if the text shaper was unregistered; otherwise <see langword="false"/>.</returns>
-        public Boolean UnregisterTextShaper()
-        {
-            return layoutEngine.UnregisterTextShaper();
-        }
-
-        /// <summary>
-        /// Removes all registered styles.
-        /// </summary>
-        public void ClearStyles()
-        {
-            layoutEngine.ClearStyles();
-        }
-
-        /// <summary>
-        /// Registers a style with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the style to register.</param>
-        /// <param name="style">The style to register.</param>
-        public void RegisterStyle(String name, TextStyle style)
-        {
-            layoutEngine.RegisterStyle(name, style);
-        }
-
-        /// <summary>
-        /// Unregisters the style with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the style to unregister.</param>
-        /// <returns><see langword="true"/> if the style was unregistered; otherwise, <see langword="false"/>.</returns>
-        public Boolean UnregisterStyle(String name)
-        {
-            return layoutEngine.UnregisterStyle(name);
-        }
-
-        /// <summary>
-        /// Removes all registered fonts.
-        /// </summary>
-        public void ClearFonts()
-        {
-            layoutEngine.ClearFonts();
-        }
-
-        /// <summary>
-        /// Registers the font with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the font to register.</param>
-        /// <param name="font">The font to register.</param>
-        public void RegisterFont(String name, UltravioletFont font)
-        {
-            layoutEngine.RegisterFont(name, font);
-        }
-
-        /// <summary>
-        /// Unregisters the font with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the font to unregister.</param>
-        /// <returns><see langword="true"/> if the font was unregistered; otherwise, <see langword="false"/>.</returns>
-        public Boolean UnregisterFont(String name)
-        {
-            return layoutEngine.UnregisterFont(name);
-        }
-
-        /// <summary>
-        /// Removes all registered fallback fonts.
-        /// </summary>
-        public void ClearFallbackFonts()
-        {
-            layoutEngine.ClearFallbackFonts();
-        }
-
-        /// <summary>
-        /// Registers a fallback font with the layout engine.
-        /// </summary>
-        /// <param name="name">The name of the fallback font to register.</param>
-        /// <param name="start">The first UTF-32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
-        /// <param name="end">The last UTF32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
-        /// <param name="font">The name of the font to register as a fallback for the specified range.</param>
-        public void RegisterFallbackFont(String name, Int32 start, Int32 end, String font)
-        {
-            layoutEngine.RegisterFallbackFont(name, start, end, font);
-        }
-
-        /// <summary>
-        /// Removes all registered icons.
-        /// </summary>
-        public void ClearIcons()
-        {
-            layoutEngine.ClearIcons();
-        }
-
-        /// <summary>
-        /// Registers the icon with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the icon to register.</param>
-        /// <param name="icon">The icon to register.</param>
-        /// <param name="height">The width to which to scale the icon, or null to preserve the sprite's original width.</param>
-        /// <param name="width">The height to which to scale the icon, or null to preserve the sprite's original height.</param>
-        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null)
-        {
-            layoutEngine.RegisterIcon(name, icon, width, height);
-        }
-
-        /// <summary>
-        /// Unregisters the icon with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the icon to unregister.</param>
-        /// <returns><see langword="true"/> if the icon was unregistered; otherwise, <see langword="false"/>.</returns>
-        public Boolean UnregisterIcon(String name)
-        {
-            return layoutEngine.UnregisterIcon(name);
-        }
-
-        /// <summary>
-        /// Removes all registered glyph shaders.
-        /// </summary>
-        public void ClearGlyphShaders()
-        {
-            layoutEngine.ClearGlyphShaders();
-        }
-
-        /// <summary>
-        /// Registers the glyph shader with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the glyph shader to register.</param>
-        /// <param name="shader">The glyph shader to register.</param>
-        public void RegisterGlyphShader(String name, GlyphShader shader)
-        {
-            layoutEngine.RegisterGlyphShader(name, shader);
-        }
-
-        /// <summary>
-        /// Unregisters the glyph shader with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the glyph shader to unregister.</param>
-        /// <returns><see langword="true"/> if the glyph shader was unregistered; otherwise, <see langword="false"/>.</returns>
-        public Boolean UnregisterGlyphShader(String name)
-        {
-            return layoutEngine.UnregisterGlyphShader(name);
-        }
-
-        /// <summary>
-        /// Lexes and parses the specified string.
-        /// </summary>
-        /// <param name="input">The <see cref="String"/> to parse.</param>
-        /// <param name="output">The parsed token stream.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        public void Parse(String input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
-        {
-            Contract.Require(input, nameof(input));
-            Contract.Require(output, nameof(output));
-
-            parser.Parse(input, output, options);
-        }
-
-        /// <summary>
-        /// Incrementally lexes and parses the specified string.
-        /// </summary>
-        /// <param name="input">The <see cref="String"/> to parse.</param>
-        /// <param name="start">The index of the first character that was changed.</param>
-        /// <param name="count">The number of characters that were changed.</param>
-        /// <param name="output">The parsed token stream.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
-        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
-        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
-        /// of the source text are re-parsed by this operation.</remarks>
-        public void ParseIncremental(String input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
-        {
-            Contract.Require(input, nameof(input));
-            Contract.Require(output, nameof(output));
-
-            parser.ParseIncremental(input, start, count, output, options);
-        }
-
-        /// <summary>
-        /// Lexes and parses the specified string.
-        /// </summary>
-        /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
-        /// <param name="output">The parsed token stream.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        public void Parse(StringBuilder input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
-        {
-            Contract.Require(input, nameof(input));
-            Contract.Require(output, nameof(output));
-
-            parser.Parse(input, output, options);
-        }
-
-        /// <summary>
-        /// Incrementally lexes and parses the specified string.
-        /// </summary>
-        /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
-        /// <param name="start">The index of the first character that was changed.</param>
-        /// <param name="count">The number of characters that were changed.</param>
-        /// <param name="output">The parsed token stream.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
-        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
-        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
-        /// of the source text are re-parsed by this operation.</remarks>
-        public void ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
-        {
-            Contract.Require(input, nameof(input));
-            Contract.Require(output, nameof(output));
-
-            parser.ParseIncremental(input, start, count, output, options);
-        }
-
-        /// <summary>
         /// Calculates a layout for the specified text.
         /// </summary>
         /// <param name="input">The string of text to lay out.</param>
@@ -1254,8 +980,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, nameof(input));
             Contract.Require(output, nameof(output));
 
-            parser.Parse(input, parserResult);
-            layoutEngine.CalculateLayout(parserResult, output, settings);
+            Parser.Parse(input, parserResult);
+            LayoutEngine.CalculateLayout(parserResult, output, settings);
         }
 
         /// <summary>
@@ -1269,8 +995,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, nameof(input));
             Contract.Require(output, nameof(output));
 
-            parser.Parse(input, parserResult);
-            layoutEngine.CalculateLayout(parserResult, output, settings);
+            Parser.Parse(input, parserResult);
+            LayoutEngine.CalculateLayout(parserResult, output, settings);
         }
 
         /// <summary>
@@ -1284,7 +1010,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, nameof(input));
             Contract.Require(output, nameof(output));
 
-            layoutEngine.CalculateLayout(input, output, settings);
+            LayoutEngine.CalculateLayout(input, output, settings);
         }
 
         /// <summary>
@@ -1301,8 +1027,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            parser.Parse(input, parserResult);
-            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+            Parser.Parse(input, parserResult);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
         }
@@ -1324,8 +1050,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            parser.Parse(input, parserResult, parserOptions);
-            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+            Parser.Parse(input, parserResult, parserOptions);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
         }
@@ -1344,8 +1070,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            parser.Parse(input, parserResult);
-            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+            Parser.Parse(input, parserResult);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
         }
@@ -1367,8 +1093,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            parser.Parse(input, parserResult, parserOptions);
-            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+            Parser.Parse(input, parserResult, parserOptions);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
         }
@@ -1387,7 +1113,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            layoutEngine.CalculateLayout(input, layoutResult, settings);
+            LayoutEngine.CalculateLayout(input, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
         }
@@ -1408,7 +1134,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            layoutEngine.CalculateLayout(input, layoutResult, settings);
+            LayoutEngine.CalculateLayout(input, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
         }
@@ -1446,6 +1172,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             return DrawInternal(spriteBatch, input, position, defaultColor, start, count);
         }
+
+        /// <summary>
+        /// Gets the renderer's parser.
+        /// </summary>
+        public TextParser Parser { get; } = new TextParser();
+
+        /// <summary>
+        /// Gets the renderer's layout engine.
+        /// </summary>
+        public TextLayoutEngine LayoutEngine { get; } = new TextLayoutEngine();
 
         /// <summary>
         /// Gets or sets the delegate which determines the color with which to draw the renderer's links.
@@ -1572,10 +1308,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             if ((change & TextRendererStateChange.ChangeColor) == TextRendererStateChange.ChangeColor ||
                                 (change & TextRendererStateChange.ChangeLink) == TextRendererStateChange.ChangeLink)
                             {
-                                var linkIndex = linkStack.Count > 0 ? linkStack.Peek() : (Int16?)null;
+                                var linkIndex = styleManager.LinkStack.Count > 0 ? styleManager.LinkStack.Peek() : (Int16?)null;
                                 RefreshColor(input, defaultColor, linkIndex, linkAtCursor, ref color);
 
-                                if (linkStack.Count == 0)
+                                if (styleManager.LinkStack.Count == 0)
                                     lastColorOutsideLink = color;
                             }
                         }
@@ -1587,7 +1323,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 input.ReleasePointers();
 
-            ClearLayoutStacks();
+            styleManager.ClearLayoutStacks();
 
             return new RectangleF(position.X + input.Bounds.X, position.Y + input.Bounds.Y, input.Bounds.Width, input.Bounds.Height);
         }
@@ -1606,12 +1342,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets a value indicating whether a text command is visible.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Boolean GetIsTextVisible(Int32 length, Int32 start, Int32 end, Int32 glyphsSeen)
+        private Boolean GetIsTextVisible(Int32 length, Int32 start, Int32 glyphsSeen)
         {
-            var tokenStart = glyphsSeen;
-            var tokenEnd = tokenStart + length - 1;
-
-            return (start < glyphsSeen + length);
+            return start < glyphsSeen + length;
         }
 
         /// <summary>
@@ -1717,7 +1450,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var cmdPosition = Vector2.Zero;
             var cmdWasDrawnCompletely = true;
 
-            if (GetIsTextVisible(cmdFullLength, start, end, glyphsSeen))
+            if (GetIsTextVisible(cmdFullLength, start, glyphsSeen))
             {
                 var cmdOffset = 0;
                 if (GetIsTextPartiallyVisible(cmdFullLength, start, end, glyphsSeen, out var subStart, out var subLength, out cmdWasDrawnCompletely))
@@ -1729,7 +1462,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
                 
                 var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
-                var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, glyphsSeen, input.TotalGlyphLength);
+                var gscontext = (styleManager.GlyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : 
+                    new GlyphShaderContext(styleManager.GlyphShaderStack, glyphsSeen, input.TotalGlyphLength);
+                
                 spriteBatch.DrawString(gscontext, fontFace, cmdText, cmdPosition, color, 0f, 
                     Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
             }
@@ -1746,7 +1481,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                     cmdPosition = AdjustCommandPositionForHyphen(direction, cmdPosition, hyphenWidth, hyphenatedTextWidth, hyphenatedTextKerning);
 
-                    var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, glyphsSeen - 1, input.TotalGlyphLength);
+                    var gscontext = (styleManager.GlyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : 
+                        new GlyphShaderContext(styleManager.GlyphShaderStack, glyphsSeen - 1, input.TotalGlyphLength);
+
                     spriteBatch.DrawString(gscontext, fontFace, "-", cmdPosition, color);
                 }
                 input.SeekNextCommand();
@@ -1764,7 +1501,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var cmdPosition = Vector2.Zero;
             var cmdWasDrawnCompletely = true;
 
-            if (GetIsTextVisible(cmdText.Length, start, end, glyphsSeen))
+            if (GetIsTextVisible(cmdText.Length, start, glyphsSeen))
             {
                 var cmdOffset = 0;
                 if (GetIsTextPartiallyVisible(cmdText.Length, start, end, glyphsSeen, out var subStart, out var subLength, out cmdWasDrawnCompletely))
@@ -1776,9 +1513,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
 
                 var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
-                var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, glyphsSeen, input.TotalGlyphLength);
+                var gscontext = (styleManager.GlyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : 
+                    new GlyphShaderContext(styleManager.GlyphShaderStack, glyphsSeen, input.TotalGlyphLength);
+
                 spriteBatch.DrawShapedString(gscontext, fontFace, cmdText, cmdPosition, color, 0f, 
-                    Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
+                    Vector2.Zero, Vector2.One, effects, 0f, default);
             }
 
             AdvancePastTextCommand(input, cmd->GlyphLength, ref glyphsSeen);
@@ -1793,7 +1532,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                     cmdPosition = AdjustCommandPositionForHyphen(direction, cmdPosition, hyphenWidth, hyphenatedTextWidth, hyphenatedTextKerning);
 
-                    var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, glyphsSeen - 1, input.TotalGlyphLength);
+                    var gscontext = (styleManager.GlyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : 
+                        new GlyphShaderContext(styleManager.GlyphShaderStack, glyphsSeen - 1, input.TotalGlyphLength);
+
                     spriteBatch.DrawString(gscontext, fontFace, "-", cmdPosition, color);
                 }
 
@@ -1818,7 +1559,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var iconPosition = cmd->GetAbsolutePositionVector(x, y, lineWidth, lineHeight, direction);
                 var iconRotation = 0f;
 
-                var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, glyphsSeen, input.TotalGlyphLength);
+                var cmdGlyphShaderContext = (styleManager.GlyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid :
+                    new GlyphShaderContext(styleManager.GlyphShaderStack, glyphsSeen, input.TotalGlyphLength);
                 if (cmdGlyphShaderContext.IsValid)
                 {
                     var glyphData = new GlyphData();
@@ -1860,173 +1602,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Clears all of the renderer's layout parameter stacks.
-        /// </summary>
-        private void ClearLayoutStacks()
-        {
-            styleStack.Clear();
-            fontStack.Clear();
-            colorStack.Clear();
-            glyphShaderStack.Clear();
-            linkStack.Clear();
-        }
-
-        /// <summary>
-        /// Pushes a value onto a style-scoped stack.
-        /// </summary>
-        private void PushScopedStack<T>(Stack<TextStyleScoped<T>> stack, T value)
-        {
-            var scope = styleStack.Count;
-            stack.Push(new TextStyleScoped<T>(value, scope));
-        }
-
-        /// <summary>
-        /// Pushes a style onto the style stack.
-        /// </summary>
-        private void PushStyle(TextStyle style, ref Boolean bold, ref Boolean italic)
-        {
-            var instance = new TextStyleInstance(style, bold, italic);
-            styleStack.Push(instance);
-
-            if (style.Font != null)
-                PushFont(style.Font);
-
-            if (style.Color.HasValue)
-                PushColor(style.Color.Value);
-
-            if (style.GlyphShaders.Count > 0)
-            {
-                foreach (var glyphShader in style.GlyphShaders)
-                    PushGlyphShader(glyphShader);
-            }
-
-            if (style.Bold.HasValue)
-                bold = style.Bold.Value;
-
-            if (style.Italic.HasValue)
-                italic = style.Italic.Value;
-        }
-
-        /// <summary>
-        /// Pushes a font onto the font stack.
-        /// </summary>
-        private void PushFont(UltravioletFont font)
-        {
-            PushScopedStack(fontStack, font);
-        }
-
-        /// <summary>
-        /// Pushes a color onto the color stack.
-        /// </summary>
-        private void PushColor(Color color)
-        {
-            PushScopedStack(colorStack, color);
-        }
-
-        /// <summary>
-        /// Pushes a glyph shader onto the glyph shader stack.
-        /// </summary>
-        private void PushGlyphShader(GlyphShader glyphShader)
-        {
-            PushScopedStack(glyphShaderStack, glyphShader);
-        }
-
-        /// <summary>
-        /// Pushes a link onto the link stack.
-        /// </summary>
-        private void PushLink(Int16 linkIndex)
-        {
-            linkStack.Push(linkIndex);
-        }
-
-        /// <summary>
-        /// Pops a value off of a style-scoped stack.
-        /// </summary>
-        private void PopScopedStack<T>(Stack<TextStyleScoped<T>> stack)
-        {
-            if (stack.Count == 0)
-                return;
-
-            var scope = styleStack.Count;
-            if (stack.Peek().Scope != scope)
-                return;
-
-            stack.Pop();
-        }
-
-        /// <summary>
-        /// Pops a style off of the style stack.
-        /// </summary>
-        private void PopStyle(ref Boolean bold, ref Boolean italic)
-        {
-            if (styleStack.Count > 0)
-            {
-                PopStyleScope();
-
-                var instance = styleStack.Pop();
-                bold = instance.Bold;
-                italic = instance.Italic;
-            }
-        }
-
-        /// <summary>
-        /// Pops a font off of the font stack.
-        /// </summary>
-        private void PopFont()
-        {
-            PopScopedStack(fontStack);
-        }
-
-        /// <summary>
-        /// Pops a color off of the color stack.
-        /// </summary>
-        private void PopColor()
-        {
-            PopScopedStack(colorStack);
-        }
-
-        /// <summary>
-        /// Pops a glyph shader off of the glyph shader stack.
-        /// </summary>
-        private void PopGlyphShader()
-        {
-            PopScopedStack(glyphShaderStack);
-        }
-
-        /// <summary>
-        /// Pops a link off of the link stack.
-        /// </summary>
-        private void PopLink()
-        {
-            if (linkStack.Count == 0)
-                return;
-
-            linkStack.Pop();
-        }
-
-        /// <summary>
-        /// Pops the current style scope off of the stacks.
-        /// </summary>
-        private void PopStyleScope()
-        {
-            var scope = styleStack.Count;
-
-            while (fontStack.Count > 0 && fontStack.Peek().Scope == scope)
-                fontStack.Pop();
-
-            while (colorStack.Count > 0 && colorStack.Peek().Scope == scope)
-                colorStack.Pop();
-
-            while (glyphShaderStack.Count > 0 && glyphShaderStack.Peek().Scope == scope)
-                glyphShaderStack.Pop();
-        }
-
-        /// <summary>
         /// Updates the current font by examining the state of the layout stacks.
         /// </summary>
         private void RefreshFont(UltravioletFont baseFont, Boolean bold, Boolean italic, out UltravioletFont font, out UltravioletFontFace fontFace)
         {
-            font = (fontStack.Count == 0) ? baseFont : fontStack.Peek().Value;
+            font = (styleManager.FontStack.Count == 0) ? baseFont : styleManager.FontStack.Peek().Value;
             fontFace = font.GetFace(bold, italic);
         }
 
@@ -2061,7 +1641,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             }
             else
             {
-                color = (colorStack.Count == 0) ? defaultColor : colorStack.Peek().Value;
+                color = (styleManager.ColorStack.Count == 0) ? defaultColor : styleManager.ColorStack.Peek().Value;
             }
         }
 
@@ -2085,7 +1665,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     if ((stacks & TextRendererStacks.Style) == TextRendererStacks.Style)
                     {
                         var cmd = (TextLayoutStyleCommand*)input.Data;
-                        PushStyle(input.GetStyle(cmd->StyleIndex), ref bold, ref italic);
+                        styleManager.PushStyle(input.GetStyle(cmd->StyleIndex), ref bold, ref italic);
                         return TextRendererStateChange.ChangeFont | TextRendererStateChange.ChangeColor | TextRendererStateChange.ChangeGlyphShader;
                     }
                     return TextRendererStateChange.None;
@@ -2094,7 +1674,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     if ((stacks & TextRendererStacks.Font) == TextRendererStacks.Font)
                     {
                         var cmd = (TextLayoutFontCommand*)input.Data;
-                        PushFont(input.GetFont(cmd->FontIndex));
+                        styleManager.PushFont(input.GetFont(cmd->FontIndex));
                         return TextRendererStateChange.ChangeFont;
                     }
                     return TextRendererStateChange.None;
@@ -2103,7 +1683,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     if ((stacks & TextRendererStacks.Color) == TextRendererStacks.Color)
                     {
                         var cmd = (TextLayoutColorCommand*)input.Data;
-                        PushColor(cmd->Color);
+                        styleManager.PushColor(cmd->Color);
                         return TextRendererStateChange.ChangeColor;
                     }
                     return TextRendererStateChange.None;
@@ -2112,7 +1692,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     if ((stacks & TextRendererStacks.GlyphShader) == TextRendererStacks.GlyphShader)
                     {
                         var cmd = (TextLayoutGlyphShaderCommand*)input.Data;
-                        PushGlyphShader(input.GetGlyphShader(cmd->GlyphShaderIndex));
+                        styleManager.PushGlyphShader(input.GetGlyphShader(cmd->GlyphShaderIndex));
                         return TextRendererStateChange.ChangeGlyphShader;
                     }
                     return TextRendererStateChange.None;
@@ -2121,7 +1701,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     if ((stacks & TextRendererStacks.Link) == TextRendererStacks.Link)
                     {
                         var cmd = (TextLayoutLinkCommand*)input.Data;
-                        PushLink(cmd->LinkTargetIndex);
+                        styleManager.PushLink(cmd->LinkTargetIndex);
                         return TextRendererStateChange.ChangeLink;
                     }
                     return TextRendererStateChange.None;
@@ -2129,7 +1709,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.PopStyle:
                     if ((stacks & TextRendererStacks.Style) == TextRendererStacks.Style)
                     {
-                        PopStyle(ref bold, ref italic);
+                        styleManager.PopStyle(ref bold, ref italic);
                         return TextRendererStateChange.ChangeFont | TextRendererStateChange.ChangeColor | TextRendererStateChange.ChangeGlyphShader;
                     }
                     return TextRendererStateChange.None;
@@ -2137,7 +1717,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.PopFont:
                     if ((stacks & TextRendererStacks.Font) == TextRendererStacks.Font)
                     {
-                        PopFont();
+                        styleManager.PopFont();
                         return TextRendererStateChange.ChangeFont;
                     }
                     return TextRendererStateChange.None;
@@ -2145,7 +1725,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.PopColor:
                     if ((stacks & TextRendererStacks.Color) == TextRendererStacks.Color)
                     {
-                        PopColor();
+                        styleManager.PopColor();
                         return TextRendererStateChange.ChangeColor;
                     }
                     return TextRendererStateChange.None;
@@ -2153,7 +1733,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.PopGlyphShader:
                     if ((stacks & TextRendererStacks.GlyphShader) == TextRendererStacks.GlyphShader)
                     {
-                        PopGlyphShader();
+                        styleManager.PopGlyphShader();
                         return TextRendererStateChange.ChangeGlyphShader;
                     }
                     return TextRendererStateChange.None;
@@ -2161,7 +1741,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.PopLink:
                     if ((stacks & TextRendererStacks.Link) == TextRendererStacks.Link)
                     {
-                        PopLink();
+                        styleManager.PopLink();
                         return TextRendererStateChange.ChangeLink;
                     }
                     return TextRendererStateChange.None;
@@ -2672,19 +2252,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             return glyph;
         }
 
-        // The text parser.
-        private readonly TextParser parser = new TextParser();
+        // Text and layout buffers.
         private readonly TextParserTokenStream parserResult = new TextParserTokenStream();
-
-        // The text layout engine.
-        private readonly TextLayoutEngine layoutEngine = new TextLayoutEngine();
         private readonly TextLayoutCommandStream layoutResult = new TextLayoutCommandStream();
-
-        // Layout parameter stacks.
-        private readonly Stack<TextStyleInstance> styleStack = new Stack<TextStyleInstance>();
-        private readonly Stack<TextStyleScoped<UltravioletFont>> fontStack = new Stack<TextStyleScoped<UltravioletFont>>();
-        private readonly Stack<TextStyleScoped<Color>> colorStack = new Stack<TextStyleScoped<Color>>();
-        private readonly Stack<TextStyleScoped<GlyphShader>> glyphShaderStack = new Stack<TextStyleScoped<GlyphShader>>();
-        private readonly Stack<Int16> linkStack = new Stack<Int16>();
+        private readonly TextRendererStyleManager styleManager = new TextRendererStyleManager();
     }
 }

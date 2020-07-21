@@ -212,7 +212,7 @@ namespace Ultraviolet.Presentation.Controls
             if (text.IsValid)
             {
                 var textString = text.ToString();
-                View.Resources.TextRenderer.Parse(textString, textParserResult);
+                View.Resources.TextRenderer.Parser.Parse(textString, textParserResult);
             }
         }
 

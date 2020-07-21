@@ -52,7 +52,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             this.TextLayoutEngine.RegisterIcon("test", this.TextIcons["test"]);
 
             this.TextRenderer = new TextRenderer();
-            this.TextRenderer.RegisterIcon("test", this.TextIcons["test"]);
+            this.TextRenderer.LayoutEngine.RegisterIcon("test", this.TextIcons["test"]);
 
             this.BlankTexture = Texture2D.CreateTexture(1, 1);
             this.BlankTexture.SetData(new[] { Color.White });
@@ -77,8 +77,8 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             this.TextLayoutEngine.RegisterIcon("test", this.TextIcons["test"], descender: -3);
 
             this.TextRenderer = new TextRenderer();
-            this.TextRenderer.RegisterTextShaper(TextShaper.Create());
-            this.TextRenderer.RegisterIcon("test", this.TextIcons["test"]);
+            this.TextRenderer.LayoutEngine.RegisterTextShaper(TextShaper.Create());
+            this.TextRenderer.LayoutEngine.RegisterIcon("test", this.TextIcons["test"]);
 
             this.BlankTexture = Texture2D.CreateTexture(1, 1);
             this.BlankTexture.SetData(new[] { Color.White });

@@ -42,7 +42,7 @@ namespace Ultraviolet.Presentation
             this.TextRenderer = new TextRenderer();
 
             if (view.TextShaper != null)
-                this.TextRenderer.RegisterTextShaper(view.TextShaper);
+                this.TextRenderer.LayoutEngine.RegisterTextShaper(view.TextShaper);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         internal void ReloadTextStyles()
         {
-            TextRenderer.ClearStyles();
+            TextRenderer.LayoutEngine.ClearStyles();
 
             var dictionary = LoadJsonResource<IDictionary<String, SourcedTextStyleDescription>>(TextStyles);
             if (dictionary == null)
@@ -273,7 +273,7 @@ namespace Ultraviolet.Presentation
                     description.Italic,
                     description.Color,
                     description.GlyphShaders);
-                TextRenderer.RegisterStyle(kvp.Key, style);
+                TextRenderer.LayoutEngine.RegisterStyle(kvp.Key, style);
             }
         }
 
@@ -282,7 +282,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         internal void ReloadTextFonts()
         {
-            TextRenderer.ClearFonts();
+            TextRenderer.LayoutEngine.ClearFonts();
 
             var dictionary = LoadJsonResource<IDictionary<String, SourcedAssetID>>(TextFonts);
             if (dictionary == null)
@@ -294,7 +294,7 @@ namespace Ultraviolet.Presentation
                     throw new InvalidOperationException(PresentationStrings.CollectionContainsInvalidResources);
 
                 var font = view.LoadResource<UltravioletFont>(kvp.Value);
-                TextRenderer.RegisterFont(kvp.Key, font);
+                TextRenderer.LayoutEngine.RegisterFont(kvp.Key, font);
             }
         }
 
@@ -303,7 +303,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         internal void ReloadTextFallbackFonts()
         {
-            TextRenderer.ClearFallbackFonts();
+            TextRenderer.LayoutEngine.ClearFallbackFonts();
 
             var dictionary = LoadJsonResource<IDictionary<String, FallbackFontInfo>>(TextFallbackFonts);
             if (dictionary == null)
@@ -311,7 +311,7 @@ namespace Ultraviolet.Presentation
 
             foreach (var kvp in dictionary)
             {
-                TextRenderer.RegisterFallbackFont(kvp.Key, kvp.Value.RangeStart, kvp.Value.RangeEnd, kvp.Value.Font.ToString());
+                TextRenderer.LayoutEngine.RegisterFallbackFont(kvp.Key, kvp.Value.RangeStart, kvp.Value.RangeEnd, kvp.Value.Font.ToString());
             }
         }    
 
@@ -320,7 +320,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         internal void ReloadTextIcons()
         {
-            TextRenderer.ClearIcons();
+            TextRenderer.LayoutEngine.ClearIcons();
 
             var dictionary = LoadJsonResource<IDictionary<String, SourcedTextIconDescription>>(TextIcons);
             if (dictionary == null)
@@ -332,7 +332,7 @@ namespace Ultraviolet.Presentation
                     throw new InvalidOperationException(PresentationStrings.CollectionContainsInvalidResources);
 
                 var icon = view.LoadResource(kvp.Value.Icon);
-                TextRenderer.RegisterIcon(kvp.Key, icon, kvp.Value.Width, kvp.Value.Height);
+                TextRenderer.LayoutEngine.RegisterIcon(kvp.Key, icon, kvp.Value.Width, kvp.Value.Height);
             }
         }
 
@@ -341,14 +341,14 @@ namespace Ultraviolet.Presentation
         /// </summary>
         internal void ReloadTextShaders()
         {
-            TextRenderer.ClearGlyphShaders();
+            TextRenderer.LayoutEngine.ClearGlyphShaders();
 
             var dictionary = LoadJsonResource<IDictionary<String, GlyphShader>>(TextShaders);
             if (dictionary == null)
                 return;
 
             foreach (var kvp in dictionary)
-                TextRenderer.RegisterGlyphShader(kvp.Key, kvp.Value);
+                TextRenderer.LayoutEngine.RegisterGlyphShader(kvp.Key, kvp.Value);
         }
 
         /// <inheritdoc/>
