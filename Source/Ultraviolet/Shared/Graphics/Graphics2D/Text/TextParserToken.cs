@@ -18,58 +18,46 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="isNonBreakingSpace">A value indicating whether this token represents a non-breaking space.</param>
         internal TextParserToken(TextParserTokenType tokenType, StringSegment text, Int32 sourceOffset, Int32 sourceLength, Boolean isNonBreakingSpace = false)
         {
-            this.tokenType = tokenType;
-            this.text = text;
-            this.sourceOffset = sourceOffset;
-            this.sourceLength = sourceLength;
-            this.isNonBreakingSpace = isNonBreakingSpace;
+            this.TokenType = tokenType;
+            this.Text = text;
+            this.SourceOffset = sourceOffset;
+            this.SourceLength = sourceLength;
+            this.IsNonBreakingSpace = isNonBreakingSpace;
         }
 
         /// <inheritdoc/>
         public override String ToString()
         {
-            var fmt = text.IsEmpty ? "{0}" : "{0} '{1}'";
-            return String.Format(fmt, tokenType, text);
+            var fmt = Text.IsEmpty ? "{0}" : "{0} '{1}'";
+            return String.Format(fmt, TokenType, Text);
         }
 
         /// <summary>
         /// Gets the token's type.
         /// </summary>
-        public TextParserTokenType TokenType
-        {
-            get { return tokenType; }
-        }
+        public TextParserTokenType TokenType { get; }
 
         /// <summary>
         /// Gets the token's text.
         /// </summary>
-        public StringSegment Text
-        {
-            get { return text; }
-        }
+        public StringSegment Text { get; }
 
         /// <summary>
         /// Gets the offset of the first character in the source text that produced this token.
         /// </summary>
-        public Int32 SourceOffset
-        {
-            get { return sourceOffset; }
-        }
+        public Int32 SourceOffset { get; }
 
         /// <summary>
         /// Gets the number of characters in the source text that produced this token.
         /// </summary>
-        public Int32 SourceLength
-        {
-            get { return sourceLength; }
-        }
+        public Int32 SourceLength { get; }
 
         /// <summary>
         /// Gets a value indicating whether this token represents a white space character.
         /// </summary>
         public Boolean IsWhiteSpace
         {
-            get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && Char.IsWhiteSpace(text[0]); }
+            get { return TokenType == TextParserTokenType.Text && !Text.IsEmpty && Char.IsWhiteSpace(Text[0]); }
         }
 
         /// <summary>
@@ -77,22 +65,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Boolean IsNewLine
         {
-            get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && (text[0] == '\n' || text[0] == '\r'); }
+            get { return TokenType == TextParserTokenType.Text && !Text.IsEmpty && (Text[0] == '\n' || Text[0] == '\r'); }
         }
 
         /// <summary>
         /// Gets a value indicating whether this token represents non-breaking white space.
         /// </summary>
-        public Boolean IsNonBreakingSpace
-        {
-            get { return isNonBreakingSpace; }
-        }
-
-        // Property values.
-        private readonly TextParserTokenType tokenType;
-        private readonly StringSegment text;
-        private readonly Int32 sourceOffset;
-        private readonly Int32 sourceLength;
-        private readonly Boolean isNonBreakingSpace;
+        public Boolean IsNonBreakingSpace { get; }
     }
 }

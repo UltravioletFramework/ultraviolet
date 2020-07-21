@@ -161,8 +161,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var inputLengthNew = input.Length;
             var inputLengthDiff = inputLengthNew - inputLengthOld;
 
-            Int32 ix1, ix2;
-            FindTokensInfluencedBySubstring(output, start, count - inputLengthDiff, out ix1, out ix2);
+            FindTokensInfluencedBySubstring(output, start, count - inputLengthDiff, out var ix1, out var ix2);
 
             var token1 = output[ix1];
             var token2 = output[ix2];

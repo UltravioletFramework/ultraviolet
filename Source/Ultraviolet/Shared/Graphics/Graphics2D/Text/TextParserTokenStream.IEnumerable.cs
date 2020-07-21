@@ -9,21 +9,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets an enumerator for the result.
         /// </summary>
         /// <returns>An enumerator for the result.</returns>
-        public List<TextParserToken>.Enumerator GetEnumerator()
-        {
-            return tokens.GetEnumerator();
-        }
+        public List<TextParserToken>.Enumerator GetEnumerator() => tokens.GetEnumerator();
 
         /// <inheritdoc/>
-        IEnumerator<TextParserToken> IEnumerable<TextParserToken>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator<TextParserToken> IEnumerable<TextParserToken>.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
