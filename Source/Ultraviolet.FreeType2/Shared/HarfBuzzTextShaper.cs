@@ -23,7 +23,7 @@ namespace Ultraviolet.FreeType2
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="capacity">The initial capacity of the text builder.</param>
         public HarfBuzzTextShaper(UltravioletContext uv, Int32 capacity = 0)
-            : base(uv, capacity)
+            : base(uv)
         {
             this.native = hb_buffer_create();
             this.rawstr = new HarfBuzzNativeStringBuffer(uv, capacity);

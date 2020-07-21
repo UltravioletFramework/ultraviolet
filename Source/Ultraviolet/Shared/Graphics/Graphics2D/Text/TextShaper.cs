@@ -21,8 +21,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextShaper"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="capacity">The initial capacity of the text builder.</param>
-        public TextShaper(UltravioletContext uv, Int32 capacity)
+        public TextShaper(UltravioletContext uv)
             : base(uv)
         { }
 
