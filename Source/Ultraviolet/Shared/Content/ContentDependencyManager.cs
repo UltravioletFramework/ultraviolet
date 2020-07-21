@@ -102,7 +102,7 @@ namespace Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lock (ContentManager.GetCacheSyncObject())
+            lock (ContentManager.AssetCache.SyncObject)
             {
                 if (assetDependencies == null)
                     return;
@@ -131,7 +131,7 @@ namespace Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lock (ContentManager.GetCacheSyncObject())
+            lock (ContentManager.AssetCache.SyncObject)
                 assetDependencies?.Clear();
         }
 
@@ -337,7 +337,7 @@ namespace Ultraviolet.Content
             var dependencyAssetResolvedPath = ContentManager.ResolveAssetFilePath(dependencyAssetPath, density, true);
             var dependencyAssetFilePath = Path.GetFullPath(dependencyAssetResolvedPath);
 
-            lock (ContentManager.GetCacheSyncObject())
+            lock (ContentManager.AssetCache.SyncObject)
             {
                 if (assetDependencies == null)
                     assetDependencies = new Dictionary<String, IAssetDependencyCollection>();
@@ -363,7 +363,7 @@ namespace Ultraviolet.Content
         {
             var dependencyAssetFilePath = Path.GetFullPath(ContentManager.ResolveAssetFilePath(dependency, density, true));
 
-            lock (ContentManager.GetCacheSyncObject())
+            lock (ContentManager.AssetCache.SyncObject)
             {
                 if (assetDependencies == null)
                     return false;
@@ -383,7 +383,7 @@ namespace Ultraviolet.Content
             var dependencyAssetResolvedPath = ContentManager.ResolveAssetFilePath(dependency, density, true);
             var dependencyAssetFilePath = Path.GetFullPath(dependencyAssetResolvedPath);
 
-            lock (ContentManager.GetCacheSyncObject())
+            lock (ContentManager.AssetCache.SyncObject)
             {
                 if (assetDependencies == null)
                     return false;
@@ -403,7 +403,7 @@ namespace Ultraviolet.Content
             var dependencyAssetResolvedPath = ContentManager.ResolveAssetFilePath(dependency, density, true);
             var dependencyAssetFilePath = Path.GetFullPath(dependencyAssetResolvedPath);
 
-            lock (ContentManager.GetCacheSyncObject())
+            lock (ContentManager.AssetCache.SyncObject)
             {
                 if (assetDependencies == null)
                     return false;

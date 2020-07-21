@@ -40,6 +40,8 @@ namespace Ultraviolet.Content
 
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
+
+            this.assetCache = new ContentManagerAssetCache(Ultraviolet, this);
             this.watchers = new ContentWatchManager(Ultraviolet, this);
             this.dependencies = new ContentDependencyManager(Ultraviolet, this);
 
@@ -114,84 +116,14 @@ namespace Ultraviolet.Content
         {
             if (type == UltravioletMessages.LowMemory)
             {
-                PurgeCache(true);
+                AssetCache.Purge(true);
                 return;
             }
 
             if (type == UltravioletMessages.DisplayDensityChanged)
             {
-                PurgeUnusedScreenDensities();
+                AssetCache.PurgeUnusedScreenDensities();
                 return;
-            }
-        }
-
-        /// <summary>
-        /// Purges the specified asset from the content manager's internal cache.
-        /// </summary>
-        /// <param name="asset">The asset to purge from the cache.</param>
-        /// <param name="lowMemory">A value indicating whether the cache is being purged due to the operating system
-        /// being low on memory. If this value is <see langword="true"/>, then assets which have the 
-        /// <see cref="AssetFlags.PreserveThroughLowMemory"/> flag will be ignored by this method. Otherwise,
-        /// all of the cache's assets will be purged.</param>
-        public void PurgeCache(String asset, Boolean lowMemory)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-            {
-                if (!GetAssetFlags(asset, out var flags))
-                    return;
-
-                var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
-                if (preserve && lowMemory)
-                    return;
-
-                assetCache.Remove(asset);
-                dependencies.ClearAssetDependencies(asset);
-            }
-        }
-
-        /// <summary>
-        /// Purges the specified asset from the content manager's internal cache.
-        /// </summary>
-        /// <param name="asset">The asset to purge from the cache.</param>
-        /// <param name="lowMemory">A value indicating whether the cache is being purged due to the operating system
-        /// being low on memory. If this value is <see langword="true"/>, then assets which have the 
-        /// <see cref="AssetFlags.PreserveThroughLowMemory"/> flag will be ignored by this method. Otherwise,
-        /// all of the cache's assets will be purged.</param>
-        public void PurgeCache(AssetID asset, Boolean lowMemory)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-
-            PurgeCache(AssetID.GetAssetPath(asset), lowMemory);
-        }
-
-        /// <summary>
-        /// Purges the content manager's internal cache, removing all references to previously loaded objects
-        /// so that they can be collected.
-        /// </summary>
-        /// <param name="lowMemory">A value indicating whether the cache is being purged due to the operating system
-        /// being low on memory. If this value is <see langword="true"/>, then assets which have the 
-        /// <see cref="AssetFlags.PreserveThroughLowMemory"/> flag will be ignored by this method. Otherwise,
-        /// all of the cache's assets will be purged.</param>
-        public void PurgeCache(Boolean lowMemory)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-            {
-                foreach (var kvp in assetFlags)
-                {
-                    var asset = kvp.Key;
-                    var flags = kvp.Value;
-
-                    var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
-                    if (preserve && lowMemory)
-                        continue;
-
-                    assetCache.Remove(asset);
-                    dependencies.ClearAssetDependencies(asset);
-                }
             }
         }
 
@@ -203,27 +135,14 @@ namespace Ultraviolet.Content
         /// each of those paths will represent a <b>separate entry in the cache</b> with <b>separate asset flags</b>.</remarks>
         /// <param name="asset">The asset path of the asset for which to set flags.</param>
         /// <param name="flags">A collection of <see cref="AssetFlags"/> values to associate with the specified asset.</param>
-        public void SetAssetFlags(String asset, AssetFlags flags)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-                assetFlags[asset] = flags;
-        }
+        public void SetAssetFlags(String asset, AssetFlags flags) => AssetCache.SetAssetFlags(asset, flags);
 
         /// <summary>
         /// Sets the flags associated with the specified asset.
         /// </summary>
         /// <param name="asset">The asset identifier of the asset for which to set flags.</param>
         /// <param name="flags">A collection of <see cref="AssetFlags"/> values to associate with the specified asset.</param>
-        public void SetAssetFlags(AssetID asset, AssetFlags flags)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-                assetFlags[AssetID.GetAssetPath(asset)] = flags;
-        }
+        public void SetAssetFlags(AssetID asset, AssetFlags flags) => AssetCache.SetAssetFlags(asset, flags);
 
         /// <summary>
         /// Sets the flags associated with the specified asset.
@@ -235,14 +154,7 @@ namespace Ultraviolet.Content
         /// <param name="flags">A collection of <see cref="AssetFlags"/> value associated with the specified asset.</param>
         /// <returns><see langword="true"/> if the specified asset has flags defined within this 
         /// content manager; otherwise, <see langword="false"/>.</returns>
-        public Boolean GetAssetFlags(String asset, out AssetFlags flags)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-                return assetFlags.TryGetValue(asset, out flags);
-        }
+        public Boolean GetAssetFlags(String asset, out AssetFlags flags) => AssetCache.GetAssetFlags(asset, out flags);
 
         /// <summary>
         /// Sets the flags associated with the specified asset.
@@ -251,13 +163,7 @@ namespace Ultraviolet.Content
         /// <param name="flags">A collection of <see cref="AssetFlags"/> value associated with the specified asset.</param>
         /// <returns><see langword="true"/> if the specified asset has flags defined within this 
         /// content manager; otherwise, <see langword="false"/>.</returns>
-        public Boolean GetAssetFlags(AssetID asset, out AssetFlags flags)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-                return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
-        }
+        public Boolean GetAssetFlags(AssetID asset, out AssetFlags flags) => AssetCache.GetAssetFlags(asset, out flags);
 
         /// <summary>
         /// Loads all of the assets in the specified <see cref="ContentManifest"/> into the content manager's asset cache.
@@ -275,7 +181,7 @@ namespace Ultraviolet.Content
             {
                 foreach (var asset in group)
                 {
-                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, primaryDisplayDpi, out var result);
+                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, primaryDisplayDpi, out var _);
                 }
             }
         }
@@ -296,10 +202,7 @@ namespace Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return (TOutput)LoadImpl(asset, typeof(TOutput), primaryDisplayDensity, cache, fromsln);
+            return (TOutput)LoadImpl(asset, typeof(TOutput), GetPrimaryDisplayDensity(), cache, fromsln);
         }
 
         /// <summary>
@@ -319,10 +222,7 @@ namespace Ultraviolet.Content
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), primaryDisplayDensity, cache, fromsln);
+            return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), GetPrimaryDisplayDensity(), cache, fromsln);
         }
 
         /// <summary>
@@ -379,10 +279,7 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(extension, nameof(extension));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay.DensityBucket;
-
-            return (TOutput)LoadInternalFromStream(typeof(TOutput), stream, extension, primaryDisplayDensity);
+            return (TOutput)LoadInternalFromStream(typeof(TOutput), stream, extension, GetPrimaryDisplayDensity());
         }
 
         /// <summary>
@@ -413,11 +310,8 @@ namespace Ultraviolet.Content
             Contract.Require(paths, nameof(paths));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
             var outputType = typeof(TOutput);
-            return (TOutput)ImportInternal(Path.Combine(paths), primaryDisplayDensity, false, ref outputType);
+            return (TOutput)ImportInternal(Path.Combine(paths), GetPrimaryDisplayDensity(), false, ref outputType);
         }
 
         /// <summary>
@@ -434,11 +328,8 @@ namespace Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
             var outputType = typeof(TOutput);
-            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, ref outputType);
+            return (TOutput)ImportInternal(asset, GetPrimaryDisplayDensity(), fromsln, ref outputType);
         }
 
         /// <summary>
@@ -453,11 +344,8 @@ namespace Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
             outputType = typeof(TOutput);
-            return (TOutput)ImportInternal(asset, primaryDisplayDensity, false, ref outputType);
+            return (TOutput)ImportInternal(asset, GetPrimaryDisplayDensity(), false, ref outputType);
         }
 
         /// <summary>
@@ -475,11 +363,8 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
             outputType = typeof(TOutput);
-            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, ref outputType);
+            return (TOutput)ImportInternal(asset, GetPrimaryDisplayDensity(), fromsln, ref outputType);
         }
 
         /// <summary>
@@ -595,11 +480,8 @@ namespace Ultraviolet.Content
             Contract.Require(stream, nameof(stream));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay.DensityBucket;
-
             var filename = GetStreamFakeFilename(extension);
-            var metadata = CreateMetadataFromStream(ref stream, filename, null, false, true, false, primaryDisplayDensity);
+            var metadata = CreateMetadataFromStream(ref stream, filename, null, false, true, false, GetPrimaryDisplayDensity());
             
             var importerOutputType = typeof(TOutput);
             var importer = FindContentImporter(metadata.AssetFileName, ref importerOutputType);
@@ -641,9 +523,7 @@ namespace Ultraviolet.Content
             Contract.Require(intermediate, nameof(intermediate));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay.DensityBucket;
-
+            var primaryDisplayDensity = GetPrimaryDisplayDensity();
             var processor = FindContentProcessor("unknown", intermediate.GetType(), typeof(TOutput));
             var assetmeta = (metadata == null) ? AssetMetadata.CreateInMemoryMetadata(primaryDisplayDensity) : 
                 new AssetMetadata(null, null, null, null, metadata, false, false, false, false, primaryDisplayDensity);
@@ -665,9 +545,7 @@ namespace Ultraviolet.Content
             Contract.Require(intermediate, nameof(intermediate));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay.DensityBucket;
-
+            var primaryDisplayDensity = GetPrimaryDisplayDensity();
             var processor = FindContentProcessor("unknown", typeof(TInput), typeof(TOutput));
             var assetmeta = (metadata == null) ? AssetMetadata.CreateInMemoryMetadata(primaryDisplayDensity) : 
                 new AssetMetadata(null, null, null, null, metadata, false, false, false, false, primaryDisplayDensity);
@@ -1013,6 +891,18 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets the asset cache for this content manager.
+        /// </summary>
+        public ContentManagerAssetCache AssetCache
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                return assetCache;
+            }
+        }
+
+        /// <summary>
         /// Gets the watch manager for this content manager.
         /// </summary>
         public ContentWatchManager Watchers 
@@ -1037,12 +927,6 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
-        /// Gets the content manager's synchronization object.
-        /// </summary>
-        /// <returns>The content manager's synchronization object.</returns>
-        internal Object GetCacheSyncObject() => cacheSyncObject;
-
-        /// <summary>
         /// Implements the <see cref="Load"/> method.
         /// </summary>
         internal Object LoadImpl(String asset, Type type, ScreenDensityBucket density, Boolean cache, Boolean fromsln)
@@ -1058,8 +942,8 @@ namespace Ultraviolet.Content
             var cachedInstanceEntry = default(AssetCacheEntry);
             var cacheMiss = false;
 
-            lock (cacheSyncObject)
-                cacheMiss = !assetCache.TryGetValue(asset, out cachedInstanceEntry);
+            lock (assetCache.SyncObject)
+                cacheMiss = !assetCache.TryGetCacheEntry(asset, out cachedInstanceEntry);
             
             if (cacheMiss)
             {
@@ -1075,14 +959,11 @@ namespace Ultraviolet.Content
                 return result;
             }
         }
-        
+
         /// <summary>
         /// Called when a change in the file system is detected.
         /// </summary>
-        internal void OnFileSystemChanged(Object sender, FileSystemEventArgs e)
-        {
-            OnFileReloaded(e.FullPath);
-        }
+        internal void OnFileSystemChanged(Object sender, FileSystemEventArgs e) => OnFileReloaded(e.FullPath);
 
         /// <summary>
         /// Called when a change in a file is detected.
@@ -1094,7 +975,7 @@ namespace Ultraviolet.Content
             
             // Reload the file if it already exists in our cache
             var assetPath = assetWatchersForFile?.AssetPath ?? assetDependenciesForFile?.AssetPath;
-            if (assetPath != null && assetCache.TryGetValue(assetPath, out var assetEntry))
+            if (assetPath != null && assetCache.TryGetCacheEntry(assetPath, out var assetEntry))
             {
                 Ultraviolet.QueueWorkItem(state =>
                 {
@@ -1126,14 +1007,9 @@ namespace Ultraviolet.Content
             {
                 Ultraviolet.Messages.Unsubscribe(this);
 
-                lock (cacheSyncObject)
+                lock (assetCache.SyncObject)
                 {
-                    foreach (var instance in assetCache)
-                        instance.Value.Dispose();
-
-                    assetCache.Clear();
-                    assetFlags.Clear();
-
+                    assetCache.Dispose();
                     watchers.Dispose();
                     overrideDirectories.Dispose();
                 }
@@ -1141,6 +1017,11 @@ namespace Ultraviolet.Content
 
             base.Dispose(disposing);
         }
+
+        /// <summary>
+        /// Gets the density bucket for the primary display.
+        /// </summary>
+        private ScreenDensityBucket GetPrimaryDisplayDensity() => Ultraviolet.GetPlatform().Displays.PrimaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
         /// <summary>
         /// Lists the assets which can serve as substitutions for the specified asset.
@@ -1251,7 +1132,7 @@ namespace Ultraviolet.Content
             if (changed)
             {
                 if (cache)
-                    UpdateCache(asset, metadata, ref instance, type, density);
+                    AssetCache.UpdateCache(asset, metadata, ref instance, type, density);
 
                 if (watchers != null)
                 {
@@ -1268,7 +1149,7 @@ namespace Ultraviolet.Content
                             instance = lastKnownGood;
 
                             if (cache)
-                                UpdateCache(asset, metadata, ref instance, type, density);
+                                AssetCache.UpdateCache(asset, metadata, ref instance, type, density);
 
                             for (int j = 0; j <= i; j++)
                                 watchers[i].OnValidationComplete(asset, instance, false);
@@ -1535,8 +1416,7 @@ namespace Ultraviolet.Content
             if (preprocessed)
                 return true;
 
-            var intermediateObjectType = default(Type);
-            var intermediate = Import<Object>(normalizedAsset, out intermediateObjectType);
+            var intermediate = Import<Object>(normalizedAsset, out var intermediateObjectType);
             var processor = FindContentProcessor(normalizedAsset, intermediateObjectType, type);
             var preprocessSucceeded = PreprocessInternal(normalizedAsset, metadata, processor, intermediate, delete);
             if (preprocessSucceeded && delete)
@@ -1934,57 +1814,12 @@ namespace Ultraviolet.Content
             }
         }
 
-        /// <summary>
-        /// Updates the content manager's internal cache with the specified object instance.
-        /// </summary>
-        private void UpdateCache(String asset, AssetMetadata metadata, ref Object instance, Type type, ScreenDensityBucket densityBucket)
-        {
-            lock (cacheSyncObject)
-            {
-                var assetDensityBucket = densityBucket;
-                var assetOrigin = metadata.IsOverridden ? metadata.OverrideDirectory : null;
-
-                if (!assetCache.TryGetValue(asset, out var assetCacheEntry))
-                {
-                    assetCacheEntry = new AssetCacheEntry(assetDensityBucket, assetOrigin, instance, type);
-                    assetCache[asset] = assetCacheEntry;
-
-                    if (!assetFlags.ContainsKey(asset))
-                        assetFlags[asset] = AssetFlags.None;
-                }
-                else
-                {
-                    assetCacheEntry.SetVersion(assetDensityBucket, assetOrigin, instance);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Purges any asset versions for screen densities which are not in use.
-        /// </summary>
-        private void PurgeUnusedScreenDensities()
-        {
-            var usedScreenDensities = Ultraviolet.GetPlatform().Displays.Select(x => x.DensityBucket).Distinct().ToArray();
-            var purgedCacheEntries = new List<String>();
-
-            foreach (var kvp in assetCache)
-            {
-                if (kvp.Value.PurgeUnusedVersions(usedScreenDensities))
-                    purgedCacheEntries.Add(kvp.Key);
-            }
-
-            foreach (var purgedCacheEntry in purgedCacheEntries)
-                PurgeCache(purgedCacheEntry, false);
-        }
-
         // State values.
+        private readonly ContentManagerAssetCache assetCache;
         private readonly ContentWatchManager watchers;
         private readonly ContentDependencyManager dependencies;
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
-        private readonly Dictionary<String, AssetCacheEntry> assetCache = new Dictionary<String, AssetCacheEntry>();
-        private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
-        private readonly Object cacheSyncObject = new Object();
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";

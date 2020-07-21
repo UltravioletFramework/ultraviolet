@@ -41,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentDependencyManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentDiscovery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManagerAssetCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentWatchManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetDependencyList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetWatcherCollection.cs" />

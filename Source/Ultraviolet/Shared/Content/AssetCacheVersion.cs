@@ -31,7 +31,7 @@ namespace Ultraviolet.Content
         public void Reload(ContentManager content, String assetPath, IAssetWatcherCollection assetWatchers, Type assetType)
         {
             var assetLKG = content.LoadImpl(assetPath, assetType, AssetDensityBucket, true, true, assetWatchers, null);
-            content.PurgeCache(assetPath, false);
+            content.AssetCache.PurgeAsset(assetPath, false);
             content.LoadImpl(assetPath, assetType, AssetDensityBucket, true, true, assetWatchers, assetLKG);
         }
 
