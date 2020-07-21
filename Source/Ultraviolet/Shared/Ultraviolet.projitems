@@ -347,7 +347,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutIconCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutTextCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextParser.LexedTokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextParserOptions.cs" />
