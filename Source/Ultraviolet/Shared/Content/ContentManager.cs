@@ -40,6 +40,7 @@ namespace Ultraviolet.Content
             this.FullRootDirectory = (rootDirectory == null) ? Directory.GetCurrentDirectory() : Path.GetFullPath(rootDirectory);
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
+            this.watchers = new ContentWatchManager(Ultraviolet, this);
 
             uv.Messages.Subscribe(this, UltravioletMessages.LowMemory, UltravioletMessages.DisplayDensityChanged);
         }
@@ -255,138 +256,6 @@ namespace Ultraviolet.Content
 
             lock (cacheSyncObject)
                 return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
-        }
-
-        /// <summary>
-        /// Adds a watcher for the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to add a watcher.</param>
-        /// <param name="watcher">The watcher to add for the specified asset.</param>
-        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
-        public Boolean AddWatcher<TOutput>(String asset, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return AddWatcherInternal(asset, primaryDisplayDensityBucket, watcher);
-        }
-
-        /// <summary>
-        /// Adds a watcher for the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to add a watcher.</param>
-        /// <param name="watcher">The watcher to add for the specified asset.</param>
-        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
-        public Boolean AddWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return AddWatcherInternal(AssetID.GetAssetPath(asset), primaryDisplayDensityBucket, watcher);
-        }
-
-        /// <summary>
-        /// Adds a watcher for the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to add a watcher.</param>
-        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
-        /// <param name="watcher">The watcher to add for the specified asset.</param>
-        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
-        public Boolean AddWatcher<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return AddWatcherInternal(asset, density, watcher);
-        }
-
-        /// <summary>
-        /// Adds a watcher for the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to add a watcher.</param>
-        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
-        /// <param name="watcher">The watcher to add for the specified asset.</param>
-        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
-        public Boolean AddWatcher<TOutput>(AssetID asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return AddWatcherInternal(AssetID.GetAssetPath(asset), density, watcher);
-        }
-
-        /// <summary>
-        /// Removes a watcher from the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to remove a watcher.</param>
-        /// <param name="watcher">The watcher to remove from the specified asset.</param>
-        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
-        public Boolean RemoveWatcher<TOutput>(String asset, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return RemoveWatcherInternal(asset, primaryDisplayDensityBucket, watcher);
-        }
-
-        /// <summary>
-        /// Removes a watcher from the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to remove a watcher.</param>
-        /// <param name="watcher">The watcher to remove from the specified asset.</param>
-        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
-        public Boolean RemoveWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
-
-            return RemoveWatcherInternal(AssetID.GetAssetPath(asset), primaryDisplayDensityBucket, watcher);
-        }
-
-        /// <summary>
-        /// Removes a watcher from the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset path of the asset for which to remove a watcher.</param>
-        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
-        /// <param name="watcher">The watcher to remove from the specified asset.</param>
-        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
-        public Boolean RemoveWatcher<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            return RemoveWatcherInternal(asset, density, watcher);
-        }
-
-        /// <summary>
-        /// Removes a watcher from the specified asset.
-        /// </summary>
-        /// <param name="asset">The asset identifier of the asset for which to remove a watcher.</param>
-        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
-        /// <param name="watcher">The watcher to remove from the specified asset.</param>
-        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
-        public Boolean RemoveWatcher<TOutput>(AssetID asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-            
-            return RemoveWatcherInternal(AssetID.GetAssetPath(asset), density, watcher);
         }
 
         /// <summary>
@@ -668,76 +537,6 @@ namespace Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
             
             return IsAssetDependencyPathInternal(AssetID.GetAssetPath(asset), dependency, density);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
-        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
-        /// loaded, it will be loaded and added to the content manager's internal cache.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The path to the asset to load.</param>
-        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
-        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(String asset)
-        {
-            Contract.RequireNotEmpty(asset, nameof(asset));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay.DensityBucket;
-
-            return GetSharedWatchedAssetInternal<TOutput>(asset, primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
-        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
-        /// loaded, it will be loaded and added to the content manager's internal cache.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The identifier of the asset to load.</param>
-        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
-        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(AssetID asset)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
-            var primaryDisplayDensity = primaryDisplay.DensityBucket;
-
-            return GetSharedWatchedAssetInternal<TOutput>(AssetID.GetAssetPath(asset), primaryDisplayDensity);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
-        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
-        /// loaded, it will be loaded and added to the content manager's internal cache.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="density">The screen density for which to retrieve an asset watcher.</param>
-        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
-        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(String asset, ScreenDensityBucket density)
-        {
-            Contract.RequireNotEmpty(asset, nameof(asset));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return GetSharedWatchedAssetInternal<TOutput>(asset, density);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
-        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
-        /// loaded, it will be loaded and added to the content manager's internal cache.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The identifier of the asset to load.</param>
-        /// <param name="density">The screen density for which to retrieve an asset watcher.</param>
-        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
-        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(AssetID asset, ScreenDensityBucket density)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return GetSharedWatchedAssetInternal<TOutput>(AssetID.GetAssetPath(asset), density);
         }
 
         /// <summary>
@@ -1494,6 +1293,24 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets the watch manager for this content manager.
+        /// </summary>
+        public ContentWatchManager Watchers 
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                return watchers;
+            }
+        }
+
+        /// <summary>
+        /// Gets the content manager's synchronization object.
+        /// </summary>
+        /// <returns>The content manager's synchronization object.</returns>
+        internal Object GetSyncObject() => cacheSyncObject;
+
+        /// <summary>
         /// Implements the <see cref="Load"/> method.
         /// </summary>
         internal Object LoadImpl(String asset, Type type, ScreenDensityBucket density, Boolean cache, Boolean fromsln)
@@ -1540,10 +1357,8 @@ namespace Ultraviolet.Content
         /// </summary>
         internal void OnFileReloaded(String fullPath)
         {
-            var assetWatchersForFile = default(IAssetWatcherCollection);
+            var assetWatchersForFile = Watchers.GetAssetWatchersForFile(fullPath);
             var assetDependenciesForFile = default(IAssetDependencyCollection);
-
-            assetWatchers?.TryGetValue(fullPath, out assetWatchersForFile);
             assetDependencies?.TryGetValue(fullPath, out assetDependenciesForFile);
             
             // Reload the file if it already exists in our cache
@@ -1588,20 +1403,8 @@ namespace Ultraviolet.Content
                     assetCache.Clear();
                     assetFlags.Clear();
 
-                    if (sharedWatchedAssets != null)
-                    {
-                        foreach (var x in sharedWatchedAssets)
-                        {
-                            foreach (var y in x.Value)
-                                ((IDisposable)y.Value).Dispose();
-                        }
-                        sharedWatchedAssets.Clear();
-                    }
-
-                    if (rootFileSystemWatcher != null)
-                        rootFileSystemWatcher.Dispose();
-
-                    OverrideDirectories.Dispose();
+                    watchers.Dispose();
+                    overrideDirectories.Dispose();
                 }
             }
 
@@ -1672,117 +1475,6 @@ namespace Ultraviolet.Content
             return processor;
         }
         
-        /// <summary>
-        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset.
-        /// </summary>
-        private WatchedAsset<TOutput> GetSharedWatchedAssetInternal<TOutput>(String asset, ScreenDensityBucket density)
-        {
-            lock (cacheSyncObject)
-            {
-                if (CreateFileSystemWatchers())
-                {
-                    if (sharedWatchedAssets == null)
-                        sharedWatchedAssets = new Dictionary<String, Dictionary<Byte, Object>>();
-
-                    if (!sharedWatchedAssets.TryGetValue(asset, out var watchersForAsset))
-                    {
-                        watchersForAsset = new Dictionary<Byte, Object>();
-                        sharedWatchedAssets[asset] = watchersForAsset;
-                    }
-
-                    if (!watchersForAsset.TryGetValue((Byte)density, out var watcherForDensity))
-                    {
-                        watcherForDensity = new WatchedAsset<TOutput>(this, asset, density);
-                        watchersForAsset[(Byte)density] = watcherForDensity;
-                    }
-
-                    return (WatchedAsset<TOutput>)watcherForDensity;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Creates a set of file system watchers to monitor the content manager's
-        /// file system for changes.
-        /// </summary>
-        private Boolean CreateFileSystemWatchers()
-        {
-            if (!IsWatchedContentSupported)
-                return false;
-
-            lock (cacheSyncObject)
-            {
-                if (rootFileSystemWatcher == null)
-                {
-                    var rootdir = FindSolutionDirectory() ?? RootDirectory;
-                    rootFileSystemWatcher = new FileSystemWatcher(rootdir);
-                    rootFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime;
-                    rootFileSystemWatcher.IncludeSubdirectories = true;
-                    rootFileSystemWatcher.EnableRaisingEvents = true;
-                    rootFileSystemWatcher.Changed += OnFileSystemChanged;
-                }
-
-                OverrideDirectories.CreateFileSystemWatchers();
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Adds a watcher for the specified asset.
-        /// </summary>
-        private Boolean AddWatcherInternal<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
-        {
-            lock (cacheSyncObject)
-            {
-                if (CreateFileSystemWatchers())
-                {
-                    if (assetWatchers == null)
-                        assetWatchers = new Dictionary<String, IAssetWatcherCollection>();
-
-                    var assetPath = asset;
-                    var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, density, true));
-
-                    if (!assetWatchers.TryGetValue(assetFilePath, out var list))
-                    {
-                        list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
-                        assetWatchers[assetFilePath] = list;
-                    }
-
-                    list.Add(watcher);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Removes a watcher from the specified asset.
-        /// </summary>
-        private Boolean RemoveWatcherInternal<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
-        {
-            Contract.Require(asset, nameof(asset));
-            Contract.Require(watcher, nameof(watcher));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            lock (cacheSyncObject)
-            {
-                if (assetWatchers == null)
-                    return false;
-
-                var assetFilePath = ResolveAssetFilePath(asset, density, true);
-
-                if (assetWatchers.TryGetValue(asset, out var list))
-                    return list.Remove(watcher);
-
-                return false;
-            }
-        }
-
         /// <summary>
         /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
         /// changes to the specified dependency will also cause the main asset to be reloaded.
@@ -2251,91 +1943,6 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
-        /// Attempts to find the directory that contains the application solution file, if 
-        /// we have reason to believe that we're running in debug mode.
-        /// </summary>
-        /// <returns>The solution directory, if it was found; otherwise, <see langword="null"/>.</returns>
-        private String FindSolutionDirectory()
-        {
-            if (solutionDirectory != null)
-                return solutionDirectory == String.Empty ? null : solutionDirectory;
-
-            if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
-            {
-                solutionDirectory = String.Empty;
-                return null;
-            }
-
-            var asm = Assembly.GetEntryAssembly();
-            if (asm == null)
-            {
-                solutionDirectory = String.Empty;
-                return null;
-            }
-
-            var asmDebuggableAttr = (DebuggableAttribute)asm.GetCustomAttributes(typeof(DebuggableAttribute), false).FirstOrDefault();
-            if (asmDebuggableAttr == null || !asmDebuggableAttr.IsJITOptimizerDisabled)
-            {
-                solutionDirectory = String.Empty;
-                return null;
-            }
-
-            var asmDir = new DirectoryInfo(Path.GetDirectoryName(AppContext.BaseDirectory));
-            if (asmDir == null || !asmDir.Exists)
-            {
-                solutionDirectory = String.Empty;
-                return null;
-            }
-
-            // Break out of the bin directory. There's a different number of steps depending on our platform.
-            var depth = 
-                (Ultraviolet.Runtime == UltravioletRuntime.CoreCLR) ? 3 :
-                (Ultraviolet.Platform == UltravioletPlatform.macOS) ? 5 : 2;
-            for (int i = 0; i < depth; i++)
-            {
-                asmDir = asmDir.Parent;
-                if (asmDir == null || !asmDir.Exists)
-                {
-                    solutionDirectory = String.Empty;
-                    return null;
-                }
-            }
-
-            // Is there a directory here with the same structure as our content root?
-            var projectContentRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, RootDirectory));
-            if (projectContentRoot == null || !projectContentRoot.Exists)
-            {
-                // If we're on a Mac, check for a Desktop version of the project by
-                // going up another level and looking for a "Desktop" directory.
-                // If your app doesn't follow the Ultraviolet convention here, then
-                // unfortunately you're out of luck.
-                if (Ultraviolet.Runtime == UltravioletRuntime.Mono && Ultraviolet.Platform == UltravioletPlatform.macOS)
-                {
-                    asmDir = asmDir.Parent;
-                    if (asmDir != null && asmDir.Exists)
-                    {
-                        var desktopRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, "Desktop"));
-                        if (desktopRoot != null && desktopRoot.Exists)
-                        {
-                            // Check again for the content root...
-                            projectContentRoot = new DirectoryInfo(Path.Combine(desktopRoot.FullName, RootDirectory));
-                            if (projectContentRoot != null && projectContentRoot.Exists)
-                            {
-                                solutionDirectory = projectContentRoot.FullName;
-                                return solutionDirectory;
-                            }
-                        }
-                    }
-                }
-                solutionDirectory = String.Empty;
-                return null;
-            }
-
-            solutionDirectory = projectContentRoot.FullName;
-            return solutionDirectory;
-        }
-
-        /// <summary>
         /// Gets the path of the specified asset relative to the specified root directory.
         /// </summary>
         /// <param name="root">The root directory.</param>
@@ -2403,7 +2010,7 @@ namespace Ultraviolet.Content
                 extension = specifiedExtension;
 
             var isLoadedFromSln = (flags & AssetResolutionFlags.LoadFromSolutionDirectory) == AssetResolutionFlags.LoadFromSolutionDirectory;
-            var rootdir = isLoadedFromSln ? FindSolutionDirectory() ?? RootDirectory : RootDirectory;
+            var rootdir = isLoadedFromSln ? ContentDiscovery.FindSolutionDirectory(Ultraviolet, RootDirectory) ?? RootDirectory : RootDirectory;
             var path = GetAssetPathFromDirectory(rootdir, asset, ref extension, flags);
             directory = rootdir;
             overridden = false;
@@ -2740,18 +2347,13 @@ namespace Ultraviolet.Content
         }
 
         // State values.
+        private readonly ContentWatchManager watchers;
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
         private readonly Dictionary<String, AssetCacheEntry> assetCache = new Dictionary<String, AssetCacheEntry>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
-
-        // File watching.
-        private FileSystemWatcher rootFileSystemWatcher;
-        private Dictionary<String, IAssetWatcherCollection> assetWatchers;
         private Dictionary<String, IAssetDependencyCollection> assetDependencies;
-        private Dictionary<String, Dictionary<Byte, Object>> sharedWatchedAssets;
-        private String solutionDirectory;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";

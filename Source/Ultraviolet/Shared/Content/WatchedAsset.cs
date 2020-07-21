@@ -58,9 +58,9 @@ namespace Ultraviolet.Content
                 });
 
             if (assetDensity == null)
-                this.Owner.AddWatcher(assetPath, watcher);
+                this.Owner.Watchers.AddWatcher(assetPath, watcher);
             else
-                this.Owner.AddWatcher(assetPath, assetDensity.Value, watcher);
+                this.Owner.Watchers.AddWatcher(assetPath, assetDensity.Value, watcher);
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace Ultraviolet.Content
             if (this.watcher != null)
             {
                 if (this.AssetDensity == null)
-                    this.Owner.RemoveWatcher(AssetPath, watcher);
+                    this.Owner.Watchers.RemoveWatcher(AssetPath, watcher);
                 else
-                    this.Owner.RemoveWatcher(AssetPath, AssetDensity.Value, watcher);
+                    this.Owner.Watchers.RemoveWatcher(AssetPath, AssetDensity.Value, watcher);
 
                 this.watcher = null;
             }

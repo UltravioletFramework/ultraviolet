@@ -43,7 +43,7 @@ namespace Ultraviolet.Presentation
                 return;
 
             var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
-            cursorCollection = watch ? content.GetSharedWatchedAsset<CursorCollection>(CursorCollectionID, density) :
+            cursorCollection = watch ? content.Watchers.GetSharedWatchedAsset<CursorCollection>(CursorCollectionID, density) :
                 (WatchableAssetReference<CursorCollection>)content.Load<CursorCollection>(CursorCollectionID, density);
         }
 

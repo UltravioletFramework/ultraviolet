@@ -21,7 +21,7 @@ namespace Ultraviolet.Presentation
             Contract.Require(content, nameof(content));
 
             var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
-            value = watch ? content.GetSharedWatchedAsset<TResource>(asset, density) :
+            value = watch ? content.Watchers.GetSharedWatchedAsset<TResource>(asset, density) :
                 (WatchableAssetReference<TResource>)content.Load<TResource>(asset, density);
         }
         

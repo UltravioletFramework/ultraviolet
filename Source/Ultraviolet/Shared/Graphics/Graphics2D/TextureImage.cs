@@ -38,7 +38,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             if (!TextureID.IsValid)
                 return;
 
-            texture = watch ? content.GetSharedWatchedAsset<Texture2D>(TextureID) : 
+            texture = watch ? content.Watchers.GetSharedWatchedAsset<Texture2D>(TextureID) : 
                 (WatchableAssetReference<Texture2D>)content.Load<Texture2D>(TextureID);            
 
             if (TextureRegion.IsEmpty && !texture.IsNullReference)
@@ -59,7 +59,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             if (!TextureID.IsValid)
                 return;
 
-            texture = watch ? content.GetSharedWatchedAsset<Texture2D>(TextureID, density) :
+            texture = watch ? content.Watchers.GetSharedWatchedAsset<Texture2D>(TextureID, density) :
                 (WatchableAssetReference<Texture2D>)content.Load<Texture2D>(TextureID, density);
 
             if (TextureRegion.IsEmpty && !texture.IsNullReference)
