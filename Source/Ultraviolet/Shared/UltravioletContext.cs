@@ -69,17 +69,21 @@ namespace Ultraviolet
             Contract.Require(host, nameof(host));
             Contract.Require(configuration, nameof(configuration));
 
+            if (configuration.GraphicsConfiguration == null)
+                throw new InvalidOperationException(UltravioletStrings.MissingGraphicsConfiguration);
+
             AcquireContext();
 
-            this.isRunningInServiceMode = configuration.EnableServiceMode;
+            this.IsRunningInServiceMode = configuration.EnableServiceMode;
+            this.IsHardwareInputDisabled = configuration.IsHardwareInputDisabled;
 
             this.Properties = new UltravioletContextProperties();
             this.Properties.SupportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
-            this.Properties.SrgbDefaultForSurface2D = configuration.SrgbDefaultForSurface2D;
-            this.Properties.SrgbDefaultForSurface3D = configuration.SrgbDefaultForSurface3D;
-            this.Properties.SrgbDefaultForTexture2D = configuration.SrgbDefaultForTexture2D;
-            this.Properties.SrgbDefaultForTexture3D = configuration.SrgbDefaultForTexture3D;
-            this.Properties.SrgbDefaultForRenderBuffer2D = configuration.SrgbDefaultForRenderBuffer2D;
+            this.Properties.SrgbDefaultForSurface2D = configuration.GraphicsConfiguration.SrgbDefaultForSurface2D;
+            this.Properties.SrgbDefaultForSurface3D = configuration.GraphicsConfiguration.SrgbDefaultForSurface3D;
+            this.Properties.SrgbDefaultForTexture2D = configuration.GraphicsConfiguration.SrgbDefaultForTexture2D;
+            this.Properties.SrgbDefaultForTexture3D = configuration.GraphicsConfiguration.SrgbDefaultForTexture3D;
+            this.Properties.SrgbDefaultForRenderBuffer2D = configuration.GraphicsConfiguration.SrgbDefaultForRenderBuffer2D;
 
             if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR)
                 this.Properties.SupportsHighDensityDisplayModes = false;
@@ -571,7 +575,7 @@ namespace Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the context is running in service mode.
         /// </summary>
-        public Boolean IsRunningInServiceMode => isRunningInServiceMode;
+        public Boolean IsRunningInServiceMode { get; }
 
         /// <summary>
         /// Gets a value indicating whether the current thread is the thread which
@@ -1041,7 +1045,6 @@ namespace Ultraviolet
         private readonly Thread thread;
         private Assembly platformCompatibilityShimAssembly;
         private Assembly viewProviderAssembly;
-        private Boolean isRunningInServiceMode;
 
         // The context's list of pending tasks.
         private readonly TaskScheduler taskScheduler;

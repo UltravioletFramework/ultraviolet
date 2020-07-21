@@ -4,11 +4,13 @@ using Ultraviolet.Core;
 namespace Ultraviolet.OpenGL
 {
     /// <summary>
-    /// Represents the Ultraviolet Framework's configuration settings under the OpenGL implementation.
+    /// Represents the configuration settings for the OpenGL graphics subsystem implementation.
     /// </summary>
-    [CLSCompliant(true)]
-    public sealed class OpenGLUltravioletConfiguration : UltravioletConfiguration
-    {        
+    public class OpenGLGraphicsConfiguration : UltravioletGraphicsConfiguration
+    {
+        /// <inheritdoc/>
+        public override String GraphicsApiName { get; } = "OpenGL";
+
         /// <summary>
         /// Gets or sets the minimum OpenGL version that is required by the application.
         /// This cannot be lower than the minimum version required by Ultraviolet itself.
@@ -97,7 +99,7 @@ namespace Ultraviolet.OpenGL
         /// <summary>
         /// The default configuration for the OpenGL implementation.
         /// </summary>
-        public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
+        public static OpenGLGraphicsConfiguration Default => new OpenGLGraphicsConfiguration();
 
         // Property values.
         private Int32 backBufferDepthSize = 16;

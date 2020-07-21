@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet
@@ -7,7 +6,7 @@ namespace Ultraviolet
     /// <summary>
     /// Represents the Ultraviolet Framework's configuration settings.
     /// </summary>
-    public abstract class UltravioletConfiguration
+    public class UltravioletConfiguration
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletConfiguration"/> class.
@@ -28,10 +27,15 @@ namespace Ultraviolet
         public UltravioletPluginCollection Plugins { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="RenderTargetUsage"/> value which is used by the back buffer.
+        /// Gets or sets the Ultraviolet context's graphics configuration settings.
         /// </summary>
-        public RenderTargetUsage BackBufferRenderTargetUsage { get; set; }
-        
+        public UltravioletGraphicsConfiguration GraphicsConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the assembly that implements the graphics subsystem.
+        /// </summary>
+        public String GraphicsSubsystemAssembly { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the assembly that implements the audio subsystem.
         /// </summary>
@@ -49,9 +53,9 @@ namespace Ultraviolet
         public Object ViewProviderConfiguration { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to create a debug context.
+        /// Gets or sets the delegate that is invoked when a debug message is logged.
         /// </summary>
-        public Boolean Debug { get; set; }
+        public DebugCallback DebugCallback { get; set; }
 
         /// <summary>
         /// Gets or sets the levels of debug output which are enabled.
@@ -59,47 +63,14 @@ namespace Ultraviolet
         public DebugLevels DebugLevels { get; set; }
 
         /// <summary>
-        /// Gets or sets the delegate that is invoked when a debug message is logged.
+        /// Gets or sets a value indicating whether to create a debug context.
         /// </summary>
-        public DebugCallback DebugCallback { get; set; }
+        public Boolean Debug { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether SRGB encoding should be enabled for
-        /// textures and render buffers if it is supported. After device initialization, check the value
-        /// of the <see cref="GraphicsCapabilities.SrgbEncodingEnabled"/> property to determine whether SRGB 
-        /// encoding was actually enabled -- not all devices support it.
+        /// Gets or sets a value indicating whether the context will disable hardware input by default.
         /// </summary>
-        public Boolean SrgbBuffersEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value which determines whether instances of the <see cref="Surface2D"/>
-        /// class are treated as SRGB encoded by default.
-        /// </summary>
-        public Boolean SrgbDefaultForSurface2D { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value which determines whether instances of the <see cref="Surface3D"/>
-        /// class are treated as SRGB encoded by default.
-        /// </summary>
-        public Boolean SrgbDefaultForSurface3D { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value which determines whether instances of the <see cref="Texture2D"/>
-        /// class are treated as SRGB encoded by default.
-        /// </summary>
-        public Boolean SrgbDefaultForTexture2D { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value which determines whether instances of the <see cref="Texture3D"/>
-        /// class are treated as SRGB encoded by default.
-        /// </summary>
-        public Boolean SrgbDefaultForTexture3D { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value which determines whether instances of the <see cref="RenderBuffer2D"/>
-        /// class are treated as SRGB encoded by default.
-        /// </summary>
-        public Boolean SrgbDefaultForRenderBuffer2D { get; set; }
+        public Boolean IsHardwareInputDisabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Ultraviolet should watch view definition files

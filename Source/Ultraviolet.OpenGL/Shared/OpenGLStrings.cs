@@ -56,8 +56,6 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource EffectMustHaveVertexAndFragmentShader = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_VERTEX_AND_FRAGMENT_SHADER");
         public static readonly StringResource EffectMustHaveTechniques              = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_TECHNIQUES");
         public static readonly StringResource EffectTechniqueMustHavePasses         = new StringResource(StringDatabase, "EFFECT_TECHNIQUE_MUST_HAVE_PASSES");
-        public static readonly StringResource MissingAudioAssembly                  = new StringResource(StringDatabase, "MISSING_AUDIO_ASSEMBLY");
-        public static readonly StringResource InvalidAudioAssembly                  = new StringResource(StringDatabase, "INVALID_AUDIO_ASSEMBLY");
         public static readonly StringResource TechniqueBelongsToDifferentEffect     = new StringResource(StringDatabase, "TECHNIQUE_BELONGS_TO_DIFFERENT_EFFECT");
         public static readonly StringResource DebugOutputNotSupported               = new StringResource(StringDatabase, "DEBUG_OUTPUT_NOT_SUPPORTED");
         public static readonly StringResource ShaderUniformHasNoSource              = new StringResource(StringDatabase, "SHADER_UNIFORM_HAS_NO_SOURCE");
@@ -78,6 +76,7 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource SamplerDirectiveAlreadyInUse          = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_ALREADY_IN_USE");
         public static readonly StringResource ImplicitEffectsMustLoadFromShaders    = new StringResource(StringDatabase, "IMPLICIT_EFFECTS_MUST_LOAD_FROM_SHADERS");
         public static readonly StringResource ShaderExternHasInvalidName            = new StringResource(StringDatabase, "SHADER_EXTERN_HAS_INVALID_NAME");
+        public static readonly StringResource InvalidGraphicsConfiguration          = new StringResource(StringDatabase, "INVALID_GRAPHICS_CONFIGURATION");
 #pragma warning restore 1591
     }
 }

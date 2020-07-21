@@ -105,7 +105,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2ScreenDensityService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\WindowStatusFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2OpenGLEnvironment.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformRenderingAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Cursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2CursorProcessor.cs" />
@@ -113,6 +112,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.SDL_RWops.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Strings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletMessages.cs" />

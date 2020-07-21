@@ -1,9 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.Graphics;
+using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
+using Ultraviolet.UI;
 using static Ultraviolet.SDL2.Native.SDL_EventType;
 using static Ultraviolet.SDL2.Native.SDL_Hint;
 using static Ultraviolet.SDL2.Native.SDL_Init;
@@ -16,19 +23,44 @@ namespace Ultraviolet.SDL2
     /// Represents the base class for Ultraviolet implementations which use SDL2.
     /// </summary>
     [CLSCompliant(true)]
-    public abstract class SDL2UltravioletContext : UltravioletContext
+    public class SDL2UltravioletContext : UltravioletContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SDL2UltravioletContext"/> class.
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        protected unsafe SDL2UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
+        public unsafe SDL2UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
             : base(host, configuration)
         {
+            Contract.Require(configuration, nameof(configuration));
+
+            if (!InitSDL(configuration))
+                throw new SDL2Exception();
+
+            this.onWindowDrawing = (context, time, window) => 
+                ((SDL2UltravioletContext)context).OnWindowDrawing(time, window);
+            this.onWindowDrawn = (context, time, window) => 
+                ((SDL2UltravioletContext)context).OnWindowDrawn(time, window);
+
             eventFilter = new SDL_EventFilter(SDLEventFilter);
             eventFilterPtr = Marshal.GetFunctionPointerForDelegate(eventFilter);
             SDL_SetEventFilter(eventFilterPtr, IntPtr.Zero);
+
+            LoadSubsystemAssemblies(configuration);
+            this.swapChainManager = IsRunningInServiceMode ? new DummySwapChainManager(this) : SwapChainManager.Create();
+            this.platform = InitializePlatformSubsystem(configuration);
+            this.graphics = InitializeGraphicsSubsystem(configuration);
+            this.audio = InitializeAudioSubsystem(configuration);
+            this.input = InitializeInputSubsystem();
+            this.content = InitializeContentSubsystem();
+            this.ui = InitializeUISubsystem(configuration);
+
+            PumpEvents();
+
+            InitializeContext();
+            InitializeViewProvider(configuration);
+            InitializePlugins(configuration);
         }
         
         /// <inheritdoc/>
@@ -76,6 +108,45 @@ namespace Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public override void Draw(UltravioletTime time)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            OnDrawing(time);
+            swapChainManager.DrawAndSwap(time, onWindowDrawing, onWindowDrawn);
+
+            base.Draw(time);
+        }
+
+        /// <inheritdoc/>
+        public override IUltravioletPlatform GetPlatform() => platform;
+
+        /// <inheritdoc/>
+        public override IUltravioletContent GetContent() => content;
+
+        /// <inheritdoc/>
+        public override IUltravioletGraphics GetGraphics() => graphics;
+
+        /// <inheritdoc/>
+        public override IUltravioletAudio GetAudio() => audio;
+
+        /// <inheritdoc/>
+        public override IUltravioletInput GetInput() => input;
+
+        /// <inheritdoc/>
+        public override IUltravioletUI GetUI() => ui;
+
+        /// <summary>
+        /// Gets the assembly that implements the graphics subsystem.
+        /// </summary>
+        public Assembly GraphicsSubsystemAssembly { get; private set; }
+
+        /// <summary>
+        /// Gets the assembly that implements the audio subsystem.
+        /// </summary>
+        public Assembly AudioSubsystemAssembly { get; private set; }
+
+        /// <inheritdoc/>
         protected override void OnShutdown()
         {
             SDL_SetEventFilter(IntPtr.Zero, IntPtr.Zero);
@@ -85,11 +156,179 @@ namespace Ultraviolet.SDL2
         }
 
         /// <summary>
+        /// Loads the context's subsystem assemblies.
+        /// </summary>
+        /// <param name="configuration">The context's configuration settings.</param>
+        private void LoadSubsystemAssemblies(UltravioletConfiguration configuration)
+        {
+            if (IsRunningInServiceMode)
+                return;
+
+            Assembly LoadSubsystemAssembly(String name)
+            {
+                try
+                {
+                    return Assembly.Load(name);
+                }
+                catch (Exception e)
+                {
+                    if (e is FileNotFoundException || e is FileLoadException || e is BadImageFormatException)
+                    {
+                        return null;
+                    }
+                    throw;
+                }
+            }
+
+            if (String.IsNullOrEmpty(configuration.GraphicsSubsystemAssembly))
+                throw new InvalidOperationException(SDL2Strings.MissingGraphicsAssembly);
+
+            if (String.IsNullOrEmpty(configuration.AudioSubsystemAssembly))
+                throw new InvalidOperationException(SDL2Strings.MissingAudioAssembly);
+
+            this.GraphicsSubsystemAssembly = LoadSubsystemAssembly(configuration.GraphicsSubsystemAssembly);
+            if (this.GraphicsSubsystemAssembly == null)
+                throw new InvalidOperationException(SDL2Strings.InvalidGraphicsAssembly);
+
+            this.AudioSubsystemAssembly = LoadSubsystemAssembly(configuration.AudioSubsystemAssembly);
+            if (this.AudioSubsystemAssembly == null)
+                throw new InvalidOperationException(SDL2Strings.InvalidAudioAssembly);
+
+            var distinctAssemblies = new[] { this.GraphicsSubsystemAssembly, this.AudioSubsystemAssembly }.Distinct();
+            foreach (var distinctAssembly in distinctAssemblies)
+                InitializeFactoryMethodsInAssembly(distinctAssembly);
+        }
+
+        /// <summary>
+        /// Attempts to create a new instance of the specified Ultraviolet subsystem by dynamically loading it from the specified assembly.
+        /// </summary>
+        /// <typeparam name="TSubsystem">The subsystem interface type.</typeparam>
+        /// <param name="assembly">The assembly from which to load the subsystem implementation.</param>
+        /// <param name="configuration">The Ultraviolet context configuration.</param>
+        /// <param name="instance">The subsystem instance that was created.</param>
+        /// <returns><see langword="true"/> if the subsystem instance was created; otherwise, <see langword="false"/>.</returns>
+        private Boolean TryCreateSubsystemInstance<TSubsystem>(Assembly assembly, UltravioletConfiguration configuration, out TSubsystem instance)
+        {
+            var types = (from t in assembly.GetTypes()
+                         where
+                          t.IsClass && !t.IsAbstract &&
+                          t.GetInterfaces().Contains(typeof(TSubsystem))
+                         select t).ToList();
+
+            if (!types.Any() || types.Count > 1)
+                throw new InvalidOperationException(SDL2Strings.InvalidAudioAssembly);
+
+            var type = types.Single();
+
+            var ctorWithConfig = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(UltravioletConfiguration) });
+            if (ctorWithConfig != null)
+            {
+                instance = (TSubsystem)ctorWithConfig.Invoke(new object[] { this, configuration });
+                return true;
+            }
+
+            var ctorWithoutConfig = type.GetConstructor(new[] { typeof(UltravioletContext) });
+            if (ctorWithoutConfig != null)
+            {
+                instance = (TSubsystem)ctorWithoutConfig.Invoke(new object[] { this });
+                return true;
+            }
+
+            instance = default(TSubsystem);
+            return false;
+        }
+
+        /// <summary>
+        /// Initializes the context's platform subsystem.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        /// <returns>The platform subsystem.</returns>
+        private IUltravioletPlatform InitializePlatformSubsystem(UltravioletConfiguration configuration)
+        {
+            if (IsRunningInServiceMode)
+            {
+                return new DummyUltravioletPlatform(this);
+            }
+            else
+            {
+                var platform = new SDL2UltravioletPlatform(this, configuration);
+                PumpEvents();
+                return platform;
+            }
+        }
+
+        /// <summary>
+        /// Initializes the context's content subsystem.
+        /// </summary>
+        /// <returns>The content subsystem.</returns>
+        private IUltravioletContent InitializeContentSubsystem()
+        {
+            var content = new UltravioletContent(this);
+            content.RegisterImportersAndProcessors(new[] { GraphicsSubsystemAssembly, AudioSubsystemAssembly }.Distinct());
+            content.Importers.RegisterImporter<XmlContentImporter>("prog");
+            return content;
+        }
+
+        /// <summary>
+        /// Initializes the context's graphics subsystem.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        /// <returns>The graphics subsystem.</returns>
+        private IUltravioletGraphics InitializeGraphicsSubsystem(UltravioletConfiguration configuration)
+        {
+            if (IsRunningInServiceMode)
+                return new DummyUltravioletGraphics(this);
+
+            if (!TryCreateSubsystemInstance<IUltravioletGraphics>(GraphicsSubsystemAssembly, configuration, out var graphics))
+                throw new InvalidOperationException(SDL2Strings.InvalidGraphicsAssembly);
+
+            return graphics;
+        }
+
+        /// <summary>
+        /// Initializes the context's audio subsystem.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        /// <returns>The audio subsystem.</returns>
+        private IUltravioletAudio InitializeAudioSubsystem(UltravioletConfiguration configuration)
+        {
+            if (IsRunningInServiceMode)
+                return new DummyUltravioletAudio(this);
+
+            if (!TryCreateSubsystemInstance<IUltravioletAudio>(AudioSubsystemAssembly, configuration, out var audio))
+                throw new InvalidOperationException(SDL2Strings.InvalidAudioAssembly);
+
+            return audio;
+        }
+
+        /// <summary>
+        /// Initializes the context's input subsystem.
+        /// </summary>
+        /// <returns>The input subsystem.</returns>
+        private IUltravioletInput InitializeInputSubsystem()
+        {
+            if (IsRunningInServiceMode)
+                return new DummyUltravioletInput(this);
+
+            return new SDL2UltravioletInput(this);
+        }
+
+        /// <summary>
+        /// Initializes the context's UI subsystem.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        /// <returns>The UI subsystem.</returns>
+        private IUltravioletUI InitializeUISubsystem(UltravioletConfiguration configuration)
+        {
+            return new UltravioletUI(this, configuration);
+        }
+
+        /// <summary>
         /// Initializes SDL2.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
         /// <returns><see langword="true"/> if SDL2 was successfully initialized; otherwise, <see langword="false"/>.</returns>
-        protected Boolean InitSDL(UltravioletConfiguration configuration)
+        private Boolean InitSDL(UltravioletConfiguration configuration)
         {
             var sdlFlags = configuration.EnableServiceMode ?
                 SDL_INIT_TIMER | SDL_INIT_EVENTS :
@@ -108,7 +347,7 @@ namespace Ultraviolet.SDL2
         /// Pumps the SDL2 event queue.
         /// </summary>
         /// <returns><see langword="true"/> if the context should continue processing the frame; otherwise, <see langword="false"/>.</returns>
-        protected Boolean PumpEvents()
+        private Boolean PumpEvents()
         {
             SDL_Event @event;
             while (SDL_PollEvent(out @event) > 0)
@@ -207,5 +446,18 @@ namespace Ultraviolet.SDL2
         // The SDL event filter.
         private readonly SDL_EventFilter eventFilter;
         private readonly IntPtr eventFilterPtr;
+
+        // Ultraviolet subsystems.
+        private readonly SwapChainManager swapChainManager;
+        private readonly IUltravioletPlatform platform;
+        private readonly IUltravioletContent content;
+        private readonly IUltravioletGraphics graphics;
+        private readonly IUltravioletAudio audio;
+        private readonly IUltravioletInput input;
+        private readonly IUltravioletUI ui;
+
+        // Delegate caches.
+        private readonly Action<UltravioletContext, UltravioletTime, IUltravioletWindow> onWindowDrawing;
+        private readonly Action<UltravioletContext, UltravioletTime, IUltravioletWindow> onWindowDrawn;
     }
 }

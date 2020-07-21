@@ -640,4 +640,9 @@
       <Variant>The Ultraviolet host provided invalid timing logic. Make sure the CreateTimingLogic() method returns a non-null value.</Variant>
     </en-US>
   </String>
+  <String Key="MISSING_GRAPHICS_CONFIGURATION">
+    <en-US>
+      <Variant>No graphics configuration was specified for the Ultraviolet context.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

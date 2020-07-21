@@ -89,6 +89,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderUniformCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLStateInteger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSwapChainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture3DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessor.cs" />
@@ -104,10 +105,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLGraphicsPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLStrings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletConfiguration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphicsFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />

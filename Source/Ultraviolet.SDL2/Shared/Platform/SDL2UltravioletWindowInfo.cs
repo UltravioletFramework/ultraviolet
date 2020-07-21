@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using Ultraviolet.Core.Text;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_Hint;
@@ -20,17 +19,15 @@ namespace Ultraviolet.SDL2.Platform
         /// Initializes a new instance of the <see cref="SDL2UltravioletWindowInfo"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uvconfig">The Ultraviolet configuration settings for the current context.</param>
-        /// <param name="winconfig">The window configuration settings for the current context.</param>
-        internal SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
+        /// <param name="configuration">The Ultraviolet configuration settings for the current context.</param>
+        internal SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration configuration)
         {
             Contract.Require(uv, nameof(uv));
-            Contract.Require(uvconfig, nameof(uvconfig));
-            Contract.Require(winconfig, nameof(winconfig));
+            Contract.Require(configuration, nameof(configuration));
 
-            this.uv = uv;
+            this.Ultraviolet = uv;
 
-            InitializePrimaryWindow(uv, uvconfig, winconfig);
+            InitializePrimaryWindow(uv, configuration);
         }
         
         /// <summary>
@@ -52,11 +49,11 @@ namespace Ultraviolet.SDL2.Platform
             if (window != null && !windows.Contains(window))
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);
 
-            if (primary != window)
+            if (Primary != window)
             {
                 OnPrimaryWindowChanging();
 
-                primary = window;
+                Primary = window;
 
                 OnPrimaryWindowChanged();
             }
@@ -100,7 +97,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The context's master window.</returns>
         public IUltravioletWindow GetMaster()
         {
-            return master;
+            return Master;
         }
 
         /// <summary>
@@ -109,7 +106,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>A pointer to the SDL2 window object encapsulated by the master window.</returns>
         public IntPtr GetMasterPointer()
         {
-            return (IntPtr)(SDL2UltravioletWindow)master;
+            return (IntPtr)(SDL2UltravioletWindow)Master;
         }
 
         /// <summary>
@@ -118,7 +115,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The context's primary window, or null if the context is headless.</returns>
         public IUltravioletWindow GetPrimary()
         {
-            return primary;
+            return Primary;
         }
 
         /// <summary>
@@ -127,7 +124,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>A pointer to the SDL2 window object encapsulated by the primary window.</returns>
         public IntPtr GetPrimaryPointer()
         {
-            return (IntPtr)(SDL2UltravioletWindow)primary;
+            return (IntPtr)(SDL2UltravioletWindow)Primary;
         }
 
         /// <summary>
@@ -136,7 +133,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The context's current window.</returns>
         public IUltravioletWindow GetCurrent()
         {
-            return current;
+            return Current;
         }
 
         /// <summary>
@@ -145,7 +142,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>A pointer to the SDL2 window object encapsulated by the current window.</returns>
         public IntPtr GetCurrentPointer()
         {
-            return (IntPtr)(SDL2UltravioletWindow)current;
+            return (IntPtr)(SDL2UltravioletWindow)Current;
         }
 
         /// <summary>
@@ -160,7 +157,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The Ultraviolet window that was created.</returns>
         public IUltravioletWindow Create(String caption, Int32 x, Int32 y, Int32 width, Int32 height, WindowFlags flags = WindowFlags.None)
         {
-            var sdlflags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
+            var sdlflags = (RenderingApi == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
 
             if (Ultraviolet.Properties.SupportsHighDensityDisplayModes)
                 sdlflags |= SDL_WINDOW_ALLOW_HIGHDPI;
@@ -228,12 +225,12 @@ namespace Ultraviolet.SDL2.Platform
             if (!windows.Remove(window))
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);
 
-            if (window == current)
+            if (window == Current)
                 throw new InvalidOperationException();
 
             OnWindowDestroyed(window);
 
-            if (window == primary)
+            if (window == Primary)
                 DesignatePrimary(null);
 
             OnWindowCleanup(window);
@@ -292,10 +289,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Gets the Ultraviolet context.
         /// </summary>
-        public UltravioletContext Ultraviolet
-        {
-            get { return uv; }
-        }
+        public UltravioletContext Ultraviolet { get; }
 
         /// <summary>
         /// Occurs after a window has been created.
@@ -328,22 +322,13 @@ namespace Ultraviolet.SDL2.Platform
         public event UltravioletWindowInfoEventHandler CurrentWindowChanging;
 
         /// <summary>
-        /// Initializes the rendering API.
+        /// Initializes the rendering API, potentially using lower settings in the event that 
+        /// the initial attempt to initialize the API failed.
         /// </summary>
-        /// <param name="sdlconfig">The platform configuration settings.</param>
-        protected virtual void InitializeRenderingAPI(SDL2PlatformConfiguration sdlconfig)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes the rendering API using lower settings in the event that the initial attempt
-        /// to initialize the API failed.
-        /// </summary>
-        /// <param name="sdlconfig">The platform configuration settings.</param>
-        /// <param name="attempt">The number of attempts which have been made to find a working fallback configuration.</param>
-        /// <returns><see langword="true"/> if a fallback configuration was provided; otherwise, <see langword="false"/>.</returns>
-        protected virtual Boolean InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig, Int32 attempt)
+        /// <param name="graphicsConfiguration">The platform configuration settings.</param>
+        /// <param name="attempt">The number of attempts which have been made to find a working configuration.</param>
+        /// <returns><see langword="true"/> if a configuration was provided; otherwise, <see langword="false"/>.</returns>
+        protected virtual Boolean InitializeRenderingAPI(UltravioletGraphicsConfiguration graphicsConfiguration, Int32 attempt)
         {
             return false;
         }
@@ -359,39 +344,44 @@ namespace Ultraviolet.SDL2.Platform
         /// Raises the WindowCreated event.
         /// </summary>
         /// <param name="window">The window that was created.</param>
-        protected void OnWindowCreated(IUltravioletWindow window) =>
+        protected virtual void OnWindowCreated(IUltravioletWindow window) =>
             WindowCreated?.Invoke(window);
 
         /// <summary>
         /// Raises the WindowDestroyed event.
         /// </summary>
         /// <param name="window">The window that is being destroyed.</param>
-        protected void OnWindowDestroyed(IUltravioletWindow window) =>
+        protected virtual void OnWindowDestroyed(IUltravioletWindow window) =>
             WindowDestroyed?.Invoke(window);
 
         /// <summary>
         /// Raises the PrimaryWindowChanging event.
         /// </summary>
         protected void OnPrimaryWindowChanging() =>
-            PrimaryWindowChanging?.Invoke(primary);
+            PrimaryWindowChanging?.Invoke(Primary);
 
         /// <summary>
         /// Raises the PrimaryWindowChanged event.
         /// </summary>
         protected void OnPrimaryWindowChanged() =>
-            PrimaryWindowChanged?.Invoke(primary);
+            PrimaryWindowChanged?.Invoke(Primary);
 
         /// <summary>
         /// Raises the CurrentWindowChanging event.
         /// </summary>
         protected void OnCurrentWindowChanging() =>
-            CurrentWindowChanging?.Invoke(current);
+            CurrentWindowChanging?.Invoke(Current);
 
         /// <summary>
         /// Raises the CurrentWindowChanged event.
         /// </summary>
         protected void OnCurrentWindowChanged() =>
-            CurrentWindowChanged?.Invoke(current);
+            CurrentWindowChanged?.Invoke(Current);
+
+        /// <summary>
+        /// Gets the rendering API which this window manager implements.
+        /// </summary>
+        protected abstract SDL2PlatformRenderingAPI RenderingApi { get; }
 
         /// <summary>
         /// Gets the window manager's list of windows.
@@ -401,60 +391,40 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Gets or sets the master window.
         /// </summary>
-        protected IUltravioletWindow Master
-        {
-            get { return master; }
-            set { master = value; }
-        }
+        protected IUltravioletWindow Master { get; set; }
 
         /// <summary>
         /// Gets or sets the primary window.
         /// </summary>
-        protected IUltravioletWindow Primary
-        {
-            get { return primary; }
-            set { primary = value; }
-        }
+        protected IUltravioletWindow Primary { get; set; }
 
         /// <summary>
         /// Gets or sets the current window.
         /// </summary>
-        protected IUltravioletWindow Current
-        {
-            get { return current; }
-            set { current = value; }
-        }
+        protected IUltravioletWindow Current { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether vertical sync is enabled.
         /// </summary>
-        protected Boolean VSync
-        {
-            get { return vsync; }
-            set { vsync = value; }
-        }
+        protected Boolean VSync { get; set; }
 
         /// <summary>
         /// Initializes the context's primary window.
         /// </summary>
-        private void InitializePrimaryWindow(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration sdlconfig)
+        private void InitializePrimaryWindow(UltravioletContext uv, UltravioletConfiguration configuration)
         {
-            // Initialize the rendering API.
-            if (sdlconfig.RenderingAPI != SDL2PlatformRenderingAPI.OpenGL)
-                throw new NotSupportedException();
-
-            InitializeRenderingAPI(sdlconfig);
-            renderingAPI = sdlconfig.RenderingAPI;
+            // Initialize the rendering API.         
+            InitializeRenderingAPI(configuration.GraphicsConfiguration, 0);
 
             // If we're running on Android or iOS, we can't create a headless context.
             var isRunningOnMobile = (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS);
-            if (isRunningOnMobile && uvconfig.Headless)
+            if (isRunningOnMobile && configuration.Headless)
                 throw new InvalidOperationException(SDL2Strings.CannotCreateHeadlessContextOnMobile);
 
             // Initialize the hidden master window used to create the OpenGL context.
             var masterWidth = 0;
             var masterHeight = 0;
-            var masterFlags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
+            var masterFlags = (RenderingApi == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
 
             if (Ultraviolet.Properties.SupportsHighDensityDisplayModes)
                 masterFlags |= SDL_WINDOW_ALLOW_HIGHDPI;
@@ -473,8 +443,8 @@ namespace Ultraviolet.SDL2.Platform
             var masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
-                var fallbackAttempt = 0;
-                while (InitializeRenderingAPIFallback(sdlconfig, fallbackAttempt++))
+                var fallbackAttempt = 1;
+                while (InitializeRenderingAPI(configuration.GraphicsConfiguration, fallbackAttempt++))
                 {
                     masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
                     if (masterptr != IntPtr.Zero)
@@ -491,10 +461,10 @@ namespace Ultraviolet.SDL2.Platform
                     if (SDL_GL_GetAttribute(SDL_GLattr.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, &srgbFramebufferEnabled) < 0)
                         throw new SDL2Exception();
                 }
-                uvconfig.SrgbBuffersEnabled = (srgbFramebufferEnabled > 0);
+                configuration.GraphicsConfiguration.SrgbBuffersEnabled = (srgbFramebufferEnabled > 0);
             }
 
-            this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr, isRunningOnMobile);
+            this.Master = new SDL2UltravioletWindow(Ultraviolet, masterptr, isRunningOnMobile);
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
@@ -502,31 +472,31 @@ namespace Ultraviolet.SDL2.Platform
                 throw new SDL2Exception();
 
             // If this is not a headless context, create the primary application window.
-            if (!uvconfig.Headless)
+            if (!configuration.Headless)
             {
                 if (isRunningOnMobile)
                 {
-                    this.windows.Add(this.master);
-                    DesignatePrimary(this.master);
+                    this.windows.Add(this.Master);
+                    DesignatePrimary(this.Master);
                 }
                 else
                 {
-                    var flags = uvconfig.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
+                    var flags = configuration.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
 
-                    if (uvconfig.WindowIsResizable)
+                    if (configuration.WindowIsResizable)
                         flags |= WindowFlags.Resizable;
 
-                    if (uvconfig.WindowIsBorderless)
+                    if (configuration.WindowIsBorderless)
                         flags |= WindowFlags.Borderless;
 
-                    if (uvconfig.WindowIsShownImmediately)
+                    if (configuration.WindowIsShownImmediately)
                         flags |= WindowFlags.ShownImmediately;
 
                     var primary = Create(caption,
-                        uvconfig.InitialWindowPosition.X,
-                        uvconfig.InitialWindowPosition.Y,
-                        uvconfig.InitialWindowPosition.Width,
-                        uvconfig.InitialWindowPosition.Height, flags);
+                        configuration.InitialWindowPosition.X,
+                        configuration.InitialWindowPosition.Y,
+                        configuration.InitialWindowPosition.Width,
+                        configuration.InitialWindowPosition.Height, flags);
                     DesignatePrimary(primary);
                 }
             }
@@ -534,15 +504,5 @@ namespace Ultraviolet.SDL2.Platform
 
         // The context's attached windows.
         private readonly List<IUltravioletWindow> windows = new List<IUltravioletWindow>();
-
-        // The primary and active windows.
-        private SDL2PlatformRenderingAPI renderingAPI;
-        private IUltravioletWindow master;
-        private IUltravioletWindow primary;
-        private IUltravioletWindow current;
-        private Boolean vsync;
-
-        // The Ultraviolet context.
-        private readonly UltravioletContext uv;
     }
 }

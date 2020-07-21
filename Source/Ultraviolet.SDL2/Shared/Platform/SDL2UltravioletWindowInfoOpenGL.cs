@@ -3,6 +3,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Platform;
 using static Ultraviolet.SDL2.Native.SDL_GLattr;
 using static Ultraviolet.SDL2.Native.SDLNative;
+using Ultraviolet.OpenGL;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -16,10 +17,9 @@ namespace Ultraviolet.SDL2.Platform
         /// Initializes a new instance of the <see cref="SDL2UltravioletWindowInfoOpenGL"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uvconfig">The Ultraviolet configuration settings for the current context.</param>
-        /// <param name="winconfig">The window configuration settings for the current context.</param>
-        public SDL2UltravioletWindowInfoOpenGL(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
-            : base(uv, uvconfig, winconfig)
+        /// <param name="configuration">The Ultraviolet configuration settings for the current context.</param>
+        public SDL2UltravioletWindowInfoOpenGL(UltravioletContext uv, UltravioletConfiguration configuration)
+            : base(uv, configuration)
         {
 
         }
@@ -50,28 +50,30 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        protected override void InitializeRenderingAPI(SDL2PlatformConfiguration sdlconfig)
+        protected override Boolean InitializeRenderingAPI(UltravioletGraphicsConfiguration graphicsConfig, Int32 attempt)
         {
-            if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, sdlconfig.SrgbBuffersEnabled ? 1 : 0) < 0)
+            var glGraphicsConfig = graphicsConfig as OpenGLGraphicsConfiguration;
+            if (glGraphicsConfig == null)
+                throw new InvalidOperationException(UltravioletStrings.MissingGraphicsConfiguration);
+
+            if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, glGraphicsConfig.SrgbBuffersEnabled ? 1 : 0) < 0)
                 throw new SDL2Exception();
 
-            if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, sdlconfig.MultiSampleBuffers) < 0)
+            if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, glGraphicsConfig.MultiSampleBuffers) < 0)
                 throw new SDL2Exception();
 
-            if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, sdlconfig.MultiSampleSamples) < 0)
+            if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, glGraphicsConfig.MultiSampleSamples) < 0)
                 throw new SDL2Exception();
-        }
-
-        /// <inheritdoc/>
-        protected override Boolean InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig, Int32 attempt)
-        {
-            InitializeRenderingAPI(sdlconfig);
 
             switch (attempt)
             {
                 case 0:
-                    // Attempt #0: Try turning off sRGB.  
-                    if (sdlconfig.SrgbBuffersEnabled)
+                    // Attempt #0: Try with specified configurations.
+                    return true;
+
+                case 1:
+                    // Attempt #1: Try turning off sRGB.  
+                    if (glGraphicsConfig.SrgbBuffersEnabled)
                     {
                         if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 0) < 0)
                             throw new SDL2Exception();
@@ -80,9 +82,9 @@ namespace Ultraviolet.SDL2.Platform
                     }
                     else goto case 1;
 
-                case 1:
-                    // Attempt #1: Try turning off multisampling.
-                    if (sdlconfig.MultiSampleBuffers > 0 || sdlconfig.MultiSampleSamples > 0)
+                case 2:
+                    // Attempt #2: Try turning off multisampling.
+                    if (glGraphicsConfig.MultiSampleBuffers > 0 || glGraphicsConfig.MultiSampleSamples > 0)
                     {
                         if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0) < 0)
                             throw new SDL2Exception();
@@ -94,9 +96,9 @@ namespace Ultraviolet.SDL2.Platform
                     }
                     else goto case 2;
 
-                case 2:
-                    // Attempt #2: Try turning off sRGB and multisampling.
-                    if (sdlconfig.SrgbBuffersEnabled)
+                case 3:
+                    // Attempt #3: Try turning off sRGB and multisampling.
+                    if (glGraphicsConfig.SrgbBuffersEnabled)
                     {
                         if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 0) < 0)
                             throw new SDL2Exception();
@@ -124,6 +126,21 @@ namespace Ultraviolet.SDL2.Platform
 
             base.OnWindowCleanup(window);
         }
+
+        /// <inheritdoc/>
+        protected override void OnWindowCreated(IUltravioletWindow window)
+        {
+            base.OnWindowCreated(window);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnWindowDestroyed(IUltravioletWindow window)
+        {
+            base.OnWindowDestroyed(window);
+        }
+
+        /// <inheritdoc/>
+        protected override SDL2PlatformRenderingAPI RenderingApi { get; } = SDL2PlatformRenderingAPI.OpenGL;
 
         /// <summary>
         /// Updates the value of the <see cref="SDL2UltravioletWindow.IsCurrentWindow"/> property for the specified window.

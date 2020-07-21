@@ -154,6 +154,7 @@ namespace Ultraviolet
         public static readonly StringResource UnsupportedTextDirection             = new StringResource(StringDatabase, "UNSUPPORTED_TEXT_DIRECTION");
         public static readonly StringResource TextShaperNotRegistered              = new StringResource(StringDatabase, "TEXT_SHAPER_NOT_REGISTERED");
         public static readonly StringResource InvalidTimingLogic                   = new StringResource(StringDatabase, "INVALID_TIMING_LOGIC");
+        public static readonly StringResource MissingGraphicsConfiguration         = new StringResource(StringDatabase, "MISSING_GRAPHICS_CONFIGURATION");
 #pragma warning restore 1591
     }
 }

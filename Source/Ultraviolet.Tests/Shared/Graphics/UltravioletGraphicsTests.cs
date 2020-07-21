@@ -25,9 +25,9 @@ namespace Ultraviolet.Tests.Graphics
                 {
                     if (encoding == ColorEncoding.Srgb)
                     {
-                        config.SrgbBuffersEnabled = true;
-                        config.SrgbDefaultForTexture2D = true;
-                        config.SrgbDefaultForRenderBuffer2D = true;
+                        config.GraphicsConfiguration.SrgbBuffersEnabled = true;
+                        config.GraphicsConfiguration.SrgbDefaultForTexture2D = true;
+                        config.GraphicsConfiguration.SrgbDefaultForRenderBuffer2D = true;
                     }
                 })
                 .WithContent(content =>

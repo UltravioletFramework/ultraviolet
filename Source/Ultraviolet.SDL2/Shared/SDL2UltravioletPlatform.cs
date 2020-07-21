@@ -16,14 +16,13 @@ namespace Ultraviolet.SDL2
         /// Initializes a new instance of the <see cref="SDL2UltravioletPlatform"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="uvconfig">The Ultraviolet Framework's configuration settings.</param>
-        /// <param name="sdlconfig">The SDL2 platform configuration settings.</param>
-        public SDL2UltravioletPlatform(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration sdlconfig)
+        /// <param name="configuration">The Ultraviolet Framework's configuration settings.</param>
+        public SDL2UltravioletPlatform(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {
             this.clipboard = ClipboardService.Create();
             this.messageBoxService = MessageBoxService.Create();
-            this.windows = new SDL2UltravioletWindowInfoOpenGL(uv, uvconfig, sdlconfig);
+            this.windows = new SDL2UltravioletWindowInfoOpenGL(uv, configuration);
             this.displays = new SDL2UltravioletDisplayInfo(uv);
             this.isCursorVisible = SDL_ShowCursor(SDL_QUERY) != 0;
         }

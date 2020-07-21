@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLEnvironment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLGraphicsConfiguration.cs" />
   </ItemGroup>
 </Project>

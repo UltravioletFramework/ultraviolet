@@ -25,4 +25,24 @@
       <Variant>A Surface3D which is loaded from a single file must consist of square layers arranged from left to right, and the file must contain no excess space.</Variant>
     </en-US>
   </String>
+  <String Key="MISSING_GRAPHICS_ASSEMBLY">
+    <en-US>
+      <Variant>No graphics subsystem assembly was specified.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_GRAPHICS_ASSEMBLY">
+    <en-US>
+      <Variant>Invalid graphics subsystem assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="MISSING_AUDIO_ASSEMBLY">
+    <en-US>
+      <Variant>No audio subsystem assembly was specified.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_AUDIO_ASSEMBLY">
+    <en-US>
+      <Variant>Invalid audio subsystem assembly.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

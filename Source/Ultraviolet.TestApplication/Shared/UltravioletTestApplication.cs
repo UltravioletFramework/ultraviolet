@@ -269,7 +269,7 @@ namespace Ultraviolet.TestApplication
         /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            var configuration = new OpenGLUltravioletConfiguration();
+            var configuration = new UltravioletConfiguration();
             configuration.Headless = headless;
             configuration.EnableServiceMode = serviceMode;
             configuration.IsHardwareInputDisabled = true;
@@ -280,7 +280,12 @@ namespace Ultraviolet.TestApplication
                 System.Diagnostics.Debug.WriteLine(message);
             };
 
-            configurer?.Invoke(configuration);
+            var needsGraphicsSubsystem = !plugins?.Any(x => x is OpenGLGraphicsPlugin) ?? true;
+            if (needsGraphicsSubsystem)
+            {
+                plugins = plugins ?? new List<UltravioletPlugin>();
+                plugins.Add(new OpenGLGraphicsPlugin());
+            }
 
             var needsAudioSubsystem = !(plugins?.Any(x => x is BASSAudioPlugin || x is FMODAudioPlugin) ?? false);
             if (needsAudioSubsystem)
@@ -292,7 +297,9 @@ namespace Ultraviolet.TestApplication
             foreach (var plugin in plugins)
                 configuration.Plugins.Add(plugin);
 
-            return new OpenGLUltravioletContext(this, configuration);
+            configurer?.Invoke(configuration);
+
+            return new SDL2UltravioletContext(this, configuration);
         }
 
         /// <inheritdoc/>

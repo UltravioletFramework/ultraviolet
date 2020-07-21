@@ -12,8 +12,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Initializes a new instance of the <see cref="OpenGLGraphicsCapabilities"/> class.
         /// </summary>
         /// <param name="configuration">The configuration settings for the Ultraviolet context.</param>
-        internal unsafe OpenGLGraphicsCapabilities(OpenGLUltravioletConfiguration configuration)
+        internal unsafe OpenGLGraphicsCapabilities(UltravioletConfiguration configuration)
         {
+            var glGraphicsConfiguration = configuration.GraphicsConfiguration as OpenGLGraphicsConfiguration;
+            if (glGraphicsConfiguration == null)
+                throw new InvalidOperationException(OpenGLStrings.InvalidGraphicsConfiguration);
+
             this.MaximumTextureSize = gl.GetInteger(gl.GL_MAX_TEXTURE_SIZE);
             gl.ThrowIfError();
 
@@ -52,12 +56,12 @@ namespace Ultraviolet.OpenGL.Graphics
 
             // SRGB is always supported unless we're on GLES2, in which case we need an extension.
             // If it wasn't explicitly enabled in the configuration, we treat it like it's not supported.
-            this.SrgbEncodingEnabled = configuration.SrgbBuffersEnabled && gl.IsHardwareSrgbSupportAvailable;                
+            this.SrgbEncodingEnabled = glGraphicsConfiguration.SrgbBuffersEnabled && gl.IsHardwareSrgbSupportAvailable;                
 
             // There seems to be a bug in the version of Mesa which is distributed
             // with Ubuntu 16.04 that causes long stalls when using glMapBufferRange.
             // Testing indicates that this is fixed in 11.2.2.
-            if (configuration.UseBufferMapping)
+            if (glGraphicsConfiguration.UseBufferMapping)
             {
                 var version = gl.GetString(gl.GL_VERSION);
                 var versionMatchMesa = Regex.Match(version, "Mesa (?<major>\\d+).(?<minor>\\d+).(?<build>\\d+)");
@@ -69,13 +73,13 @@ namespace Ultraviolet.OpenGL.Graphics
                     var mesaVersion = new Version(mesaMajor, mesaMinor, mesaBuild);
                     if (mesaVersion < new Version(11, 2, 2))
                     {
-                        configuration.UseBufferMapping = false;
+                        glGraphicsConfiguration.UseBufferMapping = false;
                     }
                 }
             }
 
             // If we've been explicitly told to disable buffer mapping, override the caps from the driver.
-            if (!gl.IsMapBufferRangeAvailable || !configuration.UseBufferMapping)
+            if (!gl.IsMapBufferRangeAvailable || !glGraphicsConfiguration.UseBufferMapping)
                 this.MinMapBufferAlignment = Int32.MinValue;
         }
 

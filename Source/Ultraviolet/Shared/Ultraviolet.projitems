@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\PassthroughContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DummySwapChainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphRenderState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\FallbackFontInfo.cs" />
@@ -74,10 +75,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SwapChainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletTimingLogic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\AssemblyLoaderService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletGraphicsConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextShaper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextDirection.cs" />

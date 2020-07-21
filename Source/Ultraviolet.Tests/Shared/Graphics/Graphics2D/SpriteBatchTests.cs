@@ -26,9 +26,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                 {
                     if (encoding == ColorEncoding.Srgb)
                     {
-                        config.SrgbBuffersEnabled = true;
-                        config.SrgbDefaultForTexture2D = true;
-                        config.SrgbDefaultForRenderBuffer2D = true;
+                        config.GraphicsConfiguration.SrgbBuffersEnabled = true;
+                        config.GraphicsConfiguration.SrgbDefaultForTexture2D = true;
+                        config.GraphicsConfiguration.SrgbDefaultForRenderBuffer2D = true;
                     }
                 })
                 .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
@@ -76,9 +76,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             var result = GivenAnUltravioletApplication()
                 .WithConfiguration(config =>
                 {
-                    config.SrgbBuffersEnabled = true;
-                    config.SrgbDefaultForTexture2D = true;
-                    config.SrgbDefaultForRenderBuffer2D = true;
+                    config.GraphicsConfiguration.SrgbBuffersEnabled = true;
+                    config.GraphicsConfiguration.SrgbDefaultForTexture2D = true;
+                    config.GraphicsConfiguration.SrgbDefaultForRenderBuffer2D = true;
                 })
                 .WithPlugin(new FreeTypeFontPlugin())
                 .WithContent(content =>
@@ -109,9 +109,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             var result = GivenAnUltravioletApplication()
                 .WithConfiguration(config =>
                 {
-                    config.SrgbBuffersEnabled = true;
-                    config.SrgbDefaultForTexture2D = true;
-                    config.SrgbDefaultForRenderBuffer2D = true;
+                    config.GraphicsConfiguration.SrgbBuffersEnabled = true;
+                    config.GraphicsConfiguration.SrgbDefaultForTexture2D = true;
+                    config.GraphicsConfiguration.SrgbDefaultForRenderBuffer2D = true;
                 })
                 .WithPlugin(new FreeTypeFontPlugin())
                 .WithContent(content =>
@@ -324,9 +324,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                 {
                     if (encoding == ColorEncoding.Srgb)
                     {
-                        config.SrgbBuffersEnabled = true;
-                        config.SrgbDefaultForTexture2D = true;
-                        config.SrgbDefaultForRenderBuffer2D = true;
+                        config.GraphicsConfiguration.SrgbBuffersEnabled = true;
+                        config.GraphicsConfiguration.SrgbDefaultForTexture2D = true;
+                        config.GraphicsConfiguration.SrgbDefaultForRenderBuffer2D = true;
                     }
                 })
                 .WithContent(content =>

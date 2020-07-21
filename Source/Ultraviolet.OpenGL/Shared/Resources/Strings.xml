@@ -160,16 +160,6 @@
       <Variant>An effect technique must have at least one pass.</Variant>
     </en-US>
   </String>
-  <String Key="MISSING_AUDIO_ASSEMBLY">
-    <en-US>
-      <Variant>No audio subsystem assembly was specified.</Variant>
-    </en-US>
-  </String>
-  <String Key="INVALID_AUDIO_ASSEMBLY">
-    <en-US>
-      <Variant>Invalid audio subsystem assembly.</Variant>
-    </en-US>
-  </String>
   <String Key="TECHNIQUE_BELONGS_TO_DIFFERENT_EFFECT">
     <en-US>
       <Variant>The specified technique belongs to a different effect.</Variant>
@@ -269,5 +259,10 @@
     <en-US>
       <Variant>Shader extern has a name which is missing or invalid.</Variant>
     </en-US>
+  </String>
+  <String Key="INVALID_GRAPHICS_CONFIGURATION">
+    <en-UV>
+      <Variant>Graphics configuration is missing or is not derived from OpenGLGraphicsConfiguration.</Variant>
+    </en-UV>
   </String>
 </LocalizedStrings>

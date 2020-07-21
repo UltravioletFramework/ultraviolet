@@ -13,6 +13,7 @@ using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Styles;
 using UvDebug.Input;
 using UvDebug.UI;
+using Ultraviolet.SDL2;
 using UvDebug.UI.Screens;
 
 namespace UvDebug
@@ -53,31 +54,30 @@ namespace UvDebug
         /// <returns>The Ultraviolet context.</returns>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            var configuration = new OpenGLUltravioletConfiguration();
-            configuration.SupportsHighDensityDisplayModes = true;
-            configuration.SrgbBuffersEnabled = true;
-            configuration.SrgbDefaultForTexture2D = true;
-            configuration.EnableServiceMode = ShouldRunInServiceMode();
-            configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
-            configuration.Plugins.Add(new BASSAudioPlugin());
-            configuration.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());
-#if IMGUI
-            configuration.Plugins.Add(new Ultraviolet.ImGuiViewProvider.ImGuiPlugin());
-#else
-            configuration.Plugins.Add(new PresentationFoundationPlugin());
-#endif
-            PopulateConfiguration(configuration);
+            var graphicsConfig = OpenGLGraphicsConfiguration.Default;
+            graphicsConfig.SrgbBuffersEnabled = true;
+            graphicsConfig.SrgbDefaultForTexture2D = true;
+
+            var contextConfig = new UltravioletConfiguration();
+            contextConfig.SupportsHighDensityDisplayModes = true;
+            contextConfig.EnableServiceMode = ShouldRunInServiceMode();
+            contextConfig.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
+            contextConfig.Plugins.Add(new OpenGLGraphicsPlugin(graphicsConfig));
+            contextConfig.Plugins.Add(new BASSAudioPlugin());
+            contextConfig.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());
+            contextConfig.Plugins.Add(new PresentationFoundationPlugin());
+            PopulateConfiguration(contextConfig);
 
 #if DEBUG
-            configuration.Debug = true;
-            configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
-            configuration.DebugCallback = (uv, level, message) =>
+            contextConfig.Debug = true;
+            contextConfig.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
+            contextConfig.DebugCallback = (uv, level, message) =>
             {
                 System.Diagnostics.Debug.WriteLine(message);
             };
 #endif
 
-            return new OpenGLUltravioletContext(this, configuration);
+            return new SDL2UltravioletContext(this, contextConfig);
         }
 
         /// <summary>
