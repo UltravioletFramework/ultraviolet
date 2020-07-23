@@ -7,13 +7,15 @@ using Ultraviolet.BASS;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
+using Ultraviolet.FreeType2;
+using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL;
 using Ultraviolet.Platform;
 using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Styles;
+using Ultraviolet.SDL2;
 using UvDebug.Input;
 using UvDebug.UI;
-using Ultraviolet.SDL2;
 using UvDebug.UI.Screens;
 
 namespace UvDebug
@@ -55,6 +57,8 @@ namespace UvDebug
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var graphicsConfig = OpenGLGraphicsConfiguration.Default;
+            graphicsConfig.MultiSampleBuffers = 1;
+            graphicsConfig.MultiSampleSamples = 8;
             graphicsConfig.SrgbBuffersEnabled = true;
             graphicsConfig.SrgbDefaultForTexture2D = true;
 
@@ -64,7 +68,7 @@ namespace UvDebug
             contextConfig.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             contextConfig.Plugins.Add(new OpenGLGraphicsPlugin(graphicsConfig));
             contextConfig.Plugins.Add(new BASSAudioPlugin());
-            contextConfig.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());
+            contextConfig.Plugins.Add(new FreeTypeFontPlugin());
             contextConfig.Plugins.Add(new PresentationFoundationPlugin());
             PopulateConfiguration(contextConfig);
 
@@ -113,17 +117,11 @@ namespace UvDebug
                 LoadInputBindings();
                 LoadContentManifests();
                 LoadPresentation();
+                LoadTestGeometry();
                
                 this.screenService = new UIScreenService(content);
 
                 GC.Collect(2);
-
-#if IMGUI
-                var screen = screenService.Get<ImGuiScreen>();
-#else
-                var screen = screenService.Get<GameMenuScreen>();
-#endif
-                Ultraviolet.GetUI().GetScreens().Open(screen);
             }
             
             base.OnLoadingContent();
@@ -215,6 +213,39 @@ namespace UvDebug
         }
 
         /// <summary>
+        /// Loads 3D geometry used for testing.
+        /// </summary>
+        protected void LoadTestGeometry()
+        {
+            vertexBuffer = VertexBuffer.Create<VertexPositionColor>(5);
+            vertexBuffer.SetData(new VertexPositionColor[]
+            {
+                new VertexPositionColor { Position = new Vector3(-1f,   0f, -1f), Color = Color.Red },
+                new VertexPositionColor { Position = new Vector3( 1f,   0f, -1f), Color = Color.Lime },
+                new VertexPositionColor { Position = new Vector3( 1f,   0f,  1f), Color = Color.Blue },
+                new VertexPositionColor { Position = new Vector3(-1f,   0f,  1f), Color = Color.Yellow },
+                new VertexPositionColor { Position = new Vector3( 0f, 1.5f,  0f), Color = Color.Magenta },
+            });
+
+            indexBuffer = IndexBuffer.Create(IndexBufferElementType.Int16, 18);
+            indexBuffer.SetData(new Int16[] { 2, 1, 0, 0, 3, 2, 0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4 });
+
+            geometryStream = GeometryStream.Create();
+            geometryStream.Attach(vertexBuffer);
+            geometryStream.Attach(indexBuffer);
+
+            effect = BasicEffect.Create();
+
+            rasterizerStateSolid = RasterizerState.Create();
+            rasterizerStateSolid.CullMode = CullMode.CullCounterClockwiseFace;
+            rasterizerStateSolid.FillMode = FillMode.Solid;
+
+            rasterizerStateWireframe = RasterizerState.Create();
+            rasterizerStateWireframe.CullMode = CullMode.CullCounterClockwiseFace;
+            rasterizerStateWireframe.FillMode = FillMode.Wireframe;
+        }
+
+        /// <summary>
         /// Called when the application state is being updated.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to Update.</param>
@@ -225,6 +256,45 @@ namespace UvDebug
                 Exit();
             }
             base.OnUpdating(time);
+        }
+
+        /// <summary>
+        /// Called when the application's scene is being drawn.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to Draw.</param>
+        protected override void OnDrawing(UltravioletTime time)
+        {
+            var gfx = Ultraviolet.GetGraphics();
+            var window = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            var aspectRatio = window.DrawableSize.Width / (Single)window.DrawableSize.Height;
+
+            effect.World = Matrix.CreateRotationY((float)(2.0 * Math.PI * (time.TotalTime.TotalSeconds / 10.0)));
+            effect.View = Matrix.CreateLookAt(new Vector3(0, 2, 5), new Vector3(0, 0.75f, 0), Vector3.Up);
+            effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
+
+            gfx.SetGeometryStream(geometryStream);
+
+            void DrawGeometry(RasterizerState rasterizerState, DepthStencilState depthStencilState)
+            {
+                foreach (var pass in this.effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+
+                    gfx.SetRasterizerState(rasterizerState);
+                    gfx.SetDepthStencilState(depthStencilState);
+                    gfx.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 6);
+                }
+            }
+
+            effect.VertexColorEnabled = true;
+            effect.DiffuseColor = Color.White;
+            DrawGeometry(rasterizerStateSolid, DepthStencilState.Default);
+
+            effect.VertexColorEnabled = false;
+            effect.DiffuseColor = Color.Black;
+            DrawGeometry(rasterizerStateWireframe, DepthStencilState.None);
+
+            base.OnDrawing(time);
         }
 
         /// <summary>
@@ -356,5 +426,13 @@ namespace UvDebug
         private Boolean resolveContent;
         private Boolean compileContent;
         private Boolean compileExpressions;
+
+        // 3D geometry testing.
+        private GeometryStream geometryStream;
+        private VertexBuffer vertexBuffer;
+        private IndexBuffer indexBuffer;
+        private BasicEffect effect;
+        private RasterizerState rasterizerStateSolid;
+        private RasterizerState rasterizerStateWireframe;
     }
 }
