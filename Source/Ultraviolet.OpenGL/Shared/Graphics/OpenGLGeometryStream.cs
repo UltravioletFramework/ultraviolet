@@ -493,13 +493,15 @@ namespace Ultraviolet.OpenGL.Graphics
                         var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize);
 
                         var category = OpenGLAttribCategory.Single;
-                        var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name, out category);
+                        var location = OpenGLState.CurrentProgram.GetAttribLocation(name, out category);
                         if (location >= 0)
                         {
-                            gl.VertexArrayAttribBinding(vao, location, binding);
+                            var unsignedLocation = (UInt32)location;
+
+                            gl.VertexArrayAttribBinding(vao, unsignedLocation, binding);
                             gl.ThrowIfError();
 
-                            gl.EnableVertexArrayAttrib(vao, location);
+                            gl.EnableVertexArrayAttrib(vao, unsignedLocation);
                             gl.ThrowIfError();
 
                             unsafe
@@ -508,7 +510,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                 {
                                     case OpenGLAttribCategory.Single:
                                         {
-                                            gl.VertexArrayAttribFormat(vao, location, size, type, normalize, position);
+                                            gl.VertexArrayAttribFormat(vao, unsignedLocation, size, type, normalize, position);
                                             gl.ThrowIfError();
                                         }
                                         break;
@@ -518,7 +520,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                             if (!gl.IsDoublePrecisionVertexAttribAvailable)
                                                 throw new NotSupportedException(OpenGLStrings.DoublePrecisionVAttribsNotSupported);
 
-                                            gl.VertexArrayAttribLFormat(vao, location, size, type, position);
+                                            gl.VertexArrayAttribLFormat(vao, unsignedLocation, size, type, position);
                                             gl.ThrowIfError();
                                         }
                                         break;
@@ -528,7 +530,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                             if (!gl.IsIntegerVertexAttribAvailable)
                                                 throw new NotSupportedException(OpenGLStrings.IntegerVAttribsNotSupported);
 
-                                            gl.VertexArrayAttribIFormat(vao, location, size, type, position);
+                                            gl.VertexArrayAttribIFormat(vao, unsignedLocation, size, type, position);
                                             gl.ThrowIfError();
                                         }
                                         break;

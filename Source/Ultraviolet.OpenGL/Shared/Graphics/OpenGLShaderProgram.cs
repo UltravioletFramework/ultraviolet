@@ -116,8 +116,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             category = OpenGLAttribCategory.Single;
 
-            var location = -1;
-            if (attributeLocations.TryGetValue(name, out location))
+            if (attributeLocations.TryGetValue(name, out var location))
             {
                 var type = attributeTypes[name];
                 switch (type)
@@ -137,6 +136,10 @@ namespace Ultraviolet.OpenGL.Graphics
                         category = OpenGLAttribCategory.Double;
                         break;
                 }
+            }
+            else
+            {
+                return -1;
             }
 
             return location;
