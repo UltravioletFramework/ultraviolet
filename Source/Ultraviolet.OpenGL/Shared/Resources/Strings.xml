@@ -261,8 +261,23 @@
     </en-US>
   </String>
   <String Key="INVALID_GRAPHICS_CONFIGURATION">
-    <en-UV>
+    <en-US>
       <Variant>Graphics configuration is missing or is not derived from OpenGLGraphicsConfiguration.</Variant>
-    </en-UV>
+    </en-US>
+  </String>
+  <String Key="EFFECT_TECHNIQUE_ALREADY_HAS_IMPL">
+    <en-US>
+      <Variant>The specified effect technique is already associated with an implementation.</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_PASS_ALREADY_HAS_IMPL">
+    <en-US>
+      <Variant>The specified effect pass is already associated with an implementation.</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_PASS_NOT_ASSOCIATED_WITH_EFFECT">
+    <en-US>
+      <Variant>The specified effect pass is not associated with an effect.</Variant>
+    </en-US>
   </String>
 </LocalizedStrings>

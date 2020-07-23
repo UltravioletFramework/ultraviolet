@@ -27,5 +27,23 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public override EffectPassCollection Passes { get; }
+
+        /// <summary>
+        /// Gets the effect implementation that owns this effect technique.
+        /// </summary>
+        public OpenGLEffectImplementation EffectImplementation
+        {
+            get => effectImplementation;
+            internal set
+            {
+                if (effectImplementation != null)
+                    throw new InvalidOperationException(OpenGLStrings.EffectTechniqueAlreadyHasImpl);
+
+                effectImplementation = value;
+            }
+        }
+
+        // Property values.
+        private OpenGLEffectImplementation effectImplementation;
     }
 }

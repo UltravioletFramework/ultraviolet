@@ -24,6 +24,15 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             Contract.RequireNotEmpty(techniques, nameof(techniques));
 
+            foreach (var technique in techniques)
+            {
+                technique.EffectImplementation = this;
+                foreach (var pass in technique.Passes)
+                {
+                    ((OpenGLEffectPass)pass).EffectImplementation = this;
+                }
+            }
+
             this.techniques = new OpenGLEffectTechniqueCollection(techniques);
             this.currentTechnique = this.techniques.First();
 
@@ -56,6 +65,14 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 this.currentTechnique = value;
             }
+        }
+
+        /// <summary>
+        /// Calls the <see cref="Effect.OnApply()"/> method for the implementation's owning effect.
+        /// </summary>
+        protected internal void OnApply()
+        {
+            OnApplyInternal();
         }
 
         /// <summary>

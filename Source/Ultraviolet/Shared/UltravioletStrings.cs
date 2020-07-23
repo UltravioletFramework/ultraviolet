@@ -157,6 +157,8 @@ namespace Ultraviolet
         public static readonly StringResource MissingGraphicsConfiguration         = new StringResource(StringDatabase, "MISSING_GRAPHICS_CONFIGURATION");
         public static readonly StringResource PrimaryWindowAlreadyInitialized      = new StringResource(StringDatabase, "PRIMARY_WINDOW_ALREADY_INITIALIZED");
         public static readonly StringResource PrimaryWindowMustBeInitialized       = new StringResource(StringDatabase, "PRIMARY_WINDOW_MUST_BE_INITIALIZED");
+        public static readonly StringResource EffectImplementationAlreadyHasOwner  = new StringResource(StringDatabase, "EFFECT_IMPLEMENTATION_ALREADY_HAS_OWNER");
+        public static readonly StringResource EffectImplementationHasNoOwner       = new StringResource(StringDatabase, "EFFECT_IMPLEMENTATION_HAS_NO_OWNER");
 #pragma warning restore 1591
     }
 }

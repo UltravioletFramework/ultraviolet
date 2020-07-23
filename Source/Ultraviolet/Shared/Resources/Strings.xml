@@ -645,4 +645,14 @@
       <Variant>No graphics configuration was specified for the Ultraviolet context.</Variant>
     </en-US>
   </String>
+  <String Key="EFFECT_IMPLEMENTATION_ALREADY_HAS_OWNER">
+    <en-US>
+      <Variant>The specified effect implementation is already associated with an Effect instance.</Variant>
+    </en-US>
+  </String>
+  <String Key="EFFECT_IMPLEMENTATION_HAS_NO_OWNER">
+    <en-US>
+      <Variant>The specified effect implementation is not associated with an effect.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

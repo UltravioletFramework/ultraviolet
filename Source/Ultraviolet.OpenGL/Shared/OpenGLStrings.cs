@@ -77,6 +77,9 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource ImplicitEffectsMustLoadFromShaders    = new StringResource(StringDatabase, "IMPLICIT_EFFECTS_MUST_LOAD_FROM_SHADERS");
         public static readonly StringResource ShaderExternHasInvalidName            = new StringResource(StringDatabase, "SHADER_EXTERN_HAS_INVALID_NAME");
         public static readonly StringResource InvalidGraphicsConfiguration          = new StringResource(StringDatabase, "INVALID_GRAPHICS_CONFIGURATION");
+        public static readonly StringResource EffectTechniqueAlreadyHasImpl         = new StringResource(StringDatabase, "EFFECT_TECHNIQUE_ALREADY_HAS_IMPL"); 
+        public static readonly StringResource EffectPassAlreadyHasImpl              = new StringResource(StringDatabase, "EFFECT_PASS_ALREADY_HAS_IMPL"); 
+        public static readonly StringResource EffectPassNotAssociatedWithEffect     = new StringResource(StringDatabase, "EFFECT_PASS_NOT_ASSOCIATED_WITH_EFFECT");
 #pragma warning restore 1591
     }
 }

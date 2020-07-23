@@ -18,6 +18,7 @@ namespace Ultraviolet.Graphics
             Contract.Require(impl, nameof(impl));
 
             this.impl = impl;
+            this.impl.Effect = this;
         }
 
         /// <summary>
@@ -50,6 +51,12 @@ namespace Ultraviolet.Graphics
             get => impl.CurrentTechnique; 
             set => impl.CurrentTechnique = value; 
         }
+
+        /// <summary>
+        /// Called before an <see cref="EffectPass"/> sets shader properties on the graphics device.
+        /// </summary>
+        protected internal virtual void OnApply()
+        { }
 
         /// <summary>
         /// Releases resources associated with the object.

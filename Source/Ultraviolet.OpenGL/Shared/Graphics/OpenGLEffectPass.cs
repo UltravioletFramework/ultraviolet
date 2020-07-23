@@ -22,13 +22,18 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.RequireNotEmpty(programs, nameof(programs));
 
             this.Name = name ?? String.Empty;
-            this.programs = new OpenGLShaderProgramCollection(programs);
+            this.Programs = new OpenGLShaderProgramCollection(programs);
         }
 
         /// <inheritdoc/>
         public override void Apply()
         {
-            var program = programs[programIndex];
+            if (effectImplementation == null)
+                throw new InvalidOperationException(OpenGLStrings.EffectPassNotAssociatedWithEffect);
+
+            effectImplementation.OnApply();
+
+            var program = Programs[programIndex];
             OpenGLState.UseProgram(program);
 
             foreach (var uniform in program.Uniforms)
@@ -57,15 +62,30 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets or sets the effect pass' program count.
         /// </summary>
-        public Int32 ProgramCount => programs.Count;
+        public Int32 ProgramCount => Programs.Count;
+
+        /// <summary>
+        /// Gets the effect implementation that owns this effect pass.
+        /// </summary>
+        public OpenGLEffectImplementation EffectImplementation
+        {
+            get => effectImplementation;
+            set
+            {
+                if (effectImplementation != null)
+                    throw new InvalidOperationException(OpenGLStrings.EffectPassAlreadyHasImpl);
+
+                effectImplementation = value;
+            }
+        }
 
         /// <summary>
         /// Gets the effect pass' collection of shader programs.
         /// </summary>
-        public OpenGLShaderProgramCollection Programs => programs;
+        public OpenGLShaderProgramCollection Programs { get; }
 
         // Property values.
-        private readonly OpenGLShaderProgramCollection programs;
+        private OpenGLEffectImplementation effectImplementation;
         private Int32 programIndex;
     }
 }

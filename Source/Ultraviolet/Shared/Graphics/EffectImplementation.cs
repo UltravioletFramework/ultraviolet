@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Ultraviolet.Graphics
 {
     /// <summary>
@@ -21,6 +23,21 @@ namespace Ultraviolet.Graphics
             : base(uv)
         {
 
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Effect"/> that owns this implementation.
+        /// </summary>
+        public Effect Effect
+        {
+            get => effect;
+            internal set
+            {
+                if (effect != null)
+                    throw new InvalidOperationException(UltravioletStrings.EffectImplementationAlreadyHasOwner);
+
+                effect = value;
+            }
         }
 
         /// <summary>
@@ -47,5 +64,19 @@ namespace Ultraviolet.Graphics
             get;
             set;
         }
+
+        /// <summary>
+        /// Calls the <see cref="Effect.OnApply()"/> method for the implementation's owning effect.
+        /// </summary>
+        protected void OnApplyInternal()
+        {
+            if (effect == null)
+                throw new InvalidOperationException(UltravioletStrings.EffectImplementationHasNoOwner);
+
+            effect.OnApply();
+        }
+
+        // The implementation's owning effect.
+        private Effect effect;
     }
 }
