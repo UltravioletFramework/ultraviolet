@@ -17,6 +17,13 @@
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
@@ -31,6 +38,13 @@
   <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

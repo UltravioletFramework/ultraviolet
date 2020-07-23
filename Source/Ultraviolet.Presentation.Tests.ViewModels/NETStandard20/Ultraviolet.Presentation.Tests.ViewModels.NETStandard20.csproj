@@ -15,7 +15,7 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>

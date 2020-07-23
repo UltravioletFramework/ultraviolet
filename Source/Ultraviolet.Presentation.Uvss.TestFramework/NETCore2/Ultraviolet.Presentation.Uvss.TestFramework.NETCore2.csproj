@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -16,7 +16,7 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
