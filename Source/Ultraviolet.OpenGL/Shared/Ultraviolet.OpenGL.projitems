@@ -148,6 +148,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7ES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9ES.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectCommon.verth" />
     <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffect.ps1" />
     <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffectES.ps1" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />

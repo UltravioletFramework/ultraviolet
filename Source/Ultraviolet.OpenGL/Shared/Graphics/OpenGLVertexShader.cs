@@ -31,7 +31,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     throw new InvalidOperationException(log);                
             }).Wait();
 
-            this.shader = shader;
+            this.OpenGLName = shader;
             this.ShaderSourceMetadata = ssmd;
         }
 
@@ -49,7 +49,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the OpenGL shader handle.
         /// </summary>
-        public UInt32 OpenGLName => shader;
+        public UInt32 OpenGLName { get; private set; }
 
         /// <summary>
         /// Gets the shader source metadata for this shader.
@@ -67,7 +67,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                var glname = shader;
+                var glname = OpenGLName;
                 if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     Ultraviolet.QueueWorkItem((state) =>
@@ -77,13 +77,10 @@ namespace Ultraviolet.OpenGL.Graphics
                     }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
 
-                shader = 0;
+                OpenGLName = 0;
             }
 
             base.Dispose(disposing);
         }
-
-        // Property values.
-        private UInt32 shader;
     }
 }

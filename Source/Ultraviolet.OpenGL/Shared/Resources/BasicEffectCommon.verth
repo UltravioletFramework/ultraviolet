@@ -1,0 +1,49 @@
+﻿#ifdef INCLUDE_MATRICES
+
+uniform mat4 World;
+uniform mat4 View;
+uniform mat4 Projection;
+
+vec4 transform_position(vec4 position)
+{
+    return position * World * View * Projection;
+}
+
+#endif
+
+#ifdef INCLUDE_FOG
+
+uniform bool FogEnabled;
+uniform float FogStart;
+uniform float FogEnd;
+uniform vec4 FogColor;
+
+#endif
+
+#ifdef INCLUDE_LIGHTING
+
+uniform vec4 DiffuseColor;
+
+#endif
+
+#ifdef INCLUDE_TEXTURES
+
+vec2 flip_texture_coords(vec2 coords)
+{
+    return vec2(coords.x, 1.0 - coords.y);
+}
+
+#endif
+
+#ifdef INCLUDE_SRGB
+
+uniform bool SrgbColor;
+    
+#includeres "Ultraviolet.OpenGL.Resources.SrgbConversion.verth" executing
+
+vec4 process_color(vec4 c)
+{
+    return SrgbColor ? srgb2linear(c) : c;
+}
+
+#endif

@@ -1,11 +1,11 @@
 ﻿#version 140
-#includeres "Ultraviolet.OpenGL.Resources.SrgbConversion.verth" executing
 
-uniform mat4 World;
-uniform mat4 View;
-uniform mat4 Projection;
-uniform vec4 DiffuseColor;
-uniform bool SrgbColor;
+#define INCLUDE_MATRICES
+#define INCLUDE_LIGHTING
+#define INCLUDE_TEXTURES
+#define INCLUDE_SRGB
+
+#includeres "Ultraviolet.OpenGL.Resources.BasicEffectCommon.verth" executing
 
 in  vec4 uv_Position0;
 in  vec4 uv_Color0;
@@ -16,7 +16,7 @@ out vec2 vTextureCoordinate;
 
 void main()
 {
-	gl_Position        = uv_Position0 * World * View * Projection;
-	vColor             = SrgbColor ? (srgb2linear(DiffuseColor) * srgb2linear(uv_Color0)) : (DiffuseColor * uv_Color0);
-	vTextureCoordinate = vec2(uv_TextureCoordinate0.x, 1.0 - uv_TextureCoordinate0.y);
+	gl_Position        = transform_position(uv_Position0);
+	vColor             = process_color(DiffuseColor) * process_color(uv_Color0);
+	vTextureCoordinate = flip_texture_coords(uv_TextureCoordinate0);
 }

@@ -233,7 +233,10 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     var includeSrc = ProcessRawSource(manager, metadata, resReader.ReadToEnd());
                     ssmd.Concat(includeSrc.Metadata);
-                    output.AppendLine(includeSrc.Source);
+                    output.Append(includeSrc.Source);
+
+                    if (!includeSrc.Source.EndsWith("\n"))
+                        output.AppendLine();
                 }
 
                 return true;
