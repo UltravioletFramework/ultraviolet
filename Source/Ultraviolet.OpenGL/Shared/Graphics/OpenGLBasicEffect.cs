@@ -18,15 +18,28 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        protected override void OnVertexColorEnabledChanged()
+        protected override void OnApply()
         {
-            UpdateProgramIndex();
-        }
+            var index = 0;
 
-        /// <inheritdoc/>
-        protected override void OnTextureEnabledChanged()
-        {
-            UpdateProgramIndex();
+            if (TextureEnabled)
+            {
+                index += 4;
+            }
+
+            if (VertexColorEnabled)
+            {
+                index += 2;
+            }
+
+            if (FogEnabled)
+            {
+                index += 1;
+            }
+
+            ((OpenGLEffectPass)CurrentTechnique.Passes[0]).ProgramIndex = index;
+
+            base.OnApply();
         }
 
         /// <summary>
@@ -38,37 +51,21 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         {
             Contract.Require(uv, nameof(uv));
 
-            var programs = new[] 
-            { 
+            var programs = new[]
+            {
                 new OpenGLShaderProgram(uv, vertShader, fragShader, false),
-                new OpenGLShaderProgram(uv, vertShaderColored, fragShaderColored, false),
+                new OpenGLShaderProgram(uv, vertShaderFog, fragShader, false),
+                new OpenGLShaderProgram(uv, vertShaderColored, fragShader, false),
+                new OpenGLShaderProgram(uv, vertShaderColoredFog, fragShader, false),
                 new OpenGLShaderProgram(uv, vertShaderTextured, fragShaderTextured, false),
-                new OpenGLShaderProgram(uv, vertShaderColoredTextured, fragShaderColoredTextured, false),
+                new OpenGLShaderProgram(uv, vertShaderTexturedFog, fragShaderTextured, false),
+                new OpenGLShaderProgram(uv, vertShaderColoredTextured, fragShaderTextured, false),
+                new OpenGLShaderProgram(uv, vertShaderColoredTexturedFog, fragShaderTextured, false),
             };
 
-            var passes     = new[] { new OpenGLEffectPass(uv, null, programs) };
+            var passes = new[] { new OpenGLEffectPass(uv, null, programs) };
             var techniques = new[] { new OpenGLEffectTechnique(uv, null, passes) };
             return new OpenGLEffectImplementation(uv, techniques);
-        }
-
-        /// <summary>
-        /// Changes the effect's program index based on its current settings.
-        /// </summary>
-        private void UpdateProgramIndex()
-        {
-            var index = 0;
-
-            if (TextureEnabled)
-            {
-                index += 2;
-            }
-
-            if (VertexColorEnabled)
-            {
-                index += 1;
-            }
-
-            ((OpenGLEffectPass)CurrentTechnique.Passes[0]).ProgramIndex = index;
         }
 
         // Shaders - basic
@@ -79,13 +76,20 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
                 uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect.frag")); });
 
+        // Shaders - basic, fog
+        private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderFog =
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectFog.vert")); });
+        
         // Shaders - colored
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderColored = 
             new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
                 uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColored.vert")); });
-        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShaderColored = 
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
-                uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColored.frag")); });
+
+        // Shaders - colored, fog
+        private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderColoredFog =
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColoredFog.vert")); });
 
         // Shaders - textured
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderTextured = 
@@ -95,12 +99,19 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
                 uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectTextured.frag")); });
 
-        // Shaders - colored & textured
+        // Shaders - textured, fog
+        private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderTexturedFog =
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectTexturedFog.vert")); });
+
+        // Shaders - colored, textured
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderColoredTextured = 
             new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
                 uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColoredTextured.vert")); });
-        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShaderColoredTextured = 
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
-                uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColoredTextured.frag")); });
+
+        // Shaders - colored, textured, fog
+        private static readonly UltravioletSingleton<OpenGLVertexShader> vertShaderColoredTexturedFog =
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffectColoredTexturedFog.vert")); });
     }
 }

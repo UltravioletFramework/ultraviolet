@@ -5,7 +5,7 @@
 	)
 
 	$Shader = New-Object System.Collections.Generic.List[System.String]
-	$Shader.Add("#version 140")
+	$Shader.Add("#includeres `"Ultraviolet.OpenGL.Resources.SharedHeader.fragh`" executing")
 	$Shader.Add("")
 	$Shader.Add("uniform sampler2D Texture;")
 	$Shader.Add("")

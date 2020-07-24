@@ -1,5 +1,5 @@
-﻿#version 140
-#includeres "Ultraviolet.OpenGL.Resources.SrgbConversion.verth" executing
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.fragh" executing
+#includeres "Ultraviolet.OpenGL.Resources.SrgbConversion.glsl" executing
 
 uniform mat4 MatrixTransform;
 uniform vec2 TextureSize;

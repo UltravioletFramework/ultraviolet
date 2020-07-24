@@ -113,44 +113,29 @@
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredTexturedFog.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectFog.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColored.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredFog.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColored.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredES.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredTextured.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredTextured.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredTexturedES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectColoredTexturedES.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectES.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTexturedFog.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTextured.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTextured.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTexturedES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTexturedES.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffect.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderES.fragh" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderES.verth" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SharedHeader.fragh" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SharedHeader.verth" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffectES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffectES.vert" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SrgbConversion.verth" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SrgbConversion.glsl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1ES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3ES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5ES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7ES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9ES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectCommon.verth" />
     <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffect.ps1" />
-    <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffectES.ps1" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
   </ItemGroup>
   <ItemGroup>

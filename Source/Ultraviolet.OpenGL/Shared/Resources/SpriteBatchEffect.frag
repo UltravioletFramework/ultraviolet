@@ -1,4 +1,4 @@
-﻿#version 140
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.fragh" executing
 
 uniform sampler2D Texture;
 

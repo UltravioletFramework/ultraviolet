@@ -1,4 +1,4 @@
-﻿#version 140
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.verth" executing
 
 #define INCLUDE_MATRICES
 #define INCLUDE_LIGHTING
@@ -8,10 +8,12 @@
 
 in  vec4 uv_Position0;
 
-out vec4 vColor;
+out vec4 vDiffuse;
+out vec4 vSpecular;
 
 void main()
 {
-	gl_Position = transform_position(uv_Position0);
-	vColor      = process_color(DiffuseColor);
+	gl_Position = uv_Position0 * WorldViewProj;
+	vDiffuse    = DiffuseColor;
+	vSpecular   = vec4(0, 0, 0, 0);
 }

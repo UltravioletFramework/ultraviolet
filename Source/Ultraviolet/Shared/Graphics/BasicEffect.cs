@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Ultraviolet.Graphics
 {
@@ -12,7 +13,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents a basic rendering effect.
     /// </summary>
-    public abstract class BasicEffect : Effect, IEffectMatrices
+    public abstract partial class BasicEffect : Effect, IEffectMatrices
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicEffect"/> class.
@@ -22,9 +23,14 @@ namespace Ultraviolet.Graphics
             : base(impl)
         {
             this.epDiffuseColor = Parameters["DiffuseColor"];
+            this.epFogColor = Parameters["FogColor"];
+            this.epFogStart = Parameters["FogStart"];
+            this.epFogEnd = Parameters["FogEnd"];
             this.epWorld = Parameters["World"];
             this.epView = Parameters["View"];
             this.epProjection = Parameters["Projection"];
+            this.epWorldViewProj = Parameters["WorldViewProj"];
+            this.epEyePosition = Parameters["EyePosition"];
             this.epSrgbColor = Parameters["SrgbColor"];
             this.epTexture = Parameters["Texture"];
 
@@ -46,8 +52,51 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Color DiffuseColor
         {
-            get => epDiffuseColor.GetValueColor();
-            set => epDiffuseColor.SetValue(value);
+            get => diffuseColor;
+            set
+            {
+                diffuseColor = value;
+                dirtyFlags |= DirtyFlags.DiffuseColor;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the material's fog color.
+        /// </summary>
+        public Color FogColor
+        {
+            get => fogColor;
+            set
+            {
+                fogColor = value;
+                dirtyFlags |= DirtyFlags.FogColor;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the minimum z-value for fog.
+        /// </summary>
+        public Single FogStart
+        {
+            get => fogStart;
+            set
+            {
+                fogStart = value;
+                dirtyFlags |= DirtyFlags.FogStart;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum z-value for fog.
+        /// </summary>
+        public Single FogEnd
+        {
+            get => fogEnd;
+            set
+            {
+                fogEnd = value;
+                dirtyFlags |= DirtyFlags.FogEnd;
+            }
         }
 
         /// <summary>
@@ -55,8 +104,12 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Matrix World
         {
-            get => epWorld.GetValueMatrix();
-            set => epWorld.SetValue(value);
+            get => world;
+            set
+            {
+                world = value;
+                dirtyFlags |= DirtyFlags.World | DirtyFlags.WorldViewProj;
+            }
         }
 
         /// <summary>
@@ -64,8 +117,12 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Matrix View
         {
-            get => epView.GetValueMatrix();
-            set => epView.SetValue(value);
+            get => view;
+            set
+            {
+                view = value;
+                dirtyFlags |= DirtyFlags.View | DirtyFlags.WorldViewProj;
+            }
         }
 
         /// <summary>
@@ -73,41 +130,28 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Matrix Projection
         {
-            get => epProjection.GetValueMatrix();
-            set => epProjection.SetValue(value);
+            get => projection;
+            set
+            {
+                projection = value;
+                dirtyFlags |= DirtyFlags.Projection | DirtyFlags.WorldViewProj;
+            }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether vertex colors are enabled for this effect.
         /// </summary>
-        public Boolean VertexColorEnabled
-        {
-            get => vertexColorEnabled;
-            set
-            {
-                if (vertexColorEnabled != value)
-                {
-                    vertexColorEnabled = value;
-                    OnVertexColorEnabledChanged();
-                }
-            }
-        }
+        public Boolean VertexColorEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether textures are enabled for this effect.
         /// </summary>
-        public Boolean TextureEnabled
-        {
-            get => textureEnabled;
-            set
-            {
-                if (textureEnabled != value)
-                {
-                    textureEnabled = value;
-                    OnTextureEnabledChanged();
-                }
-            }
-        }
+        public Boolean TextureEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether fog is enabled for this effect.
+        /// </summary>
+        public Boolean FogEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the colors used by this effect should be
@@ -115,8 +159,12 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean SrgbColor
         {
-            get => epSrgbColor?.GetValueBoolean() ?? false;
-            set => epSrgbColor?.SetValue(value);
+            get => srgbColor;
+            set
+            {
+                srgbColor = value;
+                dirtyFlags |= DirtyFlags.SrgbColor;
+            }
         }
 
         /// <summary>
@@ -124,44 +172,112 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Texture2D Texture
         {
-            get => epTexture.GetValueTexture2D();
-            set => epTexture.SetValue(value);
+            get => texture;
+            set
+            {
+                texture = value;
+                dirtyFlags |= DirtyFlags.Texture;
+            }
         }
 
-        /// <summary>
-        /// Occurs when the value of the <see cref="VertexColorEnabled"/> property changes.
-        /// </summary>
-        protected virtual void OnVertexColorEnabledChanged()
+        /// <inheritdoc/>
+        protected internal override void OnApply()
         {
+            if ((dirtyFlags & DirtyFlags.DiffuseColor) == DirtyFlags.DiffuseColor)
+            {
+                var diffuseColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(diffuseColor) : diffuseColor;
+                epDiffuseColor?.SetValue(diffuseColorSrgb);
+            }
 
-        }
+            if ((dirtyFlags & DirtyFlags.FogColor) == DirtyFlags.FogColor)
+            {
+                var fogColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(fogColor) : fogColor;
+                epFogColor?.SetValue(fogColorSrgb);
+            }
 
-        /// <summary>
-        /// Occurs when the value of the <see cref="TextureEnabled"/> property changes.
-        /// </summary>
-        protected virtual void OnTextureEnabledChanged()
-        {
+            if ((dirtyFlags & DirtyFlags.FogStart) == DirtyFlags.FogStart)
+            {
+                epFogStart?.SetValue(fogStart);
+            }
 
-        }
+            if ((dirtyFlags & DirtyFlags.FogEnd) == DirtyFlags.FogEnd)
+            {
+                epFogEnd?.SetValue(fogEnd);
+            }
 
-        /// <summary>
-        /// Occurs when the value of the <see cref="SrgbColor"/> property changes.
-        /// </summary>
-        protected virtual void OnSrgbColorChanged()
-        {
+            if ((dirtyFlags & DirtyFlags.World) == DirtyFlags.World)
+            {
+                epWorld?.SetValue(world);
+            }
 
+            if ((dirtyFlags & DirtyFlags.View) == DirtyFlags.View)
+            {
+                epView?.SetValue(view);
+            }
+
+            if ((dirtyFlags & DirtyFlags.Projection) == DirtyFlags.Projection)
+            {
+                epProjection?.SetValue(projection);
+            }
+
+            if ((dirtyFlags & DirtyFlags.Texture) == DirtyFlags.Texture)
+            {
+                epTexture?.SetValue(texture);
+            }
+
+            if ((dirtyFlags & DirtyFlags.SrgbColor) == DirtyFlags.SrgbColor)
+            {
+                epSrgbColor?.SetValue(srgbColor);
+            }
+
+            if ((dirtyFlags & DirtyFlags.WorldViewProj) == DirtyFlags.WorldViewProj)
+            {
+                if (epWorldViewProj != null)
+                {
+                    var worldViewProj = Matrix.Identity;
+                    Matrix.Multiply(ref worldViewProj, ref world, out worldViewProj);
+                    Matrix.Multiply(ref worldViewProj, ref view, out worldViewProj);
+                    Matrix.Multiply(ref worldViewProj, ref projection, out worldViewProj);
+                    epWorldViewProj.SetValue(worldViewProj);
+                }
+
+                if (epEyePosition != null)
+                {
+                    var invertedViewMatrix = Matrix.Invert(View);
+                    epEyePosition.SetValue(invertedViewMatrix.Translation);
+                }
+            }
+
+            dirtyFlags = DirtyFlags.None;
+
+            base.OnApply();
         }
 
         // Cached effect parameters.
         private readonly EffectParameter epDiffuseColor;
+        private readonly EffectParameter epFogColor;
+        private readonly EffectParameter epFogStart;
+        private readonly EffectParameter epFogEnd;
         private readonly EffectParameter epWorld;
         private readonly EffectParameter epView;
         private readonly EffectParameter epProjection;
+        private readonly EffectParameter epWorldViewProj;
+        private readonly EffectParameter epEyePosition;
         private readonly EffectParameter epSrgbColor;
         private readonly EffectParameter epTexture;
 
-        // Property values.
-        private Boolean vertexColorEnabled;
-        private Boolean textureEnabled;
+        // Effect parameter values.
+        private Color diffuseColor = Color.White;
+        private Color fogColor;
+        private Single fogStart;
+        private Single fogEnd;
+        private Matrix world;
+        private Matrix view;
+        private Matrix projection;
+        private Boolean srgbColor;
+        private Texture2D texture;
+
+        // Dirty flag tracking.
+        private DirtyFlags dirtyFlags = DirtyFlags.None;
     }
 }

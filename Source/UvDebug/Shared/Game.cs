@@ -217,14 +217,14 @@ namespace UvDebug
         /// </summary>
         protected void LoadTestGeometry()
         {
-            vertexBuffer = VertexBuffer.Create<VertexPositionColor>(5);
-            vertexBuffer.SetData(new VertexPositionColor[]
+            vertexBuffer = VertexBuffer.Create<VertexPositionColorTexture>(5);
+            vertexBuffer.SetData(new VertexPositionColorTexture[]
             {
-                new VertexPositionColor { Position = new Vector3(-1f,   0f, -1f), Color = Color.Red },
-                new VertexPositionColor { Position = new Vector3( 1f,   0f, -1f), Color = Color.Lime },
-                new VertexPositionColor { Position = new Vector3( 1f,   0f,  1f), Color = Color.Blue },
-                new VertexPositionColor { Position = new Vector3(-1f,   0f,  1f), Color = Color.Yellow },
-                new VertexPositionColor { Position = new Vector3( 0f, 1.5f,  0f), Color = Color.Magenta },
+                new VertexPositionColorTexture { Position = new Vector3(-1f,   0f, -1f), Color = Color.Red, TextureCoordinate = new Vector2(1, 0) },
+                new VertexPositionColorTexture { Position = new Vector3( 1f,   0f, -1f), Color = Color.Lime, TextureCoordinate = new Vector2(0, 1) },
+                new VertexPositionColorTexture { Position = new Vector3( 1f,   0f,  1f), Color = Color.Blue },
+                new VertexPositionColorTexture { Position = new Vector3(-1f,   0f,  1f), Color = Color.Yellow },
+                new VertexPositionColorTexture { Position = new Vector3( 0f, 1.5f,  0f), Color = Color.Magenta, TextureCoordinate = new Vector2(0, 0) },
             });
 
             indexBuffer = IndexBuffer.Create(IndexBufferElementType.Int16, 18);
@@ -243,6 +243,8 @@ namespace UvDebug
             rasterizerStateWireframe = RasterizerState.Create();
             rasterizerStateWireframe.CullMode = CullMode.CullCounterClockwiseFace;
             rasterizerStateWireframe.FillMode = FillMode.Wireframe;
+
+            texture = content.Load<Texture2D>(@"Textures\Triangle");
         }
 
         /// <summary>
@@ -269,7 +271,7 @@ namespace UvDebug
             var aspectRatio = window.DrawableSize.Width / (Single)window.DrawableSize.Height;
 
             effect.World = Matrix.CreateRotationY((float)(2.0 * Math.PI * (time.TotalTime.TotalSeconds / 10.0)));
-            effect.View = Matrix.CreateLookAt(new Vector3(0, 2, 5), new Vector3(0, 0.75f, 0), Vector3.Up);
+            effect.View = Matrix.CreateLookAt(new Vector3(0, 2, 6), new Vector3(0, 0.75f, 0), Vector3.Up);
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
 
             gfx.SetGeometryStream(geometryStream);
@@ -286,14 +288,23 @@ namespace UvDebug
                 }
             }
 
+            effect.SrgbColor = true;
+            effect.FogEnabled = true;
+            effect.FogStart = 5f;
+            effect.FogEnd = 6f;
+            effect.FogColor = Color.CornflowerBlue;
             effect.VertexColorEnabled = true;
             effect.DiffuseColor = Color.White;
+            effect.TextureEnabled = true;
+            effect.Texture = texture;
             DrawGeometry(rasterizerStateSolid, DepthStencilState.Default);
 
+            effect.FogEnabled = false;
             effect.VertexColorEnabled = false;
             effect.DiffuseColor = Color.Black;
+            effect.TextureEnabled = false;
             DrawGeometry(rasterizerStateWireframe, DepthStencilState.None);
-
+            
             base.OnDrawing(time);
         }
 
@@ -434,5 +445,6 @@ namespace UvDebug
         private BasicEffect effect;
         private RasterizerState rasterizerStateSolid;
         private RasterizerState rasterizerStateWireframe;
+        private Texture2D texture;
     }
 }
