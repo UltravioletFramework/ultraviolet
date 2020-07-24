@@ -2248,37 +2248,37 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the matrix's right vector.
         /// </summary>
-        public Vector3 Right { get { return new Vector3(M11, M21, M31); } }
+        public Vector3 Right { get { return new Vector3(M11, M12, M13); } }
 
         /// <summary>
         /// Gets the matrix's left vector.
         /// </summary>
-        public Vector3 Left { get { return new Vector3(-M11, -M21, -M31); } }
+        public Vector3 Left { get { return new Vector3(-M11, -M12, -M13); } }
 
         /// <summary>
         /// Gets the matrix's up vector.
         /// </summary>
-        public Vector3 Up { get { return new Vector3(M12, M22, M32); } }
+        public Vector3 Up { get { return new Vector3(M21, M22, M23); } }
 
         /// <summary>
         /// Gets the matrix's down vector.
         /// </summary>
-        public Vector3 Down { get { return new Vector3(-M12, -M22, -M32); } }
+        public Vector3 Down { get { return new Vector3(-M21, -M22, -M23); } }
 
         /// <summary>
         /// Gets the matrix's backwards vector.
         /// </summary>
-        public Vector3 Backward { get { return new Vector3(M13, M23, M33); } }
+        public Vector3 Backward { get { return new Vector3(M31, M32, M33); } }
 
         /// <summary>
         /// Gets the matrix's forwards vector.
         /// </summary>
-        public Vector3 Forward { get { return new Vector3(-M13, -M23, -M33); } }
+        public Vector3 Forward { get { return new Vector3(-M31, -M32, -M33); } }
 
         /// <summary>
         /// Gets the matrix's translation vector.
         /// </summary>
-        public Vector3 Translation { get { return new Vector3(M14, M24, M34); } }
+        public Vector3 Translation { get { return new Vector3(M41, M42, M43); } }
 
         /// <summary>
         /// Gets the value at row 1, column 1 of the matrix.
