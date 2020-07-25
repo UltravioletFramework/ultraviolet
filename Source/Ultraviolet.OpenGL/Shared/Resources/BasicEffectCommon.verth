@@ -24,7 +24,15 @@ float compute_fog_factor(float d)
 
 #ifdef INCLUDE_LIGHTING
 
+uniform float Alpha = 1;
+uniform vec4 AmbientLightColor;
 uniform vec4 DiffuseColor = vec4(1, 1, 1, 1);
+uniform vec4 EmissiveColor;
+
+vec4 calculate_unlit_diffuse()
+{
+    return vec4(DiffuseColor.rgb + EmissiveColor.rgb, Alpha);
+}
 
 #endif
 

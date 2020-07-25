@@ -25,7 +25,7 @@ void main()
 	float fog_factor = compute_fog_factor(length(EyePosition - pos_ws.xyz));
 
 	gl_Position        = pos_ps;
-	vDiffuse           = DiffuseColor * convert_color(uv_Color0);
+	vDiffuse           = calculate_unlit_diffuse() * convert_color(uv_Color0);
 	vSpecular          = vec4(0, 0, 0, fog_factor);
 	vTextureCoordinate = flip_texture_coords(uv_TextureCoordinate0);
 }

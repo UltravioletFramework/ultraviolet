@@ -22,7 +22,10 @@ namespace Ultraviolet.Graphics
         protected BasicEffect(EffectImplementation impl)
             : base(impl)
         {
+            this.epAlpha = Parameters["Alpha"];
+            this.epAmbientLightColor = Parameters["AmbientLightColor"];
             this.epDiffuseColor = Parameters["DiffuseColor"];
+            this.epEmissiveColor = Parameters["EmissiveColor"];
             this.epFogColor = Parameters["FogColor"];
             this.epFogStart = Parameters["FogStart"];
             this.epFogEnd = Parameters["FogEnd"];
@@ -51,6 +54,32 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the material alpha, which determines its transparency. Range is between 1.0f (fully opaque) and 0.0f (fully transparent).
+        /// </summary>
+        public Single Alpha
+        {
+            get => alpha;
+            set
+            {
+                alpha = value;
+                dirtyFlags |= DirtyFlags.Alpha;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the material's ambient light color.
+        /// </summary>
+        public Color AmbientLightColor
+        {
+            get => AmbientLightColor;
+            set
+            {
+                ambientLightColor = value;
+                dirtyFlags |= DirtyFlags.AmbientLightColor;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the material's diffuse color.
         /// </summary>
         public Color DiffuseColor
@@ -60,6 +89,19 @@ namespace Ultraviolet.Graphics
             {
                 diffuseColor = value;
                 dirtyFlags |= DirtyFlags.DiffuseColor;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the material's emissive color.
+        /// </summary>
+        public Color EmissiveColor
+        {
+            get => emissiveColor;
+            set
+            {
+                emissiveColor = value;
+                dirtyFlags |= DirtyFlags.EmissiveColor;
             }
         }
 
@@ -210,10 +252,35 @@ namespace Ultraviolet.Graphics
         /// <inheritdoc/>
         protected internal override void OnApply()
         {
+            if ((dirtyFlags & DirtyFlags.Alpha) == DirtyFlags.Alpha)
+            {
+                epAlpha?.SetValue(alpha);
+            }
+
+            if ((dirtyFlags & DirtyFlags.AmbientLightColor) == DirtyFlags.AmbientLightColor)
+            {
+                var ambientLightColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(ambientLightColor) : diffuseColor;
+                epAmbientLightColor?.SetValue(ambientLightColorSrgb);
+            }
+
             if ((dirtyFlags & DirtyFlags.DiffuseColor) == DirtyFlags.DiffuseColor)
             {
-                var diffuseColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(diffuseColor) : diffuseColor;
-                epDiffuseColor?.SetValue(diffuseColorSrgb);
+                if (epDiffuseColor != null)
+                {
+                    var diffuseColorPremul = diffuseColor * alpha;
+                    var diffuseColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(diffuseColorPremul) : diffuseColorPremul;
+                    epDiffuseColor.SetValue(diffuseColorSrgb);
+                }
+            }
+
+            if ((dirtyFlags & DirtyFlags.EmissiveColor) == DirtyFlags.EmissiveColor)
+            {
+                if (epEmissiveColor != null)
+                {
+                    var emissiveColorPremul = emissiveColor * alpha;
+                    var emissiveColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(emissiveColorPremul) : emissiveColorPremul;
+                    epEmissiveColor.SetValue(emissiveColorSrgb);
+                }
             }
 
             if ((dirtyFlags & DirtyFlags.FogColor) == DirtyFlags.FogColor)
@@ -296,7 +363,10 @@ namespace Ultraviolet.Graphics
         }
 
         // Cached effect parameters.
+        private readonly EffectParameter epAlpha;
+        private readonly EffectParameter epAmbientLightColor;
         private readonly EffectParameter epDiffuseColor;
+        private readonly EffectParameter epEmissiveColor;
         private readonly EffectParameter epFogColor;
         private readonly EffectParameter epFogStart;
         private readonly EffectParameter epFogEnd;
@@ -312,7 +382,10 @@ namespace Ultraviolet.Graphics
         private readonly EffectParameter epTexture;
 
         // Effect parameter values.
+        private Single alpha = 1.0f;
+        private Color ambientLightColor;
         private Color diffuseColor = Color.White;
+        private Color emissiveColor;
         private Color fogColor;
         private Single fogStart;
         private Single fogEnd;
