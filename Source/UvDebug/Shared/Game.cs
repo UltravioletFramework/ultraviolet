@@ -57,8 +57,8 @@ namespace UvDebug
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var graphicsConfig = OpenGLGraphicsConfiguration.Default;
-            graphicsConfig.MultiSampleBuffers = 1;
-            graphicsConfig.MultiSampleSamples = 8;
+//            graphicsConfig.MultiSampleBuffers = 1;
+  //          graphicsConfig.MultiSampleSamples = 8;
             graphicsConfig.SrgbBuffersEnabled = true;
             graphicsConfig.SrgbDefaultForTexture2D = true;
 
@@ -289,7 +289,7 @@ namespace UvDebug
             }
 
             effect.SrgbColor = true;
-            effect.FogEnabled = true;
+            effect.FogEnabled = false;
             effect.FogStart = 5f;
             effect.FogEnd = 6f;
             effect.FogColor = Color.CornflowerBlue;

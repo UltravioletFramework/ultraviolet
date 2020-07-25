@@ -10,13 +10,14 @@ uniform vec3 EyePosition;
 
 #ifdef INCLUDE_FOG
 
+uniform bool FogEnabled;
 uniform float FogStart;
 uniform float FogEnd;
 uniform vec4 FogColor;
 
 float compute_fog_factor(float d)
 {
-    return clamp((d - FogStart) / (FogEnd - FogStart), 0, 1);
+    return clamp((d - FogStart) / (FogEnd - FogStart), 0, 1) * int(FogEnabled);
 }
 
 #endif

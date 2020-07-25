@@ -31,6 +31,9 @@ namespace Ultraviolet.Graphics
             this.epProjection = Parameters["Projection"];
             this.epWorldViewProj = Parameters["WorldViewProj"];
             this.epEyePosition = Parameters["EyePosition"];
+            this.epVertexColorEnabled = Parameters["VertexColorEnabled"];
+            this.epTextureEnabled = Parameters["TextureEnabled"];
+            this.epFogEnabled = Parameters["FogEnabled"];
             this.epSrgbColor = Parameters["SrgbColor"];
             this.epTexture = Parameters["Texture"];
 
@@ -141,17 +144,41 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets or sets a value indicating whether vertex colors are enabled for this effect.
         /// </summary>
-        public Boolean VertexColorEnabled { get; set; }
+        public Boolean VertexColorEnabled
+        {
+            get => vertexColorEnabled;
+            set
+            {
+                vertexColorEnabled = value;
+                dirtyFlags |= DirtyFlags.VertexColorEnabled;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether textures are enabled for this effect.
         /// </summary>
-        public Boolean TextureEnabled { get; set; }
+        public Boolean TextureEnabled
+        {
+            get => textureEnabled;
+            set
+            {
+                textureEnabled = value;
+                dirtyFlags |= DirtyFlags.TextureEnabled;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether fog is enabled for this effect.
         /// </summary>
-        public Boolean FogEnabled { get; set; }
+        public Boolean FogEnabled
+        {
+            get => fogEnabled;
+            set
+            {
+                fogEnabled = value;
+                dirtyFlags |= DirtyFlags.FogEnabled;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the colors used by this effect should be
@@ -220,16 +247,6 @@ namespace Ultraviolet.Graphics
                 epProjection?.SetValue(projection);
             }
 
-            if ((dirtyFlags & DirtyFlags.Texture) == DirtyFlags.Texture)
-            {
-                epTexture?.SetValue(texture);
-            }
-
-            if ((dirtyFlags & DirtyFlags.SrgbColor) == DirtyFlags.SrgbColor)
-            {
-                epSrgbColor?.SetValue(srgbColor);
-            }
-
             if ((dirtyFlags & DirtyFlags.WorldViewProj) == DirtyFlags.WorldViewProj)
             {
                 if (epWorldViewProj != null)
@@ -248,6 +265,31 @@ namespace Ultraviolet.Graphics
                 }
             }
 
+            if ((dirtyFlags & DirtyFlags.VertexColorEnabled) == DirtyFlags.VertexColorEnabled)
+            {
+                epVertexColorEnabled?.SetValue(vertexColorEnabled);
+            }
+
+            if ((dirtyFlags & DirtyFlags.TextureEnabled) == DirtyFlags.TextureEnabled)
+            {
+                epTextureEnabled?.SetValue(textureEnabled);
+            }
+
+            if ((dirtyFlags & DirtyFlags.FogEnabled) == DirtyFlags.FogEnabled)
+            {
+                epFogEnabled?.SetValue(fogEnabled);
+            }
+
+            if ((dirtyFlags & DirtyFlags.SrgbColor) == DirtyFlags.SrgbColor)
+            {
+                epSrgbColor?.SetValue(srgbColor);
+            }
+
+            if ((dirtyFlags & DirtyFlags.Texture) == DirtyFlags.Texture)
+            {
+                epTexture?.SetValue(texture);
+            }
+
             dirtyFlags = DirtyFlags.None;
 
             base.OnApply();
@@ -263,6 +305,9 @@ namespace Ultraviolet.Graphics
         private readonly EffectParameter epProjection;
         private readonly EffectParameter epWorldViewProj;
         private readonly EffectParameter epEyePosition;
+        private readonly EffectParameter epVertexColorEnabled;
+        private readonly EffectParameter epTextureEnabled;
+        private readonly EffectParameter epFogEnabled;
         private readonly EffectParameter epSrgbColor;
         private readonly EffectParameter epTexture;
 
@@ -274,6 +319,9 @@ namespace Ultraviolet.Graphics
         private Matrix world;
         private Matrix view;
         private Matrix projection;
+        private Boolean vertexColorEnabled;
+        private Boolean textureEnabled;
+        private Boolean fogEnabled;
         private Boolean srgbColor;
         private Texture2D texture;
 

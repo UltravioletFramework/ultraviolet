@@ -56,14 +56,29 @@ namespace Ultraviolet.Graphics
             WorldViewProj = 1 << 8,
 
             /// <summary>
-            /// The <see cref="Texture"/> parameter is dirty.
+            /// The <see cref="VertexColorEnabled"/> parameter is dirty.
             /// </summary>
-            Texture = 1 << 9,
+            VertexColorEnabled = 1 << 9,
+
+            /// <summary>
+            /// The <see cref="TextureEnabled"/> parameter is dirty.
+            /// </summary>
+            TextureEnabled = 1 << 10,
+
+            /// <summary>
+            /// The <see cref="FogEnabled"/> parameter is dirty.
+            /// </summary>
+            FogEnabled = 1 << 11,
 
             /// <summary>
             /// The <see cref="SrgbColor"/> parameter is dirty.
             /// </summary>
-            SrgbColor = 1 << 10,
+            SrgbColor = 1 << 12,
+
+            /// <summary>
+            /// The <see cref="Texture"/> parameter is dirty.
+            /// </summary>
+            Texture = 1 << 13,
         }
     }
 }
