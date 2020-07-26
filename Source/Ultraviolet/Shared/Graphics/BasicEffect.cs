@@ -399,6 +399,6 @@ namespace Ultraviolet.Graphics
         private Texture2D texture;
 
         // Dirty flag tracking.
-        private DirtyFlags dirtyFlags = DirtyFlags.None;
+        private DirtyFlags dirtyFlags = DirtyFlags.Alpha | DirtyFlags.DiffuseColor;
     }
 }

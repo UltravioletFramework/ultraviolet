@@ -17,16 +17,16 @@ uniform vec4 FogColor;
 
 float compute_fog_factor(float d)
 {
-    return clamp((d - FogStart) / (FogEnd - FogStart), 0, 1) * int(FogEnabled);
+    return clamp((d - FogStart) / (FogEnd - FogStart), 0.0, 1.0) * float(FogEnabled);
 }
 
 #endif
 
 #ifdef INCLUDE_LIGHTING
 
-uniform float Alpha = 1;
+uniform float Alpha;
 uniform vec4 AmbientLightColor;
-uniform vec4 DiffuseColor = vec4(1, 1, 1, 1);
+uniform vec4 DiffuseColor;
 uniform vec4 EmissiveColor;
 
 vec4 calculate_unlit_diffuse()

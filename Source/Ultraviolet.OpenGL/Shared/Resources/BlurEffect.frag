@@ -1,4 +1,4 @@
-﻿#version 140
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.fragh" executing
 
 const float PI = 3.14159265f;
 
@@ -38,7 +38,7 @@ void main()
 	{ 
 		avgValue += texture(Texture, vTextureCoordinate.xy - i * step * Direction) * incrementalGaussian.x;         
 		avgValue += texture(Texture, vTextureCoordinate.xy + i * step * Direction) * incrementalGaussian.x;         
-		coefficientSum += 2 * incrementalGaussian.x;
+		coefficientSum += 2.0 * incrementalGaussian.x;
 		incrementalGaussian.xy *= incrementalGaussian.yz;
 	}
 
