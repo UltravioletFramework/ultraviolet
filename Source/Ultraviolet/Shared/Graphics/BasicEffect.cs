@@ -24,6 +24,7 @@ namespace Ultraviolet.Graphics
         {
             // General parameters
             this.epSrgbColor = Parameters["SrgbColor"];
+            this.epPreferPerPixelLighting = Parameters["PreferPerPixelLighting"];
 
             // Vertex color parameters
             this.epVertexColorEnabled = Parameters["VertexColorEnabled"];
@@ -78,6 +79,33 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Sets up the standard lighting rig, consisting of a key, fill, and back light.
+        /// </summary>
+        public void EnableStandardLighting()
+        {
+            LightingEnabled = true;
+            AmbientLightColor = new Color(0.05333332f, 0.09882354f, 0.1819608f, 1f);
+
+            // Key light.
+            DirectionalLight0.Direction = new Vector3(-0.5265408f, -0.5735765f, -0.6275069f);
+            DirectionalLight0.DiffuseColor = new Color(1f, 0.9607844f, 0.8078432f, 1f);
+            DirectionalLight0.SpecularColor = Color.Black;
+            DirectionalLight0.Enabled = true;
+
+            // Fill light.
+            DirectionalLight1.Direction = new Vector3(0.7198464f, 0.3420201f, 0.6040227f);
+            DirectionalLight1.DiffuseColor = new Color(0.9647059f, 0.7607844f, 0.4078432f, 1f);
+            DirectionalLight1.SpecularColor = Color.Black;
+            DirectionalLight1.Enabled = true;
+
+            // Back light.
+            DirectionalLight2.Direction = new Vector3(0.4545195f, -0.7660444f, 0.4545195f);
+            DirectionalLight2.DiffuseColor = new Color(0.3231373f, 0.3607844f, 0.3937255f, 1f);
+            DirectionalLight2.SpecularColor = new Color(0.3231373f, 0.3607844f, 0.3937255f, 1f);
+            DirectionalLight2.Enabled = true;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the colors used by this effect should be
         /// converted from the sRGB color space to the linear color space in the vertex shader.
         /// </summary>
@@ -92,6 +120,20 @@ namespace Ultraviolet.Graphics
                 this.DirectionalLight2.SrgbColor = value;
 
                 dirtyFlags |= DirtyFlags.SrgbColor | DirtyFlags.DiffuseColor | DirtyFlags.EmissiveColor | DirtyFlags.SpecularColor | DirtyFlags.FogColor | DirtyFlags.AmbientLightColor;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the effect should prefer per-pixel lighting
+        /// over vertex lighting on platforms where it is supported.
+        /// </summary>
+        public Boolean PreferPerPixelLighting
+        {
+            get => preferPerPixelLighting;
+            set
+            {
+                preferPerPixelLighting = value;
+                dirtyFlags |= DirtyFlags.PreferPerPixelLighting;
             }
         }
 
@@ -313,6 +355,10 @@ namespace Ultraviolet.Graphics
             {
                 epSrgbColor?.SetValue(srgbColor);
             }
+            if ((dirtyFlags & DirtyFlags.PreferPerPixelLighting) == DirtyFlags.PreferPerPixelLighting)
+            {
+                epPreferPerPixelLighting?.SetValue(preferPerPixelLighting);
+            }
 
             // Vertex color parameters.
             if ((dirtyFlags & DirtyFlags.VertexColorEnabled) == DirtyFlags.VertexColorEnabled)
@@ -450,9 +496,11 @@ namespace Ultraviolet.Graphics
 
         // General parameters.
         private readonly EffectParameter epSrgbColor;
+        private readonly EffectParameter epPreferPerPixelLighting;
 
         // General parameter values.
         private Boolean srgbColor;
+        private Boolean preferPerPixelLighting;
 
         // Vertex color parameters.
         private readonly EffectParameter epVertexColorEnabled;
