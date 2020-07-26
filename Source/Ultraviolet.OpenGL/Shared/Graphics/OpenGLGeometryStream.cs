@@ -410,14 +410,16 @@ namespace Ultraviolet.OpenGL.Graphics
                 var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize);
 
                 var category = OpenGLAttribCategory.Single;
-                var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name, out category);
+                var location = OpenGLState.CurrentProgram.GetAttribLocation(name, out category);
                 if (location >= 0)
                 {
+                    var unsignedLocation = (UInt32)location;
+
                     if (program.HasValue)
                     {
                         if (gl.IsInstancedRenderingAvailable)
                         {
-                            gl.VertexAttribDivisor(location, frequency);
+                            gl.VertexAttribDivisor(unsignedLocation, frequency);
                             gl.ThrowIfError();
                         }
                         else
@@ -426,7 +428,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                 throw new NotSupportedException(OpenGLStrings.InstancedRenderingNotSupported);
                         }
 
-                        gl.EnableVertexAttribArray(location);
+                        gl.EnableVertexAttribArray(unsignedLocation);
                         gl.ThrowIfError();
                     }
 
@@ -434,7 +436,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     {
                         case OpenGLAttribCategory.Single:
                             {
-                                gl.VertexAttribPointer(location, size, type, normalize, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                                gl.VertexAttribPointer(unsignedLocation, size, type, normalize, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                                 gl.ThrowIfError();
                             }
                             break;
@@ -444,7 +446,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                 if (!gl.IsDoublePrecisionVertexAttribAvailable)
                                     throw new NotSupportedException(OpenGLStrings.DoublePrecisionVAttribsNotSupported);
 
-                                gl.VertexAttribLPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                                gl.VertexAttribLPointer(unsignedLocation, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                                 gl.ThrowIfError();
                             }
                             break;
@@ -454,7 +456,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                 if (!gl.IsIntegerVertexAttribAvailable)
                                     throw new NotSupportedException(OpenGLStrings.IntegerVAttribsNotSupported);
 
-                                gl.VertexAttribIPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                                gl.VertexAttribIPointer(unsignedLocation, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                                 gl.ThrowIfError();
                             }
                             break;
