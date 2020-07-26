@@ -53,6 +53,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffect.DirtyFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DirectionalLight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DirectionalLight.DirtyFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DummySwapChainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphRenderState.cs" />
@@ -78,6 +80,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextDrawState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextSeekState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererStyleManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectLights.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectFog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />

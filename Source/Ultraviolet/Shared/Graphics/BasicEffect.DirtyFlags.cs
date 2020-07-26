@@ -16,84 +16,99 @@ namespace Ultraviolet.Graphics
             None = 0,
 
             /// <summary>
-            /// The <see cref="Alpha"/> parameter is dirty.
+            /// The <see cref="SrgbColor"/> parameter is dirty.
             /// </summary>
-            Alpha = 1 << 1,
-
-            /// <summary>
-            /// The <see cref="AmbientLightColor"/> parameter is dirty.
-            /// </summary>
-            AmbientLightColor = 1 << 2,
-
-            /// <summary>
-            /// The <see cref="DiffuseColor"/> parameter is dirty.
-            /// </summary>
-            DiffuseColor = 1 << 3,
-
-            /// <summary>
-            /// The <see cref="EmissiveColor"/> parameter is dirty.
-            /// </summary>
-            EmissiveColor = 1 << 4,
-
-            /// <summary>
-            /// The <see cref="FogColor"/> parameter is dirty.
-            /// </summary>
-            FogColor = 1 << 5,
-
-            /// <summary>
-            /// The <see cref="FogStart"/> parameter is dirty.
-            /// </summary>
-            FogStart = 1 << 6,
-
-            /// <summary>
-            /// The <see cref="FogEnd"/> parameter is dirty.
-            /// </summary>
-            FogEnd = 1 << 7,
-
-            /// <summary>
-            /// The <see cref="World"/> parameter is dirty.
-            /// </summary>
-            World = 1 << 8,
-
-            /// <summary>
-            /// The <see cref="View"/> parameter is dirty.
-            /// </summary>
-            View = 1 << 9,
-
-            /// <summary>
-            /// The <see cref="Projection"/> parameter.
-            /// </summary>
-            Projection = 1 << 10,
-
-            /// <summary>
-            /// The <see cref="World"/>, <see cref="View"/>, or <see cref="Projection"/> parameter is dirty.
-            /// </summary>
-            WorldViewProj = 1 << 11,
+            SrgbColor = 1 << 1,
 
             /// <summary>
             /// The <see cref="VertexColorEnabled"/> parameter is dirty.
             /// </summary>
-            VertexColorEnabled = 1 << 12,
+            VertexColorEnabled = 1 << 2,
 
             /// <summary>
-            /// The <see cref="TextureEnabled"/> parameter is dirty.
+            /// The <see cref="Alpha"/> parameter is dirty.
             /// </summary>
-            TextureEnabled = 1 << 13,
+            Alpha = 1 << 3,
+
+            /// <summary>
+            /// The <see cref="DiffuseColor"/> parameter is dirty.
+            /// </summary>
+            DiffuseColor = 1 << 4,
+
+            /// <summary>
+            /// The <see cref="EmissiveColor"/> parameter is dirty.
+            /// </summary>
+            EmissiveColor = 1 << 5,
+
+            /// <summary>
+            /// The <see cref="SpecularColor"/> parameter is dirty.
+            /// </summary>
+            SpecularColor = 1 << 6,
+
+            /// <summary>
+            /// The <see cref="SpecularPower"/> parameter is dirty.
+            /// </summary>
+            SpecularPower = 1 << 7,
 
             /// <summary>
             /// The <see cref="FogEnabled"/> parameter is dirty.
             /// </summary>
-            FogEnabled = 1 << 14,
+            FogEnabled = 1 << 8,
 
             /// <summary>
-            /// The <see cref="SrgbColor"/> parameter is dirty.
+            /// The <see cref="FogColor"/> parameter is dirty.
             /// </summary>
-            SrgbColor = 1 << 15,
+            FogColor = 1 << 9,
+
+            /// <summary>
+            /// The <see cref="FogStart"/> parameter is dirty.
+            /// </summary>
+            FogStart = 1 << 10,
+
+            /// <summary>
+            /// The <see cref="FogEnd"/> parameter is dirty.
+            /// </summary>
+            FogEnd = 1 << 11,
+
+            /// <summary>
+            /// The <see cref="World"/> parameter is dirty.
+            /// </summary>
+            World = 1 << 12,
+
+            /// <summary>
+            /// The <see cref="View"/> parameter is dirty.
+            /// </summary>
+            View = 1 << 13,
+
+            /// <summary>
+            /// The <see cref="Projection"/> parameter.
+            /// </summary>
+            Projection = 1 << 14,
+
+            /// <summary>
+            /// The <see cref="World"/>, <see cref="View"/>, or <see cref="Projection"/> parameter is dirty.
+            /// </summary>
+            Matrices = 1 << 15,
+
+            /// <summary>
+            /// The <see cref="TextureEnabled"/> parameter is dirty.
+            /// </summary>
+            TextureEnabled = 1 << 16,
 
             /// <summary>
             /// The <see cref="Texture"/> parameter is dirty.
             /// </summary>
-            Texture = 1 << 16,
+            Texture = 1 << 17,
+
+            /// <summary>
+            /// The <see cref="LightingEnabled"/> parameter is dirty.
+            /// </summary>
+            LightingEnabled = 1 << 18,
+
+            /// <summary>
+            /// The <see cref="AmbientLightColor"/> parameter is dirty.
+            /// </summary>
+            AmbientLightColor = 1 << 19,
         }
     }
 }
