@@ -47,5 +47,5 @@ void main()
 	vec4 outBlurred = blur * vColor.a;	
 	vec4 outColored = vColor * blur.a;
 	
-	fColor = mix(outBlurred, outColored, Mix);
+	OUTPUT_COLOR = mix(outBlurred, outColored, Mix);
 }
