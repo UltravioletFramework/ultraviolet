@@ -292,7 +292,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public override String ToString() => $"#{A:x2}{R:x2}{G:x2}{B:x3}";
+        public override String ToString() => $"#{A:x2}{R:x2}{G:x2}{B:x2}";
 
         /// <summary>
         /// Converts the <see cref="Color"/> to a 32-bit integer in ARGB format.
