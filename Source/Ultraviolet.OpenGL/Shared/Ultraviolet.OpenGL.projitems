@@ -120,8 +120,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTextured.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTextured.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffect.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SharedHeader.fragh" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SharedHeader.verth" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SharedHeader.glsl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SrgbConversion.glsl" />

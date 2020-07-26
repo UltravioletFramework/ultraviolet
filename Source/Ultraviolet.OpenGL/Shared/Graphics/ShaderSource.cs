@@ -295,7 +295,10 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     var includedSource = ProcessRawSource(manager, metadata, source);
                     ssmd.Concat(includedSource.Metadata);
-                    output.AppendLine(includedSource.Source);
+                    output.Append(includedSource.Source);
+
+                    if (!includedSource.Source.EndsWith("\n"))
+                        output.AppendLine();
                 }
 
                 return true;

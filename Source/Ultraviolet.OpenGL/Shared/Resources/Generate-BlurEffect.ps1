@@ -5,7 +5,7 @@
 	)
 
 	$Shader = New-Object System.Collections.Generic.List[System.String]
-	$Shader.Add("#includeres `"Ultraviolet.OpenGL.Resources.SharedHeader.fragh`" executing")
+	$Shader.Add("#includeres `"Ultraviolet.OpenGL.Resources.SharedHeader.glsl`" executing")
 	$Shader.Add("")
 	$Shader.Add("uniform sampler2D Texture;")
 	$Shader.Add("")
@@ -16,7 +16,7 @@
 	$Shader.Add("in vec4 vColor;")
 	$Shader.Add("in vec2 vTextureCoordinate;")
 	$Shader.Add("")
-	$Shader.Add("out vec4 fColor;")
+	$Shader.Add("DECLARE_OUTPUT_COLOR;")
 	$Shader.Add("")
 	$Shader.Add("void main()")
 	$Shader.Add("{")
@@ -49,7 +49,7 @@
 	$Shader.Add("	vec4 outBlurred = blur * vColor.a;")
 	$Shader.Add("	vec4 outColored = vColor * blur.a;")
 	$Shader.Add("	");
-	$Shader.Add("	fColor = mix(outBlurred, outColored, Mix);")
+	$Shader.Add("	OUTPUT_COLOR = mix(outBlurred, outColored, Mix);")
 	$Shader.Add("}")
 
 	Out-File -FilePath "BlurEffectRadius$($Radius).frag" -InputObject $Shader

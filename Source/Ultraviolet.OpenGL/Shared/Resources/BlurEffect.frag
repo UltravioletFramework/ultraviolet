@@ -1,4 +1,4 @@
-﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.fragh" executing
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.glsl" executing
 
 const float PI = 3.14159265f;
 
@@ -13,7 +13,7 @@ uniform vec2 Direction;
 in vec4 vColor;
 in vec2 vTextureCoordinate;
 
-out vec4 fColor;
+DECLARE_OUTPUT_COLOR;
 
 void main()
 {

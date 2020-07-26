@@ -10,13 +10,13 @@ using Ultraviolet.Core.Text;
 using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL;
+using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.Platform;
 using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Styles;
 using Ultraviolet.SDL2;
 using UvDebug.Input;
 using UvDebug.UI;
-using UvDebug.UI.Screens;
 
 namespace UvDebug
 {
@@ -295,15 +295,18 @@ namespace UvDebug
             effect.FogColor = Color.CornflowerBlue;
             effect.VertexColorEnabled = true;
             effect.DiffuseColor = Color.White;
-            effect.TextureEnabled = true;
+            effect.TextureEnabled = false;
             effect.Texture = texture;
             DrawGeometry(rasterizerStateSolid, DepthStencilState.Default);
 
-            effect.FogEnabled = false;
-            effect.VertexColorEnabled = false;
-            effect.DiffuseColor = Color.Black;
-            effect.TextureEnabled = false;
-            DrawGeometry(rasterizerStateWireframe, DepthStencilState.None);
+            if (!gl.IsGLES)
+            {
+                effect.FogEnabled = false;
+                effect.VertexColorEnabled = false;
+                effect.DiffuseColor = Color.Black;
+                effect.TextureEnabled = false;
+                DrawGeometry(rasterizerStateWireframe, DepthStencilState.None);
+            }
             
             base.OnDrawing(time);
         }

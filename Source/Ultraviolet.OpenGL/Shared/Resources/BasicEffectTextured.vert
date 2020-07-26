@@ -1,4 +1,4 @@
-﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.verth" executing
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.glsl" executing
 
 #define INCLUDE_MATRICES
 #define INCLUDE_LIGHTING

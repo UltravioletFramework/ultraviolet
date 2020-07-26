@@ -1,4 +1,4 @@
-﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.fragh" executing
+﻿#includeres "Ultraviolet.OpenGL.Resources.SharedHeader.glsl" executing
 #includeres "Ultraviolet.OpenGL.Resources.SrgbConversion.glsl" executing
 
 uniform mat4 MatrixTransform;
