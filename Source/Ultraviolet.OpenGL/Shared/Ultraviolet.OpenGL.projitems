@@ -115,6 +115,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicPixelLightingTx.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicPixelLighting.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingTxNoFog.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingTx.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingNoFog.frag" />
@@ -122,6 +124,10 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicTxNoFog.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicTx.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLightingTxVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLightingTx.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLightingVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLighting.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLightTxVc.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLightTx.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLightVc.vert" />

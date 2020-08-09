@@ -344,6 +344,8 @@ namespace UvDebug
                 }
             }
 
+            effect.FogColor = Color.Red;
+            effect.PreferPerPixelLighting = true;
             effect.LightingEnabled = true;
             effect.SrgbColor = false;
             effect.VertexColorEnabled = false;

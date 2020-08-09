@@ -291,8 +291,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             {
                 if (PreferPerPixelLighting)
                 {
-                    // NYI
-                    // shaderIndex += 24;
+                    shaderIndexNew += 24;
                 }
                 else
                 {

@@ -65,6 +65,15 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_VSBasicOneLightTx.vert")); }),
             new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
                 uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_VSBasicOneLightTxVc.vert")); }),
+
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_VSBasicPixelLighting.vert")); }),
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_VSBasicPixelLightingVc.vert")); }),
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_VSBasicPixelLightingTx.vert")); }),
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_VSBasicPixelLightingTxVc.vert")); }),
         };
 
         // An array correlating the shader index of this effect to the vertex shader which that index uses.
@@ -96,6 +105,15 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             14,     // one light + texture, no fog
             15,     // one light + texture + vertex color
             15,     // one light + texture + vertex color, no fog
+            
+            16,     // pixel lighting
+            16,     // pixel lighting, no fog
+            17,     // pixel lighting + vertex color
+            17,     // pixel lighting + vertex color, no fog
+            18,     // pixel lighting + texture
+            18,     // pixel lighting + texture, no fog
+            19,     // pixel lighting + texture + vertex color
+            19,     // pixel lighting + texture + vertex color, no fog
         };
 
         // An array containing all of the fragment shaders used by this effect.
@@ -118,6 +136,11 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_PSBasicVertexLightingTx.frag")); }),
             new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
                 uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_PSBasicVertexLightingTxNoFog.frag")); }),
+
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_PSBasicPixelLighting.frag")); }),
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BasicEffect_PSBasicPixelLightingTx.frag")); }),
         };
 
         // An array correlating the shader index of this effect to the fragment shader which that index uses.
@@ -149,6 +172,15 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             7,      // one light + texture, no fog
             6,      // one light + texture + vertex color
             7,      // one light + texture + vertex color, no fog    
+            
+            8,      // pixel lighting
+            8,      // pixel lighting, no fog
+            8,      // pixel lighting + vertex color
+            8,      // pixel lighting + vertex color, no fog
+            9,      // pixel lighting + texture
+            9,      // pixel lighting + texture, no fog
+            9,      // pixel lighting + texture + vertex color
+            9,      // pixel lighting + texture + vertex color, no fog
         };
     }
 }
