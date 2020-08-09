@@ -387,6 +387,7 @@ namespace Ultraviolet.TestApplication
                 else
                 {
                     Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
+                    Ultraviolet.GetGraphics().SetViewport(new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height));
                     Ultraviolet.GetGraphics().Clear(Color.Black);
                 }
 
