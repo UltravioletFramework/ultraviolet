@@ -80,7 +80,7 @@ namespace Ultraviolet.SDL2.Platform
 
                         return true;
                     }
-                    else goto case 1;
+                    else goto case 2;
 
                 case 2:
                     // Attempt #2: Try turning off multisampling.
@@ -94,7 +94,7 @@ namespace Ultraviolet.SDL2.Platform
 
                         return true;
                     }
-                    else goto case 2;
+                    else goto case 3;
 
                 case 3:
                     // Attempt #3: Try turning off sRGB and multisampling.
