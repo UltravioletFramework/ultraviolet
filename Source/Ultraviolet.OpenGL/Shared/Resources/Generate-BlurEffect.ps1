@@ -31,14 +31,14 @@
 	$CoefficientSum = $IncGaussX
 
 	$Shader.Add("	vec4 avgValue = vec4(0.0, 0.0, 0.0, 0.0);")
-	$Shader.Add("	avgValue += texture(Texture, vTextureCoordinate.xy) * $IncGaussX;")
+	$Shader.Add("	avgValue += SAMPLE_TEXTURE2D(Texture, vTextureCoordinate.xy) * $IncGaussX;")
 
 	$IncGaussX *= $IncGaussY;
 	$IncGaussY *= $IncGaussZ;
 
 	for ($I = 1; $I -le $Radius; $I++) {
-		$Shader.Add("	avgValue += texture(Texture, vTextureCoordinate.xy - (float($I) * step * Direction)) * $IncGaussX;")
-		$Shader.Add("	avgValue += texture(Texture, vTextureCoordinate.xy + (float($I) * step * Direction)) * $IncGaussX;")
+		$Shader.Add("	avgValue += SAMPLE_TEXTURE2D(Texture, vTextureCoordinate.xy - (float($I) * step * Direction)) * $IncGaussX;")
+		$Shader.Add("	avgValue += SAMPLE_TEXTURE2D(Texture, vTextureCoordinate.xy + (float($I) * step * Direction)) * $IncGaussX;")
 		$CoefficientSum += 2.0 * $IncGaussX;
 		$IncGaussX *= $IncGaussY;
 		$IncGaussY *= $IncGaussZ;

@@ -9,5 +9,5 @@ DECLARE_OUTPUT_COLOR;
 
 void main()
 {
-	OUTPUT_COLOR = texture(Texture, vTextureCoordinate) * vColor;
+	OUTPUT_COLOR = SAMPLE_TEXTURE2D(Texture, vTextureCoordinate) * vColor;
 }
