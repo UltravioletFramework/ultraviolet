@@ -213,7 +213,7 @@ namespace Ultraviolet.Tests.Graphics
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@$"Resources/Expected/Graphics/BasicEffect_RendersACubeCorrectly({parameters}).png");
+                .ShouldMatch($@"Resources/Expected/Graphics/BasicEffect_RendersACubeCorrectly({parameters}).png");
         }
     }
 }
