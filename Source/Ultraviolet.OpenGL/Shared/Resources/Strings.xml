@@ -52,7 +52,7 @@
   </String>
   <String Key="NO_GEOMETRY_STREAM">
     <en-US>
-      <Variant>Not geometry stream has been set.</Variant>
+      <Variant>No geometry stream has been set.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_GEOMETRY_STREAM">
@@ -62,7 +62,7 @@
   </String>
   <String Key="NO_EFFECT">
     <en-US>
-      <Variant>Not effect has been set.</Variant>
+      <Variant>No effect has been set.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_SPRITEFONT_TEXTURE">
