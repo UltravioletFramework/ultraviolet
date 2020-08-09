@@ -22,9 +22,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetIDTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManagerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffectTestParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffectTestVertex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ColorEncoding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CustomCompositor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTextureAtlasTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffectTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\FontKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\FreeTypeFontTests.cs" />
@@ -307,6 +310,80 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(Basic).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLighting).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTx).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTxNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTxVc).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTxVcNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingVc).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingVcNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTx).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTxNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTxVc).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTxVcNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVc).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVcNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLighting).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTx).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTxNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTxVc).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTxVcNoFog).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingVc).png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingVcNoFog).png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
