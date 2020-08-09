@@ -45,9 +45,9 @@ namespace Ultraviolet.Tests.Graphics
         [Description("Ensures that #include directives in GLSL shader source are correctly processed.")]
         public void BasicEffect_RendersACubeCorrectly(BasicEffectTestParameters parameters)
         {
-            void DrawGeometry(IUltravioletGraphics gfx, Effect effect, RasterizerState rasterizerState, DepthStencilState depthStencilState, Int32 count)
+            void DrawGeometry(IUltravioletGraphics gfx, Effect eff, RasterizerState rasterizerState, DepthStencilState depthStencilState, Int32 count)
             {
-                foreach (var pass in effect.CurrentTechnique.Passes)
+                foreach (var pass in eff.CurrentTechnique.Passes)
                 {
                     pass.Apply();
 
