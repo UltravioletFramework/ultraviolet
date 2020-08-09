@@ -244,10 +244,10 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                             var scale = 1f / (fogStart - fogEnd);
                             var fogVector = new Vector4
                             {
-                                X = worldView.M31 * scale,
-                                Y = worldView.M32 * scale,
+                                X = worldView.M13 * scale,
+                                Y = worldView.M23 * scale,
                                 Z = worldView.M33 * scale,
-                                W = (worldView.M34 + fogStart) * scale
+                                W = (worldView.M43 + fogStart) * scale
                             };
                             epFogVector.SetValue(fogVector);
                         }
