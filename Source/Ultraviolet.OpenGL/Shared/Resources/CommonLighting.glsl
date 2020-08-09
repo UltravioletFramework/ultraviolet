@@ -28,10 +28,10 @@ ColorPair ComputeLights(vec3 eyeVector, vec3 worldNormal, const int numLights)
     vec3 dotL = worldNormal * -lightDirections;
     vec3 dotH = worldNormal * halfVectors;
 
-    vec3 zeroL = step(0, dotL);
+    vec3 zeroL = step(0.0, dotL);
 
     vec3 diffuse = zeroL * dotL;
-    vec3 specular = pow(max(dotH, 0) * zeroL, vec3(SpecularPower));
+    vec3 specular = pow(max(dotH, 0.0) * zeroL, vec3(SpecularPower));
 
     ColorPair result;
 
