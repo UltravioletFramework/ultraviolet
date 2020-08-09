@@ -159,6 +159,7 @@ namespace Ultraviolet
         public static readonly StringResource PrimaryWindowMustBeInitialized       = new StringResource(StringDatabase, "PRIMARY_WINDOW_MUST_BE_INITIALIZED");
         public static readonly StringResource EffectImplementationAlreadyHasOwner  = new StringResource(StringDatabase, "EFFECT_IMPLEMENTATION_ALREADY_HAS_OWNER");
         public static readonly StringResource EffectImplementationHasNoOwner       = new StringResource(StringDatabase, "EFFECT_IMPLEMENTATION_HAS_NO_OWNER");
+        public static readonly StringResource FailedToInitializeSingleton          = new StringResource(StringDatabase, "FAILED_TO_INITIALIZE_SINGLETON");
 #pragma warning restore 1591
     }
 }

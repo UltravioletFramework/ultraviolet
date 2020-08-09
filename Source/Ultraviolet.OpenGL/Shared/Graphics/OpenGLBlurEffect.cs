@@ -128,27 +128,27 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         const Int32 UnrolledFragmentShaderCount = 5;
 
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius1 =
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy, 
                 uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius1.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius3 =
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy, 
                 uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius3.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius5 =
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy,
                 uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius5.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius7 =
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy,
                 uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius7.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius9 =
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy,
                 uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius9.frag")));
 
         // Shaders
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShader = 
-            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy,
                 uv => new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("SpriteBatchEffect.vert")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader = 
-            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy,
                 uv => IsArbitaryRadiusBlurAvailable ? new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.frag")) : null);
 
         // Cached effect parameters

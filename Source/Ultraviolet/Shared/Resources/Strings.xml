@@ -655,4 +655,9 @@
       <Variant>The specified effect implementation is not associated with an effect.</Variant>
     </en-US>
   </String>
+  <String Key="FAILED_TO_INITIALIZE_SINGLETON">
+    <en-US>
+      <Variant>Failed to initialize singleton value due to a missing or invalid Ultraviolet context.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

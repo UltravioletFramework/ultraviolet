@@ -109,7 +109,7 @@ namespace Ultraviolet.Presentation.Media.Effects
 
         // The singleton instance of effect used to render the shadow.
         private static readonly UltravioletSingleton<Graphics.BlurEffect> effect = 
-            new UltravioletSingleton<Graphics.BlurEffect>(UltravioletSingletonFlags.DisabledInServiceMode, uv =>
+            new UltravioletSingleton<Graphics.BlurEffect>(UltravioletSingletonFlags.DisabledInServiceMode | UltravioletSingletonFlags.Lazy, uv =>
                 Graphics.BlurEffect.Create());
     }
 }

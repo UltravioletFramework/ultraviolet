@@ -34,7 +34,7 @@ namespace Ultraviolet
             this.initializer = initializer;
 
             var uv = UltravioletContext.RequestCurrent();
-            if (uv != null && uv.IsInitialized)
+            if (uv != null && uv.IsInitialized && (flags & UltravioletSingletonFlags.Lazy) != UltravioletSingletonFlags.Lazy)
                 InitializeResource();
 
             UltravioletContext.ContextInitialized += UltravioletContext_ContextInitialized;
@@ -54,17 +54,24 @@ namespace Ultraviolet
         /// <summary>
         /// Initializes the singleton resource, assuming the Ultraviolet context is currently in a valid state.
         /// </summary>
-        public void InitializeResource()
+        /// <returns><see langword="true"/> if the instance was successfully initialized; otherwise, <see langword="false"/>.</returns>
+        public Boolean InitializeResource()
         {
+            if (initialized)
+                return true;
+
             var uv = UltravioletContext.RequestCurrent();
             if (uv == null || uv.Disposing || uv.Disposed)
-                return;
+                return false;
 
             if (resource == null || resource.Ultraviolet != uv)
             {
                 if (ShouldInitializeResource(uv))
                     resource = initializer(uv);
             }
+
+            initialized = true;
+            return true;
         }
 
         /// <summary>
@@ -79,7 +86,9 @@ namespace Ultraviolet
         {
             get 
             {
-                InitializeResource();
+                if (!initialized && !InitializeResource())
+                    throw new InvalidOperationException(UltravioletStrings.FailedToInitializeSingleton);
+
                 return resource; 
             }
         }
@@ -102,7 +111,8 @@ namespace Ultraviolet
         /// </summary>
         private void UltravioletContext_ContextInitialized(object sender, EventArgs e)
         {
-            InitializeResource();
+            if ((Flags & UltravioletSingletonFlags.Lazy) != UltravioletSingletonFlags.Lazy)
+                InitializeResource();
         }
 
         /// <summary>
@@ -111,10 +121,12 @@ namespace Ultraviolet
         private void UltravioletContext_ContextInvalidated(object sender, EventArgs e)
         {
             SafeDispose.DisposeRef(ref resource);
+            initialized = false;
         }
 
         // State values.
         private readonly Func<UltravioletContext, T> initializer;
         private T resource;
+        private Boolean initialized;
     }
 }
