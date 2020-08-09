@@ -57,10 +57,10 @@ namespace UvDebug
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var graphicsConfig = OpenGLGraphicsConfiguration.Default;
-//            graphicsConfig.MultiSampleBuffers = 1;
-  //          graphicsConfig.MultiSampleSamples = 8;
-            graphicsConfig.SrgbBuffersEnabled = true;
-            graphicsConfig.SrgbDefaultForTexture2D = true;
+            graphicsConfig.MultiSampleBuffers = 1;
+            graphicsConfig.MultiSampleSamples = 8;
+            graphicsConfig.SrgbBuffersEnabled = false;
+            graphicsConfig.SrgbDefaultForTexture2D = false;
 
             var contextConfig = new UltravioletConfiguration();
             contextConfig.SupportsHighDensityDisplayModes = true;
@@ -217,6 +217,7 @@ namespace UvDebug
         /// </summary>
         protected void LoadTestGeometry()
         {
+            /*
             vertexBuffer = VertexBuffer.Create<VertexPositionColorTexture>(5);
             vertexBuffer.SetData(new VertexPositionColorTexture[]
             {
@@ -226,15 +227,69 @@ namespace UvDebug
                 new VertexPositionColorTexture { Position = new Vector3(-1f,   0f,  1f), Color = Color.Yellow },
                 new VertexPositionColorTexture { Position = new Vector3( 0f, 1.5f,  0f), Color = Color.Magenta, TextureCoordinate = new Vector2(0, 0) },
             });
+            */
 
-            indexBuffer = IndexBuffer.Create(IndexBufferElementType.Int16, 18);
-            indexBuffer.SetData(new Int16[] { 2, 1, 0, 0, 3, 2, 0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4 });
+            vertexBuffer = VertexBuffer.Create<VertexPositionNormalTexture>(36);
+            vertexBuffer.SetData(new VertexPositionNormalTexture[]
+            {
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f,  1f), Normal = new Vector3(0, -1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f, -1f), Normal = new Vector3(0, -1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f, -1f), Normal = new Vector3(0, -1f, 0) },
+
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f, -1f), Normal = new Vector3(0, -1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f,  1f), Normal = new Vector3(0, -1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f,  1f), Normal = new Vector3(0, -1f, 0) },
+
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f, -1f), Normal = new Vector3(0, 0f, -1f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f, -1f), Normal = new Vector3(0, 0f, -1f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f, -1f), Normal = new Vector3(0, 0f, -1f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f, -1f), Normal = new Vector3(0, 0f, -1f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f, -1f), Normal = new Vector3(0, 0f, -1f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f, -1f), Normal = new Vector3(0, 0f, -1f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f, -1f), Normal = new Vector3(1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f,  1f), Normal = new Vector3(1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f, -1f), Normal = new Vector3(1f, 0f, 0f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f,  1f), Normal = new Vector3(1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f,  1f), Normal = new Vector3(1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f, -1f), Normal = new Vector3(1f, 0f, 0f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f,  1f), Normal = new Vector3(0, 0f, 1f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f,  1f), Normal = new Vector3(0, 0f, 1f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f,  1f), Normal = new Vector3(0, 0f, 1f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f,  1f), Normal = new Vector3(0, 0f, 1f) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 0f,  1f), Normal = new Vector3(0, 0f, 1f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f,  1f), Normal = new Vector3(0, 0f, 1f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f, -1f), Normal = new Vector3(-1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f,  1f), Normal = new Vector3(-1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f, -1f), Normal = new Vector3(-1f, 0f, 0f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f, -1f), Normal = new Vector3(-1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f,  1f), Normal = new Vector3(-1f, 0f, 0f) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 0f,  1f), Normal = new Vector3(-1f, 0f, 0f) },
+
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f, -1f), Normal = new Vector3(0, 1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f, -1f), Normal = new Vector3(0, 1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f,  1f), Normal = new Vector3(0, 1f, 0) },
+
+                new VertexPositionNormalTexture { Position = new Vector3( 1f, 2f,  1f), Normal = new Vector3(0, 1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f,  1f), Normal = new Vector3(0, 1f, 0) },
+                new VertexPositionNormalTexture { Position = new Vector3(-1f, 2f, -1f), Normal = new Vector3(0, 1f, 0) },
+            });
+
+            //indexBuffer = IndexBuffer.Create(IndexBufferElementType.Int16, 18);
+            //indexBuffer.SetData(new Int16[] { 2, 1, 0, 0, 3, 2, 0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4 });
 
             geometryStream = GeometryStream.Create();
             geometryStream.Attach(vertexBuffer);
-            geometryStream.Attach(indexBuffer);
+            //geometryStream.Attach(indexBuffer);
 
             effect = BasicEffect.Create();
+            effect.EnableStandardLighting();
 
             rasterizerStateSolid = RasterizerState.Create();
             rasterizerStateSolid.CullMode = CullMode.CullCounterClockwiseFace;
@@ -271,7 +326,7 @@ namespace UvDebug
             var aspectRatio = window.DrawableSize.Width / (Single)window.DrawableSize.Height;
 
             effect.World = Matrix.CreateRotationY((float)(2.0 * Math.PI * (time.TotalTime.TotalSeconds / 10.0)));
-            effect.View = Matrix.CreateLookAt(new Vector3(0, 2, 6), new Vector3(0, 0.75f, 0), Vector3.Up);
+            effect.View = Matrix.CreateLookAt(new Vector3(0, 3, 6), new Vector3(0, 0.75f, 0), Vector3.Up);
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
 
             gfx.SetGeometryStream(geometryStream);
@@ -284,16 +339,14 @@ namespace UvDebug
 
                     gfx.SetRasterizerState(rasterizerState);
                     gfx.SetDepthStencilState(depthStencilState);
-                    gfx.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 6);
+                    gfx.DrawPrimitives(PrimitiveType.TriangleList, 0, vertexBuffer.VertexCount / 3);
+                    //gfx.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, indexBuffer.IndexCount / 3);
                 }
             }
 
-            effect.SrgbColor = true;
-            effect.FogEnabled = false;
-            effect.FogStart = 5f;
-            effect.FogEnd = 6f;
-            effect.FogColor = Color.CornflowerBlue;
-            effect.VertexColorEnabled = true;
+            effect.LightingEnabled = true;
+            effect.SrgbColor = false;
+            effect.VertexColorEnabled = false;
             effect.DiffuseColor = Color.White;
             effect.TextureEnabled = false;
             effect.Texture = texture;
@@ -301,6 +354,7 @@ namespace UvDebug
 
             if (!gl.IsGLES)
             {
+                effect.LightingEnabled = false;
                 effect.FogEnabled = false;
                 effect.VertexColorEnabled = false;
                 effect.DiffuseColor = Color.Black;

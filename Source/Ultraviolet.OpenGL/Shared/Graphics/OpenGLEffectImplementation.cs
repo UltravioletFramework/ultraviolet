@@ -105,6 +105,14 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             var paramlist = new Dictionary<String, OpenGLEffectParameter>();
 
+
+            var uniforms1 =
+                from tech in techniques
+                from pass in tech.Passes
+                from prog in ((OpenGLEffectPass)pass).Programs
+                from unif in prog.Uniforms
+                select unif.Name;
+
             var uniforms =
                 from tech in techniques
                 from pass in tech.Passes

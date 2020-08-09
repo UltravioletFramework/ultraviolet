@@ -48,7 +48,7 @@ namespace Ultraviolet.Graphics
         {
             if ((dirtyFlags & DirtyFlags.Direction) == DirtyFlags.Direction)
             {
-                epDirection?.SetValue(direction);
+                epDirection?.SetValue(Vector3.Normalize(direction));
             }
 
             if (enabled)

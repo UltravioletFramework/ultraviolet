@@ -12,7 +12,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents a basic rendering effect.
     /// </summary>
-    public abstract partial class BasicEffect : Effect, 
+    public abstract partial class BasicEffect : Effect,
         IEffectMatrices, IEffectFog, IEffectLights, IEffectTexture
     {
         /// <summary>
@@ -22,51 +22,17 @@ namespace Ultraviolet.Graphics
         protected BasicEffect(EffectImplementation impl)
             : base(impl)
         {
-            // General parameters
-            this.epSrgbColor = Parameters["SrgbColor"];
-            this.epPreferPerPixelLighting = Parameters["PreferPerPixelLighting"];
-
-            // Vertex color parameters
-            this.epVertexColorEnabled = Parameters["VertexColorEnabled"];
-            this.epAlpha = Parameters["Alpha"];
-            this.epDiffuseColor = Parameters["DiffuseColor"];
-            this.epEmissiveColor = Parameters["EmissiveColor"];
-            this.epSpecularColor = Parameters["SpecularColor"];
-            this.epSpecularPower = Parameters["SpecularPower"];
-
-            // Fog parameters
-            this.epFogEnabled = Parameters["FogEnabled"];
-            this.epFogColor = Parameters["FogColor"];
-            this.epFogStart = Parameters["FogStart"];
-            this.epFogEnd = Parameters["FogEnd"];
-
-            // Matrix parameters
-            this.epWorld = Parameters["World"];
-            this.epView = Parameters["View"];
-            this.epProjection = Parameters["Projection"];
-            this.epWorldViewProj = Parameters["WorldViewProj"];
-            this.epEyePosition = Parameters["EyePosition"];
-
-            // Texture parameters
-            this.epTextureEnabled = Parameters["TextureEnabled"];
-            this.epTexture = Parameters["Texture"];
-
-            // Lighting parameters
-            this.epLightingEnabled = Parameters["LightingEnabled"];
-            this.epAmbientLightColor = Parameters["AmbientLightColor"];
-            this.DirectionalLight0 = new DirectionalLight(
-                Parameters["DirLight0Direction"], 
-                Parameters["DirLight0DiffuseColor"], 
-                Parameters["DirLight0SpecularColor"]);
-            this.DirectionalLight1 = new DirectionalLight(
-                Parameters["DirLight1Direction"],
-                Parameters["DirLight1DiffuseColor"],
-                Parameters["DirLight1SpecularColor"]);
-            this.DirectionalLight2 = new DirectionalLight(
-                Parameters["DirLight2Direction"],
-                Parameters["DirLight2DiffuseColor"],
-                Parameters["DirLight2SpecularColor"]);
+            DirectionalLight0 = CreateDirectionalLight(0);
+            DirectionalLight1 = CreateDirectionalLight(1);
+            DirectionalLight2 = CreateDirectionalLight(2);
         }
+
+        /// <summary>
+        /// Creates the directional light with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the directional light to create.</param>
+        /// <returns>The directional light which was created.</returns>
+        protected abstract DirectionalLight CreateDirectionalLight(Int32 index);
 
         /// <summary>
         /// Creates a new instance of the <see cref="BasicEffect"/> class.
@@ -118,10 +84,15 @@ namespace Ultraviolet.Graphics
                 this.DirectionalLight0.SrgbColor = value;
                 this.DirectionalLight1.SrgbColor = value;
                 this.DirectionalLight2.SrgbColor = value;
-
-                dirtyFlags |= DirtyFlags.SrgbColor | DirtyFlags.DiffuseColor | DirtyFlags.EmissiveColor | DirtyFlags.SpecularColor | DirtyFlags.FogColor | DirtyFlags.AmbientLightColor;
+                OnSrgbColorSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="SrgbColor"/> property is set.
+        /// </summary>
+        protected virtual void OnSrgbColorSet() { }
+        private Boolean srgbColor;
 
         /// <summary>
         /// Gets or sets a value indicating whether the effect should prefer per-pixel lighting
@@ -133,9 +104,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 preferPerPixelLighting = value;
-                dirtyFlags |= DirtyFlags.PreferPerPixelLighting;
+                OnPreferPerPixelLightingSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="PreferPerPixelLighting"/> property is set.
+        /// </summary>
+        protected virtual void OnPreferPerPixelLightingSet() { }
+        private Boolean preferPerPixelLighting;
 
         /// <summary>
         /// Gets or sets a value indicating whether textures are enabled for this effect.
@@ -146,9 +123,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 textureEnabled = value;
-                dirtyFlags |= DirtyFlags.TextureEnabled;
+                OnTextureEnabledSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="TextureEnabled"/> property is set.
+        /// </summary>
+        protected virtual void OnTextureEnabledSet() { }
+        private Boolean textureEnabled;
 
         /// <summary>
         /// Gets or sets a value indicating whether vertex colors are enabled for this effect.
@@ -159,9 +142,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 vertexColorEnabled = value;
-                dirtyFlags |= DirtyFlags.VertexColorEnabled;
+                OnVertexColorEnabledSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="VertexColorEnabled"/> property is set.
+        /// </summary>
+        protected virtual void OnVertexColorEnabledSet() { }
+        private Boolean vertexColorEnabled;
 
         /// <summary>
         /// Gets or sets the material alpha, which determines its transparency. Range is between 1.0f (fully opaque) and 0.0f (fully transparent).
@@ -172,9 +161,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 alpha = value;
-                dirtyFlags |= DirtyFlags.Alpha;
+                OnAlphaSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="Alpha"/> property is set.
+        /// </summary>
+        protected virtual void OnAlphaSet() { }
+        private Single alpha = 1.0f;
 
         /// <summary>
         /// Gets or sets the material's diffuse color.
@@ -185,9 +180,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 diffuseColor = value;
-                dirtyFlags |= DirtyFlags.DiffuseColor;
+                OnDiffuseColorSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="DiffuseColor"/> property is set.
+        /// </summary>
+        protected virtual void OnDiffuseColorSet() { }
+        private Color diffuseColor = Color.White;
 
         /// <summary>
         /// Gets or sets the material's emissive color.
@@ -198,9 +199,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 emissiveColor = value;
-                dirtyFlags |= DirtyFlags.EmissiveColor;
+                OnEmissiveColorSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="EmissiveColor"/> property is set.
+        /// </summary>
+        protected virtual void OnEmissiveColorSet() { }
+        private Color emissiveColor;
 
         /// <summary>
         /// Gets or sets the material's specular color.
@@ -211,9 +218,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 specularColor = value;
-                dirtyFlags |= DirtyFlags.SpecularColor;
+                OnSpecularColorSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="SpecularColor"/> property is set.
+        /// </summary>
+        protected virtual void OnSpecularColorSet() { }
+        private Color specularColor = Color.White;
 
         /// <summary>
         /// Gets or sets the material's specular power.
@@ -224,9 +237,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 specularPower = value;
-                dirtyFlags |= DirtyFlags.SpecularPower;
+                OnSpecularPowerSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="SpecularPower"/> property is set.
+        /// </summary>
+        protected virtual void OnSpecularPowerSet() { }
+        private Single specularPower = 16.0f;
 
         /// <inheritdoc/>
         public Matrix World
@@ -235,9 +254,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 world = value;
-                dirtyFlags |= DirtyFlags.World | DirtyFlags.Matrices;
+                OnWorldSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="World"/> property is set.
+        /// </summary>
+        protected virtual void OnWorldSet() { }
+        private Matrix world;
 
         /// <inheritdoc/>
         public Matrix View
@@ -246,9 +271,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 view = value;
-                dirtyFlags |= DirtyFlags.View | DirtyFlags.Matrices;
+                OnViewSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="View"/> property is set.
+        /// </summary>
+        protected virtual void OnViewSet() { }
+        private Matrix view;
 
         /// <inheritdoc/>
         public Matrix Projection
@@ -257,9 +288,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 projection = value;
-                dirtyFlags |= DirtyFlags.Projection | DirtyFlags.Matrices;
+                OnProjectionSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="Projection"/> property is set.
+        /// </summary>
+        protected virtual void OnProjectionSet() { }
+        private Matrix projection;
 
         /// <inheritdoc/>
         public Boolean LightingEnabled
@@ -268,9 +305,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 lightingEnabled = value;
-                dirtyFlags |= DirtyFlags.LightingEnabled;
+                OnLightingEnabledSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="LightingEnabled"/> property is set.
+        /// </summary>
+        protected virtual void OnLightingEnabledSet() { }
+        private Boolean lightingEnabled;
 
         /// <inheritdoc/>
         public Color AmbientLightColor
@@ -279,9 +322,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 ambientLightColor = value;
-                dirtyFlags |= DirtyFlags.AmbientLightColor;
+                OnAmbientLightColorSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="AmbientLightColor"/> property is set.
+        /// </summary>
+        protected virtual void OnAmbientLightColorSet() { }
+        private Color ambientLightColor;
 
         /// <inheritdoc/>
         public DirectionalLight DirectionalLight0 { get; }
@@ -299,9 +348,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 fogEnabled = value;
-                dirtyFlags |= DirtyFlags.FogEnabled;
+                OnFogEnabledSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="FogEnabled"/> property is set.
+        /// </summary>
+        protected virtual void OnFogEnabledSet() { }
+        private Boolean fogEnabled;
 
         /// <inheritdoc/>
         public Color FogColor
@@ -310,9 +365,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 fogColor = value;
-                dirtyFlags |= DirtyFlags.FogColor;
+                OnFogColorSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="FogColor"/> property is set.
+        /// </summary>
+        protected virtual void OnFogColorSet() { }
+        private Color fogColor;
 
         /// <inheritdoc/>
         public Single FogStart
@@ -321,9 +382,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 fogStart = value;
-                dirtyFlags |= DirtyFlags.FogStart;
+                OnFogStartSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="FogStart"/> property is set.
+        /// </summary>
+        protected virtual void OnFogStartSet() { }
+        private Single fogStart;
 
         /// <inheritdoc/>
         public Single FogEnd
@@ -332,9 +399,15 @@ namespace Ultraviolet.Graphics
             set
             {
                 fogEnd = value;
-                dirtyFlags |= DirtyFlags.FogEnd;
+                OnFogEndSet();
             }
         }
+
+        /// <summary>
+        /// Called when the value of the <see cref="FogEnd"/> property is set.
+        /// </summary>
+        protected virtual void OnFogEndSet() { }
+        private Single fogEnd;
 
         /// <inheritdoc/>
         public Texture2D Texture
@@ -343,222 +416,14 @@ namespace Ultraviolet.Graphics
             set
             {
                 texture = value;
-                dirtyFlags |= DirtyFlags.Texture;
+                OnTextureSet();
             }
         }
 
-        /// <inheritdoc/>
-        protected internal override void OnApply()
-        {
-            // General parameters
-            if ((dirtyFlags & DirtyFlags.SrgbColor) == DirtyFlags.SrgbColor)
-            {
-                epSrgbColor?.SetValue(srgbColor);
-            }
-            if ((dirtyFlags & DirtyFlags.PreferPerPixelLighting) == DirtyFlags.PreferPerPixelLighting)
-            {
-                epPreferPerPixelLighting?.SetValue(preferPerPixelLighting);
-            }
-
-            // Vertex color parameters.
-            if ((dirtyFlags & DirtyFlags.VertexColorEnabled) == DirtyFlags.VertexColorEnabled)
-            {
-                epVertexColorEnabled?.SetValue(vertexColorEnabled);
-            }
-
-            if ((dirtyFlags & DirtyFlags.Alpha) == DirtyFlags.Alpha)
-            {
-                epAlpha?.SetValue(alpha);
-            }
-
-            if ((dirtyFlags & DirtyFlags.DiffuseColor) == DirtyFlags.DiffuseColor)
-            {
-                if (epDiffuseColor != null)
-                {
-                    var diffuseColorPremul = diffuseColor * alpha;
-                    var diffuseColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(diffuseColorPremul) : diffuseColorPremul;
-                    epDiffuseColor.SetValue(diffuseColorSrgb);
-                }
-            }
-
-            if ((dirtyFlags & DirtyFlags.EmissiveColor) == DirtyFlags.EmissiveColor)
-            {
-                if (epEmissiveColor != null)
-                {
-                    var emissiveColorPremul = emissiveColor * alpha;
-                    var emissiveColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(emissiveColorPremul) : emissiveColorPremul;
-                    epEmissiveColor.SetValue(emissiveColorSrgb);
-                }
-            }
-
-            if ((dirtyFlags & DirtyFlags.SpecularColor) == DirtyFlags.SpecularColor)
-            {
-                if (epSpecularColor != null)
-                {
-                    var specularColorPremul = specularColor * alpha;
-                    var specularColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(specularColorPremul) : specularColorPremul;
-                    epSpecularColor.SetValue(specularColorSrgb);
-                }
-            }
-
-            if ((dirtyFlags & DirtyFlags.SpecularPower) == DirtyFlags.SpecularPower)
-            {
-                epSpecularPower?.SetValue(specularPower);
-            }
-
-            // Fog parameters
-            if ((dirtyFlags & DirtyFlags.FogEnabled) == DirtyFlags.FogEnabled)
-            {
-                epFogEnabled?.SetValue(fogEnabled);
-            }
-
-            if ((dirtyFlags & DirtyFlags.FogColor) == DirtyFlags.FogColor)
-            {
-                var fogColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(fogColor) : fogColor;
-                epFogColor?.SetValue(fogColorSrgb);
-            }
-
-            if ((dirtyFlags & DirtyFlags.FogStart) == DirtyFlags.FogStart)
-            {
-                epFogStart?.SetValue(fogStart);
-            }
-
-            if ((dirtyFlags & DirtyFlags.FogEnd) == DirtyFlags.FogEnd)
-            {
-                epFogEnd?.SetValue(fogEnd);
-            }
-
-            // Matrix parameters
-            if ((dirtyFlags & DirtyFlags.World) == DirtyFlags.World)
-            {
-                epWorld?.SetValue(world);
-            }
-
-            if ((dirtyFlags & DirtyFlags.View) == DirtyFlags.View)
-            {
-                epView?.SetValue(view);
-            }
-
-            if ((dirtyFlags & DirtyFlags.Projection) == DirtyFlags.Projection)
-            {
-                epProjection?.SetValue(projection);
-            }
-
-            if ((dirtyFlags & DirtyFlags.Matrices) == DirtyFlags.Matrices)
-            {
-                if (epWorldViewProj != null)
-                {
-                    var worldViewProj = Matrix.Identity;
-                    Matrix.Multiply(ref worldViewProj, ref world, out worldViewProj);
-                    Matrix.Multiply(ref worldViewProj, ref view, out worldViewProj);
-                    Matrix.Multiply(ref worldViewProj, ref projection, out worldViewProj);
-                    epWorldViewProj.SetValue(worldViewProj);
-                }
-
-                if (epEyePosition != null)
-                {
-                    var invertedViewMatrix = Matrix.Invert(View);
-                    epEyePosition.SetValue(invertedViewMatrix.Translation);
-                }
-            }
-
-            // Texture parameters
-            if ((dirtyFlags & DirtyFlags.TextureEnabled) == DirtyFlags.TextureEnabled)
-            {
-                epTextureEnabled?.SetValue(textureEnabled);
-            }
-
-            if ((dirtyFlags & DirtyFlags.Texture) == DirtyFlags.Texture)
-            {
-                epTexture?.SetValue(texture);
-            }
-
-            // Lighting parameters
-            if ((dirtyFlags & DirtyFlags.LightingEnabled) == DirtyFlags.LightingEnabled)
-            {
-                epLightingEnabled?.SetValue(lightingEnabled);
-            }
-
-            if ((dirtyFlags & DirtyFlags.AmbientLightColor) == DirtyFlags.AmbientLightColor)
-            {
-                var ambientLightColorSrgb = srgbColor ? Color.ConvertSrgbColorToLinear(ambientLightColor) : diffuseColor;
-                epAmbientLightColor?.SetValue(ambientLightColorSrgb);
-            }
-
-            DirectionalLight0.Apply();
-            DirectionalLight1.Apply();
-            DirectionalLight2.Apply();
-
-            dirtyFlags = DirtyFlags.None;
-
-            base.OnApply();
-        }
-
-        // General parameters.
-        private readonly EffectParameter epSrgbColor;
-        private readonly EffectParameter epPreferPerPixelLighting;
-
-        // General parameter values.
-        private Boolean srgbColor;
-        private Boolean preferPerPixelLighting;
-
-        // Vertex color parameters.
-        private readonly EffectParameter epVertexColorEnabled;
-        private readonly EffectParameter epAlpha;
-        private readonly EffectParameter epDiffuseColor;
-        private readonly EffectParameter epEmissiveColor;
-        private readonly EffectParameter epSpecularColor;
-        private readonly EffectParameter epSpecularPower;
-
-        // Vertex color parameter values.
-        private Boolean vertexColorEnabled;
-        private Single alpha = 1.0f;
-        private Color diffuseColor = Color.White;
-        private Color emissiveColor;
-        private Color specularColor = Color.White;
-        private Single specularPower = 16f;
-
-        // Fog parameters.
-        private readonly EffectParameter epFogEnabled;
-        private readonly EffectParameter epFogColor;
-        private readonly EffectParameter epFogStart;
-        private readonly EffectParameter epFogEnd;
-
-        // Fog parameter values.
-        private Boolean fogEnabled;
-        private Color fogColor;
-        private Single fogStart;
-        private Single fogEnd;
-
-        // Matrix parameters.
-        private readonly EffectParameter epWorld;
-        private readonly EffectParameter epView;
-        private readonly EffectParameter epProjection;
-        private readonly EffectParameter epWorldViewProj;
-        private readonly EffectParameter epEyePosition;
-
-        // Matrix parameter values.
-        private Matrix world;
-        private Matrix view;
-        private Matrix projection;
-
-        // Texture parameters.
-        private readonly EffectParameter epTextureEnabled;
-        private readonly EffectParameter epTexture;
-
-        // Texture parameter values.
-        private Boolean textureEnabled;
+        /// <summary>
+        /// Called when the value of the <see cref="Texture"/> property is set.
+        /// </summary>
+        protected virtual void OnTextureSet() { }
         private Texture2D texture;
-
-        // Lighting parameters.
-        private readonly EffectParameter epLightingEnabled;
-        private readonly EffectParameter epAmbientLightColor;
-
-        // Lighting parameter values.
-        private Boolean lightingEnabled;
-        private Color ambientLightColor;
-
-        // Dirty flag tracking.
-        private DirtyFlags dirtyFlags = DirtyFlags.Alpha | DirtyFlags.DiffuseColor | DirtyFlags.SpecularColor | DirtyFlags.SpecularPower;
     }
 }

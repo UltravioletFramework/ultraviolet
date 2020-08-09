@@ -314,6 +314,14 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override void SetValueRef(ref Matrix value)
+        {
+            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+
+            data.SetRef(ref value);
+        }
+
+        /// <inheritdoc/>
         public override Matrix[] GetValueMatrixArray()
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);

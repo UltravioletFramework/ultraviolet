@@ -52,7 +52,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\PassthroughContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffect.DirtyFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DirectionalLight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DirectionalLight.DirtyFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DummySwapChainManager.cs" />

@@ -248,7 +248,13 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="value">The value to set.</param>
         public abstract void SetValue(Matrix value);
-        
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public abstract void SetValueRef(ref Matrix value);
+
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Matrix"/>.
         /// </summary>

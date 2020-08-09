@@ -298,6 +298,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Sets a value into the buffer.
         /// </summary>
         /// <param name="value">The value to set.</param>
+        public void SetRef(ref Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Matrix || *(Matrix*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Matrix;
+                    Version++;
+
+                    *((Matrix*)pValData) = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
         public void Set(Matrix[] value)
         {
             DataType = OpenGLEffectParameterDataType.MatrixArray;

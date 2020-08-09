@@ -23,6 +23,11 @@ precision mediump int;
 
 #define in attribute
 #define out varying
-#define texture texture2D
+#define SAMPLE_TEXTURE2D texture2D
+
+#else
+
+#define SAMPLE_TEXTURE2D texture
 
 #endif
+
