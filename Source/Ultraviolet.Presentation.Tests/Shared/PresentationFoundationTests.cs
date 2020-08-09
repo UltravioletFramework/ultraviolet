@@ -53,7 +53,7 @@ namespace Ultraviolet.Presentation.Tests
         {
             var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithRenderTransform(content));
 
-            TheResultingImage(result).WithinThreshold(0.01f)
+            TheResultingImage(result).WithinPercentageThreshold(0.01f)
                 .ShouldMatch(@"Resources/Expected/UPF_UIElement_DrawsCorrectly_WithRenderTransform.png");
         }
 

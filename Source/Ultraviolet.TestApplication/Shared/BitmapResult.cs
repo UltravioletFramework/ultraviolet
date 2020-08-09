@@ -13,23 +13,43 @@ namespace Ultraviolet.TestApplication
     public sealed class BitmapResult
     {
         /// <summary>
+        /// Represents the type of threshold that is used to compare bitmap results to expected images.
+        /// </summary>
+        private enum BitmapResultThresholdType { Percentage, Count };
+
+        /// <summary>
         /// Initializes a new instance of the BitmapResult class.
         /// </summary>
         /// <param name="bitmap">The bitmap being examined.</param>
         internal BitmapResult(Bitmap bitmap)
         {
-            this.bitmap = bitmap;
+            this.Bitmap = bitmap;
         }
 
         /// <summary>
-        /// Specifies that subsequent comparisons should have the specified threshold value.
-        /// The threshold value is the percentage of pixels which must match the expected image
-        /// in order for the images to be considered a match.
+        /// Specifies that subsequent comparisons should have the specified percentage threshold value.
+        /// The threshold value is the percentage of pixels which must differ from the expected image
+        /// in order for the images to be considered not a match.
         /// </summary>
         /// <param name="threshold">The threshold value to set.</param>
         /// <returns>The result object.</returns>
-        public BitmapResult WithinThreshold(Single threshold)
+        public BitmapResult WithinPercentageThreshold(Single threshold)
         {
+            this.thresholdType = BitmapResultThresholdType.Percentage;
+            this.threshold = threshold;
+            return this;
+        }
+
+        /// <summary>
+        /// Specifies the subsequent comparisons should have the specified absolute threshold value.
+        /// The threshold value is the number of pixels which must differ from the expected image
+        /// in order for the images to be considered not a match.
+        /// </summary>
+        /// <param name="threshold">The threshold value to set.</param>
+        /// <returns>The result object.</returns>
+        public BitmapResult WithinAbsoluteThreshold(Int32 threshold)
+        {
+            this.thresholdType = BitmapResultThresholdType.Count;
             this.threshold = threshold;
             return this;
         }
@@ -51,15 +71,16 @@ namespace Ultraviolet.TestApplication
             SaveBitmap(expected, Path.Combine(machineName, filenameExpected));
 
             var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
-            SaveBitmap(bitmap, Path.Combine(machineName, filenameActual));
+            SaveBitmap(Bitmap, Path.Combine(machineName, filenameActual));
 
-            if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
+            if (expected.Width != Bitmap.Width || expected.Height != Bitmap.Height)
             {
                 Assert.Fail("Images do not match due to differing dimensions");
             }
 
             var mismatchesFound    = 0;
-            var mismatchesRequired = (Int32)((bitmap.Width * bitmap.Height) * threshold);
+            var mismatchesRequired = (thresholdType == BitmapResultThresholdType.Percentage) ?
+                (Int32)((Bitmap.Width * Bitmap.Height) * threshold) : (Int32)threshold;
 
             using (var diff = new Bitmap(expected.Width, expected.Height))
             {
@@ -71,7 +92,7 @@ namespace Ultraviolet.TestApplication
                     for (int x = 0; x < expected.Width; x++)
                     {
                         var pixelExpected = expected.GetPixel(x, y);
-                        var pixelActual   = bitmap.GetPixel(x, y);
+                        var pixelActual   = Bitmap.GetPixel(x, y);
 
                         var diffR = Math.Abs(pixelExpected.R + pixelActual.R - 2 * Math.Min(pixelExpected.R, pixelActual.R));
                         var diffG = Math.Abs(pixelExpected.G + pixelActual.G - 2 * Math.Min(pixelExpected.G, pixelActual.G));
@@ -99,10 +120,7 @@ namespace Ultraviolet.TestApplication
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public Bitmap Bitmap
-        {
-            get { return bitmap; }
-        }
+        public Bitmap Bitmap { get; }
 
         /// <summary>
         /// Saves a bitmap to thhe specified file.
@@ -117,8 +135,8 @@ namespace Ultraviolet.TestApplication
             }
         }
 
-        // State values.
-        private readonly Bitmap bitmap;
+        // Image comparison threshold.
+        private BitmapResultThresholdType thresholdType = BitmapResultThresholdType.Percentage;
         private Single threshold = 0.0f;
     }
 }
