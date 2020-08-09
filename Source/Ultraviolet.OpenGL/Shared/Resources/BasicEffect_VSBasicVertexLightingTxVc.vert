@@ -16,5 +16,5 @@ void main()
 	SetCommonVSOutputParams;
 	
 	vTexCoord = FlipTextureCoordinates(uv_TextureCoordinate0);
-	vDiffuse = vec4(1, 0, 0, 1);//ConvertColor(uv_Color0);
+	vDiffuse = ConvertColor(uv_Color0);
 }
