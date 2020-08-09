@@ -212,7 +212,7 @@ namespace Ultraviolet.Tests.Graphics
                     DrawGeometry(gfx, effect, rasterizerStateWireframe, DepthStencilState.None, vbuffer.VertexCount / 3);
                 });
 
-            TheResultingImage(result).WithinAbsoluteThreshold(10)
+            TheResultingImage(result).WithinAbsoluteThreshold(32)
                 .ShouldMatch($@"Resources/Expected/Graphics/BasicEffect_RendersACubeCorrectly({parameters}).png");
         }
     }
