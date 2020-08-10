@@ -199,7 +199,11 @@ namespace Ultraviolet.Tests.Graphics
                 .Render(uv =>
                 {
                     var gfx = uv.GetGraphics();
-                    var viewport = gfx.GetViewport();
+                    var rtarget = gfx.GetRenderTarget();
+
+                    // NOTE: AMD hack
+                    var viewport = new Viewport(0, 0, rtarget.Width, rtarget.Height);
+                    gfx.SetViewport(viewport);
 
                     var matrixTransform = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
                     effect.Parameters["MatrixTransform"].SetValue(matrixTransform);
