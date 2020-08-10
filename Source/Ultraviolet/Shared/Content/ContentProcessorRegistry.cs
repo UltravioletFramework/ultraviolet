@@ -169,15 +169,11 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Unregisters a content processor.
         /// </summary>
-        /// <typeparam name="T">The type of content processor to unregister.</typeparam>
-        public void UnregisterProcessor<T>() where T : IContentProcessor
+        /// <typeparam name="TInput">The input type of the processor to unregister.</typeparam>
+        /// <typeparam name="TOutput">The output type of the processor to unregister.</typeparam>
+        public void UnregisterProcessor<TInput, TOutput>()
         {
-            var baseProcessorType = GetBaseContentProcessorType(typeof(T));
-            if (baseProcessorType == null)
-                throw new InvalidOperationException(UltravioletStrings.ProcessorInvalidBaseClass.Format(typeof(T).FullName));
-
-            var args = baseProcessorType.GetGenericArguments();
-            var key = new RegistryKey(args[0], args[1]);
+            var key = new RegistryKey(typeof(TInput), typeof(TOutput));
 
             registeredProcessors.Remove(key);
         }

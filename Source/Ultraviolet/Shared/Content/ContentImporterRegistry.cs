@@ -113,11 +113,10 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
-        /// Unregisters a content importer from the specified file extension.
+        /// Unregisters the content importer for the specified file extension.
         /// </summary>
-        /// <typeparam name="T">The type of content importer to unregister.</typeparam>
-        /// <param name="extension">The file extension from which to unregister the importer.</param>
-        public void UnregisterImporter<T>(String extension) where T : IContentImporter
+        /// <param name="extension">The file extension for which to unregister an importer.</param>
+        public void UnregisterImporter(String extension)
         {
             Contract.RequireNotEmpty(extension, nameof(extension));
 
