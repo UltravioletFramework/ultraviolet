@@ -52,6 +52,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\PassthroughContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DirectionalLight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DirectionalLight.DirtyFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DummySwapChainManager.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererStyleManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectLights.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectFog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
