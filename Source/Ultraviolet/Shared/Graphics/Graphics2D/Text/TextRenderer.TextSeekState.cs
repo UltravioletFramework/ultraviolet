@@ -25,6 +25,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             public Int32 LineOffsetY;
 
             /// <summary>
+            /// Gets the vertical position of the line, including any block offset.
+            /// </summary>
+            public Int32 LinePositionY;
+
+            /// <summary>
             /// Gets the width ofthe line being searched in pixels.
             /// </summary>
             public Int32 LineWidth;

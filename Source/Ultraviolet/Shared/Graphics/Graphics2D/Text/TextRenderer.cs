@@ -727,10 +727,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             input.Seek(0);
 
-            drawState.BlockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
-
-            input.SeekNextCommand();
-
+            ProcessBlockInfo(input, out var blockOffset);
+            drawState.BlockOffset = blockOffset;
+            
             // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
             // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             if (!input.HasMultipleFontStyles)
@@ -745,7 +744,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 switch (cmdType)
                 {
                     case TextLayoutCommandType.LineInfo:
-                        GetGlyphBounds_LineInfo(input, ref seekState);
+                        GetGlyphBounds_LineInfo(input, blockOffset, ref seekState);
                         break;
 
                     case TextLayoutCommandType.Text:
@@ -804,9 +803,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Processes LineInfo commands for GetGlyphBounds().
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void GetGlyphBounds_LineInfo(TextLayoutCommandStream input, ref TextSeekState seekState)
+        private void GetGlyphBounds_LineInfo(TextLayoutCommandStream input, Int32 blockOffset, ref TextSeekState seekState)
         {
-            ProcessLineInfo(input, ref seekState);
+            ProcessLineInfo(input, blockOffset, ref seekState);
         }
 
         /// <summary>
@@ -1242,7 +1241,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var direction = settings.Direction;
 
             var availableHeight = settings.Height ?? Int32.MaxValue;
-            var blockOffset = 0;
             var seekState = new TextSeekState { LineIndex = -1 };
 
             var glyphsSeen = 0;
@@ -1258,6 +1256,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             input.Seek(0);
 
+            ProcessBlockInfo(input, out var blockOffset);
+
             while (input.StreamPositionInObjects < input.Count)
             {
                 if (glyphsSeen > glyphsMax)
@@ -1266,14 +1266,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var cmdType = *(TextLayoutCommandType*)input.Data;
                 switch (cmdType)
                 {
-                    case TextLayoutCommandType.BlockInfo:
-                        ProcessBlockInfo(input, out blockOffset);
-                        break;
-
                     case TextLayoutCommandType.LineInfo:
                         {
-                            ProcessLineInfo(input, ref seekState);
-                            if (blockOffset + seekState.LineOffsetY + seekState.LineHeight > availableHeight)
+                            ProcessLineInfo(input, blockOffset, ref seekState);
+                            if (seekState.LinePositionY + seekState.LineHeight > availableHeight)
                             {
                                 input.SeekEnd();
                             }
@@ -1786,20 +1782,28 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private void ProcessBlockInfo(TextLayoutCommandStream input, out Int32 offset)
         {
-            var cmd = (TextLayoutBlockInfoCommand*)input.Data;
-            offset = cmd->Offset;
-            input.SeekNextCommand();
+            if (*(TextLayoutCommandType*)input.Data == TextLayoutCommandType.BlockInfo)
+            {
+                var cmd = (TextLayoutBlockInfoCommand*)input.Data;
+                offset = cmd->Offset;
+                input.SeekNextCommand();
+            }
+            else
+            {
+                offset = 0;
+            }
         }
 
         /// <summary>
         /// Processes a <see cref="TextLayoutCommandType.LineInfo"/> command.
         /// </summary>
-        private void ProcessLineInfo(TextLayoutCommandStream input, ref TextSeekState state)
+        private void ProcessLineInfo(TextLayoutCommandStream input, Int32 blockOffset, ref TextSeekState state)
         {
             var cmd = (TextLayoutLineInfoCommand*)input.Data;
             state.LineIndex++;
             state.LineOffsetX = cmd->Offset;
             state.LineOffsetY = state.LineOffsetY + state.LineHeight;
+            state.LinePositionY = state.LineOffsetY + blockOffset;
             state.LineWidth = cmd->LineWidth;
             state.LineHeight = cmd->LineHeight;
             state.LineLengthInCommands = cmd->LengthInCommands;
@@ -1811,7 +1815,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Moves the specified command stream forward to the beginning of the line that contains the specified coordinates.
         /// </summary>
-        private void SkipToLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, ref TextSeekState state)
+        private void SkipToLineAtPosition(TextLayoutCommandStream input, Int32 blockOffset, Int32 x, Int32 y, ref TextSeekState state)
         {
             do
             {
@@ -1830,7 +1834,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 state.LineStartInGlyphs = state.NumberOfGlyphsSeen;
                 state.TerminatingLineBreakLength = cmd->TerminatingLineBreakSourceLength;
 
-                if (y >= state.LineOffsetY && y < state.LineOffsetY + state.LineHeight)
+                var linePositionY = state.LineOffsetY + blockOffset;
+                if (y >= linePositionY && y < linePositionY + state.LineHeight)
                     break;
 
                 state.LineOffsetY += cmd->LineHeight;
@@ -2040,8 +2045,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             
             input.Seek(0);
 
-            var blockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
-            seekState.LineOffsetY = blockOffset;
+            ProcessBlockInfo(input, out var blockOffset);
 
             // If our search point comes before the start of the block, then
             // the only possible answer is the first glyph in the block.
@@ -2061,14 +2065,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 return null;
             }
 
-            input.SeekNextCommand();
-
             // If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
             // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
             {
-                SkipToLineAtPosition(input, x, y, ref seekState);
+                SkipToLineAtPosition(input, blockOffset, x, y, ref seekState);
                 input.SeekNextCommand();
 
                 // If our search point comes before the beginning of the line that it's on,
@@ -2102,12 +2104,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 lineAtPosition = seekState.LineIndex;
                                 if (searchInsertionPoints)
                                 {
-                                    return sourceCountSeen - (glyphWasLineBreak ? 1 : 0);
+                                    return sourceCountSeen;
                                 }
                                 return searchSnapToLine ? glyphCountSeen : default(Int32?);
                             }
 
-                            ProcessLineInfo(input, ref seekState);
+                            ProcessLineInfo(input, blockOffset, ref seekState);
 
                             seekState.LineStartInSource = sourceCountSeen;
                             seekState.LineStartInShaped = shapedCountSeen;
@@ -2116,7 +2118,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             // Determine whether we expect the glyph that we're searching for to be on the current
                             // line, then check to see if our search point comes before the begining of the line. If
                             // it does, then the only possible answer is the first glyph on the line.
-                            glyphIsInCurrentLine = (y >= seekState.LineOffsetY && y < seekState.LineOffsetY + seekState.LineHeight);
+                            glyphIsInCurrentLine = (y >= seekState.LinePositionY && y < seekState.LinePositionY + seekState.LineHeight);
                             if (glyphIsInCurrentLine)
                             {
                                 lineAtPosition = seekState.LineIndex;
@@ -2134,7 +2136,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, seekState.LineOffsetX, blockOffset, seekState.LineWidth, seekState.LineHeight, direction);
+                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, seekState.LineOffsetX, seekState.LinePositionY, seekState.LineWidth, seekState.LineHeight, direction);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
                                     var glyphPos = 0;
@@ -2183,7 +2185,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var iconCmd = (TextLayoutIconCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var iconBounds = iconCmd->GetAbsoluteBounds(seekState.LineOffsetX, blockOffset, seekState.LineWidth, seekState.LineHeight, direction);
+                                var iconBounds = iconCmd->GetAbsoluteBounds(seekState.LineOffsetX, seekState.LinePositionY, seekState.LineWidth, seekState.LineHeight, direction);
                                 if (x >= iconBounds.Left && x < iconBounds.Right)
                                 {
                                     glyphSourceIndex = iconCmd->SourceOffset;
