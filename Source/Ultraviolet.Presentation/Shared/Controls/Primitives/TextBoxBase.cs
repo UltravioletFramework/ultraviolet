@@ -128,7 +128,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.LineLeft();
+            }
         }
 
         /// <summary>
@@ -138,7 +141,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.LineRight();
+            }
         }
 
         /// <summary>
@@ -148,7 +154,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.PageUp();
+            }
         }
 
         /// <summary>
@@ -158,7 +167,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.PageDown();
+            }
         }
 
         /// <summary>
@@ -168,7 +180,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.PageLeft();
+            }
         }
 
         /// <summary>
@@ -178,7 +193,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.PageRight();
+            }
         }
 
         /// <summary>
@@ -188,7 +206,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.ScrollToHome();
+            }
         }
 
         /// <summary>
@@ -198,7 +219,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.ScrollToEnd();
+            }
         }
 
         /// <summary>
@@ -209,7 +233,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.ScrollToHorizontalOffset(offset);
+            }
         }
 
         /// <summary>
@@ -220,7 +247,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.ScrollToVerticalOffset(offset);
+            }
         }
 
         /// <summary>
@@ -568,7 +598,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.LineUp();
+            }
         }
 
         /// <summary>
@@ -578,9 +611,12 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.LineDown();
+            }
         }
-        
+
         /// <summary>
         /// Gets the text box's scroll viewer.
         /// </summary>

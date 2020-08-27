@@ -322,11 +322,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void UpdateLayout()
         {
-            if (!IsMeasureValid && !IsArrangeValid)
-                return;
-
-            Measure(MostRecentAvailableSize);
-            Arrange(MostRecentFinalRect);
+            PresentationFoundation.Instance.PerformLayout();
         }
 
         /// <summary>

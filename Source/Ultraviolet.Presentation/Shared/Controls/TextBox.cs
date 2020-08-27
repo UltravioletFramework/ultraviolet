@@ -575,7 +575,10 @@ namespace Ultraviolet.Presentation.Controls
 
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.ContentVerticalOffset - fontLineHeight);
+            }
         }
 
         /// <inheritdoc/>
@@ -590,7 +593,10 @@ namespace Ultraviolet.Presentation.Controls
 
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
+            {
+                UpdateLayout();
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.ContentVerticalOffset + fontLineHeight);
+            }
         }
         
         /// <inheritdoc/>
