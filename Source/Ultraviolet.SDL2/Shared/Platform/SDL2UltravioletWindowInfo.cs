@@ -26,8 +26,6 @@ namespace Ultraviolet.SDL2.Platform
             Contract.Require(configuration, nameof(configuration));
 
             this.Ultraviolet = uv;
-
-            InitializePrimaryWindow(uv, configuration);
         }
         
         /// <summary>
@@ -322,97 +320,13 @@ namespace Ultraviolet.SDL2.Platform
         public event UltravioletWindowInfoEventHandler CurrentWindowChanging;
 
         /// <summary>
-        /// Initializes the rendering API, potentially using lower settings in the event that 
-        /// the initial attempt to initialize the API failed.
-        /// </summary>
-        /// <param name="graphicsConfiguration">The platform configuration settings.</param>
-        /// <param name="attempt">The number of attempts which have been made to find a working configuration.</param>
-        /// <returns><see langword="true"/> if a configuration was provided; otherwise, <see langword="false"/>.</returns>
-        protected virtual Boolean InitializeRenderingAPI(UltravioletGraphicsConfiguration graphicsConfiguration, Int32 attempt)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Cleans up a window's resources after it is destroyed.
-        /// </summary>
-        /// <param name="window">The window that was destroyed.</param>
-        protected virtual void OnWindowCleanup(IUltravioletWindow window)
-        { }
-
-        /// <summary>
-        /// Raises the WindowCreated event.
-        /// </summary>
-        /// <param name="window">The window that was created.</param>
-        protected virtual void OnWindowCreated(IUltravioletWindow window) =>
-            WindowCreated?.Invoke(window);
-
-        /// <summary>
-        /// Raises the WindowDestroyed event.
-        /// </summary>
-        /// <param name="window">The window that is being destroyed.</param>
-        protected virtual void OnWindowDestroyed(IUltravioletWindow window) =>
-            WindowDestroyed?.Invoke(window);
-
-        /// <summary>
-        /// Raises the PrimaryWindowChanging event.
-        /// </summary>
-        protected void OnPrimaryWindowChanging() =>
-            PrimaryWindowChanging?.Invoke(Primary);
-
-        /// <summary>
-        /// Raises the PrimaryWindowChanged event.
-        /// </summary>
-        protected void OnPrimaryWindowChanged() =>
-            PrimaryWindowChanged?.Invoke(Primary);
-
-        /// <summary>
-        /// Raises the CurrentWindowChanging event.
-        /// </summary>
-        protected void OnCurrentWindowChanging() =>
-            CurrentWindowChanging?.Invoke(Current);
-
-        /// <summary>
-        /// Raises the CurrentWindowChanged event.
-        /// </summary>
-        protected void OnCurrentWindowChanged() =>
-            CurrentWindowChanged?.Invoke(Current);
-
-        /// <summary>
-        /// Gets the rendering API which this window manager implements.
-        /// </summary>
-        protected abstract SDL2PlatformRenderingAPI RenderingApi { get; }
-
-        /// <summary>
-        /// Gets the window manager's list of windows.
-        /// </summary>
-        protected IList<IUltravioletWindow> Windows { get { return windows; } }
-
-        /// <summary>
-        /// Gets or sets the master window.
-        /// </summary>
-        protected IUltravioletWindow Master { get; set; }
-
-        /// <summary>
-        /// Gets or sets the primary window.
-        /// </summary>
-        protected IUltravioletWindow Primary { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current window.
-        /// </summary>
-        protected IUltravioletWindow Current { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether vertical sync is enabled.
-        /// </summary>
-        protected Boolean VSync { get; set; }
-
-        /// <summary>
         /// Initializes the context's primary window.
         /// </summary>
-        private void InitializePrimaryWindow(UltravioletContext uv, UltravioletConfiguration configuration)
+        internal void InitializePrimaryWindow(UltravioletContext uv, UltravioletConfiguration configuration)
         {
+            if (Master != null)
+                throw new InvalidOperationException(UltravioletStrings.PrimaryWindowAlreadyInitialized);
+
             // Initialize the rendering API.         
             InitializeRenderingAPI(configuration.GraphicsConfiguration, 0);
 
@@ -501,6 +415,93 @@ namespace Ultraviolet.SDL2.Platform
                 }
             }
         }
+
+        /// <summary>
+        /// Initializes the rendering API, potentially using lower settings in the event that 
+        /// the initial attempt to initialize the API failed.
+        /// </summary>
+        /// <param name="graphicsConfiguration">The platform configuration settings.</param>
+        /// <param name="attempt">The number of attempts which have been made to find a working configuration.</param>
+        /// <returns><see langword="true"/> if a configuration was provided; otherwise, <see langword="false"/>.</returns>
+        protected virtual Boolean InitializeRenderingAPI(UltravioletGraphicsConfiguration graphicsConfiguration, Int32 attempt)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Cleans up a window's resources after it is destroyed.
+        /// </summary>
+        /// <param name="window">The window that was destroyed.</param>
+        protected virtual void OnWindowCleanup(IUltravioletWindow window)
+        { }
+
+        /// <summary>
+        /// Raises the WindowCreated event.
+        /// </summary>
+        /// <param name="window">The window that was created.</param>
+        protected virtual void OnWindowCreated(IUltravioletWindow window) =>
+            WindowCreated?.Invoke(window);
+
+        /// <summary>
+        /// Raises the WindowDestroyed event.
+        /// </summary>
+        /// <param name="window">The window that is being destroyed.</param>
+        protected virtual void OnWindowDestroyed(IUltravioletWindow window) =>
+            WindowDestroyed?.Invoke(window);
+
+        /// <summary>
+        /// Raises the PrimaryWindowChanging event.
+        /// </summary>
+        protected void OnPrimaryWindowChanging() =>
+            PrimaryWindowChanging?.Invoke(Primary);
+
+        /// <summary>
+        /// Raises the PrimaryWindowChanged event.
+        /// </summary>
+        protected void OnPrimaryWindowChanged() =>
+            PrimaryWindowChanged?.Invoke(Primary);
+
+        /// <summary>
+        /// Raises the CurrentWindowChanging event.
+        /// </summary>
+        protected void OnCurrentWindowChanging() =>
+            CurrentWindowChanging?.Invoke(Current);
+
+        /// <summary>
+        /// Raises the CurrentWindowChanged event.
+        /// </summary>
+        protected void OnCurrentWindowChanged() =>
+            CurrentWindowChanged?.Invoke(Current);
+
+        /// <summary>
+        /// Gets the rendering API which this window manager implements.
+        /// </summary>
+        protected abstract SDL2PlatformRenderingAPI RenderingApi { get; }
+
+        /// <summary>
+        /// Gets the window manager's list of windows.
+        /// </summary>
+        protected IList<IUltravioletWindow> Windows { get { return windows; } }
+
+        /// <summary>
+        /// Gets or sets the master window.
+        /// </summary>
+        protected IUltravioletWindow Master { get; set; }
+
+        /// <summary>
+        /// Gets or sets the primary window.
+        /// </summary>
+        protected IUltravioletWindow Primary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current window.
+        /// </summary>
+        protected IUltravioletWindow Current { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether vertical sync is enabled.
+        /// </summary>
+        protected Boolean VSync { get; set; }
 
         // The context's attached windows.
         private readonly List<IUltravioletWindow> windows = new List<IUltravioletWindow>();

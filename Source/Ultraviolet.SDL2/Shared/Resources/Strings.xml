@@ -45,4 +45,14 @@
       <Variant>Invalid audio subsystem assembly.</Variant>
     </en-US>
   </String>
+  <String Key="PRIMARY_WINDOW_ALREADY_INITIALIZED">
+    <en-US>
+      <Variant>The application's primary window has already been initialized.</Variant>
+    </en-US>
+  </String>
+  <String Key="PRIMARY_WINDOW_MUST_BE_INITIALIZED">
+    <en-US>
+      <Variant>The application's primary window must be initialized by the Graphics subsystem before its constructor returns.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

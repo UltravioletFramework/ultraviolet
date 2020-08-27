@@ -29,6 +29,8 @@ namespace Ultraviolet.OpenGL
             InitOpenGLVersion(glGraphicsConfiguration, out var versionRequested, out var versionRequired, out var isGLES);
             InitOpenGLEnvironment(glGraphicsConfiguration, isGLES);
 
+            uv.GetPlatform().InitializePrimaryWindow(configuration);
+
             if (this.context == IntPtr.Zero && configuration.Debug)
                 this.context = TryCreateOpenGLContext(uv, OpenGLEnvironment, versionRequested, versionRequired, true, false) ?? IntPtr.Zero;
 

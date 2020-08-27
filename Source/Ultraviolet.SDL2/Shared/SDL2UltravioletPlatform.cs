@@ -39,6 +39,19 @@ namespace Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public void InitializePrimaryWindow(UltravioletConfiguration configuration)
+        {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (IsPrimaryWindowInitialized)
+                throw new InvalidOperationException();
+
+            this.windows.InitializePrimaryWindow(Ultraviolet, configuration);
+            this.IsPrimaryWindowInitialized = true;
+        }
+
+        /// <inheritdoc/>
         public void ShowMessageBox(MessageBoxType type, String title, String message, IUltravioletWindow parent = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -48,6 +61,13 @@ namespace Ultraviolet.SDL2
 
             var window = (parent == null) ? IntPtr.Zero : (IntPtr)((SDL2UltravioletWindow)parent);
             messageBoxService.ShowMessageBox(type, title, message, window);
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsPrimaryWindowInitialized
+        {
+            get;
+            private set;
         }
 
         /// <inheritdoc/>

@@ -155,6 +155,8 @@ namespace Ultraviolet
         public static readonly StringResource TextShaperNotRegistered              = new StringResource(StringDatabase, "TEXT_SHAPER_NOT_REGISTERED");
         public static readonly StringResource InvalidTimingLogic                   = new StringResource(StringDatabase, "INVALID_TIMING_LOGIC");
         public static readonly StringResource MissingGraphicsConfiguration         = new StringResource(StringDatabase, "MISSING_GRAPHICS_CONFIGURATION");
+        public static readonly StringResource PrimaryWindowAlreadyInitialized      = new StringResource(StringDatabase, "PRIMARY_WINDOW_ALREADY_INITIALIZED");
+        public static readonly StringResource PrimaryWindowMustBeInitialized       = new StringResource(StringDatabase, "PRIMARY_WINDOW_MUST_BE_INITIALIZED");
 #pragma warning restore 1591
     }
 }

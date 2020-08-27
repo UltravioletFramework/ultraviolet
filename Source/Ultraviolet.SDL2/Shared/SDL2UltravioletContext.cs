@@ -49,8 +49,13 @@ namespace Ultraviolet.SDL2
 
             LoadSubsystemAssemblies(configuration);
             this.swapChainManager = IsRunningInServiceMode ? new DummySwapChainManager(this) : SwapChainManager.Create();
+            
             this.platform = InitializePlatformSubsystem(configuration);
             this.graphics = InitializeGraphicsSubsystem(configuration);
+
+            if (!this.platform.IsPrimaryWindowInitialized)
+                throw new InvalidOperationException(UltravioletStrings.PrimaryWindowMustBeInitialized);
+
             this.audio = InitializeAudioSubsystem(configuration);
             this.input = InitializeInputSubsystem();
             this.content = InitializeContentSubsystem();

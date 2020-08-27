@@ -30,9 +30,19 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void InitializePrimaryWindow(UltravioletConfiguration configuration)
+        { }
+
+        /// <inheritdoc/>
         public void ShowMessageBox(MessageBoxType type, String title, String message, IUltravioletWindow parent = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsPrimaryWindowInitialized
+        {
+            get { return false; }
         }
 
         /// <inheritdoc/>
