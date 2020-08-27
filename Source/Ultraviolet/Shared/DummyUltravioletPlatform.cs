@@ -42,7 +42,7 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public Boolean IsPrimaryWindowInitialized
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <inheritdoc/>
