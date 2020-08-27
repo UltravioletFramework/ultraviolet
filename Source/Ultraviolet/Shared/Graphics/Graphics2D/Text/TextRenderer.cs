@@ -1029,7 +1029,29 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Parser.Parse(input, parserResult);
             LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
+            return DrawInternal(spriteBatch, layoutResult, position, null, null, defaultColor, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The string which will be lexed, parsed, laid out, and drawn.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="settings">The settings which are passed to the text layout engine.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            Parser.Parse(input, parserResult);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return DrawInternal(spriteBatch, layoutResult, position, minClip, maxClip, defaultColor, 0, Int32.MaxValue);
         }
 
         /// <summary>
@@ -1052,7 +1074,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Parser.Parse(input, parserResult, parserOptions);
             LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
+            return DrawInternal(spriteBatch, layoutResult, position, null, null, defaultColor, start, count);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The string which will be lexed, parsed, laid out, and drawn.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first character to draw.</param>
+        /// <param name="count">The number of characters to draw.</param>
+        /// <param name="parserOptions">The parser options to use when parsing the input text.</param>
+        /// <param name="settings">The settings which are passed to the text layout engine.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, Int32 start, Int32 count, TextParserOptions parserOptions, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            Parser.Parse(input, parserResult, parserOptions);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return DrawInternal(spriteBatch, layoutResult, position, minClip, maxClip, defaultColor, start, count);
         }
 
         /// <summary>
@@ -1072,7 +1119,29 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Parser.Parse(input, parserResult);
             LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
+            return DrawInternal(spriteBatch, layoutResult, position, null, null, defaultColor, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The string which will be lexed, parsed, laid out, and drawn.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="settings">The settings which are passed to the text layout engine.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            Parser.Parse(input, parserResult);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return DrawInternal(spriteBatch, layoutResult, position, minClip, maxClip, defaultColor, 0, Int32.MaxValue);
         }
 
         /// <summary>
@@ -1095,7 +1164,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Parser.Parse(input, parserResult, parserOptions);
             LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
+            return DrawInternal(spriteBatch, layoutResult, position, null, null, defaultColor, start, count);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The string which will be lexed, parsed, laid out, and drawn.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first character to draw.</param>
+        /// <param name="count">The number of characters to draw.</param>
+        /// <param name="parserOptions">The parser options to use when parsing the input text.</param>
+        /// <param name="settings">The settings which are passed to the text layout engine.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, Int32 start, Int32 count, TextParserOptions parserOptions, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            Parser.Parse(input, parserResult, parserOptions);
+            LayoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return DrawInternal(spriteBatch, layoutResult, position, minClip, maxClip, defaultColor, start, count);
         }
 
         /// <summary>
@@ -1114,7 +1208,28 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             LayoutEngine.CalculateLayout(input, layoutResult, settings);
 
-            return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
+            return DrawInternal(spriteBatch, layoutResult, position, null, null, defaultColor, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The collection of parser tokens which will be laid out and drawn.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="settings">The settings which are passed to the text layout engine.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextParserTokenStream input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            LayoutEngine.CalculateLayout(input, layoutResult, settings);
+
+            return DrawInternal(spriteBatch, layoutResult, position, minClip, maxClip, defaultColor, 0, Int32.MaxValue);
         }
 
         /// <summary>
@@ -1135,7 +1250,30 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             LayoutEngine.CalculateLayout(input, layoutResult, settings);
 
-            return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
+            return DrawInternal(spriteBatch, layoutResult, position, null, null, defaultColor, start, count);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The collection of parser tokens which will be laid out and drawn.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first character to draw.</param>
+        /// <param name="count">The number of characters to draw.</param>
+        /// <param name="settings">The settings which are passed to the text layout engine.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextParserTokenStream input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            LayoutEngine.CalculateLayout(input, layoutResult, settings);
+
+            return DrawInternal(spriteBatch, layoutResult, position, minClip, maxClip, defaultColor, start, count);
         }
 
         /// <summary>
@@ -1151,7 +1289,25 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            return DrawInternal(spriteBatch, input, position, defaultColor, 0, Int32.MaxValue);
+            return DrawInternal(spriteBatch, input, position, null, null, defaultColor, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The text layout command stream that describes the text to draw.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            return DrawInternal(spriteBatch, input, position, minClip, maxClip, defaultColor, 0, Int32.MaxValue);
         }
 
         /// <summary>
@@ -1169,7 +1325,27 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.Require(input, nameof(input));
 
-            return DrawInternal(spriteBatch, input, position, defaultColor, start, count);
+            return DrawInternal(spriteBatch, input, position, null, null, defaultColor, start, count);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
+        /// <param name="input">The text layout command stream that describes the text to draw.</param>
+        /// <param name="position">The position at which to draw the text.</param>
+        /// <param name="minClip">A vertical coordinate above which lines will be clipped without being drawn.</param>
+        /// <param name="maxClip">A vertical coordinate below which lines will be clipped without being drawn.</param>
+        /// <param name="defaultColor">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first character to draw.</param>
+        /// <param name="count">The number of characters to draw.</param>
+        /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Int32? minClip, Int32 maxClip, Color defaultColor, Int32 start, Int32 count)
+        {
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
+
+            return DrawInternal(spriteBatch, input, position, minClip, maxClip, defaultColor, start, count);
         }
 
         /// <summary>
@@ -1226,7 +1402,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
-        private RectangleF DrawInternal(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count)
+        private RectangleF DrawInternal(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Int32? minClip, Int32? maxClip, Color defaultColor, Int32 start, Int32 count)
         {
             if (input.Settings.Font == null)
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
@@ -1255,8 +1431,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var linkAtCursor = GetLinkIndexAtCursor(input);
 
             input.Seek(0);
-
             ProcessBlockInfo(input, out var blockOffset);
+
+            var canSkipLines = !input.HasMultipleFontStyles;
+            if (canSkipLines && minClip.HasValue)
+            {
+                SkipToLineAtPosition(input, blockOffset, 0, minClip.Value, ref seekState);
+                input.SeekNextCommand();
+            }
 
             while (input.StreamPositionInObjects < input.Count)
             {
@@ -1269,7 +1451,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.LineInfo:
                         {
                             ProcessLineInfo(input, blockOffset, ref seekState);
-                            if (seekState.LinePositionY + seekState.LineHeight > availableHeight)
+                            if (seekState.LinePositionY + seekState.LineHeight > availableHeight || (maxClip.HasValue && seekState.LinePositionY > maxClip.Value))
                             {
                                 input.SeekEnd();
                             }

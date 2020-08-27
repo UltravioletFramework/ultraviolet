@@ -1756,7 +1756,17 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawSelection(time, dc);
+            var minClip = (Int32?)null;
+            var maxClip = (Int32?)null;
+
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer != null)
+            {
+                minClip = (Int32)Math.Floor(Display.DipsToPixels(scrollViewer.ContentVerticalOffset));
+                maxClip = (Int32)Math.Ceiling(Display.DipsToPixels(scrollViewer.ContentVerticalOffset) + Display.DipsToPixels(scrollViewer.ViewportHeight));
+            }
+
+            DrawSelection(time, minClip, maxClip, dc);
 
             var caretTopmost =
                 (actualInsertionMode == CaretMode.Insert && CaretInsertTopmost) ||
@@ -1764,13 +1774,13 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             if (caretTopmost)
             {
-                DrawText(time, dc);
-                DrawCaret(time, dc);
+                DrawText(time, minClip, maxClip, dc);
+                DrawCaret(time, minClip, maxClip, dc);
             }
             else
             {
-                DrawCaret(time, dc);
-                DrawText(time, dc);
+                DrawCaret(time, minClip, maxClip, dc);
+                DrawText(time, minClip, maxClip, dc);
             }
 
             base.DrawOverride(time, dc);
@@ -2125,7 +2135,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <summary>
         /// Draws the current selection.
         /// </summary>
-        private void DrawSelection(UltravioletTime time, DrawingContext dc)
+        private void DrawSelection(UltravioletTime time, Int32? minClip, Int32? maxClip, DrawingContext dc)
         {
             if (!selectionPosition.HasValue || SelectionLength == 0)
                 return;
@@ -2144,8 +2154,11 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             // Draw the first line
             var selectionTopOffset = global::Ultraviolet.Rectangle.Offset(selectionTop, textOffsetX, textOffsetY);
-            var selectionTopDips = Display.PixelsToDips(selectionTopOffset);
-            DrawImage(dc, SelectionImage, selectionTopDips, selectionColor, true);
+            if ((!minClip.HasValue || selectionTopOffset.Bottom > minClip.Value) && (!maxClip.HasValue || selectionTopOffset.Top <= maxClip.Value))
+            {
+                var selectionTopDips = Display.PixelsToDips(selectionTopOffset);
+                DrawImage(dc, SelectionImage, selectionTopDips, selectionColor, true);
+            }
 
             // Draw the middle
             if (selectionLineCount > 2)
@@ -2159,6 +2172,13 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                     textLayoutStream.GetNextLineInfoRef(ref lineInfo, out lineInfo);
 
                     var lineBounds = new Ultraviolet.Rectangle(lineInfo.X + textOffsetX, lineInfo.Y + textOffsetY, lineInfo.Width, lineInfo.Height);
+
+                    if (minClip.HasValue && lineBounds.Bottom <= minClip.Value)
+                        continue;
+
+                    if (maxClip.HasValue && lineBounds.Top > maxClip.Value)
+                        break;
+
                     var lineBoundsDips = Display.PixelsToDips(lineBounds);
                     DrawImage(dc, SelectionImage, lineBoundsDips, selectionColor, true);
                 }
@@ -2170,15 +2190,18 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (selectionLineCount > 1)
             {
                 var selectionBottomOffset = global::Ultraviolet.Rectangle.Offset(selectionBottom, textOffsetX, textOffsetY);
-                var selectionBottomDips = Display.PixelsToDips(selectionBottomOffset);
-                DrawImage(dc, SelectionImage, selectionBottomDips, selectionColor, true);
+                if ((!minClip.HasValue || selectionBottomOffset.Bottom > minClip.Value) && (!maxClip.HasValue || selectionBottomOffset.Top <= maxClip.Value))
+                {
+                    var selectionBottomDips = Display.PixelsToDips(selectionBottomOffset);
+                    DrawImage(dc, SelectionImage, selectionBottomDips, selectionColor, true);
+                }
             }
         }
 
         /// <summary>
         /// Draws the editor's text.
         /// </summary>
-        private void DrawText(UltravioletTime time, DrawingContext dc)
+        private void DrawText(UltravioletTime time, Int32? minClip, Int32? maxClip, DrawingContext dc)
         {
             if (textLayoutStream.Count == 0)
                 return;
@@ -2190,13 +2213,13 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             var positionX = dc.IsTransformed ? (textOffsetX + positionRaw.X) : Math.Floor(textOffsetX + positionRaw.X);
             var positionY = dc.IsTransformed ? (textOffsetY + positionRaw.Y) : Math.Floor(textOffsetY + positionRaw.Y);
             var position = new Vector2((Single)positionX, (Single)positionY);
-            View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, position, foreground * dc.Opacity);
+            View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, position, minClip, maxClip, foreground * dc.Opacity);
         }
 
         /// <summary>
         /// Draws the editor's caret.
         /// </summary>
-        private void DrawCaret(UltravioletTime time, DrawingContext dc)
+        private void DrawCaret(UltravioletTime time, Int32? minClip, Int32? maxClip, DrawingContext dc)
         {
             var owner = TemplatedParent as Control;
             if (owner == null)
@@ -2216,6 +2239,9 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (isCaretVisible)
             {
                 var caretBoundsOffset = global::Ultraviolet.Rectangle.Offset(caretRenderBounds, textOffsetX, textOffsetY);
+                if ((minClip.HasValue && caretBoundsOffset.Bottom < minClip.Value) || (maxClip.HasValue && caretBoundsOffset.Top > maxClip.Value))
+                    return;
+
                 var caretBoundsDips = Display.PixelsToDips(caretBoundsOffset);
                 var caretImage = (actualInsertionMode == CaretMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
                 var caretColor = (actualInsertionMode == CaretMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
