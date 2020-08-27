@@ -72,11 +72,7 @@ namespace Ultraviolet.SDL2.Input
                                 Register();
 
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
-                            var buttonIndex = (int)button;
-                            states[buttonIndex].OnDown(false);
-                            timeLastPressButton[buttonIndex] = lastUpdateTime;
-                            repeatingButton[buttonIndex] = false;
-                            OnButtonPressed(button, false);
+                            PutButtonInDownState(button);
                         }
                     }
                     break;
@@ -89,11 +85,7 @@ namespace Ultraviolet.SDL2.Input
                                 Register();
 
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
-                            var buttonIndex = (int)button;
-                            states[(int)button].OnUp();
-                            timeLastPressButton[buttonIndex] = lastUpdateTime;
-                            repeatingButton[buttonIndex] = false;
-                            OnButtonReleased(button);
+                            PutButtonInUpState(button);
                         }
                     }
                     break;
@@ -531,20 +523,7 @@ namespace Ultraviolet.SDL2.Input
         /// </summary>
         /// <param name="button">The <see cref="SDL_GameControllerButton"/> value to convert.</param>
         /// <returns>The converted <see cref="GamePadButton"/> value.</returns>
-        private static GamePadButton SDLToUltravioletButton(SDL_GameControllerButton button)
-        {
-            return (GamePadButton)(1 + (int)button);
-        }
-
-        /// <summary>
-        /// Converts an SDL2 SDL_GameControllerAxis value to an Ultraviolet GamePadAxis value.
-        /// </summary>
-        /// <param name="axis">The <see cref="SDL_GameControllerAxis"/> value to convert.</param>
-        /// <returns>The converted <see cref="GamePadAxis"/> value.</returns>
-        private static GamePadAxis SDLToUltravioletAxis(SDL_GameControllerAxis axis)
-        {
-            return (GamePadAxis)(1 + (int)axis);
-        }
+        private static GamePadButton SDLToUltravioletButton(SDL_GameControllerButton button) => (GamePadButton)(1 + (int)button);
 
         /// <summary>
         /// Normalizes an SDL2 axis value.
@@ -554,6 +533,36 @@ namespace Ultraviolet.SDL2.Input
         private static Single NormalizeAxisValue(Int16 value)
         {
             return (value < 0) ? -(value / (Single)Int16.MinValue) : value / (Single)Int16.MaxValue;
+        }
+
+        /// <summary>
+        /// Puts the specified button into the "Down" state if it isn't already in that state.
+        /// </summary>
+        private void PutButtonInDownState(GamePadButton button)
+        {
+            var buttonIndex = (Int32)button;
+            if (states[buttonIndex].Down)
+                return;
+
+            states[buttonIndex].OnDown(false);
+            timeLastPressButton[buttonIndex] = lastUpdateTime;
+            repeatingButton[buttonIndex] = false;
+            OnButtonPressed(button, false);
+        }
+
+        /// <summary>
+        /// Puts the specified direction in the "Up" state if it isn't already in that state.
+        /// </summary>
+        private void PutButtonInUpState(GamePadButton button)
+        {
+            var buttonIndex = (int)button;
+            if (states[buttonIndex].Up)
+                return;
+
+            states[buttonIndex].OnUp();
+            timeLastPressButton[buttonIndex] = lastUpdateTime;
+            repeatingButton[buttonIndex] = false;
+            OnButtonReleased(button);
         }
 
         /// <summary>
@@ -588,7 +597,7 @@ namespace Ultraviolet.SDL2.Input
                     break;
                 
                 case SDL_CONTROLLER_AXIS_RIGHTY:
-                    prevRightJoystickY = rightJoystickX;
+                    prevRightJoystickY = rightJoystickY;
                     rightJoystickY = value;
                     OnAxisChanged(GamePadAxis.RightJoystickY, value);
                     CheckForAxisPresses(GamePadAxis.RightJoystickY, prevRightJoystickY, value);
@@ -624,6 +633,16 @@ namespace Ultraviolet.SDL2.Input
             var axisWasDown = IsAxisDown(previousValue);
             var axisIsDown = IsAxisDown(currentValue);
 
+            // Update button states.
+            var btnPrev = ButtonFromAxis(axis, previousValue);
+            var btnCurrent = ButtonFromAxis(axis, currentValue);
+
+            if (btnPrev != GamePadButton.None && (btnPrev != btnCurrent || !axisIsDown))
+                PutButtonInUpState(btnPrev);
+
+            if (btnCurrent != GamePadButton.None && axisIsDown)
+                PutButtonInDownState(btnCurrent);
+
             // Axis went from pressed->pressed but changed direction.
             if (axisIsDown && axisWasDown && Math.Sign(currentValue) != Math.Sign(previousValue))
             {
@@ -631,10 +650,7 @@ namespace Ultraviolet.SDL2.Input
                 repeatingAxis[axisIndex] = false;
 
                 OnAxisReleased(axis, 0f);
-                OnButtonReleased(ButtonFromAxis(axis, previousValue));
-
                 OnAxisPressed(axis, currentValue, false);
-                OnButtonPressed(ButtonFromAxis(axis, currentValue), false);
                       
                 return;
             }
@@ -648,14 +664,11 @@ namespace Ultraviolet.SDL2.Input
                     repeatingAxis[axisIndex] = false;
 
                     OnAxisPressed(axis, currentValue, false);
-                    OnButtonPressed(ButtonFromAxis(axis, currentValue), false);
                 }
                 else
                 {
                     OnAxisReleased(axis, currentValue);
-                    OnButtonReleased(ButtonFromAxis(axis, currentValue));
                 }
-                return;
             }
         }
 
@@ -678,7 +691,6 @@ namespace Ultraviolet.SDL2.Input
 
                     var value = GetAxisValue(axis);
                     OnAxisPressed(axis, value, true);
-                    OnButtonPressed(ButtonFromAxis(axis, value), true);
                 }
             }
 
@@ -780,7 +792,7 @@ namespace Ultraviolet.SDL2.Input
             var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
             if (input.RegisterGamePadDevice(this))
                 isRegistered = true;
-        }    
+        }
 
         // State values.
         private Int32 instanceID;
