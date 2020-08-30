@@ -818,7 +818,13 @@ namespace Ultraviolet.Content
             get
             {
                 var platform = UltravioletPlatformInfo.CurrentPlatform;
-                return (platform != UltravioletPlatform.Android && platform != UltravioletPlatform.iOS);
+                if (platform == UltravioletPlatform.Android || platform == UltravioletPlatform.iOS)
+                    return false;
+
+                if (platform == UltravioletPlatform.Windows)
+                    return true;
+
+                return String.Equals("true", Environment.GetEnvironmentVariable("UV_ALLOW_FILE_WATCHERS") ?? "false", StringComparison.OrdinalIgnoreCase);
             }
         }
 
