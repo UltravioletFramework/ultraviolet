@@ -489,7 +489,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         private Boolean IsTouchWithinEditor(Int64 id)
         {
-            var mouseTarget = (UIElement)TextEditor ?? this;
+            var mouseTarget = (UIElement)PART_Editor ?? this;
             if (Mouse.GetCaptured(View) != null && !mouseTarget.IsMouseCaptureWithin)
                 return false;
 
