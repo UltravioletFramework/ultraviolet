@@ -284,6 +284,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// </summary>
         private void HandleCursorMove(Int64 cursorID)
         {
+            UpdateLayout();
+
             var relPos = (cursorID == 0) ? Mouse.GetPosition(this) : Touch.GetPosition(cursorID, this);
             var oldPos = dragPosLast;
             var newPos = TransformToAncestor(View.LayoutRoot, relPos);
@@ -301,6 +303,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             if (IsDragging)
                 CancelDrag();
+
+            UpdateLayout();
 
             dragCursorID = cursorID;
             dragPosOriginRel = (cursorID == 0) ? Mouse.GetPosition(this) : Touch.GetPosition(cursorID, this);
