@@ -65,7 +65,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Boolean IsNewLine
         {
-            get { return TokenType == TextParserTokenType.Text && !Text.IsEmpty && (Text[0] == '\n' || Text[0] == '\r'); }
+            get
+            {
+                if (TokenType == TextParserTokenType.Text && !Text.IsEmpty)
+                {
+                    var c = Text[0];
+                    return c == '\n' || c == '\r';
+                }
+                return false;
+            }
         }
 
         /// <summary>

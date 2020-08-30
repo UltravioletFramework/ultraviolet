@@ -293,12 +293,12 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Size2 MeasureGlyph<TSource>(ref TSource text, Int32 ix)
         {
-            GetUtf32CodePointFromString(ref text, ix, out var c1);
+            GetUtf32CodePointFromString(ref text, ix, out var c1, out var c1length);
             if (!GetGlyphInfo(c1, false, out var cinfo))
                 return Size2.Zero;
 
-            var c2 = (ix + 1 < text.Length) ? text[ix + 1] : (Char?)null;
-            var offset = c2.HasValue ? GetKerningInfo(text[ix], c2.GetValueOrDefault()) : Size2.Zero;
+            var c2 = (ix + c1length < text.Length) ? text[ix + c1length] : (Char?)null;
+            var offset = c2.HasValue ? GetKerningInfo((Int32)c1, c2.GetValueOrDefault()) : Size2.Zero;
             return new Size2(cinfo.Advance, totalDesignHeight) + offset;
         }
 
@@ -337,11 +337,11 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 c2)
         {
-            GetUtf32CodePointFromString(ref text, ix, out var c1);
+            GetUtf32CodePointFromString(ref text, ix, out var c1, out _);
             if (!GetGlyphInfo(c1, false, out var cinfo))
                 return Size2.Zero;
 
-            var offset = GetKerningInfo(text[ix], c2);
+            var offset = GetKerningInfo((Int32)c1, c2);
             return new Size2(cinfo.Advance, totalDesignHeight) + offset;
         }
 
@@ -359,7 +359,7 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix)
         {
-            GetUtf32CodePointFromString(ref text, ix, out var c1);
+            GetUtf32CodePointFromString(ref text, ix, out var c1, out _);
             if (!GetGlyphInfo(c1, false, out var cinfo))
                 return Size2.Zero;
 
@@ -460,12 +460,13 @@ namespace Ultraviolet.FreeType2
                 return Size2.Zero;
 
             var pos = ix;
-            pos += GetUtf32CodePointFromString(ref text, pos, out var c1) ? 2 : 1;
+            GetUtf32CodePointFromString(ref text, pos, out var c1, out var c1length);
+            pos += c1length;
+
             if (pos >= text.Length)
                 return Size2.Zero;
 
-            GetUtf32CodePointFromString(ref text, pos, out var c2);
-
+            GetUtf32CodePointFromString(ref text, pos, out var c2, out _);
             return GetKerningInfo((Int32)c1, (Int32)c2);
         }
 
@@ -869,7 +870,7 @@ namespace Ultraviolet.FreeType2
         /// Converts the specified index of a string to a UTF-32 codepoint.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Boolean GetUtf32CodePointFromString(ref StringSegment text, Int32 ix, out UInt32 utf32)
+        private Boolean GetUtf32CodePointFromString(ref StringSegment text, Int32 ix, out UInt32 utf32, out Int32 length)
         {
             var ixNext = ix + 1;
             if (ixNext < text.Length)
@@ -879,9 +880,12 @@ namespace Ultraviolet.FreeType2
                 if (Char.IsSurrogatePair(c1, c2))
                 {
                     utf32 = (UInt32)Char.ConvertToUtf32(c1, c2);
+                    length = 2;
                     return true;
                 }
             }
+
+            length = 1;
 
             if (Char.IsSurrogate(text[ix]))
             {
@@ -897,7 +901,7 @@ namespace Ultraviolet.FreeType2
         /// Converts the specified index of a string to a UTF-32 codepoint.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Boolean GetUtf32CodePointFromString<TSource>(ref TSource text, Int32 ix, out UInt32 utf32)
+        private Boolean GetUtf32CodePointFromString<TSource>(ref TSource text, Int32 ix, out UInt32 utf32, out Int32 length)
             where TSource : IStringSource<Char>
         {
             var ixNext = ix + 1;
@@ -908,9 +912,12 @@ namespace Ultraviolet.FreeType2
                 if (Char.IsSurrogatePair(c1, c2))
                 {
                     utf32 = (UInt32)Char.ConvertToUtf32(c1, c2);
+                    length = 2;
                     return true;
                 }
             }
+
+            length = 1;
 
             if (Char.IsSurrogate(text[ix]))
             {

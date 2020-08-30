@@ -191,7 +191,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private static Boolean IsStartOfNewline<TSource>(TSource input, Int32 ix)
             where TSource : IStringSource<Char>
         {
-            return input[ix] == '\n' || input[ix] == '\r';
+            var c = input[ix];
+            return c == '\n' || c == '\r';
         }
         
         /// <summary>
@@ -218,7 +219,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private static Boolean IsStartOfBreakingSpace<TSource>(TSource input, Int32 ix)
             where TSource : IStringSource<Char>
         {
-            return input[ix] != '\u00A0' && Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
+            var c = input[ix];
+            return c != '\u00A0' && Char.IsWhiteSpace(c) && c != '\n' && c != '\r';
         }
 
         /// <summary>
@@ -227,7 +229,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private static Boolean IsEndOfBreakingSpace<TSource>(TSource input, Int32 ix)
             where TSource : IStringSource<Char>
         {
-            return input[ix] == '\u00A0' || !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
+            var c = input[ix];
+            return c == '\u00A0' || !Char.IsWhiteSpace(c) || c == '\n' || c == '\r';
         }
 
         /// <summary>
@@ -239,7 +242,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if ((options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes)
                 return false;
 
-            return input[ix] == '|' && (ix + 1 >= input.Length || input[ix + 1] == '|' || Char.IsWhiteSpace(input[ix + 1]));
+            var c1 = input[ix];
+            if (c1 == '|')
+            {
+                if (ix + 1 == input.Length)
+                    return true;
+
+                var c2 = input[ix + 1];
+                if (c2 == '|' || Char.IsWhiteSpace(c2))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -266,7 +279,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private static Boolean IsStartOfWord<TSource>(TSource input, Int32 ix)
             where TSource : IStringSource<Char>
         {
-            return !Char.IsWhiteSpace(input[ix]) && !IsStartOfCommand(input, ix);
+            var c = input[ix];
+            return !Char.IsWhiteSpace(c) && c != '|';
         }
 
         /// <summary>
@@ -275,7 +289,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private static Boolean IsEndOfWord<TSource>(TSource input, Int32 ix)
             where TSource : IStringSource<Char>
         {
-            return Char.IsWhiteSpace(input[ix]) || IsStartOfCommand(input, ix);
+            var c = input[ix];
+            return Char.IsWhiteSpace(c) || c == '|';
         }
 
         /// <summary>
