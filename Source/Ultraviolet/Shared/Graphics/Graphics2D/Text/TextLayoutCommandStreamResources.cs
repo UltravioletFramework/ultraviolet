@@ -279,7 +279,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 styles = new List<TextStyle>();
 
             if (stylesByName == null)
-                stylesByName = new Dictionary<StringSegment, Int16>();
+                stylesByName = new Dictionary<StringSegmentKey, Int16>();
 
             return RegisterResource(name, style, styles, stylesByName);
         }
@@ -296,7 +296,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 icons = new List<TextIconInfo>();
 
             if (iconsByName == null)
-                iconsByName = new Dictionary<StringSegment, Int16>();
+                iconsByName = new Dictionary<StringSegmentKey, Int16>();
 
             return RegisterResource(name, icon, icons, iconsByName);
         }
@@ -315,7 +315,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 fonts = new List<UltravioletFont>();
 
             if (fontsByName == null)
-                fontsByName = new Dictionary<StringSegment, Int16>();
+                fontsByName = new Dictionary<StringSegmentKey, Int16>();
 
             return RegisterResource(name, font, fonts, fontsByName);
         }
@@ -334,7 +334,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 glyphShaders = new List<GlyphShader>();
 
             if (glyphShadersByName == null)
-                glyphShadersByName = new Dictionary<StringSegment, Int16>();
+                glyphShadersByName = new Dictionary<StringSegmentKey, Int16>();
 
             return RegisterResource(name, glyphShader, glyphShaders, glyphShadersByName);
         }
@@ -357,7 +357,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers a resource with the command stream.
         /// </summary>
-        private Int16 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegment, Int16> resourcesByName)
+        private Int16 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegmentKey, Int16> resourcesByName)
         {
             Int16 index;
             if (resourcesByName != null && resourcesByName.TryGetValue(name, out index))
@@ -382,19 +382,19 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
         // Style preset registry
         private List<TextStyle> styles = new List<TextStyle>();
-        private Dictionary<StringSegment, Int16> stylesByName;
+        private Dictionary<StringSegmentKey, Int16> stylesByName;
 
         // Icon registry
         private List<TextIconInfo> icons = new List<TextIconInfo>();
-        private Dictionary<StringSegment, Int16> iconsByName;
+        private Dictionary<StringSegmentKey, Int16> iconsByName;
 
         // Font registry
         private List<UltravioletFont> fonts = new List<UltravioletFont>();
-        private Dictionary<StringSegment, Int16> fontsByName;
+        private Dictionary<StringSegmentKey, Int16> fontsByName;
 
         // Glyph shader registry
         private List<GlyphShader> glyphShaders = new List<GlyphShader>();
-        private Dictionary<StringSegment, Int16> glyphShadersByName;
+        private Dictionary<StringSegmentKey, Int16> glyphShadersByName;
         
         // Link target registry
         private List<String> linkTargets = new List<String>(0);

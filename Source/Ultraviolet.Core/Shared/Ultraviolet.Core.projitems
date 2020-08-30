@@ -98,6 +98,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\IStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentKey.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentSource.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSource.cs" />

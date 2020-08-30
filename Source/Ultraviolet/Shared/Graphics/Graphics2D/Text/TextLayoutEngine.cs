@@ -1364,16 +1364,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         // Registered styles, icons, fonts, and glyph shaders.
-        private readonly Dictionary<StringSegment, TextStyle> registeredStyles =
-            new Dictionary<StringSegment, TextStyle>();
-        private readonly Dictionary<StringSegment, TextIconInfo> registeredIcons =
-            new Dictionary<StringSegment, TextIconInfo>();
-        private readonly Dictionary<StringSegment, UltravioletFont> registeredFonts =
-            new Dictionary<StringSegment, UltravioletFont>();
-        private readonly Dictionary<StringSegment, FallbackFontInfo> registeredFallbackFonts =
-            new Dictionary<StringSegment, FallbackFontInfo>();
-        private readonly Dictionary<StringSegment, GlyphShader> registeredGlyphShaders =
-            new Dictionary<StringSegment, GlyphShader>();
+        private readonly Dictionary<StringSegmentKey, TextStyle> registeredStyles =
+            new Dictionary<StringSegmentKey, TextStyle>();
+        private readonly Dictionary<StringSegmentKey, TextIconInfo> registeredIcons =
+            new Dictionary<StringSegmentKey, TextIconInfo>();
+        private readonly Dictionary<StringSegmentKey, UltravioletFont> registeredFonts =
+            new Dictionary<StringSegmentKey, UltravioletFont>();
+        private readonly Dictionary<StringSegmentKey, FallbackFontInfo> registeredFallbackFonts =
+            new Dictionary<StringSegmentKey, FallbackFontInfo>();
+        private readonly Dictionary<StringSegmentKey, GlyphShader> registeredGlyphShaders =
+            new Dictionary<StringSegmentKey, GlyphShader>();
 
         // Layout parameter stacks.
         private readonly Stack<TextStyleInstance> styleStack = new Stack<TextStyleInstance>();

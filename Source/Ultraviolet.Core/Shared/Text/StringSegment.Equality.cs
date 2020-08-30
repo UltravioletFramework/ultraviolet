@@ -6,7 +6,7 @@ namespace Ultraviolet.Core.Text
     partial struct StringSegment
     {
         /// <inheritdoc/>
-        public override Int32 GetHashCode() => hashCode;
+        public override Int32 GetHashCode() => Source?.GetHashCode() ?? 0;
         
         /// <summary>
         /// Compares two objects to determine whether they are equal.
