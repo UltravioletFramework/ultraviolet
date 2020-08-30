@@ -489,10 +489,12 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         private Boolean IsTouchWithinEditor(Int64 id)
         {
-            var touchTarget = (UIElement)PART_Editor ?? this;
-            var touchBounds = touchTarget.Bounds;
+            var mouseTarget = (UIElement)TextEditor ?? this;
+            if (Mouse.GetCaptured(View) != null && !mouseTarget.IsMouseCaptureWithin)
+                return false;
 
-            return touchBounds.Contains(Touch.GetPosition(id, touchTarget));
+            var mouseBounds = mouseTarget.Bounds;
+            return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
         }
 
         /// <summary>

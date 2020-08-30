@@ -890,8 +890,10 @@ namespace Ultraviolet.Presentation.Controls
         private Boolean IsMouseWithinEditor()
         {
             var mouseTarget = (UIElement)TextEditor ?? this;
-            var mouseBounds = mouseTarget.Bounds;
+            if (Mouse.GetCaptured(View) != null && !mouseTarget.IsMouseCaptureWithin)
+                return false;
 
+            var mouseBounds = mouseTarget.Bounds;
             return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
         }
         
