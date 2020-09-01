@@ -93,6 +93,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\PerspectiveCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelProcessorMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelTriangleDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelVertex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectLights.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectFog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectWorldViewProj.cs" />

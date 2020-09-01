@@ -160,6 +160,8 @@ namespace Ultraviolet
         public static readonly StringResource EffectImplementationAlreadyHasOwner  = new StringResource(StringDatabase, "EFFECT_IMPLEMENTATION_ALREADY_HAS_OWNER");
         public static readonly StringResource EffectImplementationHasNoOwner       = new StringResource(StringDatabase, "EFFECT_IMPLEMENTATION_HAS_NO_OWNER");
         public static readonly StringResource FailedToInitializeSingleton          = new StringResource(StringDatabase, "FAILED_TO_INITIALIZE_SINGLETON");
+        public static readonly StringResource MalformedContentFile                 = new StringResource(StringDatabase, "MALFORMED_CONTENT_FILE");
+        public static readonly StringResource UnsupportedContentFile               = new StringResource(StringDatabase, "UNSUPPORTED_CONTENT_FILE");
 #pragma warning restore 1591
     }
 }

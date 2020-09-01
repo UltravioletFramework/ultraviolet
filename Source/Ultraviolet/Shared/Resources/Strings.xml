@@ -660,4 +660,14 @@
       <Variant>Failed to initialize singleton value due to a missing or invalid Ultraviolet context.</Variant>
     </en-US>
   </String>
+  <String Key="MALFORMED_CONTENT_FILE">
+    <en-US>
+      <Variant>Asset could not be loaded because it was corrupt or malformed.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_CONTENT_FILE">
+    <en-US>
+      <Variant>Asset could not be loaded because it uses features which are not supported by the content importer.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
