@@ -42,17 +42,11 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the Ultraviolet context associated with this synchronization context.
-        /// </summary>
-        public UltravioletContext Ultraviolet { get; }
-
-        /// <summary>
         /// Processes a single queued work item, if any work items have been queued.
         /// </summary>
-        internal void ProcessSingleWorkItem()
+        public void ProcessSingleWorkItem()
         {
-            Task workItem;
-            if (queuedWorkItems.TryDequeue(out workItem))
+            if (queuedWorkItems.TryDequeue(out var workItem))
             {
                 workItem.RunSynchronously();
             }
@@ -61,19 +55,23 @@ namespace Ultraviolet
         /// <summary>
         /// Processes all queued work items.
         /// </summary>
-        internal void ProcessWorkItems()
+        public void ProcessWorkItems()
         {
             var count = Interlocked.CompareExchange(ref pendingWorkItemCount, 0, 0);
             if (count == 0)
                 return;
 
-            Task workItem;
-            while (queuedWorkItems.TryDequeue(out workItem))
+            while (queuedWorkItems.TryDequeue(out var workItem))
             {
                 workItem.RunSynchronously();
                 Interlocked.Decrement(ref pendingWorkItemCount);
             }
         }
+
+        /// <summary>
+        /// Gets the Ultraviolet context associated with this synchronization context.
+        /// </summary>
+        public UltravioletContext Ultraviolet { get; }
 
         /// <summary>
         /// Adds the specified task to the queue of work items.
