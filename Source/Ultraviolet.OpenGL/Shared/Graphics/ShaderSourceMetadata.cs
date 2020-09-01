@@ -23,6 +23,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
             foreach (var hint in ssmd.ParameterHints)
                 AddParameterHint(hint);
+
+            foreach (var hint in ssmd.CameraHints)
+                AddCameraHint(hint.Key, hint.Value);
         }
 
         /// <summary>
@@ -50,9 +53,24 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Adds a camera hint to this instance's list.
+        /// </summary>
+        /// <param name="parameter">The name of the camera parameter that should be correlated to the specified uniform.</param>
+        /// <param name="uniform">The name of the uniform that represents the specified camera parameter.</param>
+        public void AddCameraHint(String parameter, String uniform)
+        {
+            CameraHints[parameter] = uniform;
+        }
+
+        /// <summary>
         /// Gets a dictionary which associates uniforms with their preferred sampler indices.
         /// </summary>
         public IDictionary<String, Int32> PreferredSamplerIndices { get; } = new Dictionary<String, Int32>();
+
+        /// <summary>
+        /// Gets a dictionary which associates camera parameters with uniform names.
+        /// </summary>
+        public IDictionary<String, String> CameraHints { get; } = new Dictionary<String, String>();
 
         /// <summary>
         /// Gets a set which contains the list of specified parameter names for this shader.

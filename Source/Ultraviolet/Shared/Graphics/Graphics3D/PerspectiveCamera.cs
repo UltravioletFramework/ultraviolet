@@ -6,7 +6,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// <summary>
     /// Represents a camera with perspective.
     /// </summary>
-    public sealed class PerspectiveCamera : Camera
+    public sealed class PerspectiveCamera : Camera, ICameraEyePosition
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PerspectiveCamera"/> class.
@@ -73,6 +73,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets or sets the vector that denotes which direction is "up" for this camera.
         /// </summary>
         public Vector3 Up { get; set; } = Vector3.Up;
+
+        /// <inheritdoc/>
+        Vector3 ICameraEyePosition.EyePosition => Position;
 
         // Calculated matrices.
         private Matrix view;

@@ -24,19 +24,48 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             Contract.RequireNotEmpty(techniques, nameof(techniques));
 
+            if (parameters == null)
+                parameters = new HashSet<String>();
+
+            var cameraHints = new Dictionary<String, String>();
+
             foreach (var technique in techniques)
             {
                 technique.EffectImplementation = this;
                 foreach (var pass in technique.Passes)
                 {
-                    ((OpenGLEffectPass)pass).EffectImplementation = this;
+                    var glpass = (OpenGLEffectPass)pass;
+                    glpass.EffectImplementation = this;
+
+                    foreach (var program in glpass.Programs)
+                    {
+                        var vertShader = program.VertexShader;
+                        if (vertShader != null)
+                        {
+                            foreach (var hint in vertShader.ShaderSourceMetadata.ParameterHints)
+                                parameters.Add(hint);
+
+                            foreach (var hint in vertShader.ShaderSourceMetadata.CameraHints)
+                                cameraHints[hint.Key] = hint.Value;
+                        }
+
+                        var fragShader = program.FragmentShader;
+                        if (fragShader != null)
+                        {
+                            foreach (var hint in fragShader.ShaderSourceMetadata.ParameterHints)
+                                parameters.Add(hint);
+
+                            foreach (var hint in fragShader.ShaderSourceMetadata.CameraHints)
+                                cameraHints[hint.Key] = hint.Value;
+                        }
+                    }
                 }
             }
 
             this.techniques = new OpenGLEffectTechniqueCollection(techniques);
             this.currentTechnique = this.techniques.First();
 
-            this.parameters = CreateEffectParameters(techniques, parameters);
+            this.parameters = CreateEffectParameters(techniques, parameters, cameraHints);
         }
 
         /// <summary>
@@ -96,15 +125,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Creates an effect parameter collection from the specified collection of techniques.
         /// </summary>
-        /// <param name="techniques">The collection of techniques from which to create an effect parameter collection.</param>
-        /// <param name="parameters">The collection of expected parameter names, or <see langword="null"/> to query
-        /// effect parameters from shader uniforms.</param>
-        /// <returns>The effect parameter collection that was created.</returns>
         private OpenGLEffectParameterCollection CreateEffectParameters(
-            IEnumerable<OpenGLEffectTechnique> techniques, HashSet<String> parameters)
+            IEnumerable<OpenGLEffectTechnique> techniques, HashSet<String> parameters, Dictionary<String, String> cameraHints)
         {
             var paramlist = new Dictionary<String, OpenGLEffectParameter>();
-
 
             var uniforms1 =
                 from tech in techniques
@@ -150,7 +174,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
             }
 
-            return new OpenGLEffectParameterCollection(paramlist.Values);
+            return new OpenGLEffectParameterCollection(paramlist.Values, cameraHints);
         }
 
         // Property values.

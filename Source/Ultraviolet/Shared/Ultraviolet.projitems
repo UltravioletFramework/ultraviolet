@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\CameraParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Circle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Circle.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Circle.Parsing.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\PerspectiveCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ICameraEyePosition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectLights.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectFog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Material.cs" />

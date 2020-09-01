@@ -17,14 +17,17 @@ uniform  vec3 DirLight2Direction;
 uniform  vec3 DirLight2DiffuseColor;
 uniform  vec3 DirLight2SpecularColor;
 
+#camera(EyePosition) "EyePosition"
 uniform  vec3 EyePosition;
 
 uniform  vec3 FogColor;
 uniform  vec4 FogVector;
 
+#camera(World) "World"
 uniform  mat4 World;
+#camera(WorldInverseTranspose) "WorldInverseTranspose"
 uniform  mat4 WorldInverseTranspose;
-
+#camera(WorldViewProj) "WorldViewProj"
 uniform  mat4 WorldViewProj;
 
 uniform  bool SrgbColor;

@@ -54,6 +54,9 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (ProcessParamDirective(manager, metadata, line, output, ssmd))
                     return true;
 
+                if (ProcessCameraDirective(manager, metadata, line, output, ssmd))
+                    return true;
+
                 return false;
             });
         }
@@ -341,6 +344,24 @@ namespace Ultraviolet.OpenGL.Graphics
             return false;
         }
 
+        /// <summary>
+        /// Processes #camera directives.
+        /// </summary>
+        private static Boolean ProcessCameraDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
+        {
+            var cameraMatch = regexCameraDirective.Match(line);
+            if (cameraMatch.Success)
+            {
+                var parameter = cameraMatch.Groups["parameter"].Value;
+                var uniform = cameraMatch.Groups["uniform"].Value;
+
+                ssmd.AddCameraHint(parameter, uniform);
+
+                return true;
+            }
+            return false;
+        }
+
         // Regular expressions used to identify directives
         private static readonly Regex regexCStyleComment =
             new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
@@ -356,5 +377,7 @@ namespace Ultraviolet.OpenGL.Graphics
             new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexParamDirective =
             new Regex(@"^\s*#param\s+""(?<parameter>.*?)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex regexCameraDirective =
+            new Regex(@"^\s*#camera\((?<parameter>\w+)\)\s*""(?<uniform>\w+)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

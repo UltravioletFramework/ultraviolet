@@ -31,19 +31,11 @@ namespace Ultraviolet.OpenGL.Graphics
             var fragShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(fragShaderFilePath), Externs);
             var fragShader = new OpenGLFragmentShader(manager.Ultraviolet, new[] { fragShaderSource });
 
-            var parameters = new HashSet<String>();
-
-            foreach (var hint in vertShader.ShaderSourceMetadata.ParameterHints)
-                parameters.Add(hint);
-
-            foreach (var hint in fragShader.ShaderSourceMetadata.ParameterHints)
-                parameters.Add(hint);
-
             var program = new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, false);
             var pass = new OpenGLEffectPass(manager.Ultraviolet, "Default", new[] { program });
             var technique = new OpenGLEffectTechnique(manager.Ultraviolet, "Default", new[] { pass });
 
-            return new OpenGLEffectImplementation(manager.Ultraviolet, new[] { technique }, parameters);
+            return new OpenGLEffectImplementation(manager.Ultraviolet, new[] { technique });
         }
 
         /// <inheritdoc/>

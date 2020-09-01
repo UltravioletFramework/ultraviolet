@@ -153,12 +153,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the program's vertex shader.
         /// </summary>
-        public IOpenGLResource VertexShader => vertexShader;
+        public OpenGLVertexShader VertexShader => vertexShader;
 
         /// <summary>
         /// Gets the program's fragment shader.
         /// </summary>
-        public IOpenGLResource FragmentShader => fragmentShader;
+        public OpenGLFragmentShader FragmentShader => fragmentShader;
 
         /// <summary>
         /// Gets the program's collection of uniforms.

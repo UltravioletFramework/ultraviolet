@@ -75,13 +75,53 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="camera">The camera with which the scene is being drawn.</param>
         protected virtual void OnEffectChanged(Effect effect, Camera camera) 
         {
-            if (effect is IEffectMatrices matrices)
+            var effectMatrices = effect as IEffectMatrices;
+            var parameters = effect.Parameters;
+
+            var epView = parameters.GetCameraParameter(CameraParameter.View);
+            if (epView != null)
             {
                 camera.GetViewMatrix(out var view);
-                matrices.View = view;
+                epView.SetValueRef(ref view);
+            }
+            else
+            {
+                if (effectMatrices != null)
+                {
+                    camera.GetViewMatrix(out var view);
+                    effectMatrices.View = view;
+                }
+            }
 
-                camera.GetProjectionMatrix(out var proj);
-                matrices.Projection = proj;
+            var epProjection = parameters.GetCameraParameter(CameraParameter.Projection);
+            if (epProjection != null)
+            {
+                camera.GetProjectionMatrix(out var projection);
+                epProjection.SetValueRef(ref projection);
+            }
+            else
+            {
+                if (effectMatrices != null)
+                {
+                    camera.GetProjectionMatrix(out var proj);
+                    effectMatrices.Projection = proj;
+                }
+            }
+
+            var epViewProj = parameters.GetCameraParameter(CameraParameter.ViewProj);
+            if (epViewProj != null)
+            {
+                camera.GetViewProjectionMatrix(out var viewProj);
+                epViewProj.SetValueRef(ref viewProj);
+            }
+
+            if (camera is ICameraEyePosition cameraEyePosition)
+            {
+                var epEyePosition = parameters.GetCameraParameter(CameraParameter.EyePosition);
+                if (epEyePosition != null)
+                {
+                    epEyePosition.SetValue(cameraEyePosition.EyePosition);
+                }
             }
         }
 
@@ -103,8 +143,37 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="material">The <see cref="Material"/> with which the mesh is being rendered.</param>
         protected virtual void OnDrawingModelMesh(ModelMesh mesh, Camera camera, ref Matrix transform, ref Material material) 
         {
-            if (material.Effect is IEffectMatrices matrices)
-                matrices.World = transform;
+            var parameters = material.Effect.Parameters;
+
+            var epWorld = parameters.GetCameraParameter(CameraParameter.World);
+            if (epWorld != null)
+            {
+                epWorld.SetValueRef(ref transform);
+            }
+            else
+            {
+                var effectMatrices = material.Effect as IEffectMatrices;
+                if (effectMatrices != null)
+                {
+                    effectMatrices.World = transform;
+                }
+            }
+
+            var epWorldInverseTranspose = parameters.GetCameraParameter(CameraParameter.WorldInverseTranspose);
+            if (epWorldInverseTranspose != null)
+            {
+                Matrix.TryInvertRef(ref transform, out var worldInvert);
+                Matrix.Transpose(ref worldInvert, out var worldInvertTranspose);
+                epWorldInverseTranspose.SetValueRef(ref worldInvertTranspose);
+            }
+
+            var epWorldViewProj = parameters.GetCameraParameter(CameraParameter.WorldViewProj);
+            if (epWorldViewProj != null)
+            {
+                camera.GetViewProjectionMatrix(out var viewProj);
+                Matrix.Multiply(ref transform, ref viewProj, out var worldViewProj);
+                epWorldViewProj.SetValueRef(ref worldViewProj);
+            }
         }
     }
 }

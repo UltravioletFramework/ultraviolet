@@ -15,14 +15,57 @@ namespace Ultraviolet.Graphics
         /// Initializes a new instance of the <see cref="EffectParameterCollection"/> class.
         /// </summary>
         /// <param name="parameters">The set of parameters to add to the collection.</param>
+        /// <param name="cameraParameterHints">A dictionary which associates camera parameter hints with effect parameters.</param>
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        protected EffectParameterCollection(IEnumerable<EffectParameter> parameters)
+        protected EffectParameterCollection(IEnumerable<EffectParameter> parameters, IDictionary<String, String> cameraParameterHints = null)
         {
             Contract.Require(parameters, nameof(parameters));
 
             foreach (var parameter in parameters)
-            {
                 AddInternal(parameter);
+
+            if (cameraParameterHints != null)
+            {
+                builtInCameraParameters = new EffectParameter[Enum.GetValues(typeof(CameraParameter)).Length];
+                customCameraParameters = new Dictionary<String, EffectParameter>();
+
+                foreach (var hint in cameraParameterHints)
+                {
+                    switch (hint.Key)
+                    {
+                        case nameof(CameraParameter.World):
+                            builtInCameraParameters[(Int32)CameraParameter.World] = this[hint.Value];
+                            break;
+
+                        case nameof(CameraParameter.WorldInverseTranspose):
+                            builtInCameraParameters[(Int32)CameraParameter.WorldInverseTranspose] = this[hint.Value];
+                            break;
+
+                        case nameof(CameraParameter.View):
+                            builtInCameraParameters[(Int32)CameraParameter.View] = this[hint.Value];
+                            break;
+
+                        case nameof(CameraParameter.Projection):
+                            builtInCameraParameters[(Int32)CameraParameter.Projection] = this[hint.Value];
+                            break;
+
+                        case nameof(CameraParameter.ViewProj):
+                            builtInCameraParameters[(Int32)CameraParameter.ViewProj] = this[hint.Value];
+                            break;
+
+                        case nameof(CameraParameter.WorldViewProj):
+                            builtInCameraParameters[(Int32)CameraParameter.WorldViewProj] = this[hint.Value];
+                            break;
+
+                        case nameof(CameraParameter.EyePosition):
+                            builtInCameraParameters[(Int32)CameraParameter.EyePosition] = this[hint.Value];
+                            break;
+
+                        default:
+                            customCameraParameters[hint.Key] = this[hint.Value];
+                            break;
+                    }
+                }
             }
         }
 
@@ -51,6 +94,36 @@ namespace Ultraviolet.Graphics
         IEnumerator<EffectParameter> IEnumerable<EffectParameter>.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Retrieves the <see cref="EffectParameter"/> which implements the specified built-in camera parameter, 
+        /// assuming this effect supports that parameter.
+        /// </summary>
+        /// <param name="parameter">A <see cref="CameraParameter"/> value for which to retrieve a corresponding effect parameter.</param>
+        /// <returns>The <see cref="EffectParameter"/> that implements the specified built-in camera parameter, 
+        /// or <see langword="null"/> if the effect does not support that parameter.</returns>
+        public EffectParameter GetCameraParameter(CameraParameter parameter)
+        {
+            return builtInCameraParameters?[(Int32)parameter];
+        }
+
+        /// <summary>
+        /// Retrieves the <see cref="EffectParameter"/> which implements the specified custom camera parameter, 
+        /// assuming this effect supports that parameter.
+        /// </summary>
+        /// <param name="parameter">A <see cref="CameraParameter"/> value for which to retrieve a corresponding effect parameter.</param>
+        /// <returns>The <see cref="EffectParameter"/> that implements the specified custom camera parameter, 
+        /// or <see langword="null"/> if the effect does not support that parameter.</returns>
+        public EffectParameter GetCameraParameter(String parameter)
+        {
+            Contract.Require(parameter, nameof(parameter));
+
+            if (customCameraParameters == null)
+                return null;
+
+            customCameraParameters.TryGetValue(parameter, out var result);
+            return result;
         }
 
         /// <summary>
@@ -99,5 +172,9 @@ namespace Ultraviolet.Graphics
         {
             return base.ContainsInternal(item);
         }
+
+        // Camera parameters.
+        private readonly EffectParameter[] builtInCameraParameters;
+        private readonly Dictionary<String, EffectParameter> customCameraParameters;
     }
 }
