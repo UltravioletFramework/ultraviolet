@@ -192,7 +192,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 
                 if (epWorldInverseTranspose != null)
                 {
-                    Matrix.Invert(ref world, out var worldInverse);
+                    Matrix.TryInvertRef(ref world, out var worldInverse);
                     Matrix.Transpose(ref worldInverse, out var worldInverseTranspose);
                     epWorldInverseTranspose.SetValueRef(ref worldInverseTranspose);
                 }

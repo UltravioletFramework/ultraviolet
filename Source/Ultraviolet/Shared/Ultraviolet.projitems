@@ -93,9 +93,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\PerspectiveCamera.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ICameraEyePosition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectLights.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectFog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectWorldViewProj.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectViewProj.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />

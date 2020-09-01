@@ -67,60 +67,53 @@ namespace Ultraviolet.Graphics.Graphics3D
             foreach (var node in scene.Nodes)
                 DrawNode(node, ref effect, worldMatrix);
         }
-       
+
         /// <summary>
         /// Called when the renderer changes to a new effect.
         /// </summary>
         /// <param name="effect">The effect which will be used to draw subsequent geometry.</param>
         /// <param name="camera">The camera with which the scene is being drawn.</param>
-        protected virtual void OnEffectChanged(Effect effect, Camera camera) 
+        protected virtual void OnEffectChanged(Effect effect, Camera camera)
         {
-            var effectMatrices = effect as IEffectMatrices;
             var parameters = effect.Parameters;
 
-            var epView = parameters.GetCameraParameter(CameraParameter.View);
-            if (epView != null)
+            if (effect is IEffectMatrices effectMatrices)
             {
                 camera.GetViewMatrix(out var view);
-                epView.SetValueRef(ref view);
+                effectMatrices.View = view;
+
+                camera.GetProjectionMatrix(out var proj);
+                effectMatrices.Projection = proj;
             }
             else
             {
-                if (effectMatrices != null)
+                var epView = parameters.GetCameraParameter(CameraParameter.View);
+                if (epView != null)
                 {
                     camera.GetViewMatrix(out var view);
-                    effectMatrices.View = view;
+                    epView.SetValueRef(ref view);
+                }
+
+                var epProjection = parameters.GetCameraParameter(CameraParameter.Projection);
+                if (epProjection != null)
+                {
+                    camera.GetProjectionMatrix(out var projection);
+                    epProjection.SetValueRef(ref projection);
                 }
             }
 
-            var epProjection = parameters.GetCameraParameter(CameraParameter.Projection);
-            if (epProjection != null)
+            if (effect is IEffectViewProj effectViewProj)
             {
-                camera.GetProjectionMatrix(out var projection);
-                epProjection.SetValueRef(ref projection);
+                camera.GetViewProjectionMatrix(out var viewProj);
+                effectViewProj.ViewProj = viewProj;
             }
             else
             {
-                if (effectMatrices != null)
+                var epViewProj = parameters.GetCameraParameter(CameraParameter.ViewProj);
+                if (epViewProj != null)
                 {
-                    camera.GetProjectionMatrix(out var proj);
-                    effectMatrices.Projection = proj;
-                }
-            }
-
-            var epViewProj = parameters.GetCameraParameter(CameraParameter.ViewProj);
-            if (epViewProj != null)
-            {
-                camera.GetViewProjectionMatrix(out var viewProj);
-                epViewProj.SetValueRef(ref viewProj);
-            }
-
-            if (camera is ICameraEyePosition cameraEyePosition)
-            {
-                var epEyePosition = parameters.GetCameraParameter(CameraParameter.EyePosition);
-                if (epEyePosition != null)
-                {
-                    epEyePosition.SetValue(cameraEyePosition.EyePosition);
+                    camera.GetViewProjectionMatrix(out var viewProj);
+                    epViewProj.SetValueRef(ref viewProj);
                 }
             }
         }
@@ -143,36 +136,37 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="material">The <see cref="Material"/> with which the mesh is being rendered.</param>
         protected virtual void OnDrawingModelMesh(ModelMesh mesh, Camera camera, ref Matrix transform, ref Material material) 
         {
-            var parameters = material.Effect.Parameters;
+            var effect = material.Effect;
+            var parameters = effect.Parameters;
 
-            var epWorld = parameters.GetCameraParameter(CameraParameter.World);
-            if (epWorld != null)
+            if (effect is IEffectMatrices effectMatrices)
             {
-                epWorld.SetValueRef(ref transform);
+                effectMatrices.World = transform;
             }
             else
             {
-                var effectMatrices = material.Effect as IEffectMatrices;
-                if (effectMatrices != null)
+                var epWorld = parameters.GetCameraParameter(CameraParameter.World);
+                if (epWorld != null)
                 {
-                    effectMatrices.World = transform;
+                    epWorld.SetValueRef(ref transform);
                 }
             }
 
-            var epWorldInverseTranspose = parameters.GetCameraParameter(CameraParameter.WorldInverseTranspose);
-            if (epWorldInverseTranspose != null)
-            {
-                Matrix.TryInvertRef(ref transform, out var worldInvert);
-                Matrix.Transpose(ref worldInvert, out var worldInvertTranspose);
-                epWorldInverseTranspose.SetValueRef(ref worldInvertTranspose);
-            }
-
-            var epWorldViewProj = parameters.GetCameraParameter(CameraParameter.WorldViewProj);
-            if (epWorldViewProj != null)
+            if (effect is IEffectWorldViewProj effectWorldViewProj)
             {
                 camera.GetViewProjectionMatrix(out var viewProj);
                 Matrix.Multiply(ref transform, ref viewProj, out var worldViewProj);
-                epWorldViewProj.SetValueRef(ref worldViewProj);
+                effectWorldViewProj.WorldViewProj = worldViewProj;
+            }
+            else
+            { 
+                var epWorldViewProj = parameters.GetCameraParameter(CameraParameter.WorldViewProj);
+                if (epWorldViewProj != null)
+                {
+                    camera.GetViewProjectionMatrix(out var viewProj);
+                    Matrix.Multiply(ref transform, ref viewProj, out var worldViewProj);
+                    epWorldViewProj.SetValueRef(ref worldViewProj);
+                }
             }
         }
     }

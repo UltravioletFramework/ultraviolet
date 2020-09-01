@@ -11,11 +11,6 @@
         World,
 
         /// <summary>
-        /// The inverse, transposed world matrix.
-        /// </summary>
-        WorldInverseTranspose,
-
-        /// <summary>
         /// The view matrix.
         /// </summary>
         View,
@@ -34,10 +29,5 @@
         /// The combined world-view-projection matrix.
         /// </summary>
         WorldViewProj,
-
-        /// <summary>
-        /// The position of the camera's eye in 3D space.
-        /// </summary>
-        EyePosition,
     }
 }

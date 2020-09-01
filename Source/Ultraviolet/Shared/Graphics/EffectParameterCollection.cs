@@ -37,10 +37,6 @@ namespace Ultraviolet.Graphics
                             builtInCameraParameters[(Int32)CameraParameter.World] = this[hint.Value];
                             break;
 
-                        case nameof(CameraParameter.WorldInverseTranspose):
-                            builtInCameraParameters[(Int32)CameraParameter.WorldInverseTranspose] = this[hint.Value];
-                            break;
-
                         case nameof(CameraParameter.View):
                             builtInCameraParameters[(Int32)CameraParameter.View] = this[hint.Value];
                             break;
@@ -55,10 +51,6 @@ namespace Ultraviolet.Graphics
 
                         case nameof(CameraParameter.WorldViewProj):
                             builtInCameraParameters[(Int32)CameraParameter.WorldViewProj] = this[hint.Value];
-                            break;
-
-                        case nameof(CameraParameter.EyePosition):
-                            builtInCameraParameters[(Int32)CameraParameter.EyePosition] = this[hint.Value];
                             break;
 
                         default:
