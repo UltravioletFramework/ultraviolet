@@ -366,18 +366,18 @@ namespace Ultraviolet.OpenGL.Graphics
         private static readonly Regex regexCStyleComment =
             new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
         private static readonly Regex regexExternDirective =
-            new Regex(@"^\s*#extern(\s+""(?<name>.*)""\s*)?$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#extern(\s+""(?<name>.*)""\s*)?$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexIncludeDirective =
-            new Regex(@"^\s*#include\s+""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#include\s+""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexincludeResourceDirective =
-            new Regex(@"^\s*#includeres\s+""(?<resource>.*)""\s*(?<asm>entry|executing)?\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#includeres\s+""(?<resource>.*)""\s*(?<asm>entry|executing)?\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexIfVerDirective =
-            new Regex(@"^\s*#(?<op>ifver(_gt|_gte|_lt|_lte)?)\s+\""(?<gles>es)?(?<version_maj>\d+).(?<version_min>\d+)\""\s+\{\s*(?<source>.+)\s*\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#(?<op>ifver(_gt|_gte|_lt|_lte)?)\s+\""(?<gles>es)?(?<version_maj>\d+).(?<version_min>\d+)\""\s+\{\s*(?<source>.+)\s*\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexSamplerDirective =
-            new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexParamDirective =
-            new Regex(@"^\s*#param\s+""(?<parameter>.*?)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#param\s+""(?<parameter>.*?)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexCameraDirective =
-            new Regex(@"^\s*#camera\((?<parameter>\w+)\)\s*""(?<uniform>\w+)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*(\/\/)?#camera\((?<parameter>\w+)\)\s*""(?<uniform>\w+)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

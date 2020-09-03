@@ -1,4 +1,4 @@
-﻿#extern "FOO"
+﻿//#extern "FOO"
 /*
 #extern "BAR"
 */
