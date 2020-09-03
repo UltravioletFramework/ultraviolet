@@ -30,9 +30,18 @@ namespace Ultraviolet.Graphics.Graphics3D
                     if (triangle == null)
                         throw new InvalidDataException(UltravioletStrings.MalformedContentFile);
 
-                    vertices[0] = new StlModelVertex { Position = triangle.Vertex1, Normal = triangle.Normal };
-                    vertices[1] = new StlModelVertex { Position = triangle.Vertex2, Normal = triangle.Normal };
-                    vertices[2] = new StlModelVertex { Position = triangle.Vertex3, Normal = triangle.Normal };
+                    if (stlMetadata.SwapWindingOrder)
+                    {
+                        vertices[0] = new StlModelVertex { Position = triangle.Vertex3, Normal = triangle.Normal };
+                        vertices[1] = new StlModelVertex { Position = triangle.Vertex2, Normal = triangle.Normal };
+                        vertices[2] = new StlModelVertex { Position = triangle.Vertex1, Normal = triangle.Normal };
+                    }
+                    else
+                    {
+                        vertices[0] = new StlModelVertex { Position = triangle.Vertex1, Normal = triangle.Normal };
+                        vertices[1] = new StlModelVertex { Position = triangle.Vertex2, Normal = triangle.Normal };
+                        vertices[2] = new StlModelVertex { Position = triangle.Vertex3, Normal = triangle.Normal };
+                    }
 
                     vertexBuffer.SetRawData((IntPtr)vertices, 0, facetOffset, facetSizeInBytes, SetDataOptions.NoOverwrite);
                     facetOffset += facetSizeInBytes;
@@ -42,13 +51,21 @@ namespace Ultraviolet.Graphics.Graphics3D
             var geometryStream = GeometryStream.Create();
             geometryStream.Attach(vertexBuffer);
 
-            var globalTransform = 
-                Matrix.CreateScale(stlMetadata.Scale) *
-                Matrix.CreateRotationX(stlMetadata.RotationX) *
-                Matrix.CreateRotationY(stlMetadata.RotationY) *
-                Matrix.CreateRotationZ(stlMetadata.RotationZ);
+            var globalTransform = Matrix.Identity;
+            if (stlMetadata.RotationX != 0.0f || stlMetadata.RotationY != 0.0f || stlMetadata.RotationZ != 0.0f || stlMetadata.Scale != 1.0f)
+            {
+                Matrix.CreateRotationX(stlMetadata.RotationX, out var rotX);
+                Matrix.CreateRotationY(stlMetadata.RotationY, out var rotY);
+                Matrix.CreateRotationZ(stlMetadata.RotationZ, out var rotZ);
+                Matrix.CreateScale(stlMetadata.Scale, out var scale);
 
-            var modelMeshMaterial = new BasicMaterial() { DiffuseColor = stlMetadata.DiffuseColor };
+                Matrix.Multiply(ref globalTransform, ref rotZ, out globalTransform);
+                Matrix.Multiply(ref globalTransform, ref rotX, out globalTransform);
+                Matrix.Multiply(ref globalTransform, ref rotY, out globalTransform);
+                Matrix.Multiply(ref globalTransform, ref scale, out globalTransform);
+            }
+
+            var modelMeshMaterial = stlMetadata.DefaultMaterial ?? new BasicMaterial() { DiffuseColor = Color.White };
             var modelMeshGeometry = new ModelMeshGeometry(PrimitiveType.TriangleList, geometryStream, vertexBuffer.VertexCount, 0, modelMeshMaterial);
             var modelMesh = new ModelMesh(null, new[] { modelMeshGeometry });
             var modelNode = new ModelNode(null, modelMesh, null, globalTransform);

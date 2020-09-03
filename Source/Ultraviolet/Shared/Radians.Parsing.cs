@@ -46,8 +46,7 @@ namespace Ultraviolet
 
             // Determine whether the string is being specified in terms of pi or tau.
             var trimmed = s.Trim().ToLower();
-            var suffixFactor = 1f;
-            var suffix = EvaluateSuffix(trimmed, out suffixFactor);
+            var suffix = EvaluateSuffix(trimmed, out var suffixFactor);
             var suffixLength = (suffix == null) ? 0 : suffix.Length;
 
             // Parse the fractional part of the string.

@@ -8,9 +8,9 @@ namespace Ultraviolet.Graphics.Graphics3D
     public sealed class StlModelProcessorMetadata
     {
         /// <summary>
-        /// Gets or sets the diffuse color which is applied to the model.
+        /// Gets or sets the default material which is applied to the model.
         /// </summary>
-        public Color DiffuseColor { get; set; } = Color.White;
+        public Material DefaultMaterial { get; set; } = new BasicMaterial() { DiffuseColor = Color.White };
 
         /// <summary>
         /// Gets or sets the scale which is applied to the model.
@@ -18,18 +18,23 @@ namespace Ultraviolet.Graphics.Graphics3D
         public Single Scale { get; set; } = 1f;
 
         /// <summary>
-        /// Gets or sets the rotation along the x-axis which is applied to the model.
+        /// Gets or sets the rotation along the x-axis, in radians, which is applied to the model.
         /// </summary>
-        public Single RotationX { get; set; }
+        public Radians RotationX { get; set; }
 
         /// <summary>
-        /// Gets or sets the rotation along the y-axis which is applied to the model.
+        /// Gets or sets the rotation along the y-axis, in radians, which is applied to the model.
         /// </summary>
-        public Single RotationY { get; set; }
+        public Radians RotationY { get; set; }
 
         /// <summary>
-        /// Gets or sets the rotation along the z-axis which is applied to the model.
+        /// Gets or sets the rotation along the z-axis, in radians, which is applied to the model.
         /// </summary>
-        public Single RotationZ { get; set; }
+        public Radians RotationZ { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to swap the winding order of the model's vertices.
+        /// </summary>
+        public Boolean SwapWindingOrder { get; set; }
     }
 }
