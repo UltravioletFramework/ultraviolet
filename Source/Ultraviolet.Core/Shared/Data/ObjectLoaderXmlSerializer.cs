@@ -270,6 +270,34 @@ namespace Ultraviolet.Core.Data
         }
 
         /// <summary>
+        /// Gets the type with the specified name, or returns <see langword="null"/> if no such type can be found.
+        /// </summary>
+        private static Type GetType(String name)
+        {
+            var isUnqualifiedName = !name.Contains('.') && !name.Contains(',');
+            if (isUnqualifiedName)
+            {
+                var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (var privilegedAssemblyName in PrivilegedAssemblyNames)
+                {
+                    var asm = loadedAssemblies.Where(x => String.Equals(x.GetName().Name, privilegedAssemblyName, StringComparison.Ordinal)).SingleOrDefault();
+                    if (asm != null)
+                    {
+                        var matchingTypes = asm.ExportedTypes.Where(x => String.Equals(x.Name, name, StringComparison.Ordinal)).ToList();
+                        if (matchingTypes.Count > 0)
+                        {
+                            if (matchingTypes.Count > 1)
+                                throw new Exception(CoreStrings.AmbiguousTypeName.Format(name));
+
+                            return matchingTypes[0];
+                        }
+                    }
+                }
+            }
+            return Type.GetType(name, false);
+        }
+
+        /// <summary>
         /// Creates an object from the specified root element.
         /// </summary>
         /// <param name="state">The current loader state.</param>
@@ -303,7 +331,7 @@ namespace Ultraviolet.Core.Data
             }
 
             // Attempt to find the object class and make sure it's of the correct type.
-            var objClass = Type.GetType(objClassName, false);
+            var objClass = GetType(objClassName);
             if (objClass == null || !type.IsAssignableFrom(objClass))
                 throw new InvalidOperationException(CoreStrings.DataObjectInvalidClass.Format(objClassName ?? "(null)", argsBase[0]));
 
@@ -393,7 +421,7 @@ namespace Ultraviolet.Core.Data
             if (complexTypeAttr != null && String.IsNullOrEmpty(complexTypeAttr.Value))
                 throw new InvalidOperationException(CoreStrings.DataObjectInvalidType.Format(element.Name));
 
-            var complexType = (complexTypeAttr == null) ? baseType : Type.GetType(state.ResolveClass(complexTypeAttr.Value), false);
+            var complexType = (complexTypeAttr == null) ? baseType : GetType(complexTypeAttr.Value);
             if (complexType == null)
                 throw new InvalidOperationException(CoreStrings.DataObjectInvalidType.Format(element.Name));
 
@@ -801,6 +829,9 @@ namespace Ultraviolet.Core.Data
         {
             return ObjectResolver.FromString(str, type, provider);
         }
+
+        // A list of specially-privileged assemblies which will be searched when loading a type with an unqualified name.
+        private static readonly String[] PrivilegedAssemblyNames = new[] { "Ultraviolet.Core", "Ultraviolet" };
 
         // The global alias registry.
         private readonly ReaderWriterLockSlim lockobj = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);

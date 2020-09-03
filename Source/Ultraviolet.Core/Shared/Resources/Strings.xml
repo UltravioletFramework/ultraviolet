@@ -365,4 +365,9 @@
       <Variant>Could not find or load the native function: {0}</Variant>
     </en-US>
   </String>
+  <String Key="AMBIGUOUS_TYPE_NAME">
+    <en-US>
+      <Variant>Unqualified type name '{0}' cannot be unambiguously resolved to a single type. Specify a fully-qualified type name.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
