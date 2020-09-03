@@ -45,7 +45,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 var triangles = new List<StlModelTriangleDescription>();
                 while (!reader.EndOfStream)
                 {
-                    ReadOnlySpan<Char> Advance(StreamReader reader) => reader.ReadLine().Trim().AsSpan();
+                    String Advance(StreamReader r) => r.ReadLine().Trim();
 
                     var line = Advance(reader);
                     if (Accept(ref line, "endsolid"))
@@ -87,11 +87,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Optionally accepts the specified text.
         /// </summary>
-        private Boolean Accept(ref ReadOnlySpan<Char> span, String text)
+        private Boolean Accept(ref String line, String text)
         {
-            if (span.StartsWith(text, StringComparison.Ordinal))
+            if (line.StartsWith(text, StringComparison.Ordinal))
             {
-                span = span.Slice(text.Length);
+                line = line.Substring(text.Length);
                 return true;
             }
             return false;
@@ -100,25 +100,25 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Expects the specified line of text, throwing an exception if it is not found.
         /// </summary>
-        private void Expect(ref ReadOnlySpan<Char> span, String line)
+        private void Expect(ref String line, String text)
         {
-            if (!span.Equals(line, StringComparison.Ordinal))
+            if (!line.Equals(text, StringComparison.Ordinal))
                 throw new InvalidDataException(UltravioletStrings.MalformedContentFile);
 
-            span = ReadOnlySpan<Char>.Empty;
+            line = String.Empty;
         }
 
         /// <summary>
         /// Expects a set of coordinates with the specified prefix, throwing an exception if it is not found.
         /// </summary>
-        private void ExpectCoordinates(ref ReadOnlySpan<Char> span, String prefix, out Vector3 coordinates)
+        private void ExpectCoordinates(ref String line, String prefix, out Vector3 coordinates)
         {
-            if (!span.StartsWith(prefix, StringComparison.Ordinal))
+            if (!line.StartsWith(prefix, StringComparison.Ordinal))
                 throw new InvalidDataException(UltravioletStrings.MalformedContentFile);
 
-            span = span.Slice(prefix.Length).Trim();
+            line = line.Substring(prefix.Length).Trim();
 
-            var parts = span.ToString().Split(' ');
+            var parts = line.ToString().Split(' ');
             if (parts.Length != 3)
                 throw new InvalidDataException(UltravioletStrings.MalformedContentFile);
 

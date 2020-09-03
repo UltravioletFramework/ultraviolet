@@ -18,54 +18,9 @@ namespace Ultraviolet.Graphics.Graphics3D
             Contract.Require(scene, nameof(scene));
             Contract.Require(camera, nameof(camera));
 
-            void DrawNode(ModelNode node, ref Effect effect, Matrix transform)
-            {
-                transform = Matrix.Multiply(node.Transform, transform);
-                OnDrawingModelNode(node, camera, ref transform);
-
-                if (node.Mesh != null)
-                {
-                    foreach (var geometry in node.Mesh.Geometries)
-                    {
-                        var material = geometry.Material;
-                        OnDrawingModelMesh(node.Mesh, camera, ref transform, ref material);
-
-                        if (material == null)
-                            continue;
-
-                        if (effect != material.Effect)
-                        {
-                            effect = material.Effect;
-                            OnEffectChanged(effect, camera);
-                        }
-
-                        material.Apply();
-                        foreach (var pass in material.Effect.CurrentTechnique.Passes)
-                        {
-                            pass.Apply();
-
-                            var gfx = geometry.GeometryStream.Ultraviolet.GetGraphics();
-                            gfx.SetGeometryStream(geometry.GeometryStream);
-
-                            if (geometry.GeometryStream.HasIndices)
-                            {
-                                gfx.DrawIndexedPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
-                            }
-                            else
-                            {
-                                gfx.DrawPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
-                            }
-                        }
-                    }
-                }
-
-                foreach (var child in node.Children)
-                    DrawNode(child, ref effect, transform);
-            }
-
             var effect = default(Effect);
             foreach (var node in scene.Nodes)
-                DrawNode(node, ref effect, worldMatrix);
+                DrawNode(node, camera, ref effect, worldMatrix);
         }
 
         /// <summary>
@@ -168,6 +123,54 @@ namespace Ultraviolet.Graphics.Graphics3D
                     epWorldViewProj.SetValueRef(ref worldViewProj);
                 }
             }
+        }
+
+        /// <summary>
+        /// Draws a <see cref="ModelNode"/> instance.
+        /// </summary>
+        private void DrawNode(ModelNode node, Camera camera, ref Effect effect, Matrix transform)
+        {
+            transform = Matrix.Multiply(node.Transform, transform);
+            OnDrawingModelNode(node, camera, ref transform);
+
+            if (node.Mesh != null)
+            {
+                foreach (var geometry in node.Mesh.Geometries)
+                {
+                    var material = geometry.Material;
+                    OnDrawingModelMesh(node.Mesh, camera, ref transform, ref material);
+
+                    if (material == null)
+                        continue;
+
+                    if (effect != material.Effect)
+                    {
+                        effect = material.Effect;
+                        OnEffectChanged(effect, camera);
+                    }
+
+                    material.Apply();
+                    foreach (var pass in material.Effect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+
+                        var gfx = geometry.GeometryStream.Ultraviolet.GetGraphics();
+                        gfx.SetGeometryStream(geometry.GeometryStream);
+
+                        if (geometry.GeometryStream.HasIndices)
+                        {
+                            gfx.DrawIndexedPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
+                        }
+                        else
+                        {
+                            gfx.DrawPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
+                        }
+                    }
+                }
+            }
+
+            foreach (var child in node.Children)
+                DrawNode(child, camera, ref effect, transform);
         }
     }
 }
