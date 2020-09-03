@@ -366,7 +366,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private static readonly Regex regexCStyleComment =
             new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
         private static readonly Regex regexExternDirective =
-            new Regex(@"^\s*#extern(\s+(?<name>.*)\s*)?$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*#extern(\s+""(?<name>.*)""\s*)?$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexIncludeDirective =
             new Regex(@"^\s*#include\s+""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexincludeResourceDirective =

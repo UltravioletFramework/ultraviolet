@@ -51,7 +51,7 @@ namespace Ultraviolet.Tests.Graphics
                         .ShouldBe(
                             @"#define FOO 123" + Environment.NewLine +
                             @"/*" + Environment.NewLine +
-                            @"#extern BAR" + Environment.NewLine +
+                            @"#extern ""BAR""" + Environment.NewLine +
                             @"*/" + Environment.NewLine +
                             @"#define BAZ 456" + Environment.NewLine);
                 })
@@ -103,7 +103,7 @@ namespace Ultraviolet.Tests.Graphics
                     TheResultingString(shaderSource.Source)
                         .ShouldBe(
                             @"/*" + Environment.NewLine +
-                            @"#extern BAR" + Environment.NewLine +
+                            @"#extern ""BAR""" + Environment.NewLine +
                             @"*/" + Environment.NewLine +
                             @"#define BAZ 456" + Environment.NewLine);
                 })
@@ -125,7 +125,7 @@ namespace Ultraviolet.Tests.Graphics
                     TheResultingString(shaderSource.Source)
                         .ShouldBe(
                             @"/*" + Environment.NewLine +
-                            @"#extern BAR" + Environment.NewLine +
+                            @"#extern ""BAR""" + Environment.NewLine +
                             @"*/" + Environment.NewLine);
                 })
                 .RunForOneFrame();

@@ -1,5 +1,5 @@
 ﻿#extern
 /*
-#extern BAR
+#extern "BAR"
 */
-#extern BAZ
+#extern "BAZ"
