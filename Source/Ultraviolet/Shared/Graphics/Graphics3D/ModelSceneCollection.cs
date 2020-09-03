@@ -34,19 +34,6 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
-        /// Changes the model's default scene.
-        /// </summary>
-        /// <param name="index">The index of the default scene within this collection.</param>
-        public void ChangeDefaultScene(Index index)
-        {
-            var offset = index.GetOffset(Count);
-            if (offset < 0 || offset >= Count)
-                throw new ArgumentOutOfRangeException(nameof(index));
-
-            DefaultScene = this[offset];
-        }
-
-        /// <summary>
         /// Gets the model's default scene.
         /// </summary>
         public ModelScene DefaultScene { get; private set; }
