@@ -45,7 +45,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 var triangles = new List<StlModelTriangleDescription>();
                 while (!reader.EndOfStream)
                 {
-                    static ReadOnlySpan<Char> Advance(StreamReader reader) => reader.ReadLine().Trim().AsSpan();
+                    ReadOnlySpan<Char> Advance(StreamReader reader) => reader.ReadLine().Trim().AsSpan();
 
                     var line = Advance(reader);
                     if (Accept(ref line, "endsolid"))
