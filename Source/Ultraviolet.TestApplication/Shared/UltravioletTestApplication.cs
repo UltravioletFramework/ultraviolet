@@ -269,7 +269,7 @@ namespace Ultraviolet.TestApplication
         /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            var configuration = new UltravioletConfiguration();
+            var configuration = new SDL2UltravioletConfiguration();
             configuration.Headless = headless;
             configuration.EnableServiceMode = serviceMode;
             configuration.IsHardwareInputDisabled = true;
