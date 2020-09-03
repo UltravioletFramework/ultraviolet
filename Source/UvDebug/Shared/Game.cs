@@ -62,7 +62,7 @@ namespace UvDebug
             graphicsConfig.SrgbBuffersEnabled = false;
             graphicsConfig.SrgbDefaultForTexture2D = false;
 
-            var contextConfig = new UltravioletConfiguration();
+            var contextConfig = new SDL2UltravioletConfiguration();
             contextConfig.SupportsHighDensityDisplayModes = true;
             contextConfig.EnableServiceMode = ShouldRunInServiceMode();
             contextConfig.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();

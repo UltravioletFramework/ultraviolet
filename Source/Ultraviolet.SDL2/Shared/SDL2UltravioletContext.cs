@@ -30,7 +30,7 @@ namespace Ultraviolet.SDL2
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        public unsafe SDL2UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
+        public unsafe SDL2UltravioletContext(IUltravioletHost host, SDL2UltravioletConfiguration configuration)
             : base(host, configuration)
         {
             Contract.Require(configuration, nameof(configuration));
