@@ -126,6 +126,32 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Called when the renderer is drawing the geometry of a <see cref="ModelMesh"/> instance.
+        /// </summary>
+        /// <param name="geometry">The <see cref="ModelMeshGeometry"/> which is being drawn.</param>
+        /// <param name="material">The <see cref="Material"/> with which to draw the geometry.</param>
+        protected virtual void OnDrawingModelMeshGeometry(ModelMeshGeometry geometry, Material material)
+        {
+            material.Apply();
+            foreach (var pass in material.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                var gfx = geometry.GeometryStream.Ultraviolet.GetGraphics();
+                gfx.SetGeometryStream(geometry.GeometryStream);
+
+                if (geometry.GeometryStream.HasIndices)
+                {
+                    gfx.DrawIndexedPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
+                }
+                else
+                {
+                    gfx.DrawPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
+                }
+            }
+        }
+
+        /// <summary>
         /// Draws a <see cref="ModelNode"/> instance.
         /// </summary>
         private void DrawNode(ModelNode node, Camera camera, ref Effect effect, Matrix transform)
@@ -149,23 +175,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                         OnEffectChanged(effect, camera);
                     }
 
-                    material.Apply();
-                    foreach (var pass in material.Effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-
-                        var gfx = geometry.GeometryStream.Ultraviolet.GetGraphics();
-                        gfx.SetGeometryStream(geometry.GeometryStream);
-
-                        if (geometry.GeometryStream.HasIndices)
-                        {
-                            gfx.DrawIndexedPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
-                        }
-                        else
-                        {
-                            gfx.DrawPrimitives(geometry.PrimitiveType, 0, geometry.PrimitiveCount);
-                        }
-                    }
+                    OnDrawingModelMeshGeometry(geometry, material);
                 }
             }
 
