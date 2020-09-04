@@ -23,10 +23,16 @@ namespace Ultraviolet.FreeType2
 
             var fontMetadata = metadata.As<FreeTypeFontImporterMetadata>();
 
-            var faceRegularAsset = metadata.AssetFilePath;
-            var faceBoldAsset = String.IsNullOrEmpty(fontMetadata.BoldFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldFace);
-            var faceItalicAsset = String.IsNullOrEmpty(fontMetadata.ItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.ItalicFace);
-            var faceBoldItalicAsset = String.IsNullOrEmpty(fontMetadata.BoldItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldItalicFace);
+            var faceBoldAsset = default(String);
+            var faceItalicAsset = default(String);
+            var faceBoldItalicAsset = default(String);
+            if (metadata.IsFile)
+            {
+                var faceRegularAsset = metadata.AssetFilePath;
+                faceBoldAsset = String.IsNullOrEmpty(fontMetadata.BoldFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldFace);
+                faceItalicAsset = String.IsNullOrEmpty(fontMetadata.ItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.ItalicFace);
+                faceBoldItalicAsset = String.IsNullOrEmpty(fontMetadata.BoldItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldItalicFace);
+            }
 
             var faceRegularData = ReadStreamIntoNativeMemory(stream, out var faceRegularDataLength);
 

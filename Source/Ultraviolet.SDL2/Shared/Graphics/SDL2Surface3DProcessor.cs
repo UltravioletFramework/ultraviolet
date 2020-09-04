@@ -25,20 +25,20 @@ namespace Ultraviolet.SDL2.Graphics
             var isSingleFile = true;
 
             var filename = Path.GetFileNameWithoutExtension(metadata.AssetFileName);
-            if (filename != null && filename.EndsWith("_0"))
+            if (filename != null && filename.EndsWith("_0") && metadata.IsFile)
             {
                 filename = filename.Substring(0, filename.Length - "_0".Length);
                 isSingleFile = false;
             }
 
-            return isSingleFile ? ProcessSingleFile(manager, metadata, input, filename) :
+            return isSingleFile ? ProcessSingleFile(manager, metadata, input) :
                 ProcessMultipleFiles(manager, metadata, input, filename);
         }
 
         /// <summary>
         /// Processes a single file which has all of the layers of the surface within it.
         /// </summary>
-        private Surface3D ProcessSingleFile(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input, String filename)
+        private Surface3D ProcessSingleFile(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
             var mdat = metadata.As<SDL2Surface3DProcessorMetadata>();
             var srgbEncoded = mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForSurface3D;

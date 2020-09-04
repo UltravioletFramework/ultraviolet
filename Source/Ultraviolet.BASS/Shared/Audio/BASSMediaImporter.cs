@@ -10,12 +10,17 @@ namespace Ultraviolet.BASS.Audio
     [ContentImporter(".mp3")]
     [ContentImporter(".ogg")]
     [ContentImporter(".wav")]
-    public sealed class BASSMediaImporter : ContentImporter<String>
+    public sealed class BASSMediaImporter : ContentImporter<BASSMediaDescription>
     {
         /// <inheritdoc/>
-        public override String Import(IContentImporterMetadata metadata, Stream stream)
+        public override BASSMediaDescription Import(IContentImporterMetadata metadata, Stream stream)
         {
-            return metadata.AssetFilePath;
+            if (metadata.IsFile)
+                return new BASSMediaDescription(metadata.AssetFilePath);
+
+            var buffer = new Byte[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
+            return new BASSMediaDescription(buffer);
         }
     }
 }

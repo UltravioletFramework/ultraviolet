@@ -8,12 +8,15 @@ namespace Ultraviolet.FMOD.Audio
     /// Loads sound effect assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class FMODSoundEffectProcessor : ContentProcessor<String, SoundEffect>
+    public sealed class FMODSoundEffectProcessor : ContentProcessor<FMODMediaDescription, SoundEffect>
     {
         /// <inheritdoc/>
-        public override SoundEffect Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
+        public override SoundEffect Process(ContentManager manager, IContentProcessorMetadata metadata, FMODMediaDescription input)
         {
-            return new FMODSoundEffect(manager.Ultraviolet, input);
+            if (!input.IsFilename)
+                throw new NotSupportedException();
+
+            return new FMODSoundEffect(manager.Ultraviolet, (String)input.Data);
         }
     }
 }

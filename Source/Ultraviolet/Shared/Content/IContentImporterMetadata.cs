@@ -34,5 +34,15 @@ namespace Ultraviolet.Content
         /// Gets the name of the file that contains the asset data.
         /// </summary>
         String AssetFileName { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the asset is being loaded from a file.
+        /// </summary>
+        Boolean IsFile { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the asset is being loaded from a stream.
+        /// </summary>
+        Boolean IsStream { get; }
     }
 }

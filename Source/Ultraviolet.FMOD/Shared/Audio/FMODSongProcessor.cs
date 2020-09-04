@@ -8,12 +8,15 @@ namespace Ultraviolet.FMOD.Audio
     /// Loads song assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class FMODSongProcessor : ContentProcessor<String, Song>
+    public sealed class FMODSongProcessor : ContentProcessor<FMODMediaDescription, Song>
     {
         /// <inheritdoc/>
-        public override Song Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
+        public override Song Process(ContentManager manager, IContentProcessorMetadata metadata, FMODMediaDescription input)
         {
-            return new FMODSong(manager.Ultraviolet, input);
+            if (!input.IsFilename)
+                throw new NotSupportedException();
+
+            return new FMODSong(manager.Ultraviolet, (String)input.Data);
         }
     }
 }

@@ -8,12 +8,15 @@ namespace Ultraviolet.BASS.Audio
     /// Loads song assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class BASSSongProcessor : ContentProcessor<String, Song>
+    public sealed class BASSSongProcessor : ContentProcessor<BASSMediaDescription, Song>
     {
         /// <inheritdoc/>
-        public override Song Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
+        public override Song Process(ContentManager manager, IContentProcessorMetadata metadata, BASSMediaDescription input)
         {
-            return new BASSSong(manager.Ultraviolet, input);
+            if (!input.IsFilename)
+                throw new NotSupportedException();
+
+            return new BASSSong(manager.Ultraviolet, (String)input.Data);
         }
     }
 }

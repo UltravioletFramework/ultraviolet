@@ -8,12 +8,14 @@ namespace Ultraviolet.BASS.Audio
     /// Loads sound effect assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class BASSSoundEffectProcessor : ContentProcessor<String, SoundEffect>
+    public sealed class BASSSoundEffectProcessor : ContentProcessor<BASSMediaDescription, SoundEffect>
     {
         /// <inheritdoc/>
-        public override SoundEffect Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
+        public override SoundEffect Process(ContentManager manager, IContentProcessorMetadata metadata, BASSMediaDescription input)
         {
-            return new BASSSoundEffect(manager.Ultraviolet, input);
+            return input.IsFilename ?
+                new BASSSoundEffect(manager.Ultraviolet, (String)input.Data) :
+                new BASSSoundEffect(manager.Ultraviolet, (Byte[])input.Data);
         }
     }
 }

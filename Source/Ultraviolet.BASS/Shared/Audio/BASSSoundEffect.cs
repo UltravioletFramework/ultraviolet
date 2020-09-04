@@ -22,6 +22,8 @@ namespace Ultraviolet.BASS.Audio
         public BASSSoundEffect(UltravioletContext uv, String filename)
             : base(uv)
         {
+            Contract.Require(filename, nameof(filename));
+
             var fileSystemService = FileSystemService.Create();
             var fileData = default(Byte[]);
 
@@ -31,16 +33,20 @@ namespace Ultraviolet.BASS.Audio
                 stream.Read(fileData, 0, fileData.Length);
             }
 
-            sample = BASS_SampleLoad(fileData, 0, (UInt32)fileData.Length, UInt16.MaxValue, 0);
-            if (!BASSUtil.IsValidHandle(sample))
-                throw new BASSException();
+            InitializeSampleData(fileData, out this.sample, out this.sampleInfo, out this.sampleData);
+        }
 
-            if (!BASS_SampleGetInfo(sample, out this.sampleInfo))
-                throw new BASSException();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BASSSoundEffect"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="fileData">An array containing the sample data to load.</param>
+        public BASSSoundEffect(UltravioletContext uv, Byte[] fileData)
+            : base(uv)
+        {
+            Contract.Require(fileData, nameof(fileData));
 
-            this.data = Marshal.AllocHGlobal((int)sampleInfo.length);
-            if (!BASS_SampleGetData(sample, this.data))
-                throw new BASSException();
+            InitializeSampleData(fileData, out this.sample, out this.sampleInfo, out this.sampleData);
         }
         
         /// <summary>
@@ -51,7 +57,7 @@ namespace Ultraviolet.BASS.Audio
         /// <returns>The handle to the sound effect's BASS sample.</returns>
         public UInt32 GetSampleInfo(out IntPtr data, out BASS_SAMPLE info)
         {
-            data = this.data;
+            data = this.sampleData;
             info = this.sampleInfo;
             return sample;
         }
@@ -88,7 +94,7 @@ namespace Ultraviolet.BASS.Audio
                 if (!BASSUtil.IsValidHandle(stream))
                     throw new BASSException();
 
-                var pushed = BASS_StreamPutData(stream, data, sampleInfo.length);
+                var pushed = BASS_StreamPutData(stream, sampleData, sampleInfo.length);
                 if (!BASSUtil.IsValidValue(pushed))
                     throw new BASSException();
 
@@ -120,17 +126,34 @@ namespace Ultraviolet.BASS.Audio
             if (!BASS_SampleFree(sample))
                 throw new BASSException();
 
-            if (this.data != IntPtr.Zero)
-                Marshal.FreeHGlobal(this.data);
+            if (this.sampleData != IntPtr.Zero)
+                Marshal.FreeHGlobal(this.sampleData);
 
             this.sample = 0;
-            this.data = IntPtr.Zero;
+            this.sampleData = IntPtr.Zero;
 
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Initializes a <see cref="BASSSoundEffect"/> instance from the specified data.
+        /// </summary>
+        private static void InitializeSampleData(Byte[] fileData, out UInt32 sample, out BASS_SAMPLE sampleInfo, out IntPtr sampleData)
+        {
+            sample = BASS_SampleLoad(fileData, 0, (UInt32)fileData.Length, UInt16.MaxValue, 0);
+            if (!BASSUtil.IsValidHandle(sample))
+                throw new BASSException();
+
+            if (!BASS_SampleGetInfo(sample, out sampleInfo))
+                throw new BASSException();
+
+            sampleData = Marshal.AllocHGlobal((Int32)sampleInfo.length);
+            if (!BASS_SampleGetData(sample, sampleData))
+                throw new BASSException();
+        }
+
         // The sound effect's sample data.
-        private IntPtr data;
+        private IntPtr sampleData;
         private UInt32 sample;
         private BASS_SAMPLE sampleInfo;
     }

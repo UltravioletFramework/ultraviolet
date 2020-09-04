@@ -16,6 +16,9 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, PlatformNativeSurface input, Boolean delete)
         {
+            if (!metadata.IsFile)
+                throw new NotSupportedException();
+
             var imgData = File.ReadAllBytes(metadata.AssetFilePath);
 
             writer.Write(metadata.Extension);

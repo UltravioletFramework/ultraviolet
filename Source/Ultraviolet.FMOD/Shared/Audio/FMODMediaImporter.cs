@@ -19,12 +19,17 @@ namespace Ultraviolet.FMOD.Audio
     [ContentImporter(".ogg")]
     [ContentImporter(".s3m")]
     [ContentImporter(".wav")]
-    public sealed class FMODMediaImporter : ContentImporter<String>
+    public sealed class FMODMediaImporter : ContentImporter<FMODMediaDescription>
     {
         /// <inheritdoc/>
-        public override String Import(IContentImporterMetadata metadata, Stream stream)
+        public override FMODMediaDescription Import(IContentImporterMetadata metadata, Stream stream)
         {
-            return metadata.AssetFilePath;
+            if (metadata.IsFile)
+                return new FMODMediaDescription(metadata.AssetFilePath);
+
+            var buffer = new Byte[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
+            return new FMODMediaDescription(buffer);
         }
     }
 }
