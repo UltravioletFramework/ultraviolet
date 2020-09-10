@@ -26,6 +26,7 @@ namespace Ultraviolet.Graphics
         /// <inheritdoc/>
         public override void Apply()
         {
+            Effect.Alpha = Alpha;
             Effect.DiffuseColor = DiffuseColor;
             Effect.EmissiveColor = EmissiveColor;
             Effect.SpecularColor = SpecularColor;
@@ -37,6 +38,11 @@ namespace Ultraviolet.Graphics
         /// Gets the <see cref="BasicEffect"/> instance which this material uses when drawing meshes.
         /// </summary>
         public new BasicEffect Effect => (BasicEffect)base.Effect;
+
+        /// <summary>
+        /// Gets or sets the material's alpha value.
+        /// </summary>
+        public Single Alpha { get; set; } = 1f;
 
         /// <summary>
         /// Gets or sets the material's diffuse color.
