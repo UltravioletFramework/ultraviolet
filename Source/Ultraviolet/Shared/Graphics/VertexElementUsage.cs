@@ -25,5 +25,20 @@ namespace Ultraviolet.Graphics
         /// The element provides normal data.
         /// </summary>
         Normal,
+
+        /// <summary>
+        /// The element provides tangent data.
+        /// </summary>
+        Tangent,
+
+        /// <summary>
+        /// The element provides blending indices data.
+        /// </summary>
+        BlendIndices,
+
+        /// <summary>
+        /// The element providces blending weight data.
+        /// </summary>
+        BlendWeight
     }
 }

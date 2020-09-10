@@ -214,51 +214,195 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             switch (format)
             {
-                case VertexElementFormat.Single:
-                    size = 1;
-                    stride = size * sizeof(float);
-                    normalize = false;
-                    return gl.GL_FLOAT;
-
-                case VertexElementFormat.Vector2:
-                    size = 2;
-                    stride = size * sizeof(float);
-                    normalize = false;
-                    return gl.GL_FLOAT;
-
-                case VertexElementFormat.Vector3:
-                    size = 3;
-                    stride = size * sizeof(float);
-                    normalize = false;
-                    return gl.GL_FLOAT;
-
-                case VertexElementFormat.Vector4:
-                    size = 4;
-                    stride = size * sizeof(float);
-                    normalize = false;
-                    return gl.GL_FLOAT;
-
                 case VertexElementFormat.Color:
                     size = 4;
-                    stride = size * sizeof(byte);
+                    stride = size * sizeof(Byte);
                     normalize = true;
                     return gl.GL_UNSIGNED_BYTE;
 
+                case VertexElementFormat.Char:
+                    size = 1;
+                    stride = size * sizeof(Char);
+                    normalize = false;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.Char2:
+                    size = 2;
+                    stride = size * sizeof(Char);
+                    normalize = false;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.Char3:
+                    size = 3;
+                    stride = size * sizeof(Char);
+                    normalize = false;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.Char4:
+                    size = 4;
+                    stride = size * sizeof(Char);
+                    normalize = false;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.NormalizedChar:
+                    size = 1;
+                    stride = size * sizeof(Char);
+                    normalize = true;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.NormalizedChar2:
+                    size = 2;
+                    stride = size * sizeof(Char);
+                    normalize = true;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.NormalizedChar3:
+                    size = 3;
+                    stride = size * sizeof(Char);
+                    normalize = true;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.NormalizedChar4:
+                    size = 4;
+                    stride = size * sizeof(Char);
+                    normalize = true;
+                    return gl.GL_BYTE;
+
+                case VertexElementFormat.Byte:
+                    size = 1;
+                    stride = size * sizeof(Byte);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.Byte2:
+                    size = 2;
+                    stride = size * sizeof(Byte);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.Byte3:
+                    size = 3;
+                    stride = size * sizeof(Byte);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.Byte4:
+                    size = 4;
+                    stride = size * sizeof(Byte);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.NormalizedByte:
+                    size = 1;
+                    stride = size * sizeof(Byte);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.NormalizedByte2:
+                    size = 2;
+                    stride = size * sizeof(Byte);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.NormalizedByte3:
+                    size = 3;
+                    stride = size * sizeof(Byte);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.NormalizedByte4:
+                    size = 4;
+                    stride = size * sizeof(Byte);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_BYTE;
+
+                case VertexElementFormat.Short:
+                    size = 1;
+                    stride = size * sizeof(Int16);
+                    normalize = false;
+                    return gl.GL_SHORT;
+
+                case VertexElementFormat.Short2:
+                    size = 2;
+                    stride = size * sizeof(Int16);
+                    normalize = false;
+                    return gl.GL_SHORT;
+
+                case VertexElementFormat.Short3:
+                    size = 3;
+                    stride = size * sizeof(Int16);
+                    normalize = false;
+                    return gl.GL_SHORT;
+
+                case VertexElementFormat.Short4:
+                    size = 4;
+                    stride = size * sizeof(Int16);
+                    normalize = false;
+                    return gl.GL_SHORT;
+
+                case VertexElementFormat.NormalizedShort:
+                    size = 1;
+                    stride = size * sizeof(Int16);
+                    normalize = true;
+                    return gl.GL_SHORT;
+
                 case VertexElementFormat.NormalizedShort2:
                     size = 2;
-                    stride = size * sizeof(short);
+                    stride = size * sizeof(Int16);
+                    normalize = true;
+                    return gl.GL_SHORT;
+
+                case VertexElementFormat.NormalizedShort3:
+                    size = 3;
+                    stride = size * sizeof(Int16);
                     normalize = true;
                     return gl.GL_SHORT;
 
                 case VertexElementFormat.NormalizedShort4:
                     size = 4;
-                    stride = size * sizeof(short);
+                    stride = size * sizeof(Int16);
                     normalize = true;
                     return gl.GL_SHORT;
 
+                case VertexElementFormat.UnsignedShort:
+                    size = 1;
+                    stride = size * sizeof(UInt16);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexElementFormat.UnsignedShort2:
+                    size = 2;
+                    stride = size * sizeof(UInt16);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexElementFormat.UnsignedShort3:
+                    size = 3;
+                    stride = size * sizeof(UInt16);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexElementFormat.UnsignedShort4:
+                    size = 4;
+                    stride = size * sizeof(UInt16);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexElementFormat.NormalizedUnsignedShort:
+                    size = 1;
+                    stride = size * sizeof(UInt16);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_SHORT;
+
                 case VertexElementFormat.NormalizedUnsignedShort2:
                     size = 2;
-                    stride = size * sizeof(ushort);
+                    stride = size * sizeof(UInt16);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexElementFormat.NormalizedUnsignedShort3:
+                    size = 3;
+                    stride = size * sizeof(UInt16);
                     normalize = true;
                     return gl.GL_UNSIGNED_SHORT;
 
@@ -268,29 +412,125 @@ namespace Ultraviolet.OpenGL.Graphics
                     normalize = true;
                     return gl.GL_UNSIGNED_SHORT;
 
-                case VertexElementFormat.Short2:
+                case VertexElementFormat.Int:
+                    size = 1;
+                    stride = size * sizeof(Int32);
+                    normalize = false;
+                    return gl.GL_INT;
+
+                case VertexElementFormat.Int2:
                     size = 2;
-                    stride = size * sizeof(short);
+                    stride = size * sizeof(Int32);
                     normalize = false;
-                    return gl.GL_SHORT;
+                    return gl.GL_INT;
 
-                case VertexElementFormat.Short4:
+                case VertexElementFormat.Int3:
+                    size = 3;
+                    stride = size * sizeof(Int32);
+                    normalize = false;
+                    return gl.GL_INT;
+
+                case VertexElementFormat.Int4:
                     size = 4;
-                    stride = size * sizeof(short);
+                    stride = size * sizeof(Int32);
                     normalize = false;
-                    return gl.GL_SHORT;
+                    return gl.GL_INT;
 
-                case VertexElementFormat.UnsignedShort2:
+                case VertexElementFormat.NormalizedInt:
+                    size = 1;
+                    stride = size * sizeof(Int32);
+                    normalize = true;
+                    return gl.GL_INT;
+
+                case VertexElementFormat.NormalizedInt2:
                     size = 2;
-                    stride = size * sizeof(ushort);
-                    normalize = false;
-                    return gl.GL_UNSIGNED_SHORT;
+                    stride = size * sizeof(Int32);
+                    normalize = true;
+                    return gl.GL_INT;
 
-                case VertexElementFormat.UnsignedShort4:
+                case VertexElementFormat.NormalizedInt3:
+                    size = 3;
+                    stride = size * sizeof(Int32);
+                    normalize = true;
+                    return gl.GL_INT;
+
+                case VertexElementFormat.NormalizedInt4:
                     size = 4;
-                    stride = size * sizeof(ushort);
+                    stride = size * sizeof(Int32);
+                    normalize = true;
+                    return gl.GL_INT;
+
+                case VertexElementFormat.UnsignedInt:
+                    size = 1;
+                    stride = size * sizeof(UInt32);
                     normalize = false;
-                    return gl.GL_UNSIGNED_SHORT;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.UnsignedInt2:
+                    size = 2;
+                    stride = size * sizeof(UInt32);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.UnsignedInt3:
+                    size = 3;
+                    stride = size * sizeof(UInt32);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.UnsignedInt4:
+                    size = 4;
+                    stride = size * sizeof(UInt32);
+                    normalize = false;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.NormalizedUnsignedInt:
+                    size = 1;
+                    stride = size * sizeof(UInt32);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.NormalizedUnsignedInt2:
+                    size = 2;
+                    stride = size * sizeof(UInt32);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.NormalizedUnsignedInt3:
+                    size = 3;
+                    stride = size * sizeof(UInt32);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.NormalizedUnsignedInt4:
+                    size = 4;
+                    stride = size * sizeof(UInt32);
+                    normalize = true;
+                    return gl.GL_UNSIGNED_INT;
+
+                case VertexElementFormat.Single:
+                    size = 1;
+                    stride = size * sizeof(Single);
+                    normalize = false;
+                    return gl.GL_FLOAT;
+
+                case VertexElementFormat.Vector2:
+                    size = 2;
+                    stride = size * sizeof(Single);
+                    normalize = false;
+                    return gl.GL_FLOAT;
+
+                case VertexElementFormat.Vector3:
+                    size = 3;
+                    stride = size * sizeof(Single);
+                    normalize = false;
+                    return gl.GL_FLOAT;
+
+                case VertexElementFormat.Vector4:
+                    size = 4;
+                    stride = size * sizeof(Single);
+                    normalize = false;
+                    return gl.GL_FLOAT;
 
                 default:
                     throw new NotSupportedException(OpenGLStrings.UnsupportedVertexFormat);
