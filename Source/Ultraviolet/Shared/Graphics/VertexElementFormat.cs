@@ -14,42 +14,42 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// 8-bit signed integer value.
         /// </summary>
-        Char,
+        SByte,
 
         /// <summary>
         /// Packed vector containing two 8-bit signed integer values.
         /// </summary>
-        Char2,
+        SByte2,
 
         /// <summary>
         /// Packed vector containing three 8-bit signed integer values.
         /// </summary>
-        Char3,
+        SByte3,
 
         /// <summary>
         /// Packed vector containing four 8-bit signed integer values.
         /// </summary>
-        Char4,
+        SByte4,
 
         /// <summary>
         /// 8-bit signed normalized integer value ranging from -1 to +1.
         /// </summary>
-        NormalizedChar,
+        NormalizedSByte,
 
         /// <summary>
         /// Packed vector containing two 8-bit signed normalized integer values ranging from -1 to +1.
         /// </summary>
-        NormalizedChar2,
+        NormalizedSByte2,
 
         /// <summary>
         /// Packed vector containing three 8-bit signed normalized integer values ranging from -1 to +1.
         /// </summary>
-        NormalizedChar3,
+        NormalizedSByte3,
 
         /// <summary>
         /// Packed vector containing four 8-bit signed normalized integer values ranging from -1 to +1.
         /// </summary>
-        NormalizedChar4,
+        NormalizedSByte4,
 
         /// <summary>
         /// 8-bit unsigned integer value.

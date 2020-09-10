@@ -220,51 +220,51 @@ namespace Ultraviolet.OpenGL.Graphics
                     normalize = true;
                     return gl.GL_UNSIGNED_BYTE;
 
-                case VertexElementFormat.Char:
+                case VertexElementFormat.SByte:
                     size = 1;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = false;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.Char2:
+                case VertexElementFormat.SByte2:
                     size = 2;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = false;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.Char3:
+                case VertexElementFormat.SByte3:
                     size = 3;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = false;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.Char4:
+                case VertexElementFormat.SByte4:
                     size = 4;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = false;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.NormalizedChar:
+                case VertexElementFormat.NormalizedSByte:
                     size = 1;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = true;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.NormalizedChar2:
+                case VertexElementFormat.NormalizedSByte2:
                     size = 2;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = true;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.NormalizedChar3:
+                case VertexElementFormat.NormalizedSByte3:
                     size = 3;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = true;
                     return gl.GL_BYTE;
 
-                case VertexElementFormat.NormalizedChar4:
+                case VertexElementFormat.NormalizedSByte4:
                     size = 4;
-                    stride = size * sizeof(Char);
+                    stride = size * sizeof(SByte);
                     normalize = true;
                     return gl.GL_BYTE;
 

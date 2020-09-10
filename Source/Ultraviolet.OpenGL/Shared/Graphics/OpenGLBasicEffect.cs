@@ -218,7 +218,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 
                 if (epEyePosition != null)
                 {
-                    Matrix.Invert(ref view, out var viewInverse);
+                    Matrix.TryInvertRef(ref view, out var viewInverse);
                     epEyePosition.SetValue(viewInverse.Translation);
                 }
             }
