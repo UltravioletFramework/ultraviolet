@@ -80,6 +80,36 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Gets a value indicating whether this geometry stream has any vertex position data.
+        /// </summary>
+        public abstract Boolean HasVertexPosition { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this geometry stream has any vertex color data.
+        /// </summary>
+        public abstract Boolean HasVertexColor { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this geometry stream has any vertex texture data.
+        /// </summary>
+        public abstract Boolean HasVertexTexture { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this geometry stream has any vertex normal data.
+        /// </summary>
+        public abstract Boolean HasVertexNormal { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this geometry stream has any vertex tangent data.
+        /// </summary>
+        public abstract Boolean HasVertexTangent { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this geometry stream has any vertex blending data.
+        /// </summary>
+        public abstract Boolean HasVertexBlend { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the geometry stream has any index buffers attached to it.
         /// </summary>
         public abstract Boolean HasIndices

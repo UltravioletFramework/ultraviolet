@@ -132,6 +132,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="material">The <see cref="Material"/> with which to draw the geometry.</param>
         protected virtual void OnDrawingModelMeshGeometry(ModelMeshGeometry geometry, Material material)
         {
+            if (material.Effect is BasicEffect basicEffect)
+                UpdateBasicEffectFromGeometryStream(basicEffect, geometry.GeometryStream);
+
             material.Apply();
             foreach (var pass in material.Effect.CurrentTechnique.Passes)
             {
@@ -181,6 +184,15 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             foreach (var child in node.Children)
                 DrawNode(child, camera, ref effect, transform);
+        }
+
+        /// <summary>
+        /// Updates the specified <see cref="BasicEffect"/>, enabling and disabling features to match the vertex declarations of the specified geometry stream.
+        /// </summary>
+        private void UpdateBasicEffectFromGeometryStream(BasicEffect basicEffect, GeometryStream geometryStream)
+        {
+            basicEffect.TextureEnabled = geometryStream.HasVertexTexture;
+            basicEffect.VertexColorEnabled = geometryStream.HasVertexColor;
         }
     }
 }

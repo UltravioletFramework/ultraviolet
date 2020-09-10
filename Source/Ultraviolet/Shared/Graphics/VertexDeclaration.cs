@@ -20,7 +20,39 @@ namespace Ultraviolet.Graphics
             Contract.Require(elements, nameof(elements));
 
             this.elements = elements.ToList();
-            this.stride = CalculateStride();
+
+            foreach (var element in elements)
+            {
+                switch (element.Usage)
+                {
+                    case VertexElementUsage.Position:
+                        HasPosition = true;
+                        break;
+
+                    case VertexElementUsage.Color:
+                        HasColor = true;
+                        break;
+
+                    case VertexElementUsage.TextureCoordinate:
+                        HasTexture = true;
+                        break;
+
+                    case VertexElementUsage.Normal:
+                        HasNormal = true;
+                        break;
+
+                    case VertexElementUsage.Tangent:
+                        HasTangent = true;
+                        break;
+
+                    case VertexElementUsage.BlendIndices:
+                    case VertexElementUsage.BlendWeight:
+                        HasBlend = true;
+                        break;
+                }
+            }
+
+            this.VertexStride = CalculateStride();
         }
 
         /// <summary>
@@ -53,10 +85,37 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the vertex stride in bytes.
         /// </summary>
-        public Int32 VertexStride
-        {
-            get { return stride; }        
-        }
+        public Int32 VertexStride { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this declaration has any position elements.
+        /// </summary>
+        public Boolean HasPosition { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this declaration has any color elements.
+        /// </summary>
+        public Boolean HasColor { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this declaration has any texture elements.
+        /// </summary>
+        public Boolean HasTexture { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this declaration has any normal elements.
+        /// </summary>
+        public Boolean HasNormal { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this declaration has any tangent elements.
+        /// </summary>
+        public Boolean HasTangent { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this declaration has any blend elements.
+        /// </summary>
+        public Boolean HasBlend { get; }
 
         /// <summary>
         /// Calculates the stride of a vertex in bytes.
@@ -109,9 +168,6 @@ namespace Ultraviolet.Graphics
             }
             return value;
         }
-
-        // Property values.
-        private readonly Int32 stride;
 
         // State values.
         private readonly List<VertexElement> elements;

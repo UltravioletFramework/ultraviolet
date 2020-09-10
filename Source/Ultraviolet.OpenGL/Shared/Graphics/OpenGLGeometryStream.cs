@@ -162,6 +162,24 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Boolean HasVertices => vbuffers != null;
 
         /// <inheritdoc/>
+        public override Boolean HasVertexPosition => hasVertexPosition;
+
+        /// <inheritdoc/>
+        public override Boolean HasVertexColor => hasVertexColor;
+
+        /// <inheritdoc/>
+        public override Boolean HasVertexTexture => hasVertexTexture;
+
+        /// <inheritdoc/>
+        public override Boolean HasVertexNormal => hasVertexNormal;
+
+        /// <inheritdoc/>
+        public override Boolean HasVertexTangent => hasVertexTangent;
+
+        /// <inheritdoc/>
+        public override Boolean HasVertexBlend => hasVertexBlend;
+
+        /// <inheritdoc/>
         public override Boolean HasIndices => ibuffer != null;
 
         /// <inheritdoc/>
@@ -797,6 +815,26 @@ namespace Ultraviolet.OpenGL.Graphics
             var oglVertexBuffer = (OpenGLVertexBuffer)vbuffer;
             var binding = new VertexBufferBinding(oglVertexBuffer, instanceFrequency);
             vbuffers.Add(binding);
+
+            var vdecl = vbuffer.VertexDeclaration;
+
+            if (vdecl.HasPosition)
+                this.hasVertexPosition = true;
+
+            if (vdecl.HasColor)
+                this.hasVertexColor = true;
+
+            if (vdecl.HasTexture)
+                this.hasVertexTexture = true;
+
+            if (vdecl.HasNormal)
+                this.hasVertexNormal = true;
+
+            if (vdecl.HasTangent)
+                this.hasVertexTangent = true;
+
+            if (vdecl.HasBlend)
+                this.hasVertexBlend = true;
         }
 
         // The names of vertex attributes which correspond to Ultraviolet vertex usages.
@@ -811,6 +849,14 @@ namespace Ultraviolet.OpenGL.Graphics
         private UInt32 vao;
         private UInt32 program;
         private UInt32 offset;
+
+        // Vertex attributes
+        private Boolean hasVertexPosition;
+        private Boolean hasVertexColor;
+        private Boolean hasVertexTexture;
+        private Boolean hasVertexNormal;
+        private Boolean hasVertexTangent;
+        private Boolean hasVertexBlend;
 
         // GL state values
         private UInt32? glElementArrayBufferBinding;
