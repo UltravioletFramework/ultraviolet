@@ -82,6 +82,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextDrawState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextSeekState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererStyleManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GlbModelImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\Model.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelMeshCollection.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelNodeCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelScene.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelTextureCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\PerspectiveCamera.cs" />

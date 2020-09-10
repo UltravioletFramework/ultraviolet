@@ -162,6 +162,11 @@ namespace Ultraviolet
         public static readonly StringResource FailedToInitializeSingleton          = new StringResource(StringDatabase, "FAILED_TO_INITIALIZE_SINGLETON");
         public static readonly StringResource MalformedContentFile                 = new StringResource(StringDatabase, "MALFORMED_CONTENT_FILE");
         public static readonly StringResource UnsupportedContentFile               = new StringResource(StringDatabase, "UNSUPPORTED_CONTENT_FILE");
+        public static readonly StringResource UnsupportedIndexAccessorFormat       = new StringResource(StringDatabase, "UNSUPPORTED_INDEX_ACCESSOR_FORMAT");
+        public static readonly StringResource UnsupportedVertexAccessorFormat      = new StringResource(StringDatabase, "UNSUPPORTED_VERTEX_ACCESSOR_FORMAT");
+        public static readonly StringResource UnsupportedPrimitiveType             = new StringResource(StringDatabase, "UNSUPPORTED_PRIMITIVE_TYPE");
+        public static readonly StringResource UnsupportedElementFormatInGltfLoader = new StringResource(StringDatabase, "UNSUPPORTED_ELEMENT_FORMAT_IN_GLTF_LOADER");
+        public static readonly StringResource InvalidVertexAttributeName           = new StringResource(StringDatabase, "INVALID_VERTEX_ATTRIBUTE_NAME");
 #pragma warning restore 1591
     }
 }

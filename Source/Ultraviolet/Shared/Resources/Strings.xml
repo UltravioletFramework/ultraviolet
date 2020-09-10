@@ -670,4 +670,29 @@
       <Variant>Asset could not be loaded because it uses features which are not supported by the content importer.</Variant>
     </en-US>
   </String>
+  <String Key="UNSUPPORTED_INDEX_ACCESSOR_FORMAT">
+    <en-US>
+      <Variant>Index accessor with bit depth of {0} is not supported.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_VERTEX_ACCESSOR_FORMAT">
+    <en-US>
+      <Variant>Vertex accessor with encoding of '{0}' and dimension of '{1}' is not supported.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_PRIMITIVE_TYPE">
+    <en-US>
+      <Variant>Mesh primitive type '{0}' is not supported.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSUPPORTED_ELEMENT_FORMAT_IN_GLTF_LOADER">
+    <en-US>
+      <Variant>Vertex element format '{0}' is not currently supported by the glTF model loader.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_VERTEX_ATTRIBUTE_NAME">
+    <en-US>
+      <Variant>Vertex attribute '{0}' has an invalid name.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
