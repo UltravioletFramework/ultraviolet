@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,6 +9,7 @@ namespace Ultraviolet
     /// Represents a three-dimensional vector.
     /// </summary>
     [Serializable]
+    [StructLayout(LayoutKind.Explicit, Pack = 0, Size = sizeof(Single) * 3)]
     public partial struct Vector3 : IEquatable<Vector3>, IInterpolatable<Vector3>
     {
         /// <summary>
@@ -1211,18 +1213,21 @@ namespace Ultraviolet
         /// The vector's x-coordinate.
         /// </summary>
         [JsonProperty(Required = Required.Always)]
+        [FieldOffset(0)]
         public Single X;
 
         /// <summary>
         /// The vector's y-coordinate.
         /// </summary>
         [JsonProperty(Required = Required.Always)]
+        [FieldOffset(4)]
         public Single Y;
 
         /// <summary>
         /// The vector's z-coordinate.
         /// </summary>
         [JsonProperty(Required = Required.Always)]
+        [FieldOffset(8)]
         public Single Z;
     }
 }
