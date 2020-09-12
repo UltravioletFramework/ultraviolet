@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using SharpGLTF.Schema2;
 using Ultraviolet.Content;
+using Ultraviolet.Graphics.PackedVector;
 
 namespace Ultraviolet.Graphics.Graphics3D
 {
@@ -392,24 +393,270 @@ namespace Ultraviolet.Graphics.Graphics3D
                 switch (vElement.Format)
                 {
                     case VertexElementFormat.Color:
-                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, 4, x => x.AsColorArray(), x => new Color(x.X, x.Y, x.Z, x.W));
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 4,
+                            x => x.AsColorArray(), x => new Color(x.X, x.Y, x.Z, x.W));
+                        break;
+
+                    case VertexElementFormat.SByte:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte),
+                            x => x.AsScalarArray(), x => new SByte1(x));
+                        break;
+
+                    case VertexElementFormat.SByte2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte) * 2,
+                            x => x.AsVector2Array(), x => new SByte2(x));
+                        break;
+
+                    case VertexElementFormat.SByte3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte) * 3,
+                            x => x.AsVector3Array(), x => new SByte3(x));
+                        break;
+
+                    case VertexElementFormat.SByte4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte) * 4,
+                            x => x.AsVector4Array(), x => new SByte4(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedSByte:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte),
+                            x => x.AsScalarArray(), x => new NormalizedSByte1(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedSByte2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte) * 2,
+                            x => x.AsVector2Array(), x => new NormalizedSByte2(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedSByte3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte) * 3,
+                            x => x.AsVector3Array(), x => new NormalizedSByte3(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedSByte4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(SByte) * 4,
+                            x => x.AsVector4Array(), x => new NormalizedSByte4(x));
+                        break;
+
+                    case VertexElementFormat.Byte:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte),
+                            x => x.AsScalarArray(), x => new Byte1(x));
+                        break;
+
+                    case VertexElementFormat.Byte2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 2,
+                            x => x.AsVector2Array(), x => new Byte2(x));
+                        break;
+
+                    case VertexElementFormat.Byte3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 3,
+                            x => x.AsVector3Array(), x => new Byte3(x));
+                        break;
+
+                    case VertexElementFormat.Byte4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 4,
+                            x => x.AsVector4Array(), x => new Byte4(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedByte:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte),
+                            x => x.AsScalarArray(), x => new NormalizedByte1(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedByte2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 2,
+                            x => x.AsVector2Array(), x => new NormalizedByte2(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedByte3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 3,
+                            x => x.AsVector3Array(), x => new NormalizedByte3(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedByte4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Byte) * 4,
+                            x => x.AsVector4Array(), x => new NormalizedByte4(x));
+                        break;
+
+                    case VertexElementFormat.Short:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16),
+                            x => x.AsScalarArray(), x => new Short1(x));
+                        break;
+
+                    case VertexElementFormat.Short2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16) * 2,
+                            x => x.AsVector2Array(), x => new Short2(x));
+                        break;
+
+                    case VertexElementFormat.Short3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16) * 3,
+                            x => x.AsVector3Array(), x => new Short3(x));
+                        break;
+
+                    case VertexElementFormat.Short4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16) * 4,
+                            x => x.AsVector4Array(), x => new Short4(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedShort:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16),
+                            x => x.AsScalarArray(), x => new NormalizedShort1(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedShort2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16) * 2,
+                            x => x.AsVector2Array(), x => new NormalizedShort2(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedShort3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16) * 3,
+                            x => x.AsVector3Array(), x => new NormalizedShort3(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedShort4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int16) * 4,
+                            x => x.AsVector4Array(), x => new NormalizedShort4(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedShort:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16),
+                            x => x.AsScalarArray(), x => new UnsignedShort1(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedShort2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16) * 2,
+                            x => x.AsVector2Array(), x => new UnsignedShort2(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedShort3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16) * 3,
+                            x => x.AsVector3Array(), x => new UnsignedShort3(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedShort4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16) * 4,
+                            x => x.AsVector4Array(), x => new UnsignedShort4(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedShort:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16),
+                            x => x.AsScalarArray(), x => new NormalizedUnsignedShort1(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedShort2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16) * 2,
+                            x => x.AsVector2Array(), x => new NormalizedUnsignedShort2(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedShort3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16) * 3,
+                            x => x.AsVector3Array(), x => new NormalizedUnsignedShort3(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedShort4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt16) * 4,
+                            x => x.AsVector4Array(), x => new NormalizedUnsignedShort4(x));
+                        break;
+
+                    case VertexElementFormat.Int:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32),
+                            x => x.AsScalarArray(), x => new Int1(x));
+                        break;
+
+                    case VertexElementFormat.Int2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32) * 2,
+                            x => x.AsVector2Array(), x => new Int2(x));
+                        break;
+
+                    case VertexElementFormat.Int3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32) * 3,
+                            x => x.AsVector3Array(), x => new Int3(x));
+                        break;
+
+                    case VertexElementFormat.Int4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32) * 4,
+                            x => x.AsVector4Array(), x => new Int4(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedInt:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32),
+                            x => x.AsScalarArray(), x => new NormalizedInt1(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedInt2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32) * 2,
+                            x => x.AsVector2Array(), x => new NormalizedInt2(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedInt3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32) * 3,
+                            x => x.AsVector3Array(), x => new NormalizedInt3(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedInt4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Int32) * 4,
+                            x => x.AsVector4Array(), x => new NormalizedInt4(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedInt:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32),
+                            x => x.AsScalarArray(), x => new UnsignedInt1(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedInt2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32) * 2,
+                            x => x.AsVector2Array(), x => new UnsignedInt2(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedInt3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32) * 3,
+                            x => x.AsVector3Array(), x => new UnsignedInt3(x));
+                        break;
+
+                    case VertexElementFormat.UnsignedInt4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32) * 4,
+                            x => x.AsVector4Array(), x => new UnsignedInt4(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedInt:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32),
+                            x => x.AsScalarArray(), x => new NormalizedUnsignedInt1(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedInt2:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32) * 2,
+                            x => x.AsVector2Array(), x => new NormalizedUnsignedInt2(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedInt3:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32) * 3,
+                            x => x.AsVector3Array(), x => new NormalizedUnsignedInt3(x));
+                        break;
+
+                    case VertexElementFormat.NormalizedUnsignedInt4:
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(UInt32) * 4,
+                            x => x.AsVector4Array(), x => new NormalizedUnsignedInt4(x));
                         break;
 
                     case VertexElementFormat.Single:
-                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, 4, x => x.AsScalarArray(), x => x);
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Single), 
+                            x => x.AsScalarArray(), x => x);
                         break;
 
                     case VertexElementFormat.Vector2:
-                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, 8, x => x.AsVector2Array(), x => x);
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Single) * 2,
+                            x => x.AsVector2Array(), x => (Vector2)x);
                         break;
 
                     case VertexElementFormat.Vector3:
-                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, 12, x => x.AsVector3Array(), x => x);
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Single) * 3, 
+                            x => x.AsVector3Array(), x => (Vector3)x);
                         break;
 
                     case VertexElementFormat.Vector4:
-                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, 16, x => x.AsVector4Array(), x => x);
+                        PopulateVertexBufferAttributeData(vBuffer, accessor, vElement.Position, sizeof(Single) * 4, 
+                            x => x.AsVector4Array(), x => (Vector4)x);
                         break;
+
 
                     default:
                         throw new NotSupportedException(UltravioletStrings.UnsupportedElementFormatInGltfLoader.Format(vElement.Format));
@@ -455,13 +702,13 @@ namespace Ultraviolet.Graphics.Graphics3D
                         if (iBuffer.IndexElementType == IndexBufferElementType.Int16)
                         {
                             var index16 = (Int16)index;
-                            iBuffer.SetRawData((IntPtr)(&index16), 0, dataDstOffset, 2, SetDataOptions.NoOverwrite);
+                            iBuffer.SetRawData((IntPtr)(&index16), 0, dataDstOffset, sizeof(Int16), SetDataOptions.NoOverwrite);
                             dataDstOffset += 2;
                         }
                         else
                         {
                             var index32 = (Int32)index;
-                            iBuffer.SetRawData((IntPtr)(&index32), 0, dataDstOffset, 4, SetDataOptions.NoOverwrite);
+                            iBuffer.SetRawData((IntPtr)(&index32), 0, dataDstOffset, sizeof(Int32), SetDataOptions.NoOverwrite);
                             dataDstOffset += 4;
                         }
                     }
