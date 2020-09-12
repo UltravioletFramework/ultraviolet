@@ -52,6 +52,110 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Gets the alpha for the specified material.
+        /// </summary>
+        private static Single GetMaterialAlpha(SharpGLTF.Schema2.Material material)
+        {
+            if (material.Alpha == AlphaMode.OPAQUE)
+                return 1f;
+
+            var baseColor = material.FindChannel("BaseColor");
+            if (baseColor == null)
+                return 1f;
+
+            return baseColor.Value.Parameter.W;
+        }
+
+        /// <summary>
+        /// Gets the specular power for the specified material.
+        /// </summary>
+        private static Single GetMaterialSpecularPower(SharpGLTF.Schema2.Material material)
+        {
+            var mr = material.FindChannel("MetallicRoughness");
+            if (mr == null)
+                return 16f;
+
+            var metallic = mr.Value.Parameter.X;
+            return 4f + 16f * metallic;
+        }
+
+        /// <summary>
+        /// Gets the diffuse color for the specified material.
+        /// </summary>
+        private static Color GetMaterialDiffuseColor(SharpGLTF.Schema2.Material material)
+        {
+            var diffuse = material.FindChannel("Diffuse") ?? material.FindChannel("BaseColor");
+            if (diffuse == null)
+                return Color.White;
+
+            return new Color(diffuse.Value.Parameter.X, diffuse.Value.Parameter.Y, diffuse.Value.Parameter.Z);
+        }
+
+        /// <summary>
+        /// Gets the emissive color for the specified material.
+        /// </summary>
+        private static Color GetMaterialEmissiveColor(SharpGLTF.Schema2.Material material)
+        {
+            var emissive = material.FindChannel("Emissive");
+            if (emissive == null)
+                return Color.Black;
+
+            return new Color(emissive.Value.Parameter.X, emissive.Value.Parameter.Y, emissive.Value.Parameter.Z);
+        }
+
+        /// <summary>
+        /// Gets the specular color for the specified material.
+        /// </summary>
+        private static Color GetMaterialSpecularColor(SharpGLTF.Schema2.Material material)
+        {
+            var mr = material.FindChannel("MetallicRoughness");
+            if (mr == null)
+                return Color.White;
+
+            var diffuse = GetMaterialDiffuseColor(material).ToVector3();
+            var metallic = mr.Value.Parameter.X;
+            var roughness = mr.Value.Parameter.Y;
+
+            var k = Vector3.Zero;
+            k += Vector3.Lerp(diffuse, Vector3.Zero, roughness);
+            k += Vector3.Lerp(diffuse, Vector3.One, metallic);
+            k *= 0.5f;
+
+            return new Color(k);
+        }
+
+        /// <summary>
+        /// Gets the texture for the specified material.
+        /// </summary>
+        private static Texture2D GetMaterialTexture(ContentManager contentManager, SharpGLTF.Schema2.Material material, Dictionary<String, Texture2D> textures)
+        {
+            var diffuse = material.FindChannel("Diffuse") ?? material.FindChannel("BaseColor");
+            if (diffuse == null)
+                return null;
+
+            var texture = diffuse.Value.Texture;
+            if (texture != null)
+            {
+                var textureName = $"{diffuse.Value.LogicalParent.Name ?? "null"}-{diffuse.Value.Key}";
+                var textureContent = texture.PrimaryImage?.Content;
+                if (textureContent != null && textureContent.Value.IsValid)
+                {
+                    if (!textures.TryGetValue(textureName, out var textureResource))
+                    {
+                        using (var textureStream = textureContent.Value.Open())
+                        {
+                            textureResource = contentManager.LoadFromStream<Texture2D>(textureStream, textureContent.Value.FileExtension);
+                        }
+                        textures[textureName] = textureResource;
+                    }
+                    return textureResource;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Processes the specified node mesh.
         /// </summary>
         private ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, Dictionary<String, Texture2D> textures)
@@ -66,40 +170,17 @@ namespace Ultraviolet.Graphics.Graphics3D
                 var vCount = AttachVertexBuffer(primitive, uvPrimitiveGeometryStream);
                 var iCount = AttachIndexBuffer(primitive, uvPrimitiveGeometryStream);
 
-                var materialTexture = default(Texture2D);
-                var materialAlpha = 1f;
-                var materialDiffuseColor = Color.White;
-
-                var baseColorChannel = 
-                    primitive.Material.FindChannel("Diffuse") ??
-                    primitive.Material.FindChannel("BaseColor");
-                if (baseColorChannel != null && baseColorChannel.HasValue)
+                var uvPrimitiveMaterial = new BasicMaterial
                 {
-                    var parameter = baseColorChannel.Value.Parameter;
-                    materialAlpha = parameter.W;
-                    materialDiffuseColor = new Color(new Vector3(parameter.X, parameter.Y, parameter.Z));
-
-                    var texture = baseColorChannel.Value.Texture;
-                    if (texture != null)
-                    {
-                        var textureName = $"{baseColorChannel.Value.LogicalParent.Name ?? "null"}-{baseColorChannel.Value.Key}";
-                        var textureContent = texture.PrimaryImage?.Content;
-                        if (textureContent != null && textureContent.Value.IsValid)
-                        {
-                            if (!textures.TryGetValue(textureName, out materialTexture))
-                            {
-                                using (var textureStream = textureContent.Value.Open())
-                                {
-                                    materialTexture = contentManager.LoadFromStream<Texture2D>(textureStream, textureContent.Value.FileExtension);
-                                }
-                                textures[textureName] = materialTexture;
-                            }
-                        }
-                    }
-                }
+                    Alpha = GetMaterialAlpha(primitive.Material),
+                    DiffuseColor = GetMaterialDiffuseColor(primitive.Material),
+                    SpecularPower = GetMaterialSpecularPower(primitive.Material),
+                    SpecularColor = GetMaterialSpecularColor(primitive.Material),
+                    EmissiveColor = GetMaterialEmissiveColor(primitive.Material),
+                    Texture = GetMaterialTexture(contentManager, primitive.Material, textures)
+                };
 
                 var uvPrimitiveType = ConvertPrimitiveType(primitive.DrawPrimitiveType);
-                var uvPrimitiveMaterial = new BasicMaterial { Alpha = materialAlpha, DiffuseColor = materialDiffuseColor, Texture = materialTexture };
                 var uvPrimitiveGeometry = new ModelMeshGeometry(uvPrimitiveType, uvPrimitiveGeometryStream, vCount, iCount, uvPrimitiveMaterial);
                 uvModelMeshGeometries.Add(uvPrimitiveGeometry);
             }
