@@ -82,9 +82,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextDrawState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextSeekState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererStyleManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfBasicMaterialLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfMaterialLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GlbModelImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelProcessorMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\Model.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelMeshCollection.cs" />

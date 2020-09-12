@@ -12,20 +12,53 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// Represents a content processor which converts <see cref="ModelRoot"/> instances to <see cref="Model"/> instances.
     /// </summary>
     [ContentProcessor, CLSCompliant(false)]
-    public class GltfModelProcessor : ContentProcessor<ModelRoot, Model>
+    public class GltfModelProcessor : GltfModelProcessor<Model>
     {
         /// <inheritdoc/>
-        public override Model Process(ContentManager manager, IContentProcessorMetadata metadata, ModelRoot input)
+        protected override Model CreateModelResource(ContentManager contentManager, IList<ModelScene> scenes, IList<Texture2D> textures) =>
+            new Model(contentManager.Ultraviolet, scenes, textures);
+    }
+
+    /// <summary>
+    /// Represents a content processor which converts <see cref="ModelRoot"/> instances to <typeparamref name="TModel"/> instances.
+    /// </summary>
+    /// <typeparam name="TModel">The derived type of <see cref="Model"/> which this processor creates.</typeparam>
+    [CLSCompliant(false)]
+    public abstract class GltfModelProcessor<TModel> : ContentProcessor<ModelRoot, TModel>
+        where TModel : Model
+    {
+        /// <inheritdoc/>
+        public sealed override TModel Process(ContentManager manager, IContentProcessorMetadata metadata, ModelRoot input)
         {
-            var uvTextures = new Dictionary<String, Texture2D>();
-            var uvScenes = ProcessScenes(manager, input, uvTextures, out var defaultSceneIndex);
-            var uvModel = new Model(manager.Ultraviolet, uvScenes, uvTextures.Values.ToList());
+            var materialLoaderName = metadata.As<GltfModelProcessorMetadata>()?.MaterialLoader ?? DefaultMaterialLoader;
+            var materialLoaderType = Type.GetType(materialLoaderName);
+            using (var materialLoader = (GltfMaterialLoader)Activator.CreateInstance(materialLoaderType))
+            {
+                var uvScenes = ProcessScenes(manager, input, materialLoader, out var defaultSceneIndex);
+                var uvModel = CreateModelResource(manager, uvScenes, materialLoader.GetModelTextures());
+                if (uvModel == null)
+                    throw new InvalidOperationException();
 
-            if (defaultSceneIndex.HasValue)
-                uvModel.Scenes.ChangeDefaultScene(defaultSceneIndex.Value);
+                if (defaultSceneIndex.HasValue)
+                    uvModel.Scenes.ChangeDefaultScene(defaultSceneIndex.Value);
 
-            return uvModel;
+                return uvModel;
+            }
         }
+
+        /// <summary>
+        /// Creates the <see cref="Model"/> instance which is returned by the content processor.
+        /// </summary>
+        /// <param name="contentManager">The content manager with which the model is being loaded.</param>
+        /// <param name="scenes">The list of scenes which belong to the model.</param>
+        /// <param name="textures">The list of textures which belong to the model.</param>
+        /// <returns>The <see cref="Model"/> instance which was created.</returns>
+        protected abstract TModel CreateModelResource(ContentManager contentManager, IList<ModelScene> scenes, IList<Texture2D> textures);
+
+        /// <summary>
+        /// Gets the fully-qualified type name of the default <see cref="GltfMaterialLoader"/> to use when loading models.
+        /// </summary>
+        protected virtual String DefaultMaterialLoader => typeof(GltfBasicMaterialLoader).AssemblyQualifiedName;
 
         /// <summary>
         /// Converts a <see cref="SharpGLTF.Schema2.PrimitiveType"/> value to an Ultraviolet <see cref="PrimitiveType"/> value.
@@ -52,113 +85,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
-        /// Gets the alpha for the specified material.
-        /// </summary>
-        private static Single GetMaterialAlpha(SharpGLTF.Schema2.Material material)
-        {
-            if (material.Alpha == AlphaMode.OPAQUE)
-                return 1f;
-
-            var baseColor = material.FindChannel("BaseColor");
-            if (baseColor == null)
-                return 1f;
-
-            return baseColor.Value.Parameter.W;
-        }
-
-        /// <summary>
-        /// Gets the specular power for the specified material.
-        /// </summary>
-        private static Single GetMaterialSpecularPower(SharpGLTF.Schema2.Material material)
-        {
-            var mr = material.FindChannel("MetallicRoughness");
-            if (mr == null)
-                return 16f;
-
-            var metallic = mr.Value.Parameter.X;
-            return 4f + 16f * metallic;
-        }
-
-        /// <summary>
-        /// Gets the diffuse color for the specified material.
-        /// </summary>
-        private static Color GetMaterialDiffuseColor(SharpGLTF.Schema2.Material material)
-        {
-            var diffuse = material.FindChannel("Diffuse") ?? material.FindChannel("BaseColor");
-            if (diffuse == null)
-                return Color.White;
-
-            return new Color(diffuse.Value.Parameter.X, diffuse.Value.Parameter.Y, diffuse.Value.Parameter.Z);
-        }
-
-        /// <summary>
-        /// Gets the emissive color for the specified material.
-        /// </summary>
-        private static Color GetMaterialEmissiveColor(SharpGLTF.Schema2.Material material)
-        {
-            var emissive = material.FindChannel("Emissive");
-            if (emissive == null)
-                return Color.Black;
-
-            return new Color(emissive.Value.Parameter.X, emissive.Value.Parameter.Y, emissive.Value.Parameter.Z);
-        }
-
-        /// <summary>
-        /// Gets the specular color for the specified material.
-        /// </summary>
-        private static Color GetMaterialSpecularColor(SharpGLTF.Schema2.Material material)
-        {
-            var mr = material.FindChannel("MetallicRoughness");
-            if (mr == null)
-                return Color.White;
-
-            var diffuse = GetMaterialDiffuseColor(material).ToVector3();
-            var metallic = mr.Value.Parameter.X;
-            var roughness = mr.Value.Parameter.Y;
-
-            var k = Vector3.Zero;
-            k += Vector3.Lerp(diffuse, Vector3.Zero, roughness);
-            k += Vector3.Lerp(diffuse, Vector3.One, metallic);
-            k *= 0.5f;
-
-            return new Color(k);
-        }
-
-        /// <summary>
-        /// Gets the texture for the specified material.
-        /// </summary>
-        private static Texture2D GetMaterialTexture(ContentManager contentManager, SharpGLTF.Schema2.Material material, Dictionary<String, Texture2D> textures)
-        {
-            var diffuse = material.FindChannel("Diffuse") ?? material.FindChannel("BaseColor");
-            if (diffuse == null)
-                return null;
-
-            var texture = diffuse.Value.Texture;
-            if (texture != null)
-            {
-                var textureName = $"{diffuse.Value.LogicalParent.Name ?? "null"}-{diffuse.Value.Key}";
-                var textureContent = texture.PrimaryImage?.Content;
-                if (textureContent != null && textureContent.Value.IsValid)
-                {
-                    if (!textures.TryGetValue(textureName, out var textureResource))
-                    {
-                        using (var textureStream = textureContent.Value.Open())
-                        {
-                            textureResource = contentManager.LoadFromStream<Texture2D>(textureStream, textureContent.Value.FileExtension);
-                        }
-                        textures[textureName] = textureResource;
-                    }
-                    return textureResource;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Processes the specified node mesh.
         /// </summary>
-        private ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, Dictionary<String, Texture2D> textures)
+        private ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, GltfMaterialLoader materialLoader)
         {
             if (mesh == null)
                 return null;
@@ -170,16 +99,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 var vCount = AttachVertexBuffer(primitive, uvPrimitiveGeometryStream);
                 var iCount = AttachIndexBuffer(primitive, uvPrimitiveGeometryStream);
 
-                var uvPrimitiveMaterial = new BasicMaterial
-                {
-                    Alpha = GetMaterialAlpha(primitive.Material),
-                    DiffuseColor = GetMaterialDiffuseColor(primitive.Material),
-                    SpecularPower = GetMaterialSpecularPower(primitive.Material),
-                    SpecularColor = GetMaterialSpecularColor(primitive.Material),
-                    EmissiveColor = GetMaterialEmissiveColor(primitive.Material),
-                    Texture = GetMaterialTexture(contentManager, primitive.Material, textures)
-                };
-
+                var uvPrimitiveMaterial = materialLoader.CreateMaterialForPrimitive(contentManager, primitive);
                 var uvPrimitiveType = ConvertPrimitiveType(primitive.DrawPrimitiveType);
                 var uvPrimitiveGeometry = new ModelMeshGeometry(uvPrimitiveType, uvPrimitiveGeometryStream, vCount, iCount, uvPrimitiveMaterial);
                 uvModelMeshGeometries.Add(uvPrimitiveGeometry);
@@ -805,14 +725,14 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the nodes in the specified container.
         /// </summary>
-        private IList<ModelNode> ProcessNodes(ContentManager contentManager, IVisualNodeContainer container, Dictionary<String, Texture2D> textures)
+        private IList<ModelNode> ProcessNodes(ContentManager contentManager, IVisualNodeContainer container, GltfMaterialLoader materialLoader)
         {
             var uvNodes = new List<ModelNode>();
 
             foreach (var node in container.VisualChildren)
             {
-                var uvNodeChildren = ProcessNodes(contentManager, node, textures);
-                var uvNodeModelMesh = ProcessNodeMesh(contentManager, node.Mesh, textures);
+                var uvNodeChildren = ProcessNodes(contentManager, node, materialLoader);
+                var uvNodeModelMesh = ProcessNodeMesh(contentManager, node.Mesh, materialLoader);
                 var uvNode = new ModelNode(node.Name, uvNodeModelMesh, uvNodeChildren, node.LocalMatrix);
                 uvNodes.Add(uvNode);
             }
@@ -823,14 +743,14 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the scenes in the specified model.
         /// </summary>
-        private IList<ModelScene> ProcessScenes(ContentManager contentManager, ModelRoot input, Dictionary<String, Texture2D> textures, out Int32? defaultSceneIndex)
+        private IList<ModelScene> ProcessScenes(ContentManager contentManager, ModelRoot input, GltfMaterialLoader materialLoader, out Int32? defaultSceneIndex)
         {
             var uvScenes = new List<ModelScene>();
             var uvDefaultScene = default(ModelScene);
 
             foreach (var scene in input.LogicalScenes)
             {
-                var uvSceneNodes = ProcessNodes(contentManager, scene, textures);
+                var uvSceneNodes = ProcessNodes(contentManager, scene, materialLoader);
                 var uvScene = new ModelScene(scene.Name, uvSceneNodes);
                 uvScenes.Add(uvScene);
 

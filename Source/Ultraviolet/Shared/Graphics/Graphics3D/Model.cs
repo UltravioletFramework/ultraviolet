@@ -6,7 +6,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// <summary>
     /// Represents a model comprised of one or more scenes, each of which represents one or more logical objects in 3D space.
     /// </summary>
-    public sealed class Model : UltravioletResource
+    public class Model : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Model"/> class.
