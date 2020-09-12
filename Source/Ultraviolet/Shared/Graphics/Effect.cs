@@ -34,6 +34,12 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Updates the configuration of the <see cref="Effect"/> instance so that it is able to renderer the specified geometry stream.
+        /// </summary>
+        /// <param name="stream">The <see cref="GeometryStream"/> that will be rendered with this effect.</param>
+        public virtual void ConfigureForGeometry(GeometryStream stream) { }
+
+        /// <summary>
         /// Gets the effect's collection of parameters.
         /// </summary>
         public EffectParameterCollection Parameters => impl.Parameters;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
 {
@@ -42,6 +43,17 @@ namespace Ultraviolet.Graphics
         {
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<BasicEffectFactory>()(uv);
+        }
+
+        /// <inheritdoc/>
+        public override void ConfigureForGeometry(GeometryStream stream)
+        {
+            Contract.Require(stream, nameof(stream));
+
+            this.TextureEnabled = stream.HasVertexTexture;
+            this.VertexColorEnabled = stream.HasVertexColor;
+
+            base.ConfigureForGeometry(stream);
         }
 
         /// <summary>
