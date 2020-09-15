@@ -21,6 +21,9 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             this.Scenes = new ModelSceneCollection(scenes);
             this.Textures = new ModelTextureCollection(textures);
+
+            foreach (var scene in Scenes)
+                scene.SetParentModel(this);
         }
 
         /// <summary>

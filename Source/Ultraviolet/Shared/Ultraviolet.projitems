@@ -88,6 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GlbModelImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfModelProcessorMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfSkinnedModelProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\Model.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelMesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelMeshCollection.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\PerspectiveCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\StlModelProcessorMetadata.cs" />

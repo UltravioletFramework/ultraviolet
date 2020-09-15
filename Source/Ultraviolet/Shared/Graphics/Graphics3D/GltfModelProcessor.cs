@@ -15,7 +15,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     public class GltfModelProcessor : GltfModelProcessor<Model>
     {
         /// <inheritdoc/>
-        protected override Model CreateModelResource(ContentManager contentManager, IList<ModelScene> scenes, IList<Texture2D> textures) =>
+        protected override Model CreateModelResource(ContentManager contentManager, ModelRoot input, IList<ModelScene> scenes, IList<Texture2D> textures) =>
             new Model(contentManager.Ultraviolet, scenes, textures);
     }
 
@@ -35,7 +35,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             using (var materialLoader = (GltfMaterialLoader)Activator.CreateInstance(materialLoaderType))
             {
                 var uvScenes = ProcessScenes(manager, input, materialLoader, out var defaultSceneIndex);
-                var uvModel = CreateModelResource(manager, uvScenes, materialLoader.GetModelTextures());
+                var uvModel = CreateModelResource(manager, input, uvScenes, materialLoader.GetModelTextures());
                 if (uvModel == null)
                     throw new InvalidOperationException();
 
@@ -50,10 +50,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Creates the <see cref="Model"/> instance which is returned by the content processor.
         /// </summary>
         /// <param name="contentManager">The content manager with which the model is being loaded.</param>
+        /// <param name="input">The <see cref="ModelRoot"/> which is being processed.</param>
         /// <param name="scenes">The list of scenes which belong to the model.</param>
         /// <param name="textures">The list of textures which belong to the model.</param>
         /// <returns>The <see cref="Model"/> instance which was created.</returns>
-        protected abstract TModel CreateModelResource(ContentManager contentManager, IList<ModelScene> scenes, IList<Texture2D> textures);
+        protected abstract TModel CreateModelResource(ContentManager contentManager, ModelRoot input, IList<ModelScene> scenes, IList<Texture2D> textures);
 
         /// <summary>
         /// Gets the fully-qualified type name of the default <see cref="GltfMaterialLoader"/> to use when loading models.
@@ -63,7 +64,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Converts a <see cref="SharpGLTF.Schema2.PrimitiveType"/> value to an Ultraviolet <see cref="PrimitiveType"/> value.
         /// </summary>
-        private PrimitiveType ConvertPrimitiveType(SharpGLTF.Schema2.PrimitiveType type)
+        private static PrimitiveType ConvertPrimitiveType(SharpGLTF.Schema2.PrimitiveType type)
         {
             switch (type)
             {
@@ -87,7 +88,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the specified node mesh.
         /// </summary>
-        private ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, GltfMaterialLoader materialLoader)
+        private static ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, GltfMaterialLoader materialLoader, Int32 logicalIndex)
         {
             if (mesh == null)
                 return null;
@@ -105,7 +106,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 uvModelMeshGeometries.Add(uvPrimitiveGeometry);
             }
 
-            return new ModelMesh(mesh.Name, uvModelMeshGeometries);
+            return new ModelMesh(logicalIndex, mesh.Name, uvModelMeshGeometries);
         }
 
         /// <summary>
@@ -365,7 +366,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Attaches a vertex buffer representing the specified primitive's vertices to the specified geometry stream.
         /// </summary>
-        private Int32 AttachVertexBuffer(MeshPrimitive primitive, GeometryStream geometryStream)
+        private static Int32 AttachVertexBuffer(MeshPrimitive primitive, GeometryStream geometryStream)
         {
             if (!primitive.VertexAccessors.Any())
                 return 0;
@@ -671,7 +672,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Attaches an index buffer representing the specified primitive's indices to the specified geometry stream.
         /// </summary>
-        private Int32 AttachIndexBuffer(MeshPrimitive primitive, GeometryStream geometryStream)
+        private static Int32 AttachIndexBuffer(MeshPrimitive primitive, GeometryStream geometryStream)
         {
             var accessor = primitive.GetIndexAccessor();
             if (accessor != null && accessor.Count > 0)
@@ -725,16 +726,22 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the nodes in the specified container.
         /// </summary>
-        private IList<ModelNode> ProcessNodes(ContentManager contentManager, IVisualNodeContainer container, GltfMaterialLoader materialLoader)
+        private static IList<ModelNode> ProcessNodes(ContentManager contentManager, IVisualNodeContainer container, GltfMaterialLoader materialLoader, ref Int32 logicalNodeIndex, ref Int32 logicalMeshIndex)
         {
             var uvNodes = new List<ModelNode>();
 
             foreach (var node in container.VisualChildren)
             {
-                var uvNodeChildren = ProcessNodes(contentManager, node, materialLoader);
-                var uvNodeModelMesh = ProcessNodeMesh(contentManager, node.Mesh, materialLoader);
-                var uvNode = new ModelNode(node.Name, uvNodeModelMesh, uvNodeChildren, node.LocalMatrix);
+                var uvNodeChildren = ProcessNodes(contentManager, node, materialLoader, ref logicalNodeIndex, ref logicalMeshIndex);
+
+                var uvNodeModelMesh = ProcessNodeMesh(contentManager, node.Mesh, materialLoader, logicalMeshIndex);
+                if (uvNodeModelMesh != null)
+                    logicalMeshIndex++;
+
+                var uvNode = new ModelNode(logicalNodeIndex, node.Name, uvNodeModelMesh, uvNodeChildren, node.LocalMatrix);
                 uvNodes.Add(uvNode);
+
+                logicalNodeIndex++;
             }
 
             return uvNodes;
@@ -743,19 +750,24 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the scenes in the specified model.
         /// </summary>
-        private IList<ModelScene> ProcessScenes(ContentManager contentManager, ModelRoot input, GltfMaterialLoader materialLoader, out Int32? defaultSceneIndex)
+        private static IList<ModelScene> ProcessScenes(ContentManager contentManager, ModelRoot input, GltfMaterialLoader materialLoader, out Int32? defaultSceneIndex)
         {
             var uvScenes = new List<ModelScene>();
+            var uvSceneIndex = 0;
+            var uvSceneNodeIndex = 0;
+            var uvSceneMeshIndex = 0;
             var uvDefaultScene = default(ModelScene);
 
             foreach (var scene in input.LogicalScenes)
             {
-                var uvSceneNodes = ProcessNodes(contentManager, scene, materialLoader);
-                var uvScene = new ModelScene(scene.Name, uvSceneNodes);
+                var uvSceneNodes = ProcessNodes(contentManager, scene, materialLoader, ref uvSceneNodeIndex, ref uvSceneMeshIndex);
+                var uvScene = new ModelScene(uvSceneIndex, scene.Name, uvSceneNodes);
                 uvScenes.Add(uvScene);
 
                 if (input.DefaultScene == scene)
                     uvDefaultScene = uvScene;
+
+                uvSceneIndex++;
             }
 
             defaultSceneIndex = (uvDefaultScene == null) ? (Int32?)null : uvScenes.IndexOf(uvDefaultScene);

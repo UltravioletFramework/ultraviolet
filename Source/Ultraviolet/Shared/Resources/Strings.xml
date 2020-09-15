@@ -695,4 +695,9 @@
       <Variant>Vertex attribute '{0}' has an invalid name.</Variant>
     </en-US>
   </String>
+  <String Key="MODEL_PARENT_LINK_ALREADY_EXISTS">
+    <en-US>
+      <Variant>A parent link already exists for this model component.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

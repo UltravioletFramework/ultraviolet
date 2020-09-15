@@ -65,9 +65,9 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             var modelMeshMaterial = stlMetadata.DefaultMaterial ?? new BasicMaterial() { DiffuseColor = Color.White };
             var modelMeshGeometry = new ModelMeshGeometry(PrimitiveType.TriangleList, geometryStream, vertexBuffer.VertexCount, 0, modelMeshMaterial);
-            var modelMesh = new ModelMesh(null, new[] { modelMeshGeometry });
-            var modelNode = new ModelNode(null, modelMesh, null, globalTransform);
-            var modelScene = new ModelScene(input.Name, new[] { modelNode });
+            var modelMesh = new ModelMesh(0, null, new[] { modelMeshGeometry });
+            var modelNode = new ModelNode(0, null, modelMesh, null, globalTransform);
+            var modelScene = new ModelScene(0, input.Name, new[] { modelNode });
             var model = new Model(manager.Ultraviolet, new[] { modelScene });
 
             return model;

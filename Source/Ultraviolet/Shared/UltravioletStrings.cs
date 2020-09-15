@@ -167,6 +167,7 @@ namespace Ultraviolet
         public static readonly StringResource UnsupportedPrimitiveType             = new StringResource(StringDatabase, "UNSUPPORTED_PRIMITIVE_TYPE");
         public static readonly StringResource UnsupportedElementFormatInGltfLoader = new StringResource(StringDatabase, "UNSUPPORTED_ELEMENT_FORMAT_IN_GLTF_LOADER");
         public static readonly StringResource InvalidVertexAttributeName           = new StringResource(StringDatabase, "INVALID_VERTEX_ATTRIBUTE_NAME");
+        public static readonly StringResource ModelParentLinkAlreadyExists         = new StringResource(StringDatabase, "MODEL_PARENT_LINK_ALREADY_EXISTS");
 #pragma warning restore 1591
     }
 }
