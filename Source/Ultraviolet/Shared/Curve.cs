@@ -174,6 +174,13 @@ namespace Ultraviolet
                 case CurveContinuity.Step:
                     return t >= 1 ? key2.Value : key1.Value;
 
+                case CurveContinuity.Linear:
+                    {
+                        var key1Value = key1.Value;
+                        var key2Value = key2.Value;
+                        return (Single)(key1Value + ((key2Value - key1Value) * t));
+                    }
+
                 default:
                     {
                         var t2         = t * t;
@@ -188,7 +195,7 @@ namespace Ultraviolet
                         var polynomial3 = (-2.0 * t3 + 3.0 * t2);      // (-2t^2 + 3t^2)
                         var polynomial4 = (t3 - t2);                   // (t^3 - t^2)
 
-                        return (float)(key1Value * polynomial1 + tangentOut * polynomial2 + key2Value * polynomial3 + tangentIn * polynomial4);
+                        return (Single)(key1Value * polynomial1 + tangentOut * polynomial2 + key2Value * polynomial3 + tangentIn * polynomial4);
                     }
             }
         }

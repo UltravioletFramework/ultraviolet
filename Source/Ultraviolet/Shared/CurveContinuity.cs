@@ -7,6 +7,11 @@ namespace Ultraviolet
     public enum CurveContinuity
     {
         /// <summary>
+        /// The curse transitions linearly from one key to the next.
+        /// </summary>
+        Linear,
+
+        /// <summary>
         /// The curve transitions smoothly from one key to the next.
         /// </summary>
         Smooth,
