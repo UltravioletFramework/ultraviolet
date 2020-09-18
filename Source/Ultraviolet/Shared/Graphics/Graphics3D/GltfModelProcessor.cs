@@ -88,7 +88,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the specified node mesh.
         /// </summary>
-        private static ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, GltfMaterialLoader materialLoader, Int32 logicalIndex)
+        private static ModelMesh ProcessNodeMesh(ContentManager contentManager, Mesh mesh, GltfMaterialLoader materialLoader)
         {
             if (mesh == null)
                 return null;
@@ -106,7 +106,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 uvModelMeshGeometries.Add(uvPrimitiveGeometry);
             }
 
-            return new ModelMesh(logicalIndex, mesh.Name, uvModelMeshGeometries);
+            return new ModelMesh(mesh.LogicalIndex, mesh.Name, uvModelMeshGeometries);
         }
 
         /// <summary>
@@ -726,22 +726,17 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Processes the nodes in the specified container.
         /// </summary>
-        private static IList<ModelNode> ProcessNodes(ContentManager contentManager, IVisualNodeContainer container, GltfMaterialLoader materialLoader, ref Int32 logicalNodeIndex, ref Int32 logicalMeshIndex)
+        private static IList<ModelNode> ProcessNodes(ContentManager contentManager, IVisualNodeContainer container, GltfMaterialLoader materialLoader)
         {
             var uvNodes = new List<ModelNode>();
 
             foreach (var node in container.VisualChildren)
             {
-                var uvNodeChildren = ProcessNodes(contentManager, node, materialLoader, ref logicalNodeIndex, ref logicalMeshIndex);
+                var uvNodeChildren = ProcessNodes(contentManager, node, materialLoader);
 
-                var uvNodeModelMesh = ProcessNodeMesh(contentManager, node.Mesh, materialLoader, logicalMeshIndex);
-                if (uvNodeModelMesh != null)
-                    logicalMeshIndex++;
-
-                var uvNode = new ModelNode(logicalNodeIndex, node.Name, uvNodeModelMesh, uvNodeChildren, node.LocalMatrix);
+                var uvNodeModelMesh = ProcessNodeMesh(contentManager, node.Mesh, materialLoader);
+                var uvNode = new ModelNode(node.LogicalIndex, node.Name, uvNodeModelMesh, uvNodeChildren, node.LocalMatrix);
                 uvNodes.Add(uvNode);
-
-                logicalNodeIndex++;
             }
 
             return uvNodes;
@@ -754,14 +749,12 @@ namespace Ultraviolet.Graphics.Graphics3D
         {
             var uvScenes = new List<ModelScene>();
             var uvSceneIndex = 0;
-            var uvSceneNodeIndex = 0;
-            var uvSceneMeshIndex = 0;
             var uvDefaultScene = default(ModelScene);
 
             foreach (var scene in input.LogicalScenes)
             {
-                var uvSceneNodes = ProcessNodes(contentManager, scene, materialLoader, ref uvSceneNodeIndex, ref uvSceneMeshIndex);
-                var uvScene = new ModelScene(uvSceneIndex, scene.Name, uvSceneNodes);
+                var uvSceneNodes = ProcessNodes(contentManager, scene, materialLoader);
+                var uvScene = new ModelScene(scene.LogicalIndex, scene.Name, uvSceneNodes);
                 uvScenes.Add(uvScene);
 
                 if (input.DefaultScene == scene)
