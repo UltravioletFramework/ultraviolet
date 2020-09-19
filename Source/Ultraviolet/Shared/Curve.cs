@@ -1,43 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
     /// <summary>
     /// Represents a mathematical curve.
     /// </summary>
-    [Serializable]
-    public sealed class Curve
+    /// <typeparam name="TValue">The type of value which comprises the curve.</typeparam>
+    /// <typeparam name="TKey">The type of keyframe which defines the shape of the curve.</typeparam>
+    public class Curve<TValue, TKey> : Curve<TValue>
+        where TValue : struct, IEquatable<TValue>
+        where TKey : CurveKey<TValue>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Curve"/> class.
+        /// Initializes a new instance of the <see cref="Curve{TValue, TKey}"/> class.
         /// </summary>
         /// <param name="preLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined 
         /// for points before the beginning of the curve.</param>
         /// <param name="postLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined
         /// for points after the end of the curve.</param>
-        /// <param name="keys">A collection of <see cref="CurveKey"/> objects from which to construct the curve.</param>
-        public Curve(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<CurveKey> keys)
+        /// <param name="sampler">The <see cref="ICurveSampler{TValue, TKey}"/> to use when sampling this curve's values.</param>
+        /// <param name="keys">A collection of <typeparamref name="TKey"/> objects from which to construct the curve.</param>
+        public Curve(CurveLoopType preLoop, CurveLoopType postLoop, ICurveSampler<TValue, TKey> sampler, IEnumerable<TKey> keys)
+            : base(preLoop, postLoop)
         {
-            this.preLoop = preLoop;
-            this.postLoop = postLoop;
-            
-            this.keys     = new CurveKeyCollection(keys);
-            this.keyFirst = (keys == null) ? null : this.keys[0];
-            this.keyLast  = (keys == null) ? null : this.keys[this.keys.Count - 1];
-            this.length   = (keys == null) ? 0f : keyLast.Position - keyFirst.Position;
+            Contract.Require(sampler, nameof(sampler));
 
-            this.easingFunction = Evaluate;
-        }
+            this.Sampler = sampler;
+            this.Keys = new CurveKeyCollection<TValue, TKey>(keys);
+            this.keyFirst = null;
+            this.keyLast = null;
+            this.length = 0f;
 
-        /// <summary>
-        /// Implicitly converts a <see cref="Curve"/> to an <see cref="EasingFunction"/>.
-        /// </summary>
-        /// <param name="curve">The <see cref="Curve"/> to convert.</param>
-        /// <returns>The converted <see cref="EasingFunction"/>.</returns>
-        public static implicit operator EasingFunction(Curve curve)
-        {
-            return (curve == null) ? null : curve.easingFunction;
+            if (this.Keys.Count > 0)
+            {
+                this.keyFirst = this.Keys[0].Key;
+                this.keyLast = this.Keys[this.Keys.Count - 1].Key;
+                this.length = keyLast.Position - keyFirst.Position;
+            }
         }
 
         /// <summary>
@@ -45,58 +46,39 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="position">The position at which to calculate a value.</param>
         /// <returns>The value of the curve at the specified position.</returns>
-        public Single Evaluate(Single position)
+        public override TValue Evaluate(Single position)
         {
+            var keys = Keys;
+
             if (keys.Count == 0)
-                return 0f;
+                return default(TValue);
 
             if (keys.Count == 1)
-                return keys[0].Value;
+                return keyFirst.Value;
 
-            if (position < keys[0].Position)
-            {
-                return EvaluateOutside(PreLoop, keys[0], keys[0].TangentIn, position);
-            }
-            if (position > keys[keys.Count - 1].Position)
-            {
-                return EvaluateOutside(PostLoop, keys[keys.Count - 1], keys[keys.Count - 1].TangentOut, position);
-            }
-            return EvaluateInside(position);
-        }
+            if (position < keyFirst.Position)
+                return EvaluateOutside(PreLoop, keyFirst, position, CurvePositionType.BeforeCurve);
 
-        /// <summary>
-        /// Gets a value indicating how the curve's values are determined 
-        /// for points before the beginning of the curve.
-        /// </summary>
-        public CurveLoopType PreLoop
-        {
-            get { return preLoop; }
-        }
+            if (position > keyLast.Position)
+                return EvaluateOutside(PostLoop, keyLast, position, CurvePositionType.AfterCurve);
 
-        /// <summary>
-        /// Gets a value indicating how the curve's values are determined
-        /// for points after the end of the curve.
-        /// </summary>
-        public CurveLoopType PostLoop
-        {
-            get { return postLoop; }
+            return EvaluateInside(position, default(TValue));
         }
 
         /// <summary>
         /// Gets a value indicating whether the curve's value is constant.
         /// </summary>
-        public Boolean IsConstant
-        {
-            get { return keys.Count == 0 || keys.Count == 1; }
-        }
+        public Boolean IsConstant => Keys.IsConstant;
+
+        /// <summary>
+        /// Gets the sampler for this curve.
+        /// </summary>
+        public ICurveSampler<TValue, TKey> Sampler { get; }
 
         /// <summary>
         /// Gets the curve's collection of keys.
         /// </summary>
-        public CurveKeyCollection Keys
-        {
-            get { return keys; }
-        }
+        public CurveKeyCollection<TValue, TKey> Keys { get; }
 
         /// <summary>
         /// Gets the index of the cycle that contains the specified position.
@@ -110,19 +92,26 @@ namespace Ultraviolet
         /// <summary>
         /// Evaluates a position inside of the curve.
         /// </summary>
-        private Single EvaluateInside(Single position)
+        private TValue EvaluateInside(Single position, TValue offset)
         {
-            CurveKey key1, key2;
-            FindKeysAtCurvePosition(position, out key1, out key2);
-            return InterpolateValue(key1, key2, (position - key1.Position) / (key2.Position - key1.Position));
+            FindKeyRecordsAtCurvePosition(position, out var record1, out var record2);
+
+            var key1 = record1.Key;
+            var key2 = record2.Key;
+
+            var factor = (position - key1.Position) / (key2.Position - key1.Position);
+            var result = (record1.SamplerOverride ?? Sampler).InterpolateKeyframes(key1, key2, factor, offset);
+
+            return result;
         }
 
         /// <summary>
         /// Evaluates a position outside of the curve.
         /// </summary>
-        private Single EvaluateOutside(CurveLoopType loop, CurveKey loopKey, Single loopKeyTangent, Single position)
+        private TValue EvaluateOutside(CurveLoopType loop, TKey loopKey, Single position, CurvePositionType positionType)
         {
-            var offset = 0f;
+            var offset = default(TValue);
+
             switch (loop)
             {
                 case CurveLoopType.Constant:
@@ -132,7 +121,7 @@ namespace Ultraviolet
 
                 case CurveLoopType.Linear:
                     {
-                        return loopKey.Value - loopKeyTangent * (loopKey.Position - position);
+                        return Sampler.CalculateLinearExtension(loopKey, position, positionType);
                     }
 
                 case CurveLoopType.Cycle:
@@ -146,7 +135,7 @@ namespace Ultraviolet
                     {
                         var cycle = GetCycleIndex(position);
                         position = position - (cycle * length);
-                        offset = (keyLast.Value - keyFirst.Value) * cycle;
+                        offset = Sampler.CalculateCycleOffset(keyFirst.Value, keyLast.Value, cycle);
                     }
                     break;
 
@@ -161,55 +150,21 @@ namespace Ultraviolet
                     }
                     break;
             }
-            return offset + EvaluateInside(position);
-        }
 
-        /// <summary>
-        /// Calculates a value between the specified curve keys based on the specified interpolation factor.
-        /// </summary>
-        private Single InterpolateValue(CurveKey key1, CurveKey key2, Single t)
-        {
-            switch (key1.Continuity)
-            {
-                case CurveContinuity.Step:
-                    return t >= 1 ? key2.Value : key1.Value;
-
-                case CurveContinuity.Linear:
-                    {
-                        var key1Value = key1.Value;
-                        var key2Value = key2.Value;
-                        return (Single)(key1Value + ((key2Value - key1Value) * t));
-                    }
-
-                default:
-                    {
-                        var t2         = t * t;
-                        var t3         = t2 * t;
-                        var key1Value  = key1.Value;
-                        var key2Value  = key2.Value;
-                        var tangentIn  = key2.TangentIn;
-                        var tangentOut = key1.TangentOut;
-
-                        var polynomial1 = (2.0 * t3 - 3.0 * t2 + 1.0); // (2t^3 - 3t^2 + 1)
-                        var polynomial2 = (t3 - 2.0 * t2 + t);         // (t3 - 2t^2 + t)  
-                        var polynomial3 = (-2.0 * t3 + 3.0 * t2);      // (-2t^2 + 3t^2)
-                        var polynomial4 = (t3 - t2);                   // (t^3 - t^2)
-
-                        return (Single)(key1Value * polynomial1 + tangentOut * polynomial2 + key2Value * polynomial3 + tangentIn * polynomial4);
-                    }
-            }
+            return EvaluateInside(position, offset);
         }
 
         /// <summary>
         /// Finds the pair of keys which surrounds the specified position on the curve.
         /// </summary>
-        private void FindKeysAtCurvePosition(Single position, out CurveKey key1, out CurveKey key2)
+        private void FindKeyRecordsAtCurvePosition(Single position, out CurveKeyRecord<TValue, TKey> key1, out CurveKeyRecord<TValue, TKey> key2)
         {
+            var keys = Keys;
             key1 = keys[0];
             key2 = keys[keys.Count - 1];
             for (var i = 1; i < keys.Count; i++)
             {
-                if (keys[i].Position >= position && keys[i - 1].Position <= position)
+                if (keys[i].Key.Position >= position && keys[i - 1].Key.Position <= position)
                 {
                     key1 = keys[i - 1];
                     key2 = keys[i];
@@ -218,17 +173,9 @@ namespace Ultraviolet
             }
         }
 
-        // Property values.
-        private readonly CurveLoopType preLoop;
-        private readonly CurveLoopType postLoop;
-
         // The curve's collection of keys.
-        private readonly CurveKeyCollection keys;
-        private readonly CurveKey keyFirst;
-        private readonly CurveKey keyLast;
+        private readonly TKey keyFirst;
+        private readonly TKey keyLast;
         private readonly Single length;
-
-        // An easing function that represents the curve.
-        private readonly EasingFunction easingFunction;
     }
 }
