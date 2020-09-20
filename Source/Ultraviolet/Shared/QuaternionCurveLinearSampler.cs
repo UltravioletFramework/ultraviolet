@@ -23,7 +23,9 @@ namespace Ultraviolet
         {
             var key1Value = key1.Value;
             var key2Value = key2.Value;
-            return offset + (key1Value + ((key2Value - key1Value) * t));
+
+            Quaternion.Slerp(ref key1Value, ref key2Value, t, out var result);
+            return offset + result;
         }
 
         /// <inheritdoc/>
