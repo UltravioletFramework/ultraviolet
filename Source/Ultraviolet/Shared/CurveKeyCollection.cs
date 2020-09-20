@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 
 namespace Ultraviolet
@@ -23,6 +22,25 @@ namespace Ultraviolet
         {
             this.storage = (keys == null) ? new CurveKeyRecord<TValue, TKey>[0] :
                 keys.Select(x => new CurveKeyRecord<TValue, TKey>(x, null)).ToArray();
+
+            this.IsArrayValue = typeof(TValue).IsArray;
+            if (this.IsArrayValue)
+            {
+                if (this.storage.Length > 0)
+                {
+                    this.ElementCount = (this.storage[0].Key.Value as Array)?.Length ?? 0;
+                    if (this.storage.Any(x => ((x.Key.Value as Array)?.Length ?? 0) != this.ElementCount))
+                        throw new ArgumentException(UltravioletStrings.CurveKeyArrayLengthMismatch);
+                }
+                else
+                {
+                    this.ElementCount = 0;
+                }
+            }
+            else
+            {
+                this.ElementCount = 1;
+            }
         }
 
         /// <summary>
@@ -59,6 +77,18 @@ namespace Ultraviolet
         /// Gets the number of items in the collection.
         /// </summary>
         public Int32 Count => storage.Length;
+
+        /// <summary>
+        /// Gets the number of elements in each value in this curve. If <typeparamref name="TValue"/> is not an array,
+        /// this value will always be 1. Otherwise, this value will be the length of the arrays contained by the curve. 
+        /// All of the arrays in the curve must have the same element count.
+        /// </summary>
+        public Int32 ElementCount { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the curve contains an array value.
+        /// </summary>
+        public Boolean IsArrayValue { get; }
 
         /// <summary>
         /// Gets a value indicating whether the collection is empty.

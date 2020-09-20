@@ -13,7 +13,13 @@ namespace Ultraviolet
         private Vector4CurveLinearSampler() { }
 
         /// <inheritdoc/>
-        public Vector4 InterpolateKeyframes(CurveKey<Vector4> key1, CurveKey<Vector4> key2, Single t, Vector4 offset)
+        public void CreateTemporaryValue(Int32 elementCount, out Vector4 value) => value = default;
+
+        /// <inheritdoc/>
+        public void ReleaseTemporaryValue(in Vector4 value) { }
+
+        /// <inheritdoc/>
+        public Vector4 InterpolateKeyframes(CurveKey<Vector4> key1, CurveKey<Vector4> key2, Single t, Vector4 offset, in Vector4 existing)
         {
             var key1Value = key1.Value;
             var key2Value = key2.Value;
@@ -21,11 +27,11 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector4 CalculateLinearExtension(CurveKey<Vector4> key, Single position, CurvePositionType positionType) =>
+        public Vector4 CalculateLinearExtension(CurveKey<Vector4> key, Single position, CurvePositionType positionType, in Vector4 existing) =>
             key.Value;
 
         /// <inheritdoc/>
-        public Vector4 CalculateCycleOffset(Vector4 first, Vector4 last, Int32 cycle) => 
+        public Vector4 CalculateCycleOffset(Vector4 first, Vector4 last, Int32 cycle, in Vector4 existing) => 
             (last - first) * cycle;
 
         /// <summary>

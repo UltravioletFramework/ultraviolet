@@ -13,15 +13,21 @@ namespace Ultraviolet
         private SingleCurveStepSampler() { }
 
         /// <inheritdoc/>
-        public Single InterpolateKeyframes(CurveKey<Single> key1, CurveKey<Single> key2, Single t, Single offset) =>
+        public void CreateTemporaryValue(Int32 elementCount, out Single value) => value = default;
+
+        /// <inheritdoc/>
+        public void ReleaseTemporaryValue(in Single value) { }
+
+        /// <inheritdoc/>
+        public Single InterpolateKeyframes(CurveKey<Single> key1, CurveKey<Single> key2, Single t, Single offset, in Single existing) =>
             offset + (t >= 1 ? key2.Value : key1.Value);
 
         /// <inheritdoc/>
-        public Single CalculateLinearExtension(CurveKey<Single> key, Single position, CurvePositionType positionType) =>
+        public Single CalculateLinearExtension(CurveKey<Single> key, Single position, CurvePositionType positionType, in Single existing) =>
             key.Value;
 
         /// <inheritdoc/>
-        public Single CalculateCycleOffset(Single first, Single last, Int32 cycle) => 
+        public Single CalculateCycleOffset(Single first, Single last, Int32 cycle, in Single existing) => 
             (last - first) * cycle;
 
         /// <summary>

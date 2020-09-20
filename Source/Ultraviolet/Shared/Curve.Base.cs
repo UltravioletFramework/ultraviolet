@@ -25,8 +25,9 @@ namespace Ultraviolet
         /// Calculates the value of the curve at the specified position.
         /// </summary>
         /// <param name="position">The position at which to calculate a value.</param>
+        /// <param name="existing">An existing value which may be modified to represent the result value in order to reduce allocation pressure.</param>
         /// <returns>The value of the curve at the specified position.</returns>
-        public abstract TValue Evaluate(Single position);
+        public abstract TValue Evaluate(Single position, in TValue existing);
 
         /// <summary>
         /// Gets a value indicating how the curve's values are determined 

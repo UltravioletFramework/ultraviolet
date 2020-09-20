@@ -13,7 +13,13 @@ namespace Ultraviolet
         private QuaternionCurveLinearSampler() { }
 
         /// <inheritdoc/>
-        public Quaternion InterpolateKeyframes(CurveKey<Quaternion> key1, CurveKey<Quaternion> key2, Single t, Quaternion offset)
+        public void CreateTemporaryValue(Int32 elementCount, out Quaternion value) => value = default;
+
+        /// <inheritdoc/>
+        public void ReleaseTemporaryValue(in Quaternion value) { }
+
+        /// <inheritdoc/>
+        public Quaternion InterpolateKeyframes(CurveKey<Quaternion> key1, CurveKey<Quaternion> key2, Single t, Quaternion offset, in Quaternion existing)
         {
             var key1Value = key1.Value;
             var key2Value = key2.Value;
@@ -21,11 +27,11 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Quaternion CalculateLinearExtension(CurveKey<Quaternion> key, Single position, CurvePositionType positionType) =>
+        public Quaternion CalculateLinearExtension(CurveKey<Quaternion> key, Single position, CurvePositionType positionType, in Quaternion existing) =>
             key.Value;
 
         /// <inheritdoc/>
-        public Quaternion CalculateCycleOffset(Quaternion first, Quaternion last, Int32 cycle) => 
+        public Quaternion CalculateCycleOffset(Quaternion first, Quaternion last, Int32 cycle, in Quaternion existing) => 
             (last - first) * cycle;
 
         /// <summary>

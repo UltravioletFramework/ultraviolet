@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Ultraviolet
 {
@@ -13,7 +14,13 @@ namespace Ultraviolet
         private Vector4CurveSmoothSampler() { }
 
         /// <inheritdoc/>
-        public Vector4 InterpolateKeyframes(SmoothCurveKey<Vector4> key1, SmoothCurveKey<Vector4> key2, Single t, Vector4 offset)
+        public void CreateTemporaryValue(Int32 elementCount, out Vector4 value) => value = default;
+
+        /// <inheritdoc/>
+        public void ReleaseTemporaryValue(in Vector4 value) { }
+
+        /// <inheritdoc/>
+        public Vector4 InterpolateKeyframes(SmoothCurveKey<Vector4> key1, SmoothCurveKey<Vector4> key2, Single t, Vector4 offset, in Vector4 existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -31,7 +38,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector4 CalculateLinearExtension(SmoothCurveKey<Vector4> key, Single position, CurvePositionType positionType)
+        public Vector4 CalculateLinearExtension(SmoothCurveKey<Vector4> key, Single position, CurvePositionType positionType, in Vector4 existing)
         {
             switch (positionType)
             {
@@ -47,7 +54,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector4 CalculateCycleOffset(Vector4 first, Vector4 last, Int32 cycle) => 
+        public Vector4 CalculateCycleOffset(Vector4 first, Vector4 last, Int32 cycle, in Vector4 existing) => 
             (last - first) * cycle;
 
         /// <summary>

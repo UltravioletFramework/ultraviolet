@@ -40,12 +40,8 @@ namespace Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Calculates the value of the curve at the specified position.
-        /// </summary>
-        /// <param name="position">The position at which to calculate a value.</param>
-        /// <returns>The value of the curve at the specified position.</returns>
-        public override TValue Evaluate(Single position)
+        /// <inheritdoc/>
+        public override TValue Evaluate(Single position, in TValue existing)
         {
             var keys = Keys;
 
@@ -56,12 +52,12 @@ namespace Ultraviolet
                 return keyFirst.Value;
 
             if (position < keyFirst.Position)
-                return EvaluateOutside(PreLoop, keyFirst, position, CurvePositionType.BeforeCurve);
+                return EvaluateOutside(PreLoop, keyFirst, position, CurvePositionType.BeforeCurve, in existing);
 
             if (position > keyLast.Position)
-                return EvaluateOutside(PostLoop, keyLast, position, CurvePositionType.AfterCurve);
+                return EvaluateOutside(PostLoop, keyLast, position, CurvePositionType.AfterCurve, in existing);
 
-            return EvaluateInside(position, default(TValue));
+            return EvaluateInside(position, default(TValue), in existing);
         }
 
         /// <summary>
@@ -91,7 +87,7 @@ namespace Ultraviolet
         /// <summary>
         /// Evaluates a position inside of the curve.
         /// </summary>
-        private TValue EvaluateInside(Single position, TValue offset)
+        private TValue EvaluateInside(Single position, TValue offset, in TValue existing)
         {
             FindKeyRecordsAtCurvePosition(position, out var record1, out var record2);
 
@@ -99,7 +95,7 @@ namespace Ultraviolet
             var key2 = record2.Key;
 
             var factor = (position - key1.Position) / (key2.Position - key1.Position);
-            var result = (record1.SamplerOverride ?? Sampler).InterpolateKeyframes(key1, key2, factor, offset);
+            var result = (record1.SamplerOverride ?? Sampler).InterpolateKeyframes(key1, key2, factor, offset, existing);
 
             return result;
         }
@@ -107,8 +103,9 @@ namespace Ultraviolet
         /// <summary>
         /// Evaluates a position outside of the curve.
         /// </summary>
-        private TValue EvaluateOutside(CurveLoopType loop, TKey loopKey, Single position, CurvePositionType positionType)
+        private TValue EvaluateOutside(CurveLoopType loop, TKey loopKey, Single position, CurvePositionType positionType, in TValue existing)
         {
+            var offsetTemp = default(TValue);
             var offset = default(TValue);
 
             switch (loop)
@@ -120,7 +117,7 @@ namespace Ultraviolet
 
                 case CurveLoopType.Linear:
                     {
-                        return Sampler.CalculateLinearExtension(loopKey, position, positionType);
+                        return Sampler.CalculateLinearExtension(loopKey, position, positionType, existing);
                     }
 
                 case CurveLoopType.Cycle:
@@ -134,7 +131,8 @@ namespace Ultraviolet
                     {
                         var cycle = GetCycleIndex(position);
                         position = position - (cycle * length);
-                        offset = Sampler.CalculateCycleOffset(keyFirst.Value, keyLast.Value, cycle);
+                        Sampler.CreateTemporaryValue(Keys.ElementCount, out offsetTemp);
+                        offset = Sampler.CalculateCycleOffset(keyFirst.Value, keyLast.Value, cycle, offsetTemp);
                     }
                     break;
 
@@ -150,7 +148,9 @@ namespace Ultraviolet
                     break;
             }
 
-            return EvaluateInside(position, offset);
+            var result = EvaluateInside(position, offset, existing);
+            Sampler.ReleaseTemporaryValue(offsetTemp);
+            return result;
         }
 
         /// <summary>

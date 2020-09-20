@@ -13,7 +13,13 @@ namespace Ultraviolet
         private Vector2CurveSmoothSampler() { }
 
         /// <inheritdoc/>
-        public Vector2 InterpolateKeyframes(SmoothCurveKey<Vector2> key1, SmoothCurveKey<Vector2> key2, Single t, Vector2 offset)
+        public void CreateTemporaryValue(Int32 elementCount, out Vector2 value) => value = default;
+
+        /// <inheritdoc/>
+        public void ReleaseTemporaryValue(in Vector2 value) { }
+
+        /// <inheritdoc/>
+        public Vector2 InterpolateKeyframes(SmoothCurveKey<Vector2> key1, SmoothCurveKey<Vector2> key2, Single t, Vector2 offset, in Vector2 existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -31,7 +37,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector2 CalculateLinearExtension(SmoothCurveKey<Vector2> key, Single position, CurvePositionType positionType)
+        public Vector2 CalculateLinearExtension(SmoothCurveKey<Vector2> key, Single position, CurvePositionType positionType, in Vector2 existing)
         {
             switch (positionType)
             {
@@ -47,7 +53,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector2 CalculateCycleOffset(Vector2 first, Vector2 last, Int32 cycle) => 
+        public Vector2 CalculateCycleOffset(Vector2 first, Vector2 last, Int32 cycle, in Vector2 existing) => 
             (last - first) * cycle;
 
         /// <summary>

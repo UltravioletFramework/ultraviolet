@@ -13,7 +13,13 @@ namespace Ultraviolet
         private QuaternionCurveSmoothSampler() { }
 
         /// <inheritdoc/>
-        public Quaternion InterpolateKeyframes(SmoothCurveKey<Quaternion> key1, SmoothCurveKey<Quaternion> key2, Single t, Quaternion offset)
+        public void CreateTemporaryValue(Int32 elementCount, out Quaternion value) => value = default;
+
+        /// <inheritdoc/>
+        public void ReleaseTemporaryValue(in Quaternion value) { }
+
+        /// <inheritdoc/>
+        public Quaternion InterpolateKeyframes(SmoothCurveKey<Quaternion> key1, SmoothCurveKey<Quaternion> key2, Single t, Quaternion offset, in Quaternion existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -31,7 +37,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Quaternion CalculateLinearExtension(SmoothCurveKey<Quaternion> key, Single position, CurvePositionType positionType)
+        public Quaternion CalculateLinearExtension(SmoothCurveKey<Quaternion> key, Single position, CurvePositionType positionType, in Quaternion existing)
         {
             switch (positionType)
             {
@@ -47,7 +53,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Quaternion CalculateCycleOffset(Quaternion first, Quaternion last, Int32 cycle) => 
+        public Quaternion CalculateCycleOffset(Quaternion first, Quaternion last, Int32 cycle, in Quaternion existing) => 
             (last - first) * cycle;
 
         /// <summary>
