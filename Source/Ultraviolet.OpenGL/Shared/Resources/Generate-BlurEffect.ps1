@@ -16,7 +16,7 @@
 	$Shader.Add("in vec4 vColor;")
 	$Shader.Add("in vec2 vTextureCoordinate;")
 	$Shader.Add("")
-	$Shader.Add("DECLARE_OUTPUT_COLOR;")
+	$Shader.Add("DECLARE_OUTPUT_COLOR")
 	$Shader.Add("")
 	$Shader.Add("void main()")
 	$Shader.Add("{")

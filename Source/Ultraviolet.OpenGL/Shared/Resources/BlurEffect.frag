@@ -13,7 +13,7 @@ uniform vec2 Direction;
 in vec4 vColor;
 in vec2 vTextureCoordinate;
 
-DECLARE_OUTPUT_COLOR;
+DECLARE_OUTPUT_COLOR
 
 void main()
 {

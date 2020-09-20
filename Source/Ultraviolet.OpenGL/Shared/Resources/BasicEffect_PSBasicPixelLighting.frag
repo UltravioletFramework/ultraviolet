@@ -4,7 +4,7 @@
  in vec3 vNormalWS;
  in vec4 vDiffuse;
 
-DECLARE_OUTPUT_COLOR;
+DECLARE_OUTPUT_COLOR
 
 void main()
 {

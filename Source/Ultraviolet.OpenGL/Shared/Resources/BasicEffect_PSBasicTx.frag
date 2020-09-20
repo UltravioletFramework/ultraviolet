@@ -6,7 +6,7 @@ uniform sampler2D Texture;
  in vec4 vSpecular;
  in vec2 vTexCoord;
 
-DECLARE_OUTPUT_COLOR;
+DECLARE_OUTPUT_COLOR
 
 void main()
 {

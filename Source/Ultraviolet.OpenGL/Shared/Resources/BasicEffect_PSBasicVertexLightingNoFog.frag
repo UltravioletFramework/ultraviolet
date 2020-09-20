@@ -3,7 +3,7 @@
  in vec4 vDiffuse;
  in vec4 vSpecular;
 
-DECLARE_OUTPUT_COLOR;
+DECLARE_OUTPUT_COLOR
 
 void main()
 {

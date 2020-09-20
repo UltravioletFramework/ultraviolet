@@ -9,25 +9,21 @@
 precision mediump float;
 precision mediump int;
 
-#define DECLARE_OUTPUT_COLOR
-#define OUTPUT_COLOR gl_FragColor
-
-#else
-
-#define DECLARE_OUTPUT_COLOR out vec4 fFragColor
-#define OUTPUT_COLOR fFragColor
-
 #endif
 
 #ifdef GLES2
 
 #define in attribute
 #define out varying
+
+#define DECLARE_OUTPUT_COLOR
+#define OUTPUT_COLOR gl_FragColor
 #define SAMPLE_TEXTURE2D texture2D
 
 #else
 
+#define DECLARE_OUTPUT_COLOR out vec4 fFragColor;
+#define OUTPUT_COLOR fFragColor
 #define SAMPLE_TEXTURE2D texture
 
 #endif
-
