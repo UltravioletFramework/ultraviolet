@@ -157,6 +157,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private void DrawNode(ModelNode node, Camera camera, ref Effect effect, Matrix transform)
         {
+            if (!node.HasGeometry)
+                return;
+
             transform = Matrix.Multiply(node.Transform, transform);
             OnDrawingModelNode(node, camera, ref transform);
 

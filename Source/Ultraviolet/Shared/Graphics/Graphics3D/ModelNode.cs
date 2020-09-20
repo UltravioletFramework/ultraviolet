@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
@@ -28,6 +29,8 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             foreach (var child in Children)
                 child.SetParentModelNode(this);
+
+            this.HasGeometry = (Mesh?.Geometries.Count > 0) || this.Children.Any(x => x.HasGeometry);
         }
 
         /// <summary>
@@ -69,6 +72,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the node's transform.
         /// </summary>
         public Matrix Transform { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this node, or any of its descendants, has visible geometry.
+        /// </summary>
+        public Boolean HasGeometry { get; }
 
         /// <summary>
         /// Sets the node's parent model.
