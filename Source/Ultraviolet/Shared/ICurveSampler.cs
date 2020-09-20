@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// <typeparam name="TValue">The type of value which comprises the curve.</typeparam>
     /// <typeparam name="TKey">The type of keyframe used by the curve.</typeparam>
     public interface ICurveSampler<TValue, in TKey>
-        where TValue : struct, IEquatable<TValue>
         where TKey : CurveKey<TValue>
     {
         /// <summary>

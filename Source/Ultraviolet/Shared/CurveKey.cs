@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// </summary>
     /// <typeparam name="TValue">The type of value which comprises the curve.</typeparam>
     public abstract partial class CurveKey<TValue> : IComparable<CurveKey<TValue>>
-        where TValue : struct, IEquatable<TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CurveKey{TValue}"/> class.

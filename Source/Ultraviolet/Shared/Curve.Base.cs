@@ -7,7 +7,6 @@ namespace Ultraviolet
     /// </summary>
     /// <typeparam name="TValue">The type of value which comprises the curve.</typeparam>
     public abstract class Curve<TValue>
-        where TValue : struct, IEquatable<TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Curve{TValue, TKey}"/> class.

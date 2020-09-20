@@ -10,7 +10,6 @@ namespace Ultraviolet
     /// <typeparam name="TValue">The type of value which comprises the curve.</typeparam>
     /// <typeparam name="TKey">The type of keyframe which defines the shape of the curve.</typeparam>
     public class Curve<TValue, TKey> : Curve<TValue>
-        where TValue : struct, IEquatable<TValue>
         where TKey : CurveKey<TValue>
     {
         /// <summary>
