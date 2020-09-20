@@ -130,7 +130,7 @@ namespace Ultraviolet.Content
             get => source.Position - start;
             set
             {
-                Contract.EnsureRange(value >= 0 && value < Length, nameof(value));
+                Contract.EnsureRange(value >= 0 && value <= Length, nameof(value));
 
                 source.Position = start + value;
             }
