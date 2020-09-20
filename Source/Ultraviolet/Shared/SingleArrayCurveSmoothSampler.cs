@@ -14,7 +14,7 @@ namespace Ultraviolet
         private SingleArrayCurveSmoothSampler() { }
 
         /// <inheritdoc/>
-        public void CreateTemporaryValue(Int32 elementCount, out ArraySegment<Single> value) => value = ArrayPool<Single>.Shared.Rent(elementCount);
+        public void CreateTemporaryValue(Int32 elementCount, out ArraySegment<Single> value) => value = new ArraySegment<Single>(ArrayPool<Single>.Shared.Rent(elementCount));
 
         /// <inheritdoc/>
         public void ReleaseTemporaryValue(in ArraySegment<Single> value) => ArrayPool<Single>.Shared.Return(value.Array);
@@ -32,17 +32,17 @@ namespace Ultraviolet
             {
                 var t2 = t * t;
                 var t3 = t2 * t;
-                var key1Value = key1.Value[i];
-                var key2Value = key2.Value[i];
-                var tangentIn = key2.TangentIn[i];
-                var tangentOut = key1.TangentOut[i];
+                var key1Value = key1.Value.GetItemRef(i);
+                var key2Value = key2.Value.GetItemRef(i);
+                var tangentIn = key2.TangentIn.GetItemRef(i);
+                var tangentOut = key1.TangentOut.GetItemRef(i);
 
                 var polynomial1 = (2.0 * t3 - 3.0 * t2 + 1.0); // (2t^3 - 3t^2 + 1)
                 var polynomial2 = (t3 - 2.0 * t2 + t);         // (t3 - 2t^2 + t)  
                 var polynomial3 = (-2.0 * t3 + 3.0 * t2);      // (-2t^2 + 3t^2)
                 var polynomial4 = (t3 - t2);                   // (t^3 - t^2)
 
-                existing[i] = offset[i] + (Single)(key1Value * polynomial1 + tangentOut * polynomial2 + key2Value * polynomial3 + tangentIn * polynomial4);
+                existing.GetItemRef(i) = offset.GetItemRef(i) + (Single)(key1Value * polynomial1 + tangentOut * polynomial2 + key2Value * polynomial3 + tangentIn * polynomial4);
             }
 
             return existing;
@@ -63,14 +63,14 @@ namespace Ultraviolet
                 case CurvePositionType.BeforeCurve:
                     for (var i = 0; i < count; i++)
                     {
-                        existing[i] = key.Value[i] - key.TangentIn[i] * positionDelta;
+                        existing.GetItemRef(i) = key.Value.GetItemRef(i) - key.TangentIn.GetItemRef(i) * positionDelta;
                     }
                     return existing;
 
                 case CurvePositionType.AfterCurve:
                     for (var i = 0; i < count; i++)
                     {
-                        existing[i] = key.Value[i] - key.TangentOut[i] * positionDelta;
+                        existing.GetItemRef(i) = key.Value.GetItemRef(i) - key.TangentOut.GetItemRef(i) * positionDelta;
                     }
                     return existing;
 
@@ -89,7 +89,7 @@ namespace Ultraviolet
                 throw new ArgumentException(UltravioletStrings.SamplerArgumentsMustHaveSameLength);
 
             for (var i = 0; i < count; i++)
-                existing[i] = (last[i] - first[i]) * cycle;
+                existing.GetItemRef(i) = (last.GetItemRef(i) - first.GetItemRef(i)) * cycle;
 
             return existing;
         }

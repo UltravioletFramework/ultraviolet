@@ -14,7 +14,7 @@ namespace Ultraviolet
         private SingleArrayCurveStepSampler() { }
 
         /// <inheritdoc/>
-        public void CreateTemporaryValue(Int32 elementCount, out ArraySegment<Single> value) => value = ArrayPool<Single>.Shared.Rent(elementCount);
+        public void CreateTemporaryValue(Int32 elementCount, out ArraySegment<Single> value) => value = new ArraySegment<Single>(ArrayPool<Single>.Shared.Rent(elementCount));
 
         /// <inheritdoc/>
         public void ReleaseTemporaryValue(in ArraySegment<Single> value) => ArrayPool<Single>.Shared.Return(value.Array);
@@ -30,7 +30,7 @@ namespace Ultraviolet
 
             var chosen = (t >= 1 ? key2.Value : key1.Value);
             for (var i = 0; i < count; i++)
-                existing[i] = offset[i] + chosen[i];
+                existing.GetItemRef(i) = offset.GetItemRef(i) + chosen.GetItemRef(i);
 
             return existing;
         }
@@ -55,7 +55,7 @@ namespace Ultraviolet
                 throw new ArgumentException(UltravioletStrings.SamplerArgumentsMustHaveSameLength);
 
             for (var i = 0; i < count; i++)
-                existing[i] = (last[i] - first[i]) * cycle;
+                existing.GetItemRef(i) = (last.GetItemRef(i) - first.GetItemRef(i)) * cycle;
 
             return existing;
         }
