@@ -222,6 +222,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SwapChainManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletTimingLogic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SingleArrayCurve.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SingleArrayCurveLinearSampler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SingleArrayCurveSmoothSampler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SingleArrayCurveStepSampler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector4Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector2Curve.cs" />

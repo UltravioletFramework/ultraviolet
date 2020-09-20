@@ -700,4 +700,14 @@
       <Variant>A parent link already exists for this model component.</Variant>
     </en-US>
   </String>
+  <String Key="CURVE_KEY_ARRAY_LENGTH_MISMATCH">
+    <en-US>
+      <Variant>Invalid array data. All of the array values used as keyframes in this curve must have the same number of elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="SAMPLER_ARGUMENTS_MUST_HAVE_SAME_LENGTH">
+    <en-US>
+      <Variant>Sampler arguments must have the same length.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
