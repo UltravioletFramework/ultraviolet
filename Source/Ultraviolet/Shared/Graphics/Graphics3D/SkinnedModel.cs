@@ -13,10 +13,16 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="scenes">The model's list of scenes.</param>
         /// <param name="textures">The model's list of textures.</param>
-        public SkinnedModel(UltravioletContext uv, IList<ModelScene> scenes, IList<Texture2D> textures = null)
+        /// <param name="animations">The models' list of animations.</param>
+        public SkinnedModel(UltravioletContext uv, IList<ModelScene> scenes, IList<Texture2D> textures, IEnumerable<SkinnedAnimation> animations)
             : base(uv, scenes, textures)
         {
-
+            this.Animations = new SkinnedModelAnimationCollection(animations);
         }
+
+        /// <summary>
+        /// Gets the model's collection of animations.
+        /// </summary>
+        public SkinnedModelAnimationCollection Animations { get; }
     }
 }
