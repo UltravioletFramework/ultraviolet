@@ -34,9 +34,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)CurveKeyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Curve.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinJoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinNodeCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinJointCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelSkinCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelAnimationCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelNodeAnimation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\Skin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICurveSampler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CameraParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Circle.cs" />

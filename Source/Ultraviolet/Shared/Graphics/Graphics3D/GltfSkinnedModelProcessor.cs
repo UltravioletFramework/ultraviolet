@@ -15,13 +15,86 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <inheritdoc/>
         protected override SkinnedModel CreateModelResource(ContentManager contentManager, ModelRoot input, IList<ModelScene> scenes, IList<Texture2D> textures)
         {
-            var totalNodeCount = 0;
-            TraverseModelNodes(scenes, n => totalNodeCount++);
+            var nodesCount = 0;
+            var nodesByLogicalIndex = new Dictionary<Int32, ModelNode>();
+            var nodesBySkin = new Dictionary<Int32, List<ModelNode>>();
+            TraverseModelNodes(scenes, n =>
+            {
+                var gltfNode = input.LogicalNodes[n.LogicalIndex];
+                if (gltfNode.Skin != null)
+                {
+                    if (!nodesBySkin.TryGetValue(gltfNode.Skin.LogicalIndex, out var skinNodeList))
+                        nodesBySkin[gltfNode.Skin.LogicalIndex] = skinNodeList = new List<ModelNode>();
 
+                    skinNodeList.Add(n);
+                }
+                nodesByLogicalIndex[n.LogicalIndex] = n;
+                nodesCount++;
+            });
+
+            var uvSkins = ProcessSkins(input, nodesByLogicalIndex, nodesBySkin);
+            var uvAnimations = ProcessAnimations(input, scenes, nodesCount);
+            return new SkinnedModel(contentManager.Ultraviolet, scenes, textures, uvSkins, uvAnimations);
+        }
+
+        /// <summary>
+        /// Traverses all of the nodes in the specified collection of scenes and performs the specified action.
+        /// </summary>
+        private static void TraverseModelNodes(IEnumerable<ModelScene> scenes, Action<ModelNode> action)
+        {
+            foreach (var scene in scenes)
+            {
+                foreach (var node in scene.Nodes)
+                    TraverseModelNodes(node, action);
+            }
+        }
+
+        /// <summary>
+        /// Traverses all of the nodes in the specified hierarchy of nodes and performs the specified action.
+        /// </summary>
+        private static void TraverseModelNodes(ModelNode node, Action<ModelNode> action)
+        {
+            action(node);
+
+            foreach (var child in node.Children)
+                TraverseModelNodes(child, action);
+        }
+
+        /// <summary>
+        /// Processes the model's skins.
+        /// </summary>
+        private static IEnumerable<Skin> ProcessSkins(ModelRoot input, Dictionary<Int32, ModelNode> nodesByLogicalIndex, Dictionary<Int32, List<ModelNode>> nodesBySkin)
+        {
+            var uvSkins = new List<Skin>(input.LogicalSkins.Count);
+            foreach (var skin in input.LogicalSkins)
+            {
+                var uvSkinJoints = new List<SkinJoint>();
+
+                for (var i = 0; i < skin.JointsCount; i++)
+                {
+                    var (jointNode, jointIbm) = skin.GetJoint(i);
+
+                    var uvSkinJointNode = nodesByLogicalIndex[jointNode.LogicalIndex];
+                    var uvSkinJoint = new SkinJoint(uvSkinJointNode, jointIbm);
+                    uvSkinJoints.Add(uvSkinJoint);
+                }
+
+                nodesBySkin.TryGetValue(skin.LogicalIndex, out var uvSkinNodes);
+                var uvSkin = new Skin(skin.Name, uvSkinJoints, uvSkinNodes);
+                uvSkins.Add(uvSkin);
+            }
+            return uvSkins;
+        }
+
+        /// <summary>
+        /// Processes the node's animations.
+        /// </summary>
+        private static IEnumerable<SkinnedAnimation> ProcessAnimations(ModelRoot input, IEnumerable<ModelScene> scenes, Int32 nodesCount)
+        {
             var uvAnimations = new List<SkinnedAnimation>(input.LogicalAnimations.Count);
             foreach (var animation in input.LogicalAnimations)
             {
-                var uvNodeAnimations = new List<SkinnedModelNodeAnimation>(totalNodeCount);
+                var uvNodeAnimations = new List<SkinnedModelNodeAnimation>(nodesCount);
                 TraverseModelNodes(scenes, n =>
                 {
                     var gltfNode = input.LogicalNodes[n.LogicalIndex];
@@ -54,31 +127,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 var uvAnimation = new SkinnedAnimation(animation.Name, uvNodeAnimations);
                 uvAnimations.Add(uvAnimation);
             }
-
-            return new SkinnedModel(contentManager.Ultraviolet, scenes, textures, uvAnimations);
-        }
-
-        /// <summary>
-        /// Traverses all of the nodes in the specified collection of scenes and performs the specified action.
-        /// </summary>
-        private static void TraverseModelNodes(IEnumerable<ModelScene> scenes, Action<ModelNode> action)
-        {
-            foreach (var scene in scenes)
-            {
-                foreach (var node in scene.Nodes)
-                    TraverseModelNodes(node, action);
-            }
-        }
-
-        /// <summary>
-        /// Traverses all of the nodes in the specified hierarchy of nodes and performs the specified action.
-        /// </summary>
-        private static void TraverseModelNodes(ModelNode node, Action<ModelNode> action)
-        {
-            action(node);
-
-            foreach (var child in node.Children)
-                TraverseModelNodes(child, action);
+            return uvAnimations;
         }
 
         /// <summary>
