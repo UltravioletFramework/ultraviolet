@@ -48,6 +48,8 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public ArraySegment<Single> CalculateCycleOffset(ArraySegment<Single> first, ArraySegment<Single> last, Int32 cycle, in ArraySegment<Single> existing)
         {
+            // NOTE: Candidate for SIMD optimization in .NET 5.
+
             var count = first.Count;
             if (count != last.Count || count != existing.Count)
                 throw new ArgumentException(UltravioletStrings.SamplerArgumentsMustHaveSameLength);
