@@ -7,7 +7,7 @@ namespace Ultraviolet
     /// Represents a key point in a curve which uses linear sampling.
     /// </summary>
     /// <typeparam name="TValue">The type of value which comprises the curve.</typeparam>
-    public abstract partial class CurveKey<TValue> : IComparable<CurveKey<TValue>>
+    public class CurveKey<TValue> : IComparable<CurveKey<TValue>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CurveKey{TValue}"/> class.
