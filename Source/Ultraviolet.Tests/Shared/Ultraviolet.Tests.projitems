@@ -22,6 +22,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetIDTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManagerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CurveTestUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CurveTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffectTestParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\BasicEffectTestVertex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ColorEncoding.cs" />
@@ -69,6 +71,60 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector4Tests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_CubicSpline_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_CubicSpline_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Linear_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Linear_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Step_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Step_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_CubicSpline_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_CubicSpline_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Linear_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Linear_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Step_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Step_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_CubicSpline_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_CubicSpline_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Linear_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Linear_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Step_keys.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Step_samples.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\DynamicTextureAtlas_FailsToReserveSpace_WhenAtlasIsFull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
