@@ -253,7 +253,7 @@ namespace Ultraviolet.Tests
             Contract.Require(output, nameof(output));
             Contract.Require(curve, nameof(curve));
 
-            using (var writer = new StreamWriter(output, leaveOpen: true))
+            using (var writer = new StreamWriter(output))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.WriteField("Key");
@@ -300,7 +300,7 @@ namespace Ultraviolet.Tests
             Contract.Require(curve, nameof(curve));
             Contract.EnsureRange(sampleCount > 0, nameof(sampleCount));
 
-            using (var writer = new StreamWriter(output, leaveOpen: true))
+            using (var writer = new StreamWriter(output))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 WriteCsvHeader<TValue>(csv);
@@ -332,7 +332,7 @@ namespace Ultraviolet.Tests
 
             var sharpGltfSampler = CreateSharpGltfCurveSampler(curve);
 
-            using (var writer = new StreamWriter(output, leaveOpen: true))
+            using (var writer = new StreamWriter(output))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 WriteCsvHeader<Single>(csv);
@@ -364,7 +364,7 @@ namespace Ultraviolet.Tests
 
             var sharpGltfSampler = CreateSharpGltfCurveSampler(curve);
 
-            using (var writer = new StreamWriter(output, leaveOpen: true))
+            using (var writer = new StreamWriter(output))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 WriteCsvHeader<Vector3>(csv);
@@ -396,7 +396,7 @@ namespace Ultraviolet.Tests
 
             var sharpGltfSampler = CreateSharpGltfCurveSampler(curve);
 
-            using (var writer = new StreamWriter(output, leaveOpen: true))
+            using (var writer = new StreamWriter(output))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 WriteCsvHeader<Quaternion>(csv);
