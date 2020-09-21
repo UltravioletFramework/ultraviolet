@@ -6,19 +6,17 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// <summary>
     /// Represents a collection of <see cref="ModelScene"/> objects.
     /// </summary>
-    public sealed class ModelSceneCollection : UltravioletCollection<ModelScene>
+    public sealed class ModelSceneCollection : ModelResourceCollection<ModelScene>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelSceneCollection"/> class.
         /// </summary>
         /// <param name="scenes">The initial list of <see cref="ModelScene"/> objects with which to populate this collection.</param>
         public ModelSceneCollection(IList<ModelScene> scenes = null)
-            : base(scenes?.Count ?? 0)
+            : base(scenes)
         {
-            if (scenes != null)
-            {
-                AddRangeInternal(scenes);
-            }
+            if (this.Count > 0)
+                this.DefaultScene = this[0];
         }
 
         /// <summary>
