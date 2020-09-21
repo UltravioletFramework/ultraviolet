@@ -30,13 +30,14 @@ namespace Ultraviolet
             this.Keys = new CurveKeyCollection<TValue, TKey>(keys);
             this.keyFirst = null;
             this.keyLast = null;
-            this.length = 0f;
 
             if (this.Keys.Count > 0)
             {
                 this.keyFirst = this.Keys[0].Key;
+                this.StartPosition = this.keyFirst.Position;
                 this.keyLast = this.Keys[this.Keys.Count - 1].Key;
-                this.length = keyLast.Position - keyFirst.Position;
+                this.EndPosition = this.keyLast.Position;
+                this.Length = this.EndPosition - this.StartPosition;
             }
         }
 
@@ -60,6 +61,15 @@ namespace Ultraviolet
             return EvaluateInside(position, default(TValue), in existing);
         }
 
+        /// <inheritdoc/>
+        public override Single StartPosition { get; }
+
+        /// <inheritdoc/>
+        public override Single EndPosition { get; }
+
+        /// <inheritdoc/>
+        public override Single Length { get; }
+
         /// <summary>
         /// Gets a value indicating whether the curve's value is constant.
         /// </summary>
@@ -80,7 +90,7 @@ namespace Ultraviolet
         /// </summary>
         private Int32 GetCycleIndex(Single position)
         {
-            var cycle = (position - keyFirst.Position) / length;
+            var cycle = (position - keyFirst.Position) / Length;
             return (cycle < 0) ? (int)cycle - 1 : (int)cycle;
         }
 
@@ -123,14 +133,14 @@ namespace Ultraviolet
                 case CurveLoopType.Cycle:
                     {
                         var cycle = GetCycleIndex(position);
-                        position = position - (cycle * length);
+                        position = position - (cycle * Length);
                     }
                     break;
 
                 case CurveLoopType.CycleOffset:
                     {
                         var cycle = GetCycleIndex(position);
-                        position = position - (cycle * length);
+                        position = position - (cycle * Length);
                         Sampler.CreateTemporaryValue(Keys.ElementCount, out offsetTemp);
                         offset = Sampler.CalculateCycleOffset(keyFirst.Value, keyLast.Value, cycle, offsetTemp);
                     }
@@ -139,10 +149,10 @@ namespace Ultraviolet
                 case CurveLoopType.Oscillate:
                     {
                         var cycle = GetCycleIndex(position);
-                        position = position - (cycle * length);
+                        position = position - (cycle * Length);
                         if (cycle % 2 != 0)
                         {
-                            position = keyFirst.Position + (length - (position - keyFirst.Position));
+                            position = keyFirst.Position + (Length - (position - keyFirst.Position));
                         }
                     }
                     break;
@@ -175,6 +185,5 @@ namespace Ultraviolet
         // The curve's collection of keys.
         private readonly TKey keyFirst;
         private readonly TKey keyLast;
-        private readonly Single length;
     }
 }

@@ -40,5 +40,20 @@ namespace Ultraviolet
         /// for points after the end of the curve.
         /// </summary>
         public CurveLoopType PostLoop { get; }
+
+        /// <summary>
+        /// Gets the curve's starting position.
+        /// </summary>
+        public abstract Single StartPosition { get; }
+
+        /// <summary>
+        /// Gets the curve's ending position.
+        /// </summary>
+        public abstract Single EndPosition { get; }
+
+        /// <summary>
+        /// Gets the total length of the curve.
+        /// </summary>
+        public abstract Single Length { get; }
     }
 }
