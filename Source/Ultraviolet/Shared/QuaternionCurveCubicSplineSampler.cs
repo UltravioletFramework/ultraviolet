@@ -3,14 +3,14 @@
 namespace Ultraviolet
 {
     /// <summary>
-    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs smooth (bicubic) sampling on a curve of <see cref="Quaternion"/> values.
+    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs cubic spline sampling on a curve of <see cref="Quaternion"/> values.
     /// </summary>
-    public class QuaternionCurveSmoothSampler : ICurveSampler<Quaternion, SmoothCurveKey<Quaternion>>
+    public class QuaternionCurveCubicSplineSampler : ICurveSampler<Quaternion, CubicSplineCurveKey<Quaternion>>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuaternionCurveSmoothSampler"/> class.
+        /// Initializes a new instance of the <see cref="QuaternionCurveCubicSplineSampler"/> class.
         /// </summary>
-        private QuaternionCurveSmoothSampler() { }
+        private QuaternionCurveCubicSplineSampler() { }
 
         /// <inheritdoc/>
         public void CreateTemporaryValue(Int32 elementCount, out Quaternion value) => value = default;
@@ -19,7 +19,7 @@ namespace Ultraviolet
         public void ReleaseTemporaryValue(in Quaternion value) { }
 
         /// <inheritdoc/>
-        public Quaternion InterpolateKeyframes(SmoothCurveKey<Quaternion> key1, SmoothCurveKey<Quaternion> key2, Single t, Quaternion offset, in Quaternion existing)
+        public Quaternion InterpolateKeyframes(CubicSplineCurveKey<Quaternion> key1, CubicSplineCurveKey<Quaternion> key2, Single t, Quaternion offset, in Quaternion existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -37,7 +37,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Quaternion CalculateLinearExtension(SmoothCurveKey<Quaternion> key, Single position, CurvePositionType positionType, in Quaternion existing)
+        public Quaternion CalculateLinearExtension(CubicSplineCurveKey<Quaternion> key, Single position, CurvePositionType positionType, in Quaternion existing)
         {
             switch (positionType)
             {
@@ -57,8 +57,8 @@ namespace Ultraviolet
             (last - first) * cycle;
 
         /// <summary>
-        /// Gets the singleton instance of the <see cref="QuaternionCurveSmoothSampler"/> class.
+        /// Gets the singleton instance of the <see cref="QuaternionCurveCubicSplineSampler"/> class.
         /// </summary>
-        public static QuaternionCurveSmoothSampler Instance { get; } = new QuaternionCurveSmoothSampler();
+        public static QuaternionCurveCubicSplineSampler Instance { get; } = new QuaternionCurveCubicSplineSampler();
     }
 }

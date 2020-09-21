@@ -31,14 +31,14 @@ namespace Ultraviolet
             new Curve<ArraySegment<Single>, CurveKey<ArraySegment<Single>>>(preLoop, postLoop, SingleArrayCurveLinearSampler.Instance, keys);
 
         /// <summary>
-        /// Creates a new curve with smooth (bicubic) sampling.
+        /// Creates a new curve with cubic spline sampling.
         /// </summary>
         /// <param name="preLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined 
         /// for points before the beginning of the curve.</param>
         /// <param name="postLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined
         /// for points after the end of the curve.</param>
-        /// <param name="keys">A collection of <see cref="CurveKey{T}"/> objects from which to construct the curve.</param>
-        public static Curve<ArraySegment<Single>, SmoothCurveKey<ArraySegment<Single>>> Smooth(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<SmoothCurveKey<ArraySegment<Single>>> keys) =>
-            new Curve<ArraySegment<Single>, SmoothCurveKey<ArraySegment<Single>>>(preLoop, postLoop, SingleArrayCurveSmoothSampler.Instance, keys);
+        /// <param name="keys">A collection of <see cref="CubicSplineCurveKey{T}"/> objects from which to construct the curve.</param>
+        public static Curve<ArraySegment<Single>, CubicSplineCurveKey<ArraySegment<Single>>> CubicSpline(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<CubicSplineCurveKey<ArraySegment<Single>>> keys) =>
+            new Curve<ArraySegment<Single>, CubicSplineCurveKey<ArraySegment<Single>>>(preLoop, postLoop, SingleArrayCurveCubicSplineSampler.Instance, keys);
     }
 }

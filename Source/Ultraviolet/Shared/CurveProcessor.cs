@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml.Linq;
 using Ultraviolet.Content;
 using Ultraviolet.Core.Xml;
-using SmoothSingleCurve = Ultraviolet.Curve<System.Single, Ultraviolet.SmoothCurveKey<System.Single>>;
+using CubicSplineSingleCurve = Ultraviolet.Curve<System.Single, Ultraviolet.CubicSplineCurveKey<System.Single>>;
 
 namespace Ultraviolet
 {
@@ -13,7 +13,7 @@ namespace Ultraviolet
     /// curve definition XML files into instances of the Curve class.
     /// </summary>
     [ContentProcessor]
-    internal sealed class CurveProcessor : ContentProcessor<XDocument, SmoothSingleCurve>
+    internal sealed class CurveProcessor : ContentProcessor<XDocument, CubicSplineSingleCurve>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
@@ -27,7 +27,7 @@ namespace Ultraviolet
             foreach (var record in curve.Keys)
             {
                 var key = record.Key;
-                var keyContinuity = record.SamplerOverride == null ? (Int32)CurveContinuity.Smooth :
+                var keyContinuity = record.SamplerOverride == null ? (Int32)CurveContinuity.CubicSpline :
                     GetCurveContinuityFromSampler(record.SamplerOverride);
 
                 writer.Write(key.Position);
@@ -39,14 +39,14 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public override SmoothSingleCurve ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
+        public override CubicSplineSingleCurve ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             var preLoop  = (CurveLoopType)reader.ReadInt32();
             var postLoop = (CurveLoopType)reader.ReadInt32();
 
             var keyCount = reader.ReadInt32();
             var keyContinuities = new List<CurveContinuity>();
-            var keyCollection = new List<SmoothCurveKey<Single>>();
+            var keyCollection = new List<CubicSplineCurveKey<Single>>();
             for (int i = 0; i < keyCount; i++)
             {
                 var keyPosition = reader.ReadSingle();
@@ -54,15 +54,15 @@ namespace Ultraviolet
                 var keyTangentIn = reader.ReadSingle();
                 var keyTangentOut = reader.ReadSingle();
                 var keyContinuity = (CurveContinuity)reader.ReadInt32();
-                keyCollection.Add(new SmoothCurveKey<Single>(keyPosition, keyValue, keyTangentIn, keyTangentOut));
+                keyCollection.Add(new CubicSplineCurveKey<Single>(keyPosition, keyValue, keyTangentIn, keyTangentOut));
                 keyContinuities.Add(keyContinuity);
             }
 
-            return SingleCurve.Smooth(preLoop, postLoop, keyCollection);
+            return SingleCurve.CubicSpline(preLoop, postLoop, keyCollection);
         }
 
         /// <inheritdoc/>
-        public override SmoothSingleCurve Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
+        public override CubicSplineSingleCurve Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
             var asset = input.Root.Element("Asset");
             if (asset == null || asset.AttributeValueString("Type") != "Framework:Curve")
@@ -78,7 +78,7 @@ namespace Ultraviolet
             if (keysComponents.Length % ComponentsPerKey != 0)
                 throw new InvalidDataException(UltravioletStrings.InvalidCurveData);
 
-            var curveKeyCollection = new List<SmoothCurveKey<Single>>();
+            var curveKeyCollection = new List<CubicSplineCurveKey<Single>>();
             var curveKeyContinuities = new List<CurveContinuity>();
             for (int i = 0; i < keysComponents.Length; i += ComponentsPerKey)
             {
@@ -87,15 +87,15 @@ namespace Ultraviolet
                 var tangentIn  = Single.Parse(keysComponents[i + 2]);
                 var tangentOut = Single.Parse(keysComponents[i + 3]);
                 var continuity = (CurveContinuity)Enum.Parse(typeof(CurveContinuity), keysComponents[i + 4]);
-                curveKeyCollection.Add(new SmoothCurveKey<Single>(position, value, tangentIn, tangentOut));
+                curveKeyCollection.Add(new CubicSplineCurveKey<Single>(position, value, tangentIn, tangentOut));
                 curveKeyContinuities.Add(continuity);
             }
 
-            var curve = SingleCurve.Smooth(preLoop, postLoop, curveKeyCollection);
+            var curve = SingleCurve.CubicSpline(preLoop, postLoop, curveKeyCollection);
             for (int i = 0; i < curveKeyContinuities.Count; i++)
             {
                 var curveKeyContinuity = curveKeyContinuities[i];
-                if (curveKeyContinuity == CurveContinuity.Smooth)
+                if (curveKeyContinuity == CurveContinuity.CubicSpline)
                     continue;
 
                 curve.Keys.OverrideKeySampler(i, GetSamplerFromCurveContinuity(curveKeyContinuity));
@@ -110,10 +110,10 @@ namespace Ultraviolet
         /// <summary>
         /// Converts a sampler to a <see cref="CurveContinuity"/> value.
         /// </summary>
-        private static CurveContinuity GetCurveContinuityFromSampler(ICurveSampler<Single, SmoothCurveKey<Single>> sampler)
+        private static CurveContinuity GetCurveContinuityFromSampler(ICurveSampler<Single, CubicSplineCurveKey<Single>> sampler)
         {
-            if (sampler == SingleCurveSmoothSampler.Instance)
-                return CurveContinuity.Smooth;
+            if (sampler == SingleCurveCubicSplineSampler.Instance)
+                return CurveContinuity.CubicSpline;
 
             if (sampler == SingleCurveStepSampler.Instance)
                 return CurveContinuity.Step;
@@ -127,12 +127,12 @@ namespace Ultraviolet
         /// <summary>
         /// Converts a <see cref="CurveContinuity"/> value to a sampler.
         /// </summary>
-        private static ICurveSampler<Single, SmoothCurveKey<Single>> GetSamplerFromCurveContinuity(CurveContinuity curveContinuity)
+        private static ICurveSampler<Single, CubicSplineCurveKey<Single>> GetSamplerFromCurveContinuity(CurveContinuity curveContinuity)
         {
             switch (curveContinuity)
             {
-                case CurveContinuity.Smooth:
-                    return SingleCurveSmoothSampler.Instance;
+                case CurveContinuity.CubicSpline:
+                    return SingleCurveCubicSplineSampler.Instance;
 
                 case CurveContinuity.Step:
                     return SingleCurveStepSampler.Instance;

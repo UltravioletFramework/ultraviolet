@@ -7,9 +7,9 @@ namespace Ultraviolet
     public enum CurveContinuity
     {
         /// <summary>
-        /// The curve transitions smoothly from one key to the next.
+        /// The curve transitions using cubic splines.
         /// </summary>
-        Smooth,
+        CubicSpline,
 
         /// <summary>
         /// The curve transitions in steps.

@@ -3,14 +3,14 @@
 namespace Ultraviolet
 {
     /// <summary>
-    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs smooth (bicubic) sampling on a curve of <see cref="Single"/> values.
+    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs cubic spline sampling on a curve of <see cref="Single"/> values.
     /// </summary>
-    public class SingleCurveSmoothSampler : ICurveSampler<Single, SmoothCurveKey<Single>>
+    public class SingleCurveCubicSplineSampler : ICurveSampler<Single, CubicSplineCurveKey<Single>>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SingleCurveSmoothSampler"/> class.
+        /// Initializes a new instance of the <see cref="SingleCurveCubicSplineSampler"/> class.
         /// </summary>
-        private SingleCurveSmoothSampler() { }
+        private SingleCurveCubicSplineSampler() { }
 
         /// <inheritdoc/>
         public void CreateTemporaryValue(Int32 elementCount, out Single value) => value = default;
@@ -19,7 +19,7 @@ namespace Ultraviolet
         public void ReleaseTemporaryValue(in Single value) { }
 
         /// <inheritdoc/>
-        public Single InterpolateKeyframes(SmoothCurveKey<Single> key1, SmoothCurveKey<Single> key2, Single t, Single offset, in Single existing)
+        public Single InterpolateKeyframes(CubicSplineCurveKey<Single> key1, CubicSplineCurveKey<Single> key2, Single t, Single offset, in Single existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -37,7 +37,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Single CalculateLinearExtension(SmoothCurveKey<Single> key, Single position, CurvePositionType positionType, in Single existing)
+        public Single CalculateLinearExtension(CubicSplineCurveKey<Single> key, Single position, CurvePositionType positionType, in Single existing)
         {
             switch (positionType)
             {
@@ -57,8 +57,8 @@ namespace Ultraviolet
             (last - first) * cycle;
 
         /// <summary>
-        /// Gets the singleton instance of the <see cref="SingleCurveSmoothSampler"/> class.
+        /// Gets the singleton instance of the <see cref="SingleCurveCubicSplineSampler"/> class.
         /// </summary>
-        public static SingleCurveSmoothSampler Instance { get; } = new SingleCurveSmoothSampler();
+        public static SingleCurveCubicSplineSampler Instance { get; } = new SingleCurveCubicSplineSampler();
     }
 }

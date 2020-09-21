@@ -4,14 +4,14 @@ using System.Runtime.CompilerServices;
 namespace Ultraviolet
 {
     /// <summary>
-    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs smooth (bicubic) sampling on a curve of <see cref="Vector4"/> values.
+    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs cubic spline sampling on a curve of <see cref="Vector4"/> values.
     /// </summary>
-    public class Vector4CurveSmoothSampler : ICurveSampler<Vector4, SmoothCurveKey<Vector4>>
+    public class Vector4CurveCubicSplineSampler : ICurveSampler<Vector4, CubicSplineCurveKey<Vector4>>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Vector4CurveSmoothSampler"/> class.
+        /// Initializes a new instance of the <see cref="Vector4CurveCubicSplineSampler"/> class.
         /// </summary>
-        private Vector4CurveSmoothSampler() { }
+        private Vector4CurveCubicSplineSampler() { }
 
         /// <inheritdoc/>
         public void CreateTemporaryValue(Int32 elementCount, out Vector4 value) => value = default;
@@ -20,7 +20,7 @@ namespace Ultraviolet
         public void ReleaseTemporaryValue(in Vector4 value) { }
 
         /// <inheritdoc/>
-        public Vector4 InterpolateKeyframes(SmoothCurveKey<Vector4> key1, SmoothCurveKey<Vector4> key2, Single t, Vector4 offset, in Vector4 existing)
+        public Vector4 InterpolateKeyframes(CubicSplineCurveKey<Vector4> key1, CubicSplineCurveKey<Vector4> key2, Single t, Vector4 offset, in Vector4 existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -38,7 +38,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector4 CalculateLinearExtension(SmoothCurveKey<Vector4> key, Single position, CurvePositionType positionType, in Vector4 existing)
+        public Vector4 CalculateLinearExtension(CubicSplineCurveKey<Vector4> key, Single position, CurvePositionType positionType, in Vector4 existing)
         {
             switch (positionType)
             {
@@ -58,8 +58,8 @@ namespace Ultraviolet
             (last - first) * cycle;
 
         /// <summary>
-        /// Gets the singleton instance of the <see cref="Vector4CurveSmoothSampler"/> class.
+        /// Gets the singleton instance of the <see cref="Vector4CurveCubicSplineSampler"/> class.
         /// </summary>
-        public static Vector4CurveSmoothSampler Instance { get; } = new Vector4CurveSmoothSampler();
+        public static Vector4CurveCubicSplineSampler Instance { get; } = new Vector4CurveCubicSplineSampler();
     }
 }

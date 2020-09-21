@@ -107,13 +107,13 @@ namespace Ultraviolet.Graphics.Graphics3D
                     if (animScale != null || animRotation != null || animTranslation != null || animMorphWeights != null)
                     {
                         var curveScale = CreateCurve(animScale, x => x,
-                            Vector3CurveStepSampler.Instance, Vector3CurveLinearSampler.Instance, Vector3CurveSmoothSampler.Instance);
+                            Vector3CurveStepSampler.Instance, Vector3CurveLinearSampler.Instance, Vector3CurveCubicSplineSampler.Instance);
                         var curveTranslation = CreateCurve(animTranslation, x => x,
-                            Vector3CurveStepSampler.Instance, Vector3CurveLinearSampler.Instance, Vector3CurveSmoothSampler.Instance);
+                            Vector3CurveStepSampler.Instance, Vector3CurveLinearSampler.Instance, Vector3CurveCubicSplineSampler.Instance);
                         var curveRotation = CreateCurve(animRotation, x => x,
-                            QuaternionCurveStepSampler.Instance, QuaternionCurveLinearSampler.Instance, QuaternionCurveSmoothSampler.Instance);
+                            QuaternionCurveStepSampler.Instance, QuaternionCurveLinearSampler.Instance, QuaternionCurveCubicSplineSampler.Instance);
                         var curveMorphWeights = CreateCurve(animMorphWeights, x => new ArraySegment<Single>(x),
-                            SingleArrayCurveStepSampler.Instance, SingleArrayCurveLinearSampler.Instance, SingleArrayCurveSmoothSampler.Instance);
+                            SingleArrayCurveStepSampler.Instance, SingleArrayCurveLinearSampler.Instance, SingleArrayCurveCubicSplineSampler.Instance);
 
                         var uvNodeAnimation = new SkinnedModelNodeAnimation(n, curveScale, curveTranslation, curveRotation, curveMorphWeights);
                         uvNodeAnimations.Add(uvNodeAnimation);
@@ -140,12 +140,12 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
-        /// Creates a collection of <see cref="SmoothCurveKey{TValue}"/> values from the specified glTF keys.
+        /// Creates a collection of <see cref="CubicSplineCurveKey{TValue}"/> values from the specified glTF keys.
         /// </summary>
-        private static IEnumerable<SmoothCurveKey<TDstValue>> CreateSmoothKeys<TSrcValue, TDstValue>(Func<TSrcValue, TDstValue> converter,
+        private static IEnumerable<CubicSplineCurveKey<TDstValue>> CreateCubicSplineKeys<TSrcValue, TDstValue>(Func<TSrcValue, TDstValue> converter,
             IEnumerable<(Single Key, (TSrcValue TangentIn, TSrcValue Value, TSrcValue TangentOut))> keys)
         {
-            return keys.Select(x => new SmoothCurveKey<TDstValue>(x.Key, converter(x.Item2.Value), converter(x.Item2.TangentIn), converter(x.Item2.TangentOut)));
+            return keys.Select(x => new CubicSplineCurveKey<TDstValue>(x.Key, converter(x.Item2.Value), converter(x.Item2.TangentIn), converter(x.Item2.TangentOut)));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         private static Curve<TDstValue> CreateCurve<TSrcValue, TDstValue>(IAnimationSampler<TSrcValue> sampler, Func<TSrcValue, TDstValue> converter,
             ICurveSampler<TDstValue, CurveKey<TDstValue>> stepCurveSampler,
             ICurveSampler<TDstValue, CurveKey<TDstValue>> linearCurveSampler,
-            ICurveSampler<TDstValue, SmoothCurveKey<TDstValue>> smoothCurveSampler)
+            ICurveSampler<TDstValue, CubicSplineCurveKey<TDstValue>> cubicSplineCurveSampler)
         {
             if (sampler == null)
                 return null;
@@ -170,8 +170,8 @@ namespace Ultraviolet.Graphics.Graphics3D
                         CreateLinearKeys(converter, sampler.GetLinearKeys()));
 
                 case AnimationInterpolationMode.CUBICSPLINE:
-                    return new Curve<TDstValue, SmoothCurveKey<TDstValue>>(CurveLoopType.Cycle, CurveLoopType.Cycle, smoothCurveSampler, 
-                        CreateSmoothKeys(converter, sampler.GetCubicKeys()));
+                    return new Curve<TDstValue, CubicSplineCurveKey<TDstValue>>(CurveLoopType.Cycle, CurveLoopType.Cycle, cubicSplineCurveSampler, 
+                        CreateCubicSplineKeys(converter, sampler.GetCubicKeys()));
 
                 default:
                     throw new NotSupportedException();

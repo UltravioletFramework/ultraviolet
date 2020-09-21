@@ -3,14 +3,14 @@
 namespace Ultraviolet
 {
     /// <summary>
-    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs smooth (bicubic) sampling on a curve of <see cref="Vector3"/> values.
+    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs cubic spline sampling on a curve of <see cref="Vector3"/> values.
     /// </summary>
-    public class Vector3CurveSmoothSampler : ICurveSampler<Vector3, SmoothCurveKey<Vector3>>
+    public class Vector3CurveCubicSplineSampler : ICurveSampler<Vector3, CubicSplineCurveKey<Vector3>>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Vector3CurveSmoothSampler"/> class.
+        /// Initializes a new instance of the <see cref="Vector3CurveCubicSplineSampler"/> class.
         /// </summary>
-        private Vector3CurveSmoothSampler() { }
+        private Vector3CurveCubicSplineSampler() { }
 
         /// <inheritdoc/>
         public void CreateTemporaryValue(Int32 elementCount, out Vector3 value) => value = default;
@@ -19,7 +19,7 @@ namespace Ultraviolet
         public void ReleaseTemporaryValue(in Vector3 value) { }
 
         /// <inheritdoc/>
-        public Vector3 InterpolateKeyframes(SmoothCurveKey<Vector3> key1, SmoothCurveKey<Vector3> key2, Single t, Vector3 offset, in Vector3 existing)
+        public Vector3 InterpolateKeyframes(CubicSplineCurveKey<Vector3> key1, CubicSplineCurveKey<Vector3> key2, Single t, Vector3 offset, in Vector3 existing)
         {
             var t2 = t * t;
             var t3 = t2 * t;
@@ -37,7 +37,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Vector3 CalculateLinearExtension(SmoothCurveKey<Vector3> key, Single position, CurvePositionType positionType, in Vector3 existing)
+        public Vector3 CalculateLinearExtension(CubicSplineCurveKey<Vector3> key, Single position, CurvePositionType positionType, in Vector3 existing)
         {
             switch (positionType)
             {
@@ -57,8 +57,8 @@ namespace Ultraviolet
             (last - first) * cycle;
 
         /// <summary>
-        /// Gets the singleton instance of the <see cref="Vector3CurveSmoothSampler"/> class.
+        /// Gets the singleton instance of the <see cref="Vector3CurveCubicSplineSampler"/> class.
         /// </summary>
-        public static Vector3CurveSmoothSampler Instance { get; } = new Vector3CurveSmoothSampler();
+        public static Vector3CurveCubicSplineSampler Instance { get; } = new Vector3CurveCubicSplineSampler();
     }
 }

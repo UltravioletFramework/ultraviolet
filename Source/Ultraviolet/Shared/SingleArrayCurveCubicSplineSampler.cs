@@ -4,14 +4,14 @@ using System.Buffers;
 namespace Ultraviolet
 {
     /// <summary>
-    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs smooth (bicubic) sampling on a curve of arrays of <see cref="Single"/> values.
+    /// Represents an <see cref="ICurveSampler{TValue, TKey}"/> which performs cubic spline sampling on a curve of arrays of <see cref="Single"/> values.
     /// </summary>
-    public class SingleArrayCurveSmoothSampler : ICurveSampler<ArraySegment<Single>, SmoothCurveKey<ArraySegment<Single>>>
+    public class SingleArrayCurveCubicSplineSampler : ICurveSampler<ArraySegment<Single>, CubicSplineCurveKey<ArraySegment<Single>>>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SingleArrayCurveSmoothSampler"/> class.
+        /// Initializes a new instance of the <see cref="SingleArrayCurveCubicSplineSampler"/> class.
         /// </summary>
-        private SingleArrayCurveSmoothSampler() { }
+        private SingleArrayCurveCubicSplineSampler() { }
 
         /// <inheritdoc/>
         public void CreateTemporaryValue(Int32 elementCount, out ArraySegment<Single> value) => value = new ArraySegment<Single>(ArrayPool<Single>.Shared.Rent(elementCount));
@@ -20,7 +20,7 @@ namespace Ultraviolet
         public void ReleaseTemporaryValue(in ArraySegment<Single> value) => ArrayPool<Single>.Shared.Return(value.Array);
 
         /// <inheritdoc/>
-        public ArraySegment<Single> InterpolateKeyframes(SmoothCurveKey<ArraySegment<Single>> key1, SmoothCurveKey<ArraySegment<Single>> key2, Single t, ArraySegment<Single> offset, in ArraySegment<Single> existing)
+        public ArraySegment<Single> InterpolateKeyframes(CubicSplineCurveKey<ArraySegment<Single>> key1, CubicSplineCurveKey<ArraySegment<Single>> key2, Single t, ArraySegment<Single> offset, in ArraySegment<Single> existing)
         {
             // NOTE: Candidate for SIMD optimization in .NET 5.
 
@@ -49,7 +49,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public ArraySegment<Single> CalculateLinearExtension(SmoothCurveKey<ArraySegment<Single>> key, Single position, CurvePositionType positionType, in ArraySegment<Single> existing)
+        public ArraySegment<Single> CalculateLinearExtension(CubicSplineCurveKey<ArraySegment<Single>> key, Single position, CurvePositionType positionType, in ArraySegment<Single> existing)
         {
             // NOTE: Candidate for SIMD optimization in .NET 5.
 
@@ -95,8 +95,8 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the singleton instance of the <see cref="SingleArrayCurveSmoothSampler"/> class.
+        /// Gets the singleton instance of the <see cref="SingleArrayCurveCubicSplineSampler"/> class.
         /// </summary>
-        public static SingleArrayCurveSmoothSampler Instance { get; } = new SingleArrayCurveSmoothSampler();
+        public static SingleArrayCurveCubicSplineSampler Instance { get; } = new SingleArrayCurveCubicSplineSampler();
     }
 }

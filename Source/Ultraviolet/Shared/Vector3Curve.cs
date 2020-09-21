@@ -30,15 +30,15 @@ namespace Ultraviolet
             new Curve<Vector3, CurveKey<Vector3>>(preLoop, postLoop, Vector3CurveLinearSampler.Instance, keys);
 
         /// <summary>
-        /// Creates a new curve with smooth (bicubic) sampling.
+        /// Creates a new curve with cubic spline sampling.
         /// </summary>
         /// <param name="preLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined 
         /// for points before the beginning of the curve.</param>
         /// <param name="postLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined
         /// for points after the end of the curve.</param>
-        /// <param name="keys">A collection of <see cref="CurveKey{Single}"/> objects from which to construct the curve.</param>
-        public static Curve<Vector3, SmoothCurveKey<Vector3>> Smooth(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<SmoothCurveKey<Vector3>> keys) =>
-            new Curve<Vector3, SmoothCurveKey<Vector3>>(preLoop, postLoop, Vector3CurveSmoothSampler.Instance, keys);
+        /// <param name="keys">A collection of <see cref="CubicSplineCurveKey{Single}"/> objects from which to construct the curve.</param>
+        public static Curve<Vector3, CubicSplineCurveKey<Vector3>> CubicSpline(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<CubicSplineCurveKey<Vector3>> keys) =>
+            new Curve<Vector3, CubicSplineCurveKey<Vector3>>(preLoop, postLoop, Vector3CurveCubicSplineSampler.Instance, keys);
 
     }
 }
