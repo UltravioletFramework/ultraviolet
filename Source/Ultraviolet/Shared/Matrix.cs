@@ -2241,6 +2241,57 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Decomposes the matrix into scale, rotation, and translation components.
+        /// </summary>
+        /// <param name="scale">The scale component of the transformation matrix.</param>
+        /// <param name="rotation">The rotation component of the transformation matrix.</param>
+        /// <param name="translation">The translation component of the transformation matrix.</param>
+        /// <returns><see langword="true"/> if the matrix can be decomposed; otherwise, <see langword="false"/>.</returns>
+        public Boolean Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation)
+        {
+            translation.X = M41;
+            translation.Y = M42;
+            translation.Z = M43;
+
+            var xSign = (Math.Sign(M11 * M12 * M13 * M14) < 0) ? -1 : 1;
+            var ySign = (Math.Sign(M21 * M22 * M23 * M24) < 0) ? -1 : 1;
+            var zSign = (Math.Sign(M31 * M32 * M33 * M34) < 0) ? -1 : 1;
+
+            scale.X = xSign * (Single)Math.Sqrt(M11 * M11 + M12 * M12 + M13 * M13);
+            if (scale.X == 0)
+            {
+                scale = Vector3.One;
+                rotation = Quaternion.Identity;
+                return false;
+            }
+
+            scale.Y = ySign * (Single)Math.Sqrt(M21 * M21 + M22 * M22 + M23 * M23);
+            if (scale.Y == 0)
+            {
+                scale = Vector3.One;
+                rotation = Quaternion.Identity;
+                return false;
+            }
+
+            scale.Z = zSign * (Single)Math.Sqrt(M31 * M31 + M32 * M32 + M33 * M33);
+            if (scale.Z == 0)
+            {
+                scale = Vector3.One;
+                rotation = Quaternion.Identity;
+                return false;
+            }
+
+            var rotationMatrix = new Matrix(
+                M11 / scale.X, M12 / scale.X, M13 / scale.X, 0,
+                M21 / scale.Y, M22 / scale.Y, M23 / scale.Y, 0,
+                M31 / scale.Z, M32 / scale.Z, M33 / scale.Z, 0,
+                0, 0, 0, 1);
+
+            rotation = Quaternion.CreateFromRotationMatrix(rotationMatrix);
+            return true;
+        }
+
+        /// <summary>
         /// Gets the identity matrix.
         /// </summary>
         public static Matrix Identity { get; } = new Matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
