@@ -8,13 +8,13 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// <summary>
     /// Represents a collection of animations associated with a particular <see cref="SkinnedModel"/> instance.
     /// </summary>
-    public class SkinnedModelAnimationCollection : ModelResourceCollection<SkinnedAnimation>
+    public class SkinnedAnimationCollection : ModelResourceCollection<SkinnedAnimation>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SkinnedModelAnimationCollection"/> class.
+        /// Initializes a new instance of the <see cref="SkinnedAnimationCollection"/> class.
         /// </summary>
         /// <param name="animations">The animations to add to the collection.</param>
-        public SkinnedModelAnimationCollection(IEnumerable<SkinnedAnimation> animations)
+        public SkinnedAnimationCollection(IEnumerable<SkinnedAnimation> animations)
             : base(animations)
         {
             if (animations != null)

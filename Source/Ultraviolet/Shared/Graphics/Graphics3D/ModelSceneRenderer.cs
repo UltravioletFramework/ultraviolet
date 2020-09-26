@@ -160,7 +160,8 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (!node.HasGeometry)
                 return;
 
-            transform = Matrix.Multiply(node.Transform, transform);
+            node.Transform.AsMatrix(out var nodeTransformMatrix);
+            transform = Matrix.Multiply(nodeTransformMatrix, transform);
             OnDrawingModelNode(node, camera, ref transform);
 
             if (node.Mesh != null)

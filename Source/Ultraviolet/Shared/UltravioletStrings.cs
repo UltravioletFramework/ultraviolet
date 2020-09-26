@@ -170,6 +170,7 @@ namespace Ultraviolet
         public static readonly StringResource ModelParentLinkAlreadyExists         = new StringResource(StringDatabase, "MODEL_PARENT_LINK_ALREADY_EXISTS");
         public static readonly StringResource CurveKeyArrayLengthMismatch          = new StringResource(StringDatabase, "CURVE_KEY_ARRAY_LENGTH_MISMATCH");
         public static readonly StringResource SamplerArgumentsMustHaveSameLength   = new StringResource(StringDatabase, "SAMPLER_ARGUMENTS_MUST_HAVE_SAME_LENGTH");
+        public static readonly StringResource NonAffineTransformationMatrix        = new StringResource(StringDatabase, "NON_AFFINE_TRANSFORMATION_MATRIX");
 #pragma warning restore 1591
     }
 }

@@ -19,7 +19,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             : base(uv, scenes, textures)
         {
             this.Skins = new SkinnedModelSkinCollection(skins);
-            this.Animations = new SkinnedModelAnimationCollection(animations);
+            this.Animations = new SkinnedAnimationCollection(animations);
         }
 
         /// <summary>
@@ -30,6 +30,6 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the model's collection of animations.
         /// </summary>
-        public SkinnedModelAnimationCollection Animations { get; }
+        public SkinnedAnimationCollection Animations { get; }
     }
 }

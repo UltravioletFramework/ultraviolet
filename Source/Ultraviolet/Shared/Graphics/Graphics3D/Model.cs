@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
@@ -27,6 +28,19 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Performs an action on all nodes in the model.
+        /// </summary>
+        /// <param name="action">The action to perform on each node.</param>
+        /// <param name="state">An arbitrary state object to pass to <paramref name="state"/>.</param>
+        public void TraverseNodes(Action<ModelNode, Object> action, Object state)
+        {
+            Contract.Require(action, nameof(action));
+
+            foreach (var scene in Scenes)
+                scene.TraverseNodes(action, state);
+        }
+
+        /// <summary>
         /// Gets the model's collection of scenes.
         /// </summary>
         public ModelSceneCollection Scenes { get; }
@@ -37,7 +51,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         public ModelTextureCollection Textures { get; }
 
         /// <inheritdoc/>
-        protected override void Dispose(System.Boolean disposing)
+        protected override void Dispose(Boolean disposing)
         {
             Textures.Dispose();
             base.Dispose(disposing);

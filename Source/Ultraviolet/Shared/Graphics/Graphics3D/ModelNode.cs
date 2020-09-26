@@ -25,12 +25,27 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.Mesh = mesh;
             this.Mesh?.SetParentModelNode(this);
             this.Children = new ModelNodeCollection(children);
-            this.Transform = transform;
+            this.Transform.UpdateFromMatrix(transform);
 
             foreach (var child in Children)
                 child.SetParentModelNode(this);
 
             this.HasGeometry = (Mesh?.Geometries.Count > 0) || this.Children.Any(x => x.HasGeometry);
+        }
+
+        /// <summary>
+        /// Performs an action on all nodes within this node (including this node).
+        /// </summary>
+        /// <param name="action">The action to perform on each node.</param>
+        /// <param name="state">An arbitrary state object to pass to <paramref name="action"/>.</param>
+        public void TraverseNodes(Action<ModelNode, Object> action, Object state)
+        {
+            Contract.Require(action, nameof(action));
+
+            action(this, state);
+
+            foreach (var child in Children)
+                child.TraverseNodes(action, state);
         }
 
         /// <summary>
@@ -71,7 +86,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the node's transform.
         /// </summary>
-        public Matrix Transform { get; }
+        public AffineTransform Transform { get; }
 
         /// <summary>
         /// Gets a value indicating whether this node, or any of its descendants, has visible geometry.

@@ -18,16 +18,42 @@ namespace Ultraviolet.Graphics.Graphics3D
         public SkinnedModelNodeAnimation(ModelNode node, Curve<Vector3> scale, Curve<Vector3> translation, Curve<Quaternion> rotation, Curve<ArraySegment<Single>> morphWeights)
         {
             this.Node = node;
+
+            void EvaluateDuration<T>(Curve<T> curve, ref Double duration)
+            {
+                if (curve == null) 
+                    return;
+
+                var curveDuration = curve.StartPosition + curve.Length;
+                if (curveDuration > duration)
+                {
+                    duration = curveDuration;
+                }
+            }
+
+            var duration = 0.0;
+
             this.Scale = scale;
+            EvaluateDuration(scale, ref duration);
             this.Translation = translation;
+            EvaluateDuration(translation, ref duration);
             this.Rotation = rotation;
+            EvaluateDuration(rotation, ref duration);
             this.MorphWeights = morphWeights;
+            EvaluateDuration(morphWeights, ref duration);
+
+            Duration = duration;
         }
 
         /// <summary>
         /// Gets the <see cref="ModelNode"/> to which this animation data is applied.
         /// </summary>
         public ModelNode Node { get; }
+
+        /// <summary>
+        /// Gets the duration of the animation in fractional seconds.
+        /// </summary>
+        public Double Duration { get; }
 
         /// <summary>
         /// Gets the curve which animates the node's scale.

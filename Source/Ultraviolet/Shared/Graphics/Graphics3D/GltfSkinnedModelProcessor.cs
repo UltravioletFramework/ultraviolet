@@ -18,7 +18,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             var nodesCount = 0;
             var nodesByLogicalIndex = new Dictionary<Int32, ModelNode>();
             var nodesBySkin = new Dictionary<Int32, List<ModelNode>>();
-            TraverseModelNodes(scenes, n =>
+            TraverseModelNodes(scenes, (n, state) =>
             {
                 var gltfNode = input.LogicalNodes[n.LogicalIndex];
                 if (gltfNode.Skin != null)
@@ -40,24 +40,10 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Traverses all of the nodes in the specified collection of scenes and performs the specified action.
         /// </summary>
-        private static void TraverseModelNodes(IEnumerable<ModelScene> scenes, Action<ModelNode> action)
+        private static void TraverseModelNodes(IEnumerable<ModelScene> scenes, Action<ModelNode, Object> action, Object state = null)
         {
             foreach (var scene in scenes)
-            {
-                foreach (var node in scene.Nodes)
-                    TraverseModelNodes(node, action);
-            }
-        }
-
-        /// <summary>
-        /// Traverses all of the nodes in the specified hierarchy of nodes and performs the specified action.
-        /// </summary>
-        private static void TraverseModelNodes(ModelNode node, Action<ModelNode> action)
-        {
-            action(node);
-
-            foreach (var child in node.Children)
-                TraverseModelNodes(child, action);
+                scene.TraverseNodes(action, state);
         }
 
         /// <summary>
@@ -95,7 +81,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             foreach (var animation in input.LogicalAnimations)
             {
                 var uvNodeAnimations = new List<SkinnedModelNodeAnimation>(nodesCount);
-                TraverseModelNodes(scenes, n =>
+                TraverseModelNodes(scenes, (n, state) =>
                 {
                     var gltfNode = input.LogicalNodes[n.LogicalIndex];
 

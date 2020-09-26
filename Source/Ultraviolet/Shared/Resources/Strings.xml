@@ -710,4 +710,9 @@
       <Variant>Sampler arguments must have the same length.</Variant>
     </en-US>
   </String>
+  <String Key="NON_AFFINE_TRANSFORMATION_MATRIX">
+    <en-US>
+      <Variant>The specified matrix does not represent an affine transformation.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

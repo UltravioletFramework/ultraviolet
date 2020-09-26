@@ -26,6 +26,19 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Performs an action on all nodes in the scene.
+        /// </summary>
+        /// <param name="action">The action to perform on each node.</param>
+        /// <param name="state">An arbitrary state object to pass to <paramref name="action"/>.</param>
+        public void TraverseNodes(Action<ModelNode, Object> action, Object state)
+        {
+            Contract.Require(action, nameof(action));
+
+            foreach (var node in Nodes)
+                node.TraverseNodes(action, state);
+        }
+
+        /// <summary>
         /// Gets the logical index of the scene within its parent model.
         /// </summary>
         public Int32 LogicalIndex { get; }
