@@ -21,6 +21,10 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.Name = name;
             this.Nodes = new ModelNodeCollection(nodes);
 
+            var nodeCount = 0;
+            TraverseNodes((node, state) => nodeCount++, null);
+            this.TotalNodeCount = nodeCount;
+
             foreach (var node in Nodes)
                 node.SetParentModelScene(this);
         }
@@ -57,6 +61,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the scene's collection of nodes.
         /// </summary>
         public ModelNodeCollection Nodes { get; }
+
+        /// <summary>
+        /// Gets the total number of nodes in this scene.
+        /// </summary>
+        public Int32 TotalNodeCount { get; }
 
         /// <summary>
         /// Sets the scene's parent model.

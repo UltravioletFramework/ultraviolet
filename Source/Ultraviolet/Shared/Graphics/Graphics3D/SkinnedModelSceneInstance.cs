@@ -14,12 +14,15 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Initializes a new instance of the <see cref="SkinnedModelSceneInstance"/> class.
         /// </summary>
         /// <param name="template">The <see cref="ModelScene"/> which serves as this instance's template.</param>
-        public SkinnedModelSceneInstance(ModelScene template)
+        /// <param name="parentModelInstance">The <see cref="SkinnedModelInstance"/> which represents this scene's parent model.</param>
+        public SkinnedModelSceneInstance(ModelScene template, SkinnedModelInstance parentModelInstance)
         {
             Contract.Require(template, nameof(template));
+            Contract.Require(parentModelInstance, nameof(parentModelInstance));
 
             this.Template = template;
-            this.Nodes = new SkinnedModelNodeInstanceCollection(template.Nodes.Select(x => new SkinnedModelNodeInstance(x)));
+            this.ParentModelInstance = parentModelInstance;
+            this.Nodes = new SkinnedModelNodeInstanceCollection(template.Nodes.Select(x => new SkinnedModelNodeInstance(x, parentModelInstance, this, null)));
         }
 
         /// <summary>
@@ -39,6 +42,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the <see cref="ModelScene"/> which serves as this instance's template.
         /// </summary>
         public ModelScene Template { get; }
+
+        /// <summary>
+        /// Gets the <see cref="SkinnedModelInstance"/> which represents this scene's parent model.
+        /// </summary>
+        public SkinnedModelInstance ParentModelInstance { get; }
 
         /// <summary>
         /// Gets the instance's collection of nodes.

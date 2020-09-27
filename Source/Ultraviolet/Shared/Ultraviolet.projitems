@@ -36,12 +36,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\AffineTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelResourceCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinJoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationControllerManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelInstance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelInstanceNodeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelNodeInstanceCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinInstanceCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelSceneInstanceCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelNodeInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelSceneInstance.cs" />

@@ -21,9 +21,11 @@ namespace Ultraviolet.Graphics.Graphics3D
             Contract.EnsureRange(maxSimultaneousAnimations >= 1, nameof(maxSimultaneousAnimations));
 
             this.Template = template;
-            this.Scenes = new SkinnedModelSceneInstanceCollection(template.Scenes.Select(x => new SkinnedModelSceneInstance(x)));
+            this.Skins = new SkinInstanceCollection(template.Skins.Select(x => new SkinInstance(x, this)));
+            this.Scenes = new SkinnedModelSceneInstanceCollection(template.Scenes.Select(x => new SkinnedModelSceneInstance(x, this)));
 
             this.controllerManager = new SkinnedAnimationControllerManager(maxSimultaneousAnimations);
+            this.nodeManager = new SkinnedModelInstanceNodeManager(this);
         }
 
         /// <summary>
@@ -35,6 +37,9 @@ namespace Ultraviolet.Graphics.Graphics3D
             Contract.Require(time, nameof(time));
 
             controllerManager.Update(time);
+
+            foreach (var skin in Skins)
+                skin.Update();
         }
 
         /// <summary>
@@ -150,6 +155,13 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Gets the node instance with the specified logical index.
+        /// </summary>
+        /// <param name="logicalIndex">The logical index of the node instance to retrieve.</param>
+        /// <returns>The <see cref="SkinnedModelNodeInstance"/> with the specified logical index.</returns>
+        public SkinnedModelNodeInstance GetNodeInstanceByLogicalIndex(Int32 logicalIndex) => nodeManager.GetNodeInstanceByLogicalIndex(logicalIndex);
+
+        /// <summary>
         /// Performs an action on all nodes in the model.
         /// </summary>
         /// <param name="action">The action to perform on each node.</param>
@@ -168,11 +180,17 @@ namespace Ultraviolet.Graphics.Graphics3D
         public SkinnedModel Template { get; }
 
         /// <summary>
+        /// Gets the instance's collection of skins.
+        /// </summary>
+        public SkinInstanceCollection Skins { get; }
+
+        /// <summary>
         /// Gets the instance's collection of scenes.
         /// </summary>
         public SkinnedModelSceneInstanceCollection Scenes { get; }
 
-        // The animation controller manager for this instance.
+        // Internal state trackers.
         private readonly SkinnedAnimationControllerManager controllerManager;
+        private readonly SkinnedModelInstanceNodeManager nodeManager;
     }
 }

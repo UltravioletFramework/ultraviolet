@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
@@ -22,6 +23,7 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             this.Scenes = new ModelSceneCollection(scenes);
             this.Textures = new ModelTextureCollection(textures);
+            this.TotalNodeCount = this.Scenes.Sum(x => x.TotalNodeCount);
 
             foreach (var scene in Scenes)
                 scene.SetParentModel(this);
@@ -49,6 +51,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the model's collection of textures.
         /// </summary>
         public ModelTextureCollection Textures { get; }
+
+        /// <summary>
+        /// Gets the total number of nodes in this model.
+        /// </summary>
+        public Int32 TotalNodeCount { get; }
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

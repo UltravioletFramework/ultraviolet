@@ -14,12 +14,20 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Initializes a new instance of the <see cref="SkinnedModelNodeInstance"/> class.
         /// </summary>
         /// <param name="template">The <see cref="ModelNode"/> which serves as this instance's template.</param>
-        public SkinnedModelNodeInstance(ModelNode template)
+        /// <param name="parentModelInstance">The <see cref="SkinnedModelInstance"/> which represents this node's parent model.</param>
+        /// <param name="parentModelSceneInstance">The <see cref="SkinnedModelSceneInstance"/> which represents this node's parent scene.</param>
+        /// <param name="parentModelNodeInstance">The <see cref="SkinnedModelNodeInstance"/> which represents this node's parent node.</param>
+        public SkinnedModelNodeInstance(ModelNode template, SkinnedModelInstance parentModelInstance, SkinnedModelSceneInstance parentModelSceneInstance, SkinnedModelNodeInstance parentModelNodeInstance)
         {
             Contract.Require(template, nameof(template));
+            Contract.Require(parentModelInstance, nameof(parentModelInstance));
+            Contract.Require(parentModelSceneInstance, nameof(parentModelSceneInstance));
 
             this.Template = template;
-            this.Children = new SkinnedModelNodeInstanceCollection(template.Children.Select(x => new SkinnedModelNodeInstance(x)));
+            this.ParentModelInstance = parentModelInstance;
+            this.ParentModelSceneInstance = parentModelSceneInstance;
+            this.ParentModelNodeInstance = parentModelNodeInstance;
+            this.Children = new SkinnedModelNodeInstanceCollection(template.Children.Select(x => new SkinnedModelNodeInstance(x, parentModelInstance, parentModelSceneInstance, this)));
 
             if (this.Template.ParentModel is SkinnedModel skinnedModel)
             {
@@ -70,9 +78,41 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Gets the node's world matrix.
+        /// </summary>
+        /// <param name="worldMatrix">The node's world matrix.</param>
+        public void GetWorldMatrix(out Matrix worldMatrix)
+        {
+            LocalTransform.AsMatrix(out var transform);
+
+            if (ParentModelNodeInstance != null)
+            {
+                ParentModelNodeInstance.GetWorldMatrix(out var parentTransform);
+                Matrix.Multiply(ref parentTransform, ref transform, out transform);
+            }
+
+            worldMatrix = transform;
+        }
+
+        /// <summary>
         /// Gets the node instance's template.
         /// </summary>
         public ModelNode Template { get; }
+
+        /// <summary>
+        /// Gets the <see cref="SkinnedModelInstance"/> which represents this node's parent model.
+        /// </summary>
+        public SkinnedModelInstance ParentModelInstance { get; }
+
+        /// <summary>
+        /// Gets the <see cref="SkinnedModelSceneInstance"/> which represents this node's parent scene.
+        /// </summary>
+        public SkinnedModelSceneInstance ParentModelSceneInstance { get; }
+
+        /// <summary>
+        /// Gets the <see cref="SkinnedModelNodeInstance"/> which represents this node's parent node.
+        /// </summary>
+        public SkinnedModelNodeInstance ParentModelNodeInstance { get; }
 
         /// <summary>
         /// Gets the node's skin, if it has one.
