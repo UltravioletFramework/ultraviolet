@@ -1318,29 +1318,30 @@ namespace Ultraviolet
             var xx = quaternion.X * quaternion.X;
             var yy = quaternion.Y * quaternion.Y;
             var zz = quaternion.Z * quaternion.Z;
-            var xy = quaternion.X * quaternion.Y;
-            var zw = quaternion.Z * quaternion.W;
-            var zx = quaternion.Z * quaternion.X;
-            var yw = quaternion.Y * quaternion.W;
-            var yz = quaternion.Y * quaternion.Z;
-            var xw = quaternion.X * quaternion.W;
 
-            result.M11 = 1f - (2f * (yy + zz));
-            result.M12 = 2f * (xy + zw);
-            result.M13 = 2f * (zx - yw);
-            result.M14 = 0f;
-            result.M21 = 2f * (xy - zw);
-            result.M22 = 1f - (2f * (zz + xx));
-            result.M23 = 2f * (yz + xw);
-            result.M24 = 0f;
-            result.M31 = 2f * (zx + yw);
-            result.M32 = 2f * (yz - xw);
-            result.M33 = 1f - (2f * (yy + xx));
-            result.M34 = 0f;
-            result.M41 = 0f;
-            result.M42 = 0f;
-            result.M43 = 0f;
-            result.M44 = 1f;
+            var xy = quaternion.X * quaternion.Y;
+            var wz = quaternion.Z * quaternion.W;
+            var xz = quaternion.Z * quaternion.X;
+            var wy = quaternion.Y * quaternion.W;
+            var yz = quaternion.Y * quaternion.Z;
+            var wx = quaternion.X * quaternion.W;
+
+            result.M11 = 1.0f - 2.0f * (yy + zz);
+            result.M12 = 2.0f * (xy + wz);
+            result.M13 = 2.0f * (xz - wy);
+            result.M14 = 0.0f;
+            result.M21 = 2.0f * (xy - wz);
+            result.M22 = 1.0f - 2.0f * (zz + xx);
+            result.M23 = 2.0f * (yz + wx);
+            result.M24 = 0.0f;
+            result.M31 = 2.0f * (xz + wy);
+            result.M32 = 2.0f * (yz - wx);
+            result.M33 = 1.0f - 2.0f * (yy + xx);
+            result.M34 = 0.0f;
+            result.M41 = 0.0f;
+            result.M42 = 0.0f;
+            result.M43 = 0.0f;
+            result.M44 = 1.0f;
         }
 
         /// <summary>
