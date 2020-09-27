@@ -18,7 +18,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         public SkinnedAnimation(String name, IEnumerable<SkinnedModelNodeAnimation> modelNodeAnimations = null)
         {
             this.Name = name;
-            this.Duration = modelNodeAnimations?.Max(x => x.Duration) ?? 0.0;
+            this.Duration = modelNodeAnimations?.Max(x => x?.Duration ?? 0.0) ?? 0.0;
             this.modelNodeAnimations = modelNodeAnimations?.ToArray();
         }
 

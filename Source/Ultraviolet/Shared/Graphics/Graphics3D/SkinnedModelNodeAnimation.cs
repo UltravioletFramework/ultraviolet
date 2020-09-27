@@ -19,15 +19,15 @@ namespace Ultraviolet.Graphics.Graphics3D
         {
             this.Node = node;
 
-            void EvaluateDuration<T>(Curve<T> curve, ref Double duration)
+            void EvaluateDuration<T>(Curve<T> c, ref Double d)
             {
-                if (curve == null) 
+                if (c == null) 
                     return;
 
-                var curveDuration = curve.StartPosition + curve.Length;
-                if (curveDuration > duration)
+                var curveDuration = c.StartPosition + c.Length;
+                if (curveDuration > d)
                 {
-                    duration = curveDuration;
+                    d = curveDuration;
                 }
             }
 

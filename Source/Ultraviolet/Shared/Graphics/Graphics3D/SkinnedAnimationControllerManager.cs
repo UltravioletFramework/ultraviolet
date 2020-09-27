@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
 {
@@ -12,11 +13,17 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedAnimationControllerManager"/> class.
         /// </summary>
+        /// <param name="model">The model instance that owns this manager.</param>
         /// <param name="maxSimultaneousAnimations">The maximum number of animations that can be played simultaneously.</param>
-        public SkinnedAnimationControllerManager(Int32 maxSimultaneousAnimations)
+        public SkinnedAnimationControllerManager(SkinnedModelInstance model, Int32 maxSimultaneousAnimations)
         {
+            Contract.Require(model, nameof(model));
+
             this.controllers = new SkinnedAnimationController[maxSimultaneousAnimations];
             this.ordering = new Int64[maxSimultaneousAnimations];
+
+            for (var i = 0; i < maxSimultaneousAnimations; i++)
+                this.controllers[i] = new SkinnedAnimationController(model);
         }
 
         /// <summary>

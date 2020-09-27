@@ -86,7 +86,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the node's transform.
         /// </summary>
-        public AffineTransform Transform { get; }
+        public AffineTransform Transform { get; } = new AffineTransform();
 
         /// <summary>
         /// Gets a value indicating whether this node, or any of its descendants, has visible geometry.
