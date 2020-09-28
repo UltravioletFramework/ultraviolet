@@ -16,6 +16,25 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AffineTransform"/> class.
+        /// </summary>
+        /// <param name="scale">The scaling component of the transformation.</param>
+        /// <param name="rotation">The rotation component of the transformation.</param>
+        /// <param name="translation">The translation component of the transformation.</param>
+        public AffineTransform(Vector3 scale, Quaternion rotation, Vector3 translation)
+        {
+            this.scale = scale;
+            this.rotation = rotation;
+            this.translation = translation;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="AffineTransform"/> class which is a clone of this instance.
+        /// </summary>
+        /// <returns>The <see cref="AffineTransform"/> instance which was created.</returns>
+        public AffineTransform Clone() => new AffineTransform(this.scale, this.rotation, this.translation);
+
+        /// <summary>
         /// Updates this <see cref="AffineTransform"/> instance to match the identity transform.
         /// </summary>
         public void UpdateFromIdentity()

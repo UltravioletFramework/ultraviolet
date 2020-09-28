@@ -28,6 +28,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.ParentModelSceneInstance = parentModelSceneInstance;
             this.ParentModelNodeInstance = parentModelNodeInstance;
             this.Children = new SkinnedModelNodeInstanceCollection(template.Children.Select(x => new SkinnedModelNodeInstance(x, parentModelInstance, parentModelSceneInstance, this)));
+            this.LocalTransform = template.Transform.Clone();
 
             if (this.Template.ParentModel is SkinnedModel skinnedModel)
             {
@@ -88,7 +89,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (ParentModelNodeInstance != null)
             {
                 ParentModelNodeInstance.GetWorldMatrix(out var parentTransform);
-                Matrix.Multiply(ref parentTransform, ref transform, out transform);
+                Matrix.Multiply(ref transform, ref parentTransform, out transform);
             }
 
             worldMatrix = transform;
@@ -127,6 +128,6 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the node instance's local transform.
         /// </summary>
-        public AffineTransform LocalTransform { get; } = new AffineTransform();
+        public AffineTransform LocalTransform { get; }
     }
 }
