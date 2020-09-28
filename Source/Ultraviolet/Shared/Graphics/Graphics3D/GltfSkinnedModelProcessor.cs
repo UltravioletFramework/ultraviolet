@@ -80,7 +80,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             var uvAnimations = new List<SkinnedAnimation>(input.LogicalAnimations.Count);
             foreach (var animation in input.LogicalAnimations)
             {
-                var uvNodeAnimations = new List<SkinnedModelNodeAnimation>(nodesCount);
+                var uvNodeAnimations = new SkinnedModelNodeAnimation[nodesCount];
                 TraverseModelNodes(scenes, (n, state) =>
                 {
                     var gltfNode = input.LogicalNodes[n.LogicalIndex];
@@ -102,11 +102,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                             SingleArrayCurveStepSampler.Instance, SingleArrayCurveLinearSampler.Instance, SingleArrayCurveCubicSplineSampler.Instance);
 
                         var uvNodeAnimation = new SkinnedModelNodeAnimation(n, curveScale, curveTranslation, curveRotation, curveMorphWeights);
-                        uvNodeAnimations.Add(uvNodeAnimation);
-                    }
-                    else
-                    {
-                        uvNodeAnimations.Add(null);
+                        uvNodeAnimations[gltfNode.LogicalIndex] = uvNodeAnimation;
                     }
                 });
 
