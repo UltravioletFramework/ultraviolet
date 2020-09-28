@@ -12,7 +12,7 @@ namespace Ultraviolet.Tests.Content
         [Category("Content")]
         public void ContentManager_ProcessesMetadataFiles_WhenAssetIsAStream()
         {
-            var contentStream = typeof(ContentManagerTests).Assembly.GetManifestResourceStream("Ultraviolet.Tests.Content.Fonts.FiraSansEmbedded.uvmeta");
+            var contentStream = typeof(ContentManagerTests).Assembly.GetManifestResourceStream("Ultraviolet.Tests.Resources.Content.Fonts.FiraSansEmbedded.uvmeta");
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithPlugin(new FreeTypeFontPlugin())

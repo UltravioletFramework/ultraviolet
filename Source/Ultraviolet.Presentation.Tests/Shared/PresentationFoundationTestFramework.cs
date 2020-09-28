@@ -66,12 +66,12 @@ namespace Ultraviolet.Presentation.Tests
                 .WithInitialization(uv =>
                 {
                     var upf = uv.GetUI().GetPresentationFoundation();
-                    upf.CompileExpressions("Content", CompileExpressionsFlags.GenerateInMemory | CompileExpressionsFlags.WorkInTemporaryDirectory);
+                    upf.CompileExpressions(Path.Combine("Resources", "Content"), CompileExpressionsFlags.GenerateInMemory | CompileExpressionsFlags.WorkInTemporaryDirectory);
                     upf.LoadCompiledExpressions();
                 })
                 .WithContent(content =>
                 {
-                    content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Global.manifest"));
+                    content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Resources", "Content", "Manifests", "Global.manifest"));
 
                     globalStyleSheet = GlobalStyleSheet.Create();
                     globalStyleSheet.Append(content, "UI/DefaultUIStyles");

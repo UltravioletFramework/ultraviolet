@@ -71,154 +71,154 @@
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSourceTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Adorner_DrawsCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Adorner_DrawsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_ArrangesComplexScreenCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_ArrangesComplexScreenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Canvas_ArrangesChildrenCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Canvas_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_ComboBox_ArrangesItemsCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_ComboBox_ArrangesItemsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_DirNav_Contained\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_DirNav_Contained\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_DirNav_Continue\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_DirNav_Continue\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_DirNav_Cycle\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_DirNav_Cycle\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_DirNav_None\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_DirNav_None\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_DirNav_Once\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_DirNav_Once\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_DockPanel_ArrangesChildrenCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_DockPanel_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Grid_ArrangesAutoCellsCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Grid_ArrangesAutoCellsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly2\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly2\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Grid_ArrangesStarCellsCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Grid_ArrangesStarCellsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_Contained\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_Contained\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_Cycle\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_Cycle\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_None\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_None\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_Once\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_Once\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_Simple\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_Simple\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_SuppressTab\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_SuppressTab\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_TabIndicesLocal\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_TabIndicesLocal\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_KeyNav_TabIndices\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_KeyNav_TabIndices\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_ListBox_ArrangesItemsCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_ListBox_ArrangesItemsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\ScreenStyles.uvss">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\ScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\ScreenStyles.uvss">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\ScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_TabControl_ArrangesChildrenCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_TabControl_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_TextBox_BindsCorrectlyToViewModel\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_TextBox_BindsCorrectlyToViewModel\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffect\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffect\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_View_DrawsShapedTextCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_View_DrawsShapedTextCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_VisualClone_DrawsCorrectly\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_VisualClone_DrawsCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\UPF_Adorner_DrawsCorrectly.png">

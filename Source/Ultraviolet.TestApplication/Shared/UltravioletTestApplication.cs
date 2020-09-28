@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Ultraviolet.BASS;
 using Ultraviolet.Content;
@@ -346,7 +347,7 @@ namespace Ultraviolet.TestApplication
 
             if (loader != null)
             {
-                content = ContentManager.Create("Content");
+                content = ContentManager.Create(Path.Combine("Resources", "Content"));
                 loader(content);
             }
 
