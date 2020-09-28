@@ -38,6 +38,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private Single GetMaterialAlpha(SharpGLTF.Schema2.Material material)
         {
+            if (material == null)
+                return 1f;
+
             if (material.Alpha == AlphaMode.OPAQUE)
                 return 1f;
 
@@ -53,6 +56,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private Single GetMaterialSpecularPower(SharpGLTF.Schema2.Material material)
         {
+            if (material == null)
+                return 16f;
+
             var mr = material.FindChannel("MetallicRoughness");
             if (mr == null)
                 return 16f;
@@ -66,6 +72,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private Color GetMaterialDiffuseColor(SharpGLTF.Schema2.Material material)
         {
+            if (material == null)
+                return Color.White;
+
             var diffuse = material.FindChannel("Diffuse") ?? material.FindChannel("BaseColor");
             if (diffuse == null)
                 return Color.White;
@@ -78,6 +87,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private Color GetMaterialEmissiveColor(SharpGLTF.Schema2.Material material)
         {
+            if (material == null)
+                return Color.Black;
+
             var emissive = material.FindChannel("Emissive");
             if (emissive == null)
                 return Color.Black;
@@ -90,6 +102,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private Color GetMaterialSpecularColor(SharpGLTF.Schema2.Material material)
         {
+            if (material == null)
+                return Color.White;
+
             var mr = material.FindChannel("MetallicRoughness");
             if (mr == null)
                 return Color.White;
@@ -111,6 +126,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private Texture2D GetMaterialTexture(ContentManager contentManager, SharpGLTF.Schema2.Material material)
         {
+            if (material == null)
+                return null;
+
             var diffuse = material.FindChannel("Diffuse") ?? material.FindChannel("BaseColor");
             if (diffuse == null)
                 return null;
