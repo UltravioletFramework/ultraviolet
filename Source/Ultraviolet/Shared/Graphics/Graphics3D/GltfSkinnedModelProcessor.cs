@@ -144,15 +144,15 @@ namespace Ultraviolet.Graphics.Graphics3D
             switch (sampler.InterpolationMode)
             {
                 case AnimationInterpolationMode.STEP:
-                    return new Curve<TDstValue, CurveKey<TDstValue>>(CurveLoopType.Cycle, CurveLoopType.Cycle, stepCurveSampler, 
+                    return new Curve<TDstValue, CurveKey<TDstValue>>(CurveLoopType.Constant, CurveLoopType.Constant, stepCurveSampler, 
                         CreateLinearKeys(converter, sampler.GetLinearKeys()));
 
                 case AnimationInterpolationMode.LINEAR:
-                    return new Curve<TDstValue, CurveKey<TDstValue>>(CurveLoopType.Cycle, CurveLoopType.Cycle, linearCurveSampler,
+                    return new Curve<TDstValue, CurveKey<TDstValue>>(CurveLoopType.Constant, CurveLoopType.Constant, linearCurveSampler,
                         CreateLinearKeys(converter, sampler.GetLinearKeys()));
 
                 case AnimationInterpolationMode.CUBICSPLINE:
-                    return new Curve<TDstValue, CubicSplineCurveKey<TDstValue>>(CurveLoopType.Cycle, CurveLoopType.Cycle, cubicSplineCurveSampler, 
+                    return new Curve<TDstValue, CubicSplineCurveKey<TDstValue>>(CurveLoopType.Constant, CurveLoopType.Constant, cubicSplineCurveSampler, 
                         CreateCubicSplineKeys(converter, sampler.GetCubicKeys()));
 
                 default:
