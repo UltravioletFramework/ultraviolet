@@ -42,6 +42,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererTestContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRendererTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextShaperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelBoneData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelInstanceTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface2DTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture2DTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasTests.cs" />
@@ -71,6 +73,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector4Tests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics3D\BoneMatrices_SimpleSkin.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics3D\BoneMatrices_CesiumMan.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_CubicSpline_keys.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
