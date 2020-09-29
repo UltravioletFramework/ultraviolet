@@ -14,5 +14,10 @@
         /// Play the animation once and then stop.
         /// </summary>
         FireAndForget,
+
+        /// <summary>
+        /// Update the animation manually.
+        /// </summary>
+        Manual,
     }
 }

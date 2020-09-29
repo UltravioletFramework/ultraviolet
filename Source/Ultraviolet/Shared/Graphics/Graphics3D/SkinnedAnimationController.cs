@@ -20,6 +20,28 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Sets the controller's position within the current animation's timeline.
+        /// </summary>
+        /// <param name="position">The position to set.</param>
+        /// <returns><see langword="true"/> if the position was set; otherwise, <see langword="false"/>.</returns>
+        public Boolean SetPosition(Double position)
+        {
+            if (currentAnimation == null)
+                return false;
+
+            if (position < 0)
+                position = 0;
+
+            if (position > currentAnimation.Duration)
+                position = currentAnimation.Duration;
+
+            currentAnimationTime = position;
+
+            UpdateAnimationState();
+            return true;
+        }
+
+        /// <summary>
         /// Updates the animation controller's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last update.</param>
@@ -52,6 +74,9 @@ namespace Ultraviolet.Graphics.Graphics3D
                         }
                     }
                     break;
+
+                case SkinnedAnimationMode.Manual:
+                    return;
             }
 
             UpdateAnimationState();
@@ -115,6 +140,16 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets or sets a value indicating whether the animation is currently paused.
         /// </summary>
         public Boolean IsPaused { get; set; }
+
+        /// <summary>
+        /// Gets the controller's current position within its animation timeline.
+        /// </summary>
+        public Double Position => (currentAnimation == null) ? 0.0 : currentAnimationTime;
+
+        /// <summary>
+        /// Gets the duration of the controller's current animation.
+        /// </summary>
+        public Double Duration => currentAnimation?.Duration ?? 0.0;
 
         /// <summary>
         /// Updates the animation state for all affected nodes.
