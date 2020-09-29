@@ -94,6 +94,8 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.currentAnimationMode = mode;
             this.currentAnimation = animation;
             this.currentAnimationTime = 0.0;
+
+            UpdateAnimationState();
         }
 
         /// <summary>
