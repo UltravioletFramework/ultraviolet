@@ -256,6 +256,19 @@ namespace Ultraviolet.Graphics
         public abstract void SetValueRef(ref Matrix value);
 
         /// <summary>
+        /// Copies the parameter's value to the specified array of <see cref="Matrix"/>.
+        /// </summary>
+        /// <param name="destination">The array to populate with values.</param>
+        public abstract void GetValueMatrixArray(Matrix[] destination);
+
+        /// <summary>
+        /// Copies the parameter's value to the specified array of <see cref="Matrix"/>.
+        /// </summary>
+        /// <param name="destination">The array to populate with values.</param>
+        /// <param name="count">The number of items to copy to the specified array.</param>
+        public abstract void GetValueMatrixArray(Matrix[] destination, Int32 count);
+
+        /// <summary>
         /// Gets the parameter's value as an array of <see cref="Matrix"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>

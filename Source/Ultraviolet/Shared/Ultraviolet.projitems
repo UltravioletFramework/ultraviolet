@@ -34,6 +34,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CurveKeyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Curve.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectSkin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SkinnedMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\AffineTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelResourceCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinInstance.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelNodeAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\Skin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SkinnedEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICurveSampler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CameraParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Circle.cs" />

@@ -89,6 +89,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgramCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderUniform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderUniformCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSkinnedEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSkinnedEffect.Shaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLStateInteger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSwapChainManager.cs" />

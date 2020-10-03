@@ -322,6 +322,29 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override void GetValueMatrixArray(Matrix[] destination)
+        {
+            Contract.Require(destination, nameof(destination));
+            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+
+            var values = data.GetMatrixArray();
+            for (var i = 0; i < destination.Length; i++)
+                destination[i] = values[i];
+        }
+
+        /// <inheritdoc/>
+        public override void GetValueMatrixArray(Matrix[] destination, Int32 count)
+        {
+            Contract.Require(destination, nameof(destination));
+            Contract.EnsureRange(count >= 0 && count <= destination.Length, nameof(count));
+            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+
+            var values = data.GetMatrixArray();
+            for (var i = 0; i < count; i++)
+                destination[i] = values[i];
+        }
+
+        /// <inheritdoc/>
         public override Matrix[] GetValueMatrixArray()
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
