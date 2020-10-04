@@ -32,6 +32,7 @@ namespace Ultraviolet.OpenGL
 
             // Core effects
             factory.SetFactoryMethod<BasicEffectFactory>((uv) => new OpenGLBasicEffect(uv));
+            factory.SetFactoryMethod<SkinnedEffectFactory>((uv) => new OpenGLSkinnedEffect(uv));
             factory.SetFactoryMethod<SpriteBatchEffectFactory>((uv) => new OpenGLSpriteBatchEffect(uv));
             factory.SetFactoryMethod<BlurEffectFactory>((uv) => new OpenGLBlurEffect(uv));
 

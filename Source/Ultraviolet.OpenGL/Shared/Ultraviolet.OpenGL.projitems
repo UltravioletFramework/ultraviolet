@@ -117,6 +117,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffectPreamble.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedPixelLightingFourBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedPixelLightingTwoBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedPixelLightingOneBone.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedOneLightFourBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedOneLightTwoBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedVertexLightingFourBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedOneLightOneBone.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedVertexLightingTwoBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedVertexLightingOneBone.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_PSSkinnedPixelLighting.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_PSSkinnedVertexLightingNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_PSSkinnedVertexLighting.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicPixelLightingTx.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicPixelLighting.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingTxNoFog.frag" />
