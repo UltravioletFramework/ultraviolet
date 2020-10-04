@@ -37,6 +37,9 @@ namespace Ultraviolet.Graphics.Graphics3D
             return new SkinnedModel(contentManager.Ultraviolet, scenes, textures, uvSkins, uvAnimations);
         }
 
+        /// <inheritdoc/>
+        protected override String DefaultMaterialLoader => typeof(GltfSkinnedMaterialLoader).AssemblyQualifiedName;
+
         /// <summary>
         /// Traverses all of the nodes in the specified collection of scenes and performs the specified action.
         /// </summary>

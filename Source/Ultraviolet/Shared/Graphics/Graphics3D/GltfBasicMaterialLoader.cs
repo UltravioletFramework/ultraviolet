@@ -36,7 +36,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the alpha for the specified material.
         /// </summary>
-        private Single GetMaterialAlpha(SharpGLTF.Schema2.Material material)
+        protected Single GetMaterialAlpha(SharpGLTF.Schema2.Material material)
         {
             if (material == null)
                 return 1f;
@@ -54,7 +54,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the specular power for the specified material.
         /// </summary>
-        private Single GetMaterialSpecularPower(SharpGLTF.Schema2.Material material)
+        protected Single GetMaterialSpecularPower(SharpGLTF.Schema2.Material material)
         {
             if (material == null)
                 return 16f;
@@ -70,7 +70,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the diffuse color for the specified material.
         /// </summary>
-        private Color GetMaterialDiffuseColor(SharpGLTF.Schema2.Material material)
+        protected Color GetMaterialDiffuseColor(SharpGLTF.Schema2.Material material)
         {
             if (material == null)
                 return Color.White;
@@ -85,7 +85,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the emissive color for the specified material.
         /// </summary>
-        private Color GetMaterialEmissiveColor(SharpGLTF.Schema2.Material material)
+        protected Color GetMaterialEmissiveColor(SharpGLTF.Schema2.Material material)
         {
             if (material == null)
                 return Color.Black;
@@ -100,7 +100,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the specular color for the specified material.
         /// </summary>
-        private Color GetMaterialSpecularColor(SharpGLTF.Schema2.Material material)
+        protected Color GetMaterialSpecularColor(SharpGLTF.Schema2.Material material)
         {
             if (material == null)
                 return Color.White;
@@ -124,7 +124,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the texture for the specified material.
         /// </summary>
-        private Texture2D GetMaterialTexture(ContentManager contentManager, SharpGLTF.Schema2.Material material)
+        protected Texture2D GetMaterialTexture(ContentManager contentManager, SharpGLTF.Schema2.Material material)
         {
             if (material == null)
                 return null;

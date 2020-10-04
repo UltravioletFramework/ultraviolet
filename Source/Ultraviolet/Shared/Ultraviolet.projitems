@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CurveKeyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Curve.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfSkinnedMaterialLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectSkin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SkinnedMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\AffineTransform.cs" />
