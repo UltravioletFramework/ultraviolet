@@ -23,11 +23,11 @@ namespace Ultraviolet.Tests.Graphics.Graphics3D
                 csv.ReadHeader();
 
                 var records = csv.GetRecords<SkinnedModelBoneData>().ToArray();
-                var result = records.GroupBy(x => x.Time).ToDictionary(x => x.Key, records =>
+                var result = records.GroupBy(x => x.Time).ToDictionary(k => k.Key, v =>
                 {
-                    var bones = new Matrix[records.Count()];
+                    var bones = new Matrix[v.Count()];
 
-                    foreach (var record in records)
+                    foreach (var record in v)
                     {
                         bones[record.Bone] = new Matrix(
                             record.M11, record.M12, record.M13, record.M14,
