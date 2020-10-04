@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
@@ -7,7 +8,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// <summary>
     /// Represents a logically related collection of meshes within a model.
     /// </summary>
-    public class ModelScene
+    public class ModelScene : IModelSceneProvider<ModelNode>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelScene"/> class.
@@ -20,14 +21,14 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.LogicalIndex = logicalIndex;
             this.Name = name;
             this.Nodes = new ModelNodeCollection(nodes);
-
-            var nodeCount = 0;
-            TraverseNodes((node, state) => nodeCount++, null);
-            this.TotalNodeCount = nodeCount;
+            this.TotalNodeCount = this.Nodes.Count + nodes?.Sum(x => x.TotalNodeCount) ?? 0;
 
             foreach (var node in Nodes)
                 node.SetParentModelScene(this);
         }
+
+        /// <inheritdoc/>
+        ModelNode IModelSceneProvider<ModelNode>.GetChildNode(Int32 index) => Nodes[index];
 
         /// <summary>
         /// Performs an action on all nodes in the scene.
@@ -47,6 +48,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         public Int32 LogicalIndex { get; }
 
+        /// <inheritdoc/>
+        ModelScene IModelSceneProvider<ModelNode>.ModelScene => this;
+
         /// <summary>
         /// Gets the scene's name.
         /// </summary>
@@ -62,9 +66,10 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         public ModelNodeCollection Nodes { get; }
 
-        /// <summary>
-        /// Gets the total number of nodes in this scene.
-        /// </summary>
+        /// <inheritdoc/>
+        public Int32 ChildNodeCount => Nodes.Count;
+
+        /// <inheritdoc/>
         public Int32 TotalNodeCount { get; }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// <summary>
     /// Represents a node in a model hierarchy.
     /// </summary>
-    public class ModelNode
+    public class ModelNode : IModelNodeProvider<ModelNode>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelNode"/> class.
@@ -25,6 +25,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.Mesh = mesh;
             this.Mesh?.SetParentModelNode(this);
             this.Children = new ModelNodeCollection(children);
+            this.TotalNodeCount = this.Children.Count + (children?.Sum(x => x.TotalNodeCount) ?? 0);
             this.Transform.UpdateFromMatrix(transform);
 
             foreach (var child in Children)
@@ -32,6 +33,9 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             this.HasGeometry = (Mesh?.Geometries.Count > 0) || this.Children.Any(x => x.HasGeometry);
         }
+
+        /// <inheritdoc/>
+        ModelNode IModelNodeProvider<ModelNode>.GetChildNode(Int32 index) => Children[index];
 
         /// <summary>
         /// Performs an action on all nodes within this node (including this node).
@@ -57,6 +61,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the node's name.
         /// </summary>
         public String Name { get; }
+
+        /// <inheritdoc/>
+        ModelNode IModelNodeProvider<ModelNode>.ModelNode => this;
 
         /// <summary>
         /// Gets the <see cref="Model"/> that contains this node.
@@ -92,6 +99,12 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets a value indicating whether this node, or any of its descendants, has visible geometry.
         /// </summary>
         public Boolean HasGeometry { get; }
+
+        /// <inheritdoc/>
+        public Int32 ChildNodeCount => Children.Count;
+
+        /// <inheritdoc/>
+        public Int32 TotalNodeCount { get; }
 
         /// <summary>
         /// Sets the node's parent model.

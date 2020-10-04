@@ -22,7 +22,8 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             this.Template = template;
             this.Skins = new SkinInstanceCollection(template.Skins.Select(x => new SkinInstance(x, this)));
-            this.Scenes = new SkinnedModelSceneInstanceCollection(template.Scenes.Select(x => new SkinnedModelSceneInstance(x, this)));
+            this.Scenes = new SkinnedModelSceneInstanceCollection(template.Scenes.Select(x => new SkinnedModelSceneInstance(x, this)), 
+                template.Scenes.DefaultScene.LogicalIndex);
 
             this.controllerManager = new SkinnedAnimationControllerManager(this, maxSimultaneousAnimations);
             this.nodeManager = new SkinnedModelInstanceNodeManager(this);

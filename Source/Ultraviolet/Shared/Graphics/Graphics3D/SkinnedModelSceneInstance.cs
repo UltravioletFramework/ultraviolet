@@ -8,7 +8,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// Represents an animated instance of a <see cref="ModelScene"/>. Each instance represents a particular 
     /// skinned animation at a particular point in time.
     /// </summary>
-    public class SkinnedModelSceneInstance
+    public class SkinnedModelSceneInstance : IModelSceneProvider<SkinnedModelNodeInstance>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedModelSceneInstance"/> class.
@@ -25,6 +25,9 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.Nodes = new SkinnedModelNodeInstanceCollection(template.Nodes.Select(x => new SkinnedModelNodeInstance(x, parentModelInstance, this, null)));
         }
 
+        /// <inheritdoc/>
+        SkinnedModelNodeInstance IModelSceneProvider<SkinnedModelNodeInstance>.GetChildNode(Int32 index) => Nodes[index];
+
         /// <summary>
         /// Performs an action on all nodes in the scene.
         /// </summary>
@@ -37,6 +40,9 @@ namespace Ultraviolet.Graphics.Graphics3D
             foreach (var node in Nodes)
                 node.TraverseNodes(action, state);
         }
+
+        /// <inheritdoc/>
+        ModelScene IModelSceneProvider<SkinnedModelNodeInstance>.ModelScene => Template;
 
         /// <summary>
         /// Gets the <see cref="ModelScene"/> which serves as this instance's template.
@@ -52,5 +58,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the instance's collection of nodes.
         /// </summary>
         public SkinnedModelNodeInstanceCollection Nodes { get; }
+
+        /// <inheritdoc/>
+        public Int32 ChildNodeCount => Template.ChildNodeCount;
+
+        /// <inheritdoc/>
+        public Int32 TotalNodeCount => Template.TotalNodeCount;
     }
 }

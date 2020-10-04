@@ -8,7 +8,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// Represents an animated instance of a <see cref="ModelNode"/>. Each instance represents a particular
     /// skinned animation at a particular point in time.
     /// </summary>
-    public class SkinnedModelNodeInstance
+    public class SkinnedModelNodeInstance : IModelNodeProvider<SkinnedModelNodeInstance>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedModelNodeInstance"/> class.
@@ -35,6 +35,9 @@ namespace Ultraviolet.Graphics.Graphics3D
                 this.Skin = skinnedModel.Skins.TryGetSkinByNode(template.LogicalIndex);
             }
         }
+
+        /// <inheritdoc/>
+        SkinnedModelNodeInstance IModelNodeProvider<SkinnedModelNodeInstance>.GetChildNode(Int32 index) => Children[index];
 
         /// <summary>
         /// Performs an action on all nodes within this node (including this node).
@@ -95,6 +98,9 @@ namespace Ultraviolet.Graphics.Graphics3D
             worldMatrix = transform;
         }
 
+        /// <inheritdoc/>
+        ModelNode IModelNodeProvider<SkinnedModelNodeInstance>.ModelNode => Template;
+
         /// <summary>
         /// Gets the node instance's template.
         /// </summary>
@@ -129,5 +135,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the node instance's local transform.
         /// </summary>
         public AffineTransform LocalTransform { get; }
+
+        /// <inheritdoc/>
+        public Int32 ChildNodeCount => Template.ChildNodeCount;
+
+        /// <inheritdoc/>
+        public Int32 TotalNodeCount => Template.TotalNodeCount;
     }
 }
