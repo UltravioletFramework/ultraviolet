@@ -154,10 +154,13 @@ namespace Ultraviolet.OpenGL.Graphics
 
             foreach (var kvp in uniforms)
             {
-                var name = kvp.Key;
-                var type = kvp.Select(x => x.Type).First();
-                var parameter = new OpenGLEffectParameter(Ultraviolet, name, type);
-                paramlist[name] = parameter;
+                var uniformName = kvp.Key;
+                var uniformData = kvp.OrderByDescending(x => x.SizeInBytes).First();
+
+                var type = uniformData.Type;
+                var sizeInBytes = uniformData.SizeInBytes;
+                var parameter = new OpenGLEffectParameter(Ultraviolet, uniformName, type, sizeInBytes);
+                paramlist[uniformName] = parameter;
 
                 foreach (var uniform in kvp)
                 {

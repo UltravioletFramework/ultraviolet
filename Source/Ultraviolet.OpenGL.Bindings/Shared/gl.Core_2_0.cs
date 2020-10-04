@@ -127,7 +127,7 @@ namespace Ultraviolet.OpenGL.Bindings
         public static void GetActiveUniform(uint program, uint index, int maxLength, int* length, int* size, uint* type, sbyte* name) =>
             glGetActiveUniform(program, index, maxLength, (IntPtr)length, (IntPtr)size, (IntPtr)type, (IntPtr)name);
 
-        public static string GetActiveUniform(uint program, uint index, out uint type)
+        public static string GetActiveUniform(uint program, uint index, out uint type, out uint elements)
         {
             var nameBufferSize = 256;
             var nameBuffer = Marshal.AllocHGlobal(nameBufferSize);
@@ -139,6 +139,7 @@ namespace Ultraviolet.OpenGL.Bindings
                 {
                     glGetActiveUniform(program, index, nameBufferSize, (IntPtr)(&length), (IntPtr)(&size), (IntPtr)pType, nameBuffer);
                 }
+                elements = (UInt32)size;
                 return Marshal.PtrToStringAnsi(nameBuffer);
             }
             finally

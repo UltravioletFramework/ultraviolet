@@ -16,10 +16,11 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The effect parameter's name.</param>
         /// <param name="type">The effect parameter's uniform type.</param>
+        /// <param name="count">The effect parameter's count of array elements.</param>
         /// <param name="program">The effect parameter's associated program identifier.</param>
         /// <param name="location">The effect parameter's uniform location.</param>
         /// <param name="sampler">The effect's corresponding texture sampler, if any.</param>
-        public OpenGLShaderUniform(UltravioletContext uv, String name, UInt32 type, UInt32 program, Int32 location, Int32 sampler)
+        public OpenGLShaderUniform(UltravioletContext uv, String name, UInt32 type, UInt32 count, UInt32 program, Int32 location, Int32 sampler)
         {
             Contract.Require(uv, nameof(uv));
             Contract.Require(name, nameof(name));
@@ -27,6 +28,8 @@ namespace Ultraviolet.OpenGL.Graphics
             this.uv = uv;
             this.Name = name ?? String.Empty;
             this.Type = type;
+            this.Count = count;
+            this.SizeInBytes = CalculateSizeInBytes(type, count);
             this.Program = program;
             this.location = location;
             this.sampler = sampler;
@@ -74,7 +77,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.Int32Array:
-                    SetValue(source.GetInt32Array());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Int32*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.UInt32:
@@ -82,7 +86,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.UInt32Array:
-                    SetValue(source.GetUInt32Array());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((UInt32*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Single:
@@ -90,7 +95,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.SingleArray:
-                    SetValue(source.GetSingleArray());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Single*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Double:
@@ -98,7 +104,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.DoubleArray:
-                    SetValue(source.GetDoubleArray());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Double*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Vector2:
@@ -106,7 +113,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.Vector2Array:
-                    SetValue(source.GetVector2Array());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Vector2*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Vector3:
@@ -114,7 +122,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.Vector3Array:
-                    SetValue(source.GetVector3Array());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Vector3*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Vector4:
@@ -122,7 +131,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.Vector4Array:
-                    SetValue(source.GetVector4Array());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Vector4*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Color:
@@ -130,7 +140,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 
                 case OpenGLEffectParameterDataType.ColorArray:
-                    SetValue(source.GetColorArray());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Color*)pBuffer, source.ElementCount);
                     break;
 
                 case OpenGLEffectParameterDataType.Matrix:
@@ -138,7 +149,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     break;
 					
                 case OpenGLEffectParameterDataType.MatrixArray:
-                    SetValue(source.GetMatrixArray());
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Matrix*)pBuffer, source.ElementCount);
                     break;
 					
                 case OpenGLEffectParameterDataType.Texture2D:
@@ -189,22 +201,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Int32[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Int32* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform1iv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (int* pValue = value)
-                {
-                    gl.Uniform1iv(location, value.Length, pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform1iv(location, count, pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -220,22 +222,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(UInt32[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(UInt32* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform1uiv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (uint* pValue = value)
-                {
-                    gl.Uniform1uiv(location, value.Length, pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform1uiv(location, count, pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -251,22 +243,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Single[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Single* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform1fv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (float* pValue = value)
-                {
-                    gl.Uniform1fv(location, value.Length, pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform1fv(location, count, pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -282,22 +264,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Double[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Double* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform1dv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (double* pValue = value)
-                {
-                    gl.Uniform1dv(location, value.Length, pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform1dv(location, count, pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -313,22 +285,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Vector2[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Vector2* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform2fv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (Vector2* pValue = value)
-                {
-                    gl.Uniform2fv(location, value.Length, (float*)pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform2fv(location, count, (Single*)pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -344,22 +306,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Vector3[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Vector3* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform3fv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (Vector3* pValue = value)
-                {
-                    gl.Uniform3fv(location, value.Length, (float*)pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform3fv(location, count, (Single*)pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -375,22 +327,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Vector4[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Vector4* pValue, Int32 count)
         {
-            if (value == null)
-            {
-                gl.Uniform4fv(location, 0, null);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                fixed (Vector4* pValue = value)
-                {
-                    gl.Uniform4fv(location, value.Length, (float*)pValue);
-                    gl.ThrowIfError();
-                }
-            }
+            gl.Uniform4fv(location, count, (Single*)pValue);
+            gl.ThrowIfError();
         }
 
         /// <summary>
@@ -418,10 +360,11 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Color[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Color* pValue, Int32 count)
         {
-            if (value == null)
+            if (pValue == null)
             {
                 if (Type == gl.GL_FLOAT_VEC3)
                 {
@@ -438,29 +381,31 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 if (Type == gl.GL_FLOAT_VEC3)
                 {
-                    var normalized = stackalloc float[3 * value.Length];
-                    for (int i = 0; i < value.Length; i++)
+                    var normalized = stackalloc float[3 * count];
+                    for (var i = 0; i < count; i++)
                     {
-                        normalized[(i * 3) + 0] = value[i].R / (float)Byte.MaxValue;
-                        normalized[(i * 3) + 1] = value[i].G / (float)Byte.MaxValue;
-                        normalized[(i * 3) + 2] = value[i].B / (float)Byte.MaxValue;
+                        var c = pValue[i];
+                        normalized[(i * 3) + 0] = c.R / (float)Byte.MaxValue;
+                        normalized[(i * 3) + 1] = c.G / (float)Byte.MaxValue;
+                        normalized[(i * 3) + 2] = c.B / (float)Byte.MaxValue;
                     }
 
-                    gl.Uniform3fv(location, value.Length, normalized);
+                    gl.Uniform3fv(location, count, normalized);
                     gl.ThrowIfError();
                 }
                 else
                 {
-                    var normalized = stackalloc float[4 * value.Length];
-                    for (int i = 0; i < value.Length; i++)
+                    var normalized = stackalloc float[4 * count];
+                    for (var i = 0; i < count; i++)
                     {
-                        normalized[(i * 4) + 0] = value[i].R / (float)Byte.MaxValue;
-                        normalized[(i * 4) + 1] = value[i].G / (float)Byte.MaxValue;
-                        normalized[(i * 4) + 2] = value[i].B / (float)Byte.MaxValue;
-                        normalized[(i * 4) + 3] = value[i].A / (float)Byte.MaxValue;
+                        var c = pValue[i];
+                        normalized[(i * 4) + 0] = c.R / (float)Byte.MaxValue;
+                        normalized[(i * 4) + 1] = c.G / (float)Byte.MaxValue;
+                        normalized[(i * 4) + 2] = c.B / (float)Byte.MaxValue;
+                        normalized[(i * 4) + 3] = c.A / (float)Byte.MaxValue;
                     }
 
-                    gl.Uniform4fv(location, value.Length, normalized);
+                    gl.Uniform4fv(location, count, normalized);
                     gl.ThrowIfError();
                 }
             }
@@ -483,27 +428,25 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the parameter's value.
         /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void SetValue(Matrix[] value)
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Matrix* pValue, Int32 count)
         {
             var transpose = gl.IsMatrixTranspositionAvailable;
 
             if (!transpose)
             {
-                for (int i = 0; i < value.Length; i++)
-                    Matrix.Transpose(ref value[i], out value[i]);
+                for (var i = 0; i < count; i++)
+                    Matrix.Transpose(ref pValue[i], out pValue[i]);
             }
 
-            fixed (Matrix* pValue = value)
-            {
-                gl.UniformMatrix4fv(location, value.Length, transpose, (float*)pValue);
-                gl.ThrowIfError();
-            }
+            gl.UniformMatrix4fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
 
             if (!transpose)
             {
-                for (int i = 0; i < value.Length; i++)
-                    Matrix.Transpose(ref value[i], out value[i]);
+                for (var i = 0; i < count; i++)
+                    Matrix.Transpose(ref pValue[i], out pValue[i]);
             }
         }
 
@@ -542,9 +485,80 @@ namespace Ultraviolet.OpenGL.Graphics
         public UInt32 Type { get; }
 
         /// <summary>
+        /// Gets the shader uniform's count of array elements.
+        /// </summary>
+        public UInt32 Count { get; }
+
+        /// <summary>
+        /// Gets the shader uniform's total size in bytes.
+        /// </summary>
+        public UInt32 SizeInBytes { get; }
+
+        /// <summary>
         /// Gets the shader program identifier.
         /// </summary>
         public UInt32 Program { get; }
+
+        /// <summary>
+        /// Calculates the size of a shader uniform in bytes.
+        /// </summary>
+        private static UInt32 CalculateSizeInBytes(UInt32 type, UInt32 count)
+        {
+            switch (type)
+            {
+                case gl.GL_FLOAT:
+                    return count * sizeof(Single);
+                case gl.GL_FLOAT_VEC2:
+                    return count * sizeof(Single) * 2;
+                case gl.GL_FLOAT_VEC3:
+                    return count * sizeof(Single) * 3;
+                case gl.GL_FLOAT_VEC4:
+                    return count * sizeof(Single) * 4;
+                case gl.GL_DOUBLE:
+                    return count * sizeof(Double);
+                case gl.GL_INT:
+                    return count * sizeof(Int32);
+                case gl.GL_INT_VEC2:
+                    return count * sizeof(Int32) * 2;
+                case gl.GL_INT_VEC3:
+                    return count * sizeof(Int32) * 3;
+                case gl.GL_INT_VEC4:
+                    return count * sizeof(Int32) * 4;
+                case gl.GL_UNSIGNED_INT:
+                    return count * sizeof(UInt32);
+                case gl.GL_UNSIGNED_INT_VEC2:
+                    return count * sizeof(UInt32) * 2;
+                case gl.GL_UNSIGNED_INT_VEC3:
+                    return count * sizeof(UInt32) * 3;
+                case gl.GL_UNSIGNED_INT_VEC4:
+                    return count * sizeof(UInt32) * 4;
+                case gl.GL_BOOL:
+                    return count * sizeof(Boolean);
+                case gl.GL_BOOL_VEC2:
+                    return count * sizeof(Boolean) * 2;
+                case gl.GL_BOOL_VEC3:
+                    return count * sizeof(Boolean) * 3;
+                case gl.GL_BOOL_VEC4:
+                    return count * sizeof(Boolean) * 4;
+                case gl.GL_FLOAT_MAT2:
+                    return count * sizeof(Single) * 4;
+                case gl.GL_FLOAT_MAT3:
+                    return count * sizeof(Single) * 9;
+                case gl.GL_FLOAT_MAT4:
+                    return count * sizeof(Single) * 16;
+                case gl.GL_FLOAT_MAT2x3:
+                case gl.GL_FLOAT_MAT3x2:
+                    return count * sizeof(Single) * 6;
+                case gl.GL_FLOAT_MAT2x4:
+                case gl.GL_FLOAT_MAT4x2:
+                    return count * sizeof(Single) * 8;
+                case gl.GL_FLOAT_MAT3x4:
+                case gl.GL_FLOAT_MAT4x3:
+                    return count * sizeof(Single) * 12;
+                default:
+                    return 0;
+            }
+        }
 
         // State values.
         private readonly UltravioletContext uv;

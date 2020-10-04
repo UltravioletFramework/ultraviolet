@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet.OpenGL.Graphics
@@ -11,11 +12,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Initializes a new instance of the OpenGLEffectParameterData class.
         /// </summary>
-        public OpenGLEffectParameterData()
+        public OpenGLEffectParameterData(UInt32 sizeInBytes)
         {
-            valData = new Byte[16 * sizeof(Single)];
+            var minSizeInBytes = (UInt32)(16 * sizeof(Single));
+            if (minSizeInBytes > sizeInBytes)
+                sizeInBytes = minSizeInBytes;
+
+            valData = new Byte[sizeInBytes];
         }
-        
+
         /// <summary>
         /// Clears the data buffer.
         /// </summary>
@@ -37,11 +42,25 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Boolean || *(Boolean*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Boolean;
+                    ElementCount = 1;
                     Version++;
 
                     *(Boolean*)pValData = value;
                 }
             }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void Set(Boolean[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.BooleanArray;
+            SetArray(value);
+            Version++;
         }
 
         /// <summary>
@@ -55,6 +74,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Int32 || *(Int32*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Int32;
+                    ElementCount = 1;
                     Version++;
 
                     *(Int32*)pValData = value;
@@ -68,8 +88,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Int32[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.Int32Array;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -84,6 +106,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.UInt32 || *(UInt32*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.UInt32;
+                    ElementCount = 1;
                     Version++;
 
                     *(UInt32*)pValData = value;
@@ -97,8 +120,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(UInt32[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.UInt32Array;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -113,6 +138,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Single || *(Single*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Single;
+                    ElementCount = 1;
                     Version++;
 
                     *(Single*)pValData = value;
@@ -126,8 +152,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Single[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.SingleArray;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -142,6 +170,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Double || *(Double*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Double;
+                    ElementCount = 1;
                     Version++;
 
                     *(Double*)pValData = value;
@@ -155,8 +184,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Double[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.DoubleArray;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -171,6 +202,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Vector2 || *(Vector2*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Vector2;
+                    ElementCount = 1;
                     Version++;
 
                     *(Vector2*)pValData = value;
@@ -184,8 +216,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector2[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.Vector2Array;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -200,6 +234,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Vector3 || *(Vector3*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Vector3;
+                    ElementCount = 1;
                     Version++;
 
                     *(Vector3*)pValData = value;
@@ -214,7 +249,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public void Set(Vector3[] value)
         {
             DataType = OpenGLEffectParameterDataType.Vector3Array;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -229,6 +264,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Vector4 || *(Vector4*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Vector4;
+                    ElementCount = 1;
                     Version++;
 
                     *(Vector4*)pValData = value;
@@ -242,8 +278,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector4[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.Vector4Array;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -258,6 +296,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Color || *(Color*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Color;
+                    ElementCount = 1;
                     Version++;
 
                     *(Color*)pValData = value;
@@ -271,8 +310,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Color[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.ColorArray;
-            refData = value;
+            SetArray(value);
             Version++;
         }
 
@@ -287,6 +328,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Matrix || *(Matrix*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Matrix;
+                    ElementCount = 1;
                     Version++;
 
                     *((Matrix*)pValData) = value;
@@ -305,6 +347,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (DataType != OpenGLEffectParameterDataType.Matrix || *(Matrix*)pValData != value)
                 {
                     DataType = OpenGLEffectParameterDataType.Matrix;
+                    ElementCount = 1;
                     Version++;
 
                     *((Matrix*)pValData) = value;
@@ -318,9 +361,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Matrix[] value)
         {
+            Contract.Require(value, nameof(value));
+
             DataType = OpenGLEffectParameterDataType.MatrixArray;
-            refData = value;
-            Version++;
+            SetArray(value);
         }
 
         /// <summary>
@@ -332,6 +376,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (DataType != OpenGLEffectParameterDataType.Texture2D || refData != value)
             {
                 DataType = OpenGLEffectParameterDataType.Texture2D;
+                ElementCount = 1;
                 Version++;
 
                 refData = value;
@@ -347,6 +392,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (DataType != OpenGLEffectParameterDataType.Texture3D || refData != value)
             {
                 DataType = OpenGLEffectParameterDataType.Texture3D;
+                ElementCount = 1;
                 Version++;
 
                 refData = value;
@@ -376,6 +422,31 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetBooleanArray(Boolean[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.BooleanArray)
+            {
+                GetArray(array, count);
+                return;
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
         /// <returns>The value that is set into the buffer.</returns>
         public Int32 GetInt32()
         {
@@ -396,15 +467,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Int32[] GetInt32Array()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetInt32Array(Int32[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.Int32Array)
-                return (Int32[])refData;
-            
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -431,15 +511,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public UInt32[] GetUInt32Array()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetUInt32Array(UInt32[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.UInt32Array)
-                return (UInt32[])refData;
-
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -466,15 +555,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Single[] GetSingleArray()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetSingleArray(Single[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.SingleArray)
-                return (Single[])refData;
-
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -501,15 +599,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Double[] GetDoubleArray()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetDoubleArray(Double[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.DoubleArray)
-                return (Double[])refData;
-            
+            {
+                GetArray(array, count);
+                return;
+            }            
             throw new InvalidCastException();
         }
 
@@ -536,15 +643,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Vector2[] GetVector2Array()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetVector2Array(Vector2[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.Vector2Array)
-                return (Vector2[])refData;
-            
+            {
+                GetArray(array, count);
+                return;
+            }            
             throw new InvalidCastException();
         }
 
@@ -571,15 +687,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Vector3[] GetVector3Array()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetVector3Array(Vector3[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.Vector3Array)
-                return (Vector3[])refData;
-
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -606,15 +731,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Vector4[] GetVector4Array()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetVector4Array(Vector4[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.Vector4Array)
-                return (Vector4[])refData;
-
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -641,15 +775,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Color[] GetColorArray()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetColorArray(Color[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.ColorArray)
-                return (Color[])refData;
-
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -676,15 +819,24 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the value that is set into the buffer.
         /// </summary>
-        /// <returns>The value that is set into the buffer.</returns>
-        public Matrix[] GetMatrixArray()
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMatrixArray(Matrix[] array, Int32 count)
         {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
             if (DataType == OpenGLEffectParameterDataType.None)
-                return null;
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
 
             if (DataType == OpenGLEffectParameterDataType.MatrixArray)
-                return (Matrix[])refData;
-
+            {
+                GetArray(array, count);
+                return;
+            }
             throw new InvalidCastException();
         }
 
@@ -728,8 +880,75 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         public Int64 Version { get; private set; } = 1;
 
+        /// <summary>
+        /// Gets the number of elements in the parameter data. This property will have the value 1 for all non-array types.
+        /// </summary>
+        public Int32 ElementCount { get; private set; } = 1;
+
+        /// <summary>
+        /// Gets the size in bytes of this parameter's data buffer.
+        /// </summary>
+        public Int32 SizeInBytes => valData.Length;
+
+        /// <summary>
+        /// Gets the raw data buffer which is used to contain parameter values.
+        /// </summary>
+        public Byte[] RawDataBuffer => valData;
+
+        /// <summary>
+        /// Copies the value of the specified array into the parameter data.
+        /// </summary>
+        private void SetArray<TElement>(TElement[] array)
+            where TElement : unmanaged
+        {
+            var countMax = valData.Length / sizeof(TElement);
+            var count = array.Length > countMax ? countMax : array.Length;
+
+            fixed (void* pArrData = array)
+            fixed (void* pValData = valData)
+            {
+                var pArrDataInt = (TElement*)pArrData;
+                var pValDataInt = (TElement*)pValData;
+
+                for (var i = 0; i < count; i++)
+                    *pValDataInt++ = *pArrDataInt++;
+            }
+
+            this.ElementCount = count;
+        }
+
+        /// <summary>
+        /// Copies the value of the parameter data into the specified array. 
+        /// </summary>
+        private void GetArray<TElement>(TElement[] array, Int32 count)
+            where TElement : unmanaged
+        {
+            var countMax = valData.Length / sizeof(TElement);
+            if (countMax < count)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            fixed (void* pArrData = array)
+            fixed (void* pValData = valData)
+            {
+                var pArrDataInt = (TElement*)pArrData;
+                var pValDataInt = (TElement*)pValData;
+
+                for (var i = 0; i < count; i++)
+                    *pArrDataInt++ = *pValDataInt++;
+            }
+        }
+
+        /// <summary>
+        /// Copies default values into the specified array.
+        /// </summary>
+        private void GetDefaultArray<TElement>(TElement[] array, Int32 count)
+        {
+            for (int i = 0; i < count; i++)
+                array[i] = default(TElement);
+        }
+
         // State values.
-        private Byte[] valData;
+        private readonly Byte[] valData;
         private Object refData;
     }
 }

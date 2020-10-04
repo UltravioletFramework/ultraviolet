@@ -17,6 +17,11 @@ namespace Ultraviolet.OpenGL.Graphics
         Boolean,
 
         /// <summary>
+        /// An array of <see cref="System.Boolean"/> values is set on the effect.
+        /// </summary>
+        BooleanArray,
+
+        /// <summary>
         /// An <see cref="System.Int32"/> value is set on the effect.
         /// </summary>
         Int32,

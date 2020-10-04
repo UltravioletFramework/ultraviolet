@@ -16,13 +16,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The effect parameter's name.</param>
         /// <param name="type">The effect parameter's uniform type.</param>
-        public OpenGLEffectParameter(UltravioletContext uv, String name, UInt32 type)
+        /// <param name="sizeInBytes">The effect parameter's size in bytes.</param>
+        public OpenGLEffectParameter(UltravioletContext uv, String name, UInt32 type, UInt32 sizeInBytes)
             : base(uv)
         {
             Contract.Require(name, nameof(name));
 
             this.name = name ?? String.Empty;
             this.type = type;
+            this.data = new OpenGLEffectParameterData(sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -42,6 +44,14 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override void GetValueBooleanArray(Boolean[] value, Int32 count)
+        {
+            Contract.Ensure<InvalidCastException>(type == gl.GL_BOOL);
+
+            data.GetBooleanArray(value, count);
+        }
+
+        /// <inheritdoc/>
         public override Int32 GetValueInt32()
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_INT);
@@ -58,11 +68,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32[] GetValueInt32Array()
+        public override void GetValueInt32Array(Int32[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_INT);
 
-            return data.GetInt32Array();
+            data.GetInt32Array(value, count);
         }
 
         /// <inheritdoc/>
@@ -90,11 +100,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override UInt32[] GetValueUInt32Array()
+        public override void GetValueUInt32Array(UInt32[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_UNSIGNED_INT);
 
-            return data.GetUInt32Array();
+            data.GetUInt32Array(value, count);
         }
 
         /// <inheritdoc/>
@@ -122,11 +132,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Single[] GetValueSingleArray()
+        public override void GetValueSingleArray(Single[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT);
 
-            return data.GetSingleArray();
+            data.GetSingleArray(value, count);
         }
 
         /// <inheritdoc/>
@@ -154,11 +164,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Double[] GetValueDoubleArray()
+        public override void GetValueDoubleArray(Double[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_DOUBLE);
 
-            return data.GetDoubleArray();
+            data.GetDoubleArray(value, count);
         }
 
         /// <inheritdoc/>
@@ -186,11 +196,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Vector2[] GetValueVector2Array()
+        public override void GetValueVector2Array(Vector2[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC2);
 
-            return data.GetVector2Array();
+            data.GetVector2Array(value, count);
         }
 
         /// <inheritdoc/>
@@ -218,11 +228,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Vector3[] GetValueVector3Array()
+        public override void GetValueVector3Array(Vector3[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3);
 
-            return data.GetVector3Array();
+            data.GetVector3Array(value, count);
         }
 
         /// <inheritdoc/>
@@ -250,11 +260,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Vector4[] GetValueVector4Array()
+        public override void GetValueVector4Array(Vector4[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC4);
 
-            return data.GetVector4Array();
+            data.GetVector4Array(value, count);
         }
 
         /// <inheritdoc/>
@@ -282,11 +292,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Color[] GetValueColorArray()
+        public override void GetValueColorArray(Color[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3 || type == gl.GL_FLOAT_VEC4);
 
-            return data.GetColorArray();
+            data.GetColorArray(value, count);
         }
 
         /// <inheritdoc/>
@@ -322,34 +332,11 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override void GetValueMatrixArray(Matrix[] destination)
-        {
-            Contract.Require(destination, nameof(destination));
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
-
-            var values = data.GetMatrixArray();
-            for (var i = 0; i < destination.Length; i++)
-                destination[i] = values[i];
-        }
-
-        /// <inheritdoc/>
-        public override void GetValueMatrixArray(Matrix[] destination, Int32 count)
-        {
-            Contract.Require(destination, nameof(destination));
-            Contract.EnsureRange(count >= 0 && count <= destination.Length, nameof(count));
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
-
-            var values = data.GetMatrixArray();
-            for (var i = 0; i < count; i++)
-                destination[i] = values[i];
-        }
-
-        /// <inheritdoc/>
-        public override Matrix[] GetValueMatrixArray()
+        public override void GetValueMatrixArray(Matrix[] value, Int32 count)
         {
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
 
-            return data.GetMatrixArray();
+            data.GetMatrixArray(value, count);
         }
 
         /// <inheritdoc/>
@@ -395,6 +382,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override String Name => name;
 
+        /// <inheritdoc/>
+        public override Int32 ElementCount => data.ElementCount;
+
+        /// <inheritdoc/>
+        public override Int32 SizeInBytes => data.SizeInBytes;
+
         /// <summary>
         /// Gets the parameter's data container.
         /// </summary>
@@ -405,6 +398,6 @@ namespace Ultraviolet.OpenGL.Graphics
 
         // State values.
         private readonly UInt32 type;
-        private readonly OpenGLEffectParameterData data = new OpenGLEffectParameterData();
+        private readonly OpenGLEffectParameterData data;
     }
 }

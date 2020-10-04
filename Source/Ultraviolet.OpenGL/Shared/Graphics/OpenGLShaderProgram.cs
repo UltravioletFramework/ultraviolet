@@ -217,8 +217,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 for (uint i = 0; i < count; i++)
                 {
-                    var type = 0u;
-                    var name = gl.GetActiveUniform(program, i, out type);
+                    var name = gl.GetActiveUniform(program, i, out var type, out var elements);
                     gl.ThrowIfError();
 
                     var location = gl.GetUniformLocation(program, name);
@@ -254,7 +253,8 @@ namespace Ultraviolet.OpenGL.Graphics
                         samplerCount = ssmd.PreferredSamplerIndices[name];
                         sampler = samplerCount++;
                     }
-                    uniforms.Add(new OpenGLShaderUniform(programObject.Ultraviolet, name, type, program, location, sampler));                
+
+                    uniforms.Add(new OpenGLShaderUniform(programObject.Ultraviolet, name, type, elements, program, location, sampler));                
                 }
 
                 return uniforms;

@@ -30,6 +30,13 @@ namespace Ultraviolet.Graphics
         public abstract void SetValue(Boolean value);
 
         /// <summary>
+        /// Gets the parameter's value as an array of <see cref="Boolean"/>.
+        /// </summary>
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueBooleanArray(Boolean[] value, Int32 count);
+
+        /// <summary>
         /// Gets the parameter's value as an <see cref="Int32"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
@@ -44,8 +51,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Int32"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Int32[] GetValueInt32Array();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueInt32Array(Int32[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -76,9 +84,10 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="UInt32"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
         [CLSCompliant(false)]
-        public virtual UInt32[] GetValueUInt32Array()
+        public virtual void GetValueUInt32Array(UInt32[] value, Int32 count)
         {
             throw new NotSupportedException();
         }
@@ -108,8 +117,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Single"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Single[] GetValueSingleArray();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueSingleArray(Single[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -132,8 +142,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Double"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Double[] GetValueDoubleArray();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueDoubleArray(Double[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -156,8 +167,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Vector2"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Vector2[] GetValueVector2Array();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueVector2Array(Vector2[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -180,8 +192,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Vector3"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Vector3[] GetValueVector3Array();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueVector3Array(Vector3[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -204,8 +217,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Vector4"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Vector4[] GetValueVector4Array();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueVector4Array(Vector4[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -228,8 +242,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the parameter's value as an array of <see cref="Color"/>.
         /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Color[] GetValueColorArray();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueColorArray(Color[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -258,21 +273,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Copies the parameter's value to the specified array of <see cref="Matrix"/>.
         /// </summary>
-        /// <param name="destination">The array to populate with values.</param>
-        public abstract void GetValueMatrixArray(Matrix[] destination);
-
-        /// <summary>
-        /// Copies the parameter's value to the specified array of <see cref="Matrix"/>.
-        /// </summary>
-        /// <param name="destination">The array to populate with values.</param>
-        /// <param name="count">The number of items to copy to the specified array.</param>
-        public abstract void GetValueMatrixArray(Matrix[] destination, Int32 count);
-
-        /// <summary>
-        /// Gets the parameter's value as an array of <see cref="Matrix"/>.
-        /// </summary>
-        /// <returns>The parameter's value.</returns>
-        public abstract Matrix[] GetValueMatrixArray();
+        /// <param name="value">An array to populate with the parameter's values.</param>
+        /// <param name="count">The number of values to copy from the parameter.</param>
+        public abstract void GetValueMatrixArray(Matrix[] value, Int32 count);
 
         /// <summary>
         /// Sets the parameter's value.
@@ -311,5 +314,15 @@ namespace Ultraviolet.Graphics
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the number of elements in this parameter's data. This property will have the value 1 for non-array types.
+        /// </summary>
+        public abstract Int32 ElementCount { get; }
+
+        /// <summary>
+        /// Gets the size in bytes of this parameter's data.
+        /// </summary>
+        public abstract Int32 SizeInBytes { get; }
     }
 }
