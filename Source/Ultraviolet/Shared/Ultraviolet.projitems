@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\IModelSceneProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRendererBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectMaterialColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectSkin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SkinnedMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\AffineTransform.cs" />

@@ -15,9 +15,21 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelResourceCollection{TItem}"/> class.
         /// </summary>
-        internal ModelResourceCollection(IEnumerable<TItem> items) 
+        internal ModelResourceCollection(IEnumerable<TItem> items, Func<TItem, Int32, Int32> indexSelector = null) 
         {
-            storage = items?.ToArray() ?? Array.Empty<TItem>();
+            if (indexSelector == null)
+                indexSelector = (item, ix) => ix;
+
+            var count = items.Count();
+            storage = new TItem[count];
+
+            var index = 0;
+            foreach (var item in items)
+            {
+                var trueIndex = indexSelector(item, index);
+                storage[trueIndex] = item;
+                index++;
+            }
         }
 
         /// <summary>

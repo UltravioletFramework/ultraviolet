@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Graphics;
 
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
     /// Represents the OpenGL implementation of the <see cref="Ultraviolet.Graphics.BasicEffect"/> class.
@@ -14,18 +14,18 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         public OpenGLBasicEffect(UltravioletContext uv)
             : base(CreateEffectImplementation(uv))
         {
-            epDiffuseColor = Parameters["DiffuseColor"];
-            epEmissiveColor = Parameters["EmissiveColor"];
-            epSpecularColor = Parameters["SpecularColor"];
-            epSpecularPower = Parameters["SpecularPower"];
-            epEyePosition = Parameters["EyePosition"];
-            epFogColor = Parameters["FogColor"];
-            epFogVector = Parameters["FogVector"];
-            epWorld = Parameters["World"];
-            epWorldInverseTranspose = Parameters["WorldInverseTranspose"];
-            epWorldViewProj = Parameters["WorldViewProj"];
-            epSrgbColor = Parameters["SrgbColor"];
-            epTexture = Parameters["Texture"];
+            epBlock.DiffuseColor = Parameters["DiffuseColor"];
+            epBlock.EmissiveColor = Parameters["EmissiveColor"];
+            epBlock.SpecularColor = Parameters["SpecularColor"];
+            epBlock.SpecularPower = Parameters["SpecularPower"];
+            epBlock.EyePosition = Parameters["EyePosition"];
+            epBlock.FogColor = Parameters["FogColor"];
+            epBlock.FogVector = Parameters["FogVector"];
+            epBlock.World = Parameters["World"];
+            epBlock.WorldInverseTranspose = Parameters["WorldInverseTranspose"];
+            epBlock.WorldViewProj = Parameters["WorldViewProj"];
+            epBlock.SrgbColor = Parameters["SrgbColor"];
+            epBlock.Texture = Parameters["Texture"];
         }
 
         /// <inheritdoc/>
@@ -103,167 +103,10 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         protected override void OnApply()
         {
-            var oneLightNew = !DirectionalLight1.Enabled && !DirectionalLight2.Enabled;
-            if (oneLightNew != oneLight)
-            {
-                oneLight = oneLightNew;
-                dirtyFlags |= EffectDirtyFlags.ShaderIndex;
-            }
+            if (EffectHelpers.CheckForShaderIndexChanges(this, dirtyFlags, ref oneLight) && UpdateShaderIndex())
+                dirtyFlags = EffectDirtyFlags.All;
 
-            if ((dirtyFlags & EffectDirtyFlags.ShaderIndex) == EffectDirtyFlags.ShaderIndex)
-            {
-                if (UpdateShaderIndex())
-                    dirtyFlags = EffectDirtyFlags.All;
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.SrgbColor) == EffectDirtyFlags.SrgbColor)
-            {
-                if (epSrgbColor != null)
-                    epSrgbColor.SetValue(SrgbColor);
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.MaterialColor) == EffectDirtyFlags.MaterialColor)
-            {
-                var alpha = Alpha;
-
-                if (epSpecularColor != null)
-                    epSpecularColor.SetValue(SpecularColor);
-
-                if (epSpecularPower != null)
-                    epSpecularPower.SetValue(SpecularPower);
-
-                if (LightingEnabled)
-                {
-                    var diffuseColor = (SrgbColor ? Color.ConvertSrgbColorToLinear(DiffuseColor) : DiffuseColor).ToVector4();
-                    var diffuse = new Vector4
-                    {
-                        X = diffuseColor.X * alpha,
-                        Y = diffuseColor.Y * alpha,
-                        Z = diffuseColor.Z * alpha,
-                        W = alpha
-                    };
-
-                    if (epDiffuseColor != null)
-                        epDiffuseColor.SetValue(diffuse);
-
-                    var ambientLightColor = (SrgbColor ? Color.ConvertSrgbColorToLinear(AmbientLightColor) : AmbientLightColor).ToVector3();
-                    var emissiveColor = (SrgbColor ? Color.ConvertSrgbColorToLinear(EmissiveColor) : EmissiveColor).ToVector3();
-                    var emissive = new Vector3
-                    {
-                        X = (emissiveColor.X + ambientLightColor.X * diffuseColor.X) * alpha,
-                        Y = (emissiveColor.Y + ambientLightColor.Y * diffuseColor.Y) * alpha,
-                        Z = (emissiveColor.Z + ambientLightColor.Z * diffuseColor.Z) * alpha
-                    };
-
-                    if (epEmissiveColor != null)
-                        epEmissiveColor.SetValue(emissive);
-                }
-                else
-                {
-                    if (epDiffuseColor != null)
-                    {
-                        var emissiveColor = (SrgbColor ? Color.ConvertSrgbColorToLinear(EmissiveColor) : EmissiveColor).ToVector3();
-                        var diffuseColor = (SrgbColor ? Color.ConvertSrgbColorToLinear(DiffuseColor) : DiffuseColor).ToVector4();
-                        var diffuse = new Vector4
-                        {
-                            X = (diffuseColor.X + emissiveColor.X) * alpha,
-                            Y = (diffuseColor.Y + emissiveColor.Y) * alpha,
-                            Z = (diffuseColor.Z + emissiveColor.Z) * alpha,
-                            W = alpha
-                        };
-
-                        epDiffuseColor.SetValue(diffuse);
-                    }
-                }
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.MaterialTexture) == EffectDirtyFlags.MaterialTexture)
-            {
-                if (epTexture != null)
-                    epTexture.SetValue(Texture);
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.World) == EffectDirtyFlags.World)
-            {
-                var world = World;
-                
-                if (epWorld != null)
-                    epWorld.SetValue(world);
-
-                if (epWorldInverseTranspose != null)
-                {
-                    Matrix.TryInvertRef(ref world, out var worldInverse);
-                    Matrix.Transpose(ref worldInverse, out var worldInverseTranspose);
-                    epWorldInverseTranspose.SetValueRef(ref worldInverseTranspose);
-                }
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.WorldViewProjection) == EffectDirtyFlags.WorldViewProjection)
-            {
-                if (epWorldViewProj != null)
-                {
-                    var world = World;
-                    var view = View;
-                    var proj = Projection;
-
-                    Matrix.Multiply(ref world, ref view, out worldView);
-                    Matrix.Multiply(ref worldView, ref proj, out var worldViewProj);
-                    epWorldViewProj.SetValue(worldViewProj);
-                }
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.EyePosition) == EffectDirtyFlags.EyePosition)
-            {
-                var view = View;
-
-                if (epEyePosition != null)
-                {
-                    Matrix.TryInvertRef(ref view, out var viewInverse);
-                    epEyePosition.SetValue(viewInverse.Translation);
-                }
-            }
-
-            if ((dirtyFlags & EffectDirtyFlags.Fog) == EffectDirtyFlags.Fog || (dirtyFlags & EffectDirtyFlags.FogEnabled) == EffectDirtyFlags.FogEnabled)
-            {
-                if (FogEnabled)
-                {
-                    if (epFogColor != null)
-                        epFogColor.SetValue(FogColor);
-
-                    if (epFogVector != null)
-                    {
-                        var fogStart = FogStart;
-                        var fogEnd = FogEnd;
-
-                        if (fogStart == fogEnd)
-                        {
-                            epFogVector.SetValue(new Vector4(0, 0, 0, 1));
-                        }
-                        else
-                        {
-                            var scale = 1f / (fogStart - fogEnd);
-                            var fogVector = new Vector4
-                            {
-                                X = worldView.M13 * scale,
-                                Y = worldView.M23 * scale,
-                                Z = worldView.M33 * scale,
-                                W = (worldView.M43 + fogStart) * scale
-                            };
-                            epFogVector.SetValue(fogVector);
-                        }
-                    }
-                }
-                else
-                {
-                    if (epFogVector != null)
-                        epFogVector.SetValue(Vector4.Zero);
-                }
-            }
-
-            DirectionalLight0.Apply();
-            DirectionalLight1.Apply();
-            DirectionalLight2.Apply();
-
+            EffectHelpers.UpdateEffectParameters(this, dirtyFlags, epBlock, ref worldView);
             dirtyFlags = EffectDirtyFlags.None;
 
             base.OnApply();
@@ -320,18 +163,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         private Boolean oneLight;
 
         // Effect parameters.
-        private readonly EffectParameter epDiffuseColor;
-        private readonly EffectParameter epEmissiveColor;
-        private readonly EffectParameter epSpecularColor;
-        private readonly EffectParameter epSpecularPower;
-        private readonly EffectParameter epEyePosition;
-        private readonly EffectParameter epFogColor;
-        private readonly EffectParameter epFogVector;
-        private readonly EffectParameter epWorld;
-        private readonly EffectParameter epWorldInverseTranspose;
-        private readonly EffectParameter epWorldViewProj;
-        private readonly EffectParameter epSrgbColor;
-        private readonly EffectParameter epTexture;
+        private readonly OpenGLBasicEffectParameterBlock epBlock = new OpenGLBasicEffectParameterBlock();
         private EffectDirtyFlags dirtyFlags = EffectDirtyFlags.All;
     }
 }

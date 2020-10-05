@@ -20,12 +20,16 @@ namespace Ultraviolet.Graphics.Graphics3D
             Contract.Require(scene, nameof(scene));
             Contract.Require(camera, nameof(camera));
 
+            OnDrawingModelScene(scene, camera, ref worldMatrix);
+
             var effect = default(Effect);
             for (var i = 0; i < scene.ChildNodeCount; i++)
             {
                 var node = scene.GetChildNode(i);
                 DrawNode(node, camera, ref effect, worldMatrix);
             }
+
+            OnDrawnModelScene();
         }
 
         /// <summary>
@@ -79,12 +83,28 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Called when the renderer is drawing a <typeparamref name="TScene"/> instance.
+        /// </summary>
+        /// <param name="scene">The <typeparamref name="TScene"/> instance that is being rendered.</param>
+        /// <param name="camera">The camera with which the scene is being drawn.</param>
+        /// <param name="transform">The transformation which is being applied to the node.</param>
+        protected virtual void OnDrawingModelScene(TScene scene, Camera camera, ref Matrix transform)
+        { }
+
+        /// <summary>
+        /// Called when the renderer is done drawing a <typeparamref name="TScene"/> instance.
+        /// </summary>
+        protected virtual void OnDrawnModelScene()
+        { }
+
+        /// <summary>
         /// Called when the renderer is drawing a <typeparamref name="TNode"/> instance.
         /// </summary>
         /// <param name="node">The <typeparamref name="TNode"/> instance that is being rendered.</param>
         /// <param name="camera">The camera with which the scene is being drawn.</param>
+        /// <param name="effect">The current <see cref="Effect"/> instance.</param>
         /// <param name="transform">The transformation which is being applied to the node.</param>
-        protected virtual void OnDrawingModelNode(TNode node, Camera camera, ref Matrix transform) 
+        protected virtual void OnDrawingModelNode(TNode node, Camera camera, Effect effect, ref Matrix transform) 
         { }
 
         /// <summary>
@@ -168,7 +188,7 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             modelNode.Transform.AsMatrix(out var nodeTransformMatrix);
             transform = Matrix.Multiply(nodeTransformMatrix, transform);
-            OnDrawingModelNode(node, camera, ref transform);
+            OnDrawingModelNode(node, camera, effect, ref transform);
 
             var modelMesh = modelNode.Mesh;
             if (modelMesh != null)

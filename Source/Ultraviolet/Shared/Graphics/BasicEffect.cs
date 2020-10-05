@@ -14,7 +14,7 @@ namespace Ultraviolet.Graphics
     /// Represents a basic rendering effect.
     /// </summary>
     public abstract partial class BasicEffect : Effect,
-        IEffectMatrices, IEffectFog, IEffectLights, IEffectTexture
+        IEffectMatrices, IEffectFog, IEffectLights, IEffectTexture, IEffectMaterialColor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicEffect"/> class.

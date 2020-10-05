@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+namespace Ultraviolet.OpenGL.Graphics
 {
     partial class OpenGLBasicEffect
     {

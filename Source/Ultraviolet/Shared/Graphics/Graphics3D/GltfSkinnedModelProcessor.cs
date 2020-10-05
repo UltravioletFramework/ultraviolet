@@ -69,7 +69,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 }
 
                 nodesBySkin.TryGetValue(skin.LogicalIndex, out var uvSkinNodes);
-                var uvSkin = new Skin(skin.Name, uvSkinJoints, uvSkinNodes);
+                var uvSkin = new Skin(skin.LogicalIndex, skin.Name, uvSkinJoints, uvSkinNodes);
                 uvSkins.Add(uvSkin);
             }
             return uvSkins;

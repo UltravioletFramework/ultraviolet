@@ -365,6 +365,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             DataType = OpenGLEffectParameterDataType.MatrixArray;
             SetArray(value);
+            Version++;
         }
 
         /// <summary>

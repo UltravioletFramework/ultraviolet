@@ -310,7 +310,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Matrix GetValueMatrix()
         {
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+            Contract.Ensure<InvalidCastException>(
+                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
+                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
 
             return data.GetMatrix();
         }
@@ -318,7 +320,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Matrix value)
         {
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+            Contract.Ensure<InvalidCastException>(
+                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
+                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
 
             data.Set(value);
         }
@@ -326,7 +330,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValueRef(ref Matrix value)
         {
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+            Contract.Ensure<InvalidCastException>(
+                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
+                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
 
             data.SetRef(ref value);
         }
@@ -334,7 +340,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void GetValueMatrixArray(Matrix[] value, Int32 count)
         {
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+            Contract.Ensure<InvalidCastException>(
+                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
+                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
 
             data.GetMatrixArray(value, count);
         }
@@ -342,7 +350,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Matrix[] value)
         {
-            Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
+            Contract.Ensure<InvalidCastException>(
+                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
+                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
 
             data.Set(value);
         }

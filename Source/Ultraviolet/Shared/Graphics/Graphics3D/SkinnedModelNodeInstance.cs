@@ -32,7 +32,9 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             if (this.Template.ParentModel is SkinnedModel skinnedModel)
             {
-                this.Skin = skinnedModel.Skins.TryGetSkinByNode(template.LogicalIndex);
+                var skinTemplate = skinnedModel.Skins.TryGetSkinByNode(template.LogicalIndex);
+                if (skinTemplate != null)
+                    this.Skin = parentModelInstance.Skins[skinTemplate.LogicalIndex];
             }
         }
 
@@ -124,7 +126,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets the node's skin, if it has one.
         /// </summary>
-        public Skin Skin { get; }
+        public SkinInstance Skin { get; }
 
         /// <summary>
         /// Gets the instance's collection of child nodes.

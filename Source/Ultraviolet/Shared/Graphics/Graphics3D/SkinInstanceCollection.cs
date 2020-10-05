@@ -12,7 +12,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         /// <param name="skins">The skin instances to add to the collection.</param>
         public SkinInstanceCollection(IEnumerable<SkinInstance> skins)
-            : base(skins)
+            : base(skins, (skin, ix) => skin.Template.LogicalIndex)
         { }
     }
 }

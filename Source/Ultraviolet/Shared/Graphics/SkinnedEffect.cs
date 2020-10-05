@@ -13,7 +13,7 @@ namespace Ultraviolet.Graphics
     /// Represents a basic rendering effect.
     /// </summary>
     public abstract partial class SkinnedEffect : Effect,
-        IEffectMatrices, IEffectFog, IEffectLights, IEffectTexture, IEffectSkin
+        IEffectMatrices, IEffectFog, IEffectLights, IEffectTexture, IEffectMaterialColor, IEffectSkin
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedEffect"/> class.
@@ -80,7 +80,12 @@ namespace Ultraviolet.Graphics
         public abstract void GetBoneTransforms(Matrix[] boneTransforms, Int32 count);
 
         /// <inheritdoc/>
-        public Int32 MaxBoneCount { get; } = 72;
+        Int32 IEffectSkin.MaxBoneCount { get; } = MaxBoneCount;
+
+        /// <summary>
+        /// Gets the maximum number of bones which <see cref="SkinnedEffect"/> supports.
+        /// </summary>
+        public const Int32 MaxBoneCount = 72;
 
         /// <summary>
         /// Gets or sets a value indicating whether the colors used by this effect should be
