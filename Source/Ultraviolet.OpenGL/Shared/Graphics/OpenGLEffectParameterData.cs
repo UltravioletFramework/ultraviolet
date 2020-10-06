@@ -1,6 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
+using Ultraviolet.OpenGL.Graphics.Uniforms;
 
 namespace Ultraviolet.OpenGL.Graphics
 {
@@ -321,17 +322,17 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Sets a value into the buffer.
         /// </summary>
         /// <param name="value">The value to set.</param>
-        public void Set(Matrix value)
+        public void SetMat2(in Matrix value)
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Matrix || *(Matrix*)pValData != value)
+                if (DataType != OpenGLEffectParameterDataType.Mat2)
                 {
-                    DataType = OpenGLEffectParameterDataType.Matrix;
+                    DataType = OpenGLEffectParameterDataType.Mat2;
                     ElementCount = 1;
                     Version++;
 
-                    *((Matrix*)pValData) = value;
+                    *((Mat2*)pValData) = new Mat2(value);
                 }
             }
         }
@@ -340,31 +341,268 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Sets a value into the buffer.
         /// </summary>
         /// <param name="value">The value to set.</param>
-        public void SetRef(ref Matrix value)
-        {
-            fixed (Byte* pValData = valData)
-            {
-                if (DataType != OpenGLEffectParameterDataType.Matrix || *(Matrix*)pValData != value)
-                {
-                    DataType = OpenGLEffectParameterDataType.Matrix;
-                    ElementCount = 1;
-                    Version++;
-
-                    *((Matrix*)pValData) = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets a value into the buffer.
-        /// </summary>
-        /// <param name="value">The value to set.</param>
-        public void Set(Matrix[] value)
+        public void SetMat2(Matrix[] value)
         {
             Contract.Require(value, nameof(value));
 
-            DataType = OpenGLEffectParameterDataType.MatrixArray;
+            DataType = OpenGLEffectParameterDataType.Mat2Array;
+            SetArray(value, x => new Mat2(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat2x3(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat2x3)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat2x3;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat2x3*)pValData) = new Mat2x3(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat2x3(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat2x3Array;
+            SetArray(value, x => new Mat2x3(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat2x4(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat2x4)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat2x4;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat2x4*)pValData) = new Mat2x4(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat2x4(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat2x4Array;
+            SetArray(value, x => new Mat2x4(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat3(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat3)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat3;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat3*)pValData) = new Mat3(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat3(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat3Array;
+            SetArray(value, x => new Mat3(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat3x2(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat3x2)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat3x2;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat3x2*)pValData) = new Mat3x2(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat3x2(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat3x2Array;
+            SetArray(value, x => new Mat3x2(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat3x4(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat3x4)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat3x4;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat3x4*)pValData) = new Mat3x4(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat3x4(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat3x4Array;
+            SetArray(value, x => new Mat3x4(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat4(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat4)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat4;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Matrix*)pValData) = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat4(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat4Array;
             SetArray(value);
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat4x2(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat4x2)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat4x2;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat4x2*)pValData) = new Mat4x2(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat4x2(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat4x2Array;
+            SetArray(value, x => new Mat4x2(x));
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat4x3(in Matrix value)
+        {
+            fixed (Byte* pValData = valData)
+            {
+                if (DataType != OpenGLEffectParameterDataType.Mat4x3)
+                {
+                    DataType = OpenGLEffectParameterDataType.Mat4x3;
+                    ElementCount = 1;
+                    Version++;
+
+                    *((Mat4x3*)pValData) = new Mat4x3(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetMat4x3(Matrix[] value)
+        {
+            Contract.Require(value, nameof(value));
+
+            DataType = OpenGLEffectParameterDataType.Mat4x3Array;
+            SetArray(value, x => new Mat4x3(x));
             Version++;
         }
 
@@ -801,12 +1039,276 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Gets the value that is set into the buffer.
         /// </summary>
         /// <returns>The value that is set into the buffer.</returns>
-        public Matrix GetMatrix()
+        public Mat2 GetMat2()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat2);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat2)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat2*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat2Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat2Array)
+            {
+                GetArray<Mat2, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat2x3 GetMat2x3()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat2x3);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat2x3)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat2x3*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat2x3Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat2x3Array)
+            {
+                GetArray<Mat2x3, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat2x4 GetMat2x4()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat2x4);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat2x4)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat2x4*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat2x4Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat2x4Array)
+            {
+                GetArray<Mat2x4, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat3 GetMat3()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat3);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat3)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat3*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat3Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat3Array)
+            {
+                GetArray<Mat3, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat3x2 GetMat3x2()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat3x2);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat3x2)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat3x2*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat3x2Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat3x2Array)
+            {
+                GetArray<Mat3x2, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat3x4 GetMat3x4()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat3x4);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat3x4)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat3x4*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat3x4Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat3x4Array)
+            {
+                GetArray<Mat3x4, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Matrix GetMat4()
         {
             if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Matrix);
 
-            if (DataType == OpenGLEffectParameterDataType.Matrix)
+            if (DataType == OpenGLEffectParameterDataType.Mat4)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -822,7 +1324,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="array">An array to populate with values.</param>
         /// <param name="count">The maximum number of values to copy into the array.</param>
-        public void GetMatrixArray(Matrix[] array, Int32 count)
+        public void GetMat4Array(Matrix[] array, Int32 count)
         {
             Contract.Require(array, nameof(array));
             Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
@@ -833,9 +1335,97 @@ namespace Ultraviolet.OpenGL.Graphics
                 return;
             }
 
-            if (DataType == OpenGLEffectParameterDataType.MatrixArray)
+            if (DataType == OpenGLEffectParameterDataType.Mat4Array)
             {
                 GetArray(array, count);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat4x2 GetMat4x2()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat4x2);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat4x2)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat4x2*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat4x2Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat4x2Array)
+            {
+                GetArray<Mat4x2, Matrix>(array, count, x => (Matrix)x);
+                return;
+            }
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Mat4x3 GetMat4x3()
+        {
+            if (DataType == OpenGLEffectParameterDataType.None)
+                return default(Mat4x3);
+
+            if (DataType == OpenGLEffectParameterDataType.Mat4x3)
+            {
+                fixed (Byte* pValData = valData)
+                {
+                    return *(Mat4x3*)pValData;
+                }
+            }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <param name="array">An array to populate with values.</param>
+        /// <param name="count">The maximum number of values to copy into the array.</param>
+        public void GetMat4x3Array(Matrix[] array, Int32 count)
+        {
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(count >= 0 && count < array.Length, nameof(count));
+
+            if (DataType == OpenGLEffectParameterDataType.None)
+            {
+                GetDefaultArray(array, count);
+                return;
+            }
+
+            if (DataType == OpenGLEffectParameterDataType.Mat4x3Array)
+            {
+                GetArray<Mat4x3, Matrix>(array, count, x => (Matrix)x);
                 return;
             }
             throw new InvalidCastException();
@@ -902,17 +1492,30 @@ namespace Ultraviolet.OpenGL.Graphics
         private void SetArray<TElement>(TElement[] array)
             where TElement : unmanaged
         {
-            var countMax = valData.Length / sizeof(TElement);
+            SetArray(array, x => x);
+        }
+
+        /// <summary>
+        /// Copies the value of the specified array into the parameter data.
+        /// </summary>
+        private void SetArray<TSrc, TDst>(TSrc[] array, Func<TSrc, TDst> converter)
+            where TSrc : unmanaged
+            where TDst : unmanaged
+        {
+            var countMax = valData.Length / sizeof(TDst);
             var count = array.Length > countMax ? countMax : array.Length;
 
             fixed (void* pArrData = array)
             fixed (void* pValData = valData)
             {
-                var pArrDataInt = (TElement*)pArrData;
-                var pValDataInt = (TElement*)pValData;
+                var pArrDataInt = (TSrc*)pArrData;
+                var pValDataInt = (TDst*)pValData;
 
                 for (var i = 0; i < count; i++)
-                    *pValDataInt++ = *pArrDataInt++;
+                {
+                    var value = *pArrDataInt++;
+                    *pValDataInt++ = converter(value);
+                }
             }
 
             this.ElementCount = count;
@@ -924,18 +1527,31 @@ namespace Ultraviolet.OpenGL.Graphics
         private void GetArray<TElement>(TElement[] array, Int32 count)
             where TElement : unmanaged
         {
-            var countMax = valData.Length / sizeof(TElement);
+            GetArray<TElement, TElement>(array, count, x => x);
+        }
+
+        /// <summary>
+        /// Copies the value of the parameter data into the specified array. 
+        /// </summary>
+        private void GetArray<TSrc, TDst>(TDst[] array, Int32 count, Func<TSrc, TDst> converter)
+            where TSrc : unmanaged
+            where TDst : unmanaged
+        {
+            var countMax = valData.Length / sizeof(TSrc);
             if (countMax < count)
                 throw new ArgumentOutOfRangeException(nameof(count));
 
             fixed (void* pArrData = array)
             fixed (void* pValData = valData)
             {
-                var pArrDataInt = (TElement*)pArrData;
-                var pValDataInt = (TElement*)pValData;
+                var pArrDataInt = (TDst*)pArrData;
+                var pValDataInt = (TSrc*)pValData;
 
                 for (var i = 0; i < count; i++)
-                    *pArrDataInt++ = *pValDataInt++;
+                {
+                    var value = *pValDataInt++;
+                    *pArrDataInt++ = converter(value);
+                }
             }
         }
 

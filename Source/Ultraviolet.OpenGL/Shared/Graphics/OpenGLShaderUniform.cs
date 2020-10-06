@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Buffers;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
+using Ultraviolet.OpenGL.Graphics.Uniforms;
 
 namespace Ultraviolet.OpenGL.Graphics
 {
@@ -144,15 +146,87 @@ namespace Ultraviolet.OpenGL.Graphics
                         SetValue((Color*)pBuffer, source.ElementCount);
                     break;
 
-                case OpenGLEffectParameterDataType.Matrix:
-                    SetValue(source.GetMatrix());
+                case OpenGLEffectParameterDataType.Mat2:
+                    SetValue(source.GetMat2());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat2Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat2*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat2x3:
+                    SetValue(source.GetMat2x3());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat2x3Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat2x3*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat2x4:
+                    SetValue(source.GetMat2x4());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat2x4Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat2x4*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat3:
+                    SetValue(source.GetMat3());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat3Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat3*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat3x2:
+                    SetValue(source.GetMat3x2());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat3x2Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat3x2*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat3x4:
+                    SetValue(source.GetMat3x4());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat3x4Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat3x4*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat4:
+                    SetValue(source.GetMat4());
                     break;
 					
-                case OpenGLEffectParameterDataType.MatrixArray:
+                case OpenGLEffectParameterDataType.Mat4Array:
                     fixed (Byte* pBuffer = source.RawDataBuffer)
                         SetValue((Matrix*)pBuffer, source.ElementCount);
                     break;
-					
+
+                case OpenGLEffectParameterDataType.Mat4x2:
+                    SetValue(source.GetMat4x2());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat4x2Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat4x2*)pBuffer, source.ElementCount);
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat4x3:
+                    SetValue(source.GetMat4x3());
+                    break;
+
+                case OpenGLEffectParameterDataType.Mat4x3Array:
+                    fixed (Byte* pBuffer = source.RawDataBuffer)
+                        SetValue((Mat4x3*)pBuffer, source.ElementCount);
+                    break;
+
                 case OpenGLEffectParameterDataType.Texture2D:
                     SetValue(source.GetTexture2D());
                     break;
@@ -415,13 +489,275 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Sets the parameter's value.
         /// </summary>
         /// <param name="value">The value to set.</param>
+        public void SetValue(Mat2 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (!transpose)
+                Mat2.Transpose(ref value, out value);
+
+            gl.UniformMatrix2fv(location, 1, transpose, (float*)&value);
+            gl.ThrowIfError();
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat2* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat2.Transpose(ref pValue[i], out pValue[i]);
+            }
+
+            gl.UniformMatrix2fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat2.Transpose(ref pValue[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat2x3 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (transpose)
+            {
+                gl.UniformMatrix2x3fv(location, 1, true, (Single*)&value);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                Mat2x3.Transpose(ref value, out var valueTransposed);
+
+                gl.UniformMatrix2x3fv(location, 1, false, (Single*)&valueTransposed);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat2x3* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat2x3.Transpose(ref pValue[i], out ((Mat3x2*)pValue)[i]);
+            }
+
+            gl.UniformMatrix2x3fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat3x2.Transpose(ref ((Mat3x2*)pValue)[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat2x4 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (transpose)
+            {
+                gl.UniformMatrix2x4fv(location, 1, true, (Single*)&value);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                Mat2x4.Transpose(ref value, out var valueTransposed);
+
+                gl.UniformMatrix2x4fv(location, 1, false, (Single*)&valueTransposed);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat2x4* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat2x4.Transpose(ref pValue[i], out ((Mat4x2*)pValue)[i]);
+            }
+
+            gl.UniformMatrix2x4fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat4x2.Transpose(ref ((Mat4x2*)pValue)[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat3 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (!transpose)
+                Mat3.Transpose(ref value, out value);
+
+            gl.UniformMatrix3fv(location, 1, transpose, (Single*)&value);
+            gl.ThrowIfError();
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat3* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat3.Transpose(ref pValue[i], out pValue[i]);
+            }
+
+            gl.UniformMatrix3fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat3.Transpose(ref pValue[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat3x2 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (transpose)
+            {
+                gl.UniformMatrix3x2fv(location, 1, true, (Single*)&value);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                Mat3x2.Transpose(ref value, out var valueTransposed);
+
+                gl.UniformMatrix3x2fv(location, 1, false, (Single*)&valueTransposed);
+                gl.ThrowIfError();
+            }
+        }
+       
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat3x2* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat3x2.Transpose(ref pValue[i], out ((Mat2x3*)pValue)[i]);
+            }
+
+            gl.UniformMatrix4x2fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat2x3.Transpose(ref ((Mat2x3*)pValue)[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat3x4 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (transpose)
+            {
+                gl.UniformMatrix3x4fv(location, 1, true, (Single*)&value);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                Mat3x4.Transpose(ref value, out var valueTransposed);
+
+                gl.UniformMatrix3x4fv(location, 1, false, (Single*)&valueTransposed);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat3x4* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat3x4.Transpose(ref pValue[i], out ((Mat4x3*)pValue)[i]);
+            }
+
+            gl.UniformMatrix3x4fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat4x3.Transpose(ref ((Mat4x3*)pValue)[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
         public void SetValue(Matrix value)
         {
             var transpose = gl.IsMatrixTranspositionAvailable;
             if (!transpose)
                 Matrix.Transpose(ref value, out value);
 
-            gl.UniformMatrix4fv(location, 1, transpose, (float*)&value);
+            gl.UniformMatrix4fv(location, 1, transpose, (Single*)&value);
             gl.ThrowIfError();
         }
 
@@ -447,6 +783,98 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 for (var i = 0; i < count; i++)
                     Matrix.Transpose(ref pValue[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat4x2 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (transpose)
+            {
+                gl.UniformMatrix4x2fv(location, 1, true, (Single*)&value);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                Mat4x2.Transpose(ref value, out var valueTransposed);
+
+                gl.UniformMatrix4x2fv(location, 1, false, (Single*)&valueTransposed);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat4x2* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat4x2.Transpose(ref pValue[i], out ((Mat2x4*)pValue)[i]);
+            }
+
+            gl.UniformMatrix4x2fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat2x4.Transpose(ref ((Mat2x4*)pValue)[i], out pValue[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Mat4x3 value)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+            if (transpose)
+            {
+                gl.UniformMatrix4x3fv(location, 1, true, (Single*)&value);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                Mat4x3.Transpose(ref value, out var valueTransposed);
+
+                gl.UniformMatrix4x3fv(location, 1, false, (Single*)&valueTransposed);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="pValue">A pointer to the buffer that contains the value to set.</param>
+        /// <param name="count">The number of elements in the array to set.</param>
+        public void SetValue(Mat4x3* pValue, Int32 count)
+        {
+            var transpose = gl.IsMatrixTranspositionAvailable;
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat4x3.Transpose(ref pValue[i], out ((Mat3x4*)pValue)[i]);
+            }
+
+            gl.UniformMatrix4x3fv(location, count, transpose, (Single*)pValue);
+            gl.ThrowIfError();
+
+            if (!transpose)
+            {
+                for (var i = 0; i < count; i++)
+                    Mat3x4.Transpose(ref ((Mat3x4*)pValue)[i], out pValue[i]);
             }
         }
 

@@ -9,6 +9,14 @@
     <Import_RootNamespace>Ultraviolet.OpenGL</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat4x3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat4x2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat2x4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat3x4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat3x2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat2x3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Uniforms\Mat2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSkinnedEffectParameterBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBasicEffectParameterBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendColor.cs" />

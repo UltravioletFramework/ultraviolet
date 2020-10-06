@@ -102,14 +102,94 @@ namespace Ultraviolet.OpenGL.Graphics
         ColorArray,
 
         /// <summary>
+        /// A <see cref="Uniforms.Mat2"/> value is set on the effect.
+        /// </summary>
+        Mat2,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat2"/> values is set on the effect.
+        /// </summary>
+        Mat2Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat2x3"/> value is set on the effect.
+        /// </summary>
+        Mat2x3,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat2x3"/> values is set on the effect.
+        /// </summary>
+        Mat2x3Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat2x4"/> value is set on the effect.
+        /// </summary>
+        Mat2x4,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat2x4"/> values is set on the effect.
+        /// </summary>
+        Mat2x4Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat3"/> value is set on the effect.
+        /// </summary>
+        Mat3,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat3"/> values is set on the effect.
+        /// </summary>
+        Mat3Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat3x2"/> value is set on the effect.
+        /// </summary>
+        Mat3x2,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat3x2"/> values is set on the effect.
+        /// </summary>
+        Mat3x2Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat3x4"/> value is set on the effect.
+        /// </summary>
+        Mat3x4,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat3x4"/> values is set on the effect.
+        /// </summary>
+        Mat3x4Array,
+
+        /// <summary>
         /// A <see cref="Ultraviolet.Matrix"/> value is set on the effect.
         /// </summary>
-        Matrix,
+        Mat4,
 
         /// <summary>
         /// An array of <see cref="Ultraviolet.Matrix"/> values is set on the effect.
         /// </summary>
-        MatrixArray,
+        Mat4Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat4x2"/> value is set on the effect.
+        /// </summary>
+        Mat4x2,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat4x2"/> values is set on the effect.
+        /// </summary>
+        Mat4x2Array,
+
+        /// <summary>
+        /// A <see cref="Uniforms.Mat4x3"/> value is set on the effect.
+        /// </summary>
+        Mat4x3,
+
+        /// <summary>
+        /// An array of <see cref="Uniforms.Mat4x3"/> values is set on the effect.
+        /// </summary>
+        Mat4x3Array,
 
         /// <summary>
         /// A <see cref="Ultraviolet.Graphics.Texture2D"/> value is set on the effect.

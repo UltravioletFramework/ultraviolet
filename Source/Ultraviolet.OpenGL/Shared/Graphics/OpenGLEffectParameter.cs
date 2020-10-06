@@ -310,51 +310,177 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Matrix GetValueMatrix()
         {
-            Contract.Ensure<InvalidCastException>(
-                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
-                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
+            switch (type)
+            {
+                case gl.GL_FLOAT_MAT2:
+                    return (Matrix)data.GetMat2();
+                case gl.GL_FLOAT_MAT2x3:
+                    return (Matrix)data.GetMat2x3();
+                case gl.GL_FLOAT_MAT2x4:
+                    return (Matrix)data.GetMat2x4();
+                case gl.GL_FLOAT_MAT3:
+                    return (Matrix)data.GetMat3();
+                case gl.GL_FLOAT_MAT3x2:
+                    return (Matrix)data.GetMat3x2();
+                case gl.GL_FLOAT_MAT3x4:
+                    return (Matrix)data.GetMat3x4();
+                case gl.GL_FLOAT_MAT4:
+                    return data.GetMat4();
+                case gl.GL_FLOAT_MAT4x2:
+                    return (Matrix)data.GetMat4x2();
+                case gl.GL_FLOAT_MAT4x3:
+                    return (Matrix)data.GetMat4x3();
+            }
 
-            return data.GetMatrix();
+            throw new InvalidCastException();
         }
 
         /// <inheritdoc/>
         public override void SetValue(Matrix value)
         {
-            Contract.Ensure<InvalidCastException>(
-                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
-                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
+            switch (type)
+            {
+                case gl.GL_FLOAT_MAT2:
+                    data.SetMat2(value);
+                    return;
+                case gl.GL_FLOAT_MAT2x3:
+                    data.SetMat2x3(value);
+                    return;
+                case gl.GL_FLOAT_MAT2x4:
+                    data.SetMat2x4(value);
+                    return;
+                case gl.GL_FLOAT_MAT3:
+                    data.SetMat3(value);
+                    return;
+                case gl.GL_FLOAT_MAT3x2:
+                    data.SetMat3x2(value);
+                    return;
+                case gl.GL_FLOAT_MAT3x4:
+                    data.SetMat3x4(value);
+                    return;
+                case gl.GL_FLOAT_MAT4:
+                    data.SetMat4(value);
+                    return;
+                case gl.GL_FLOAT_MAT4x2:
+                    data.SetMat4x2(value);
+                    return;
+                case gl.GL_FLOAT_MAT4x3:
+                    data.SetMat4x3(value);
+                    return;
+            }
 
-            data.Set(value);
+            throw new InvalidCastException();
         }
 
         /// <inheritdoc/>
         public override void SetValueRef(ref Matrix value)
         {
-            Contract.Ensure<InvalidCastException>(
-                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
-                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
+            switch (type)
+            {
+                case gl.GL_FLOAT_MAT2:
+                    data.SetMat2(value);
+                    return;
+                case gl.GL_FLOAT_MAT2x3:
+                    data.SetMat2x3(value);
+                    return;
+                case gl.GL_FLOAT_MAT2x4:
+                    data.SetMat2x4(value);
+                    return;
+                case gl.GL_FLOAT_MAT3:
+                    data.SetMat3(value);
+                    return;
+                case gl.GL_FLOAT_MAT3x2:
+                    data.SetMat3x2(value);
+                    return;
+                case gl.GL_FLOAT_MAT3x4:
+                    data.SetMat3x4(value);
+                    return;
+                case gl.GL_FLOAT_MAT4:
+                    data.SetMat4(value);
+                    return;
+                case gl.GL_FLOAT_MAT4x2:
+                    data.SetMat4x2(value);
+                    return;
+                case gl.GL_FLOAT_MAT4x3:
+                    data.SetMat4x3(value);
+                    return;
+            }
 
-            data.SetRef(ref value);
+            throw new InvalidCastException();
         }
 
         /// <inheritdoc/>
         public override void GetValueMatrixArray(Matrix[] value, Int32 count)
         {
-            Contract.Ensure<InvalidCastException>(
-                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
-                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
+            switch (type)
+            {
+                case gl.GL_FLOAT_MAT2:
+                    data.GetMat2Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT2x3:
+                    data.GetMat2x3Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT2x4:
+                    data.GetMat2x4Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT3:
+                    data.GetMat3Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT3x2:
+                    data.GetMat3x2Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT3x4:
+                    data.GetMat3x4Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT4:
+                    data.GetMat4Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT4x2:
+                    data.GetMat4x2Array(value, count);
+                    return;
+                case gl.GL_FLOAT_MAT4x3:
+                    data.GetMat4x3Array(value, count);
+                    return;
+            }
 
-            data.GetMatrixArray(value, count);
+            throw new InvalidCastException();
         }
 
         /// <inheritdoc/>
         public override void SetValue(Matrix[] value)
         {
-            Contract.Ensure<InvalidCastException>(
-                (type >= gl.GL_FLOAT_MAT2 && type <= gl.GL_FLOAT_MAT4) ||
-                (type >= gl.GL_FLOAT_MAT2x3 && type <= gl.GL_FLOAT_MAT4x3));
+            switch (type)
+            {
+                case gl.GL_FLOAT_MAT2:
+                    data.SetMat2(value);
+                    return;
+                case gl.GL_FLOAT_MAT2x3:
+                    data.SetMat2x3(value);
+                    return;
+                case gl.GL_FLOAT_MAT2x4:
+                    data.SetMat2x4(value);
+                    return;
+                case gl.GL_FLOAT_MAT3:
+                    data.SetMat3(value);
+                    return;
+                case gl.GL_FLOAT_MAT3x2:
+                    data.SetMat3x2(value);
+                    return;
+                case gl.GL_FLOAT_MAT3x4:
+                    data.SetMat3x4(value);
+                    return;
+                case gl.GL_FLOAT_MAT4:
+                    data.SetMat4(value);
+                    return;
+                case gl.GL_FLOAT_MAT4x2:
+                    data.SetMat4x2(value);
+                    return;
+                case gl.GL_FLOAT_MAT4x3:
+                    data.SetMat4x3(value);
+                    return;
+            }
 
-            data.Set(value);
+            throw new InvalidCastException();
         }
 
         /// <inheritdoc/>
