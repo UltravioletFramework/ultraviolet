@@ -51,12 +51,13 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animation">The animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
         /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation)
+        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier)
         {
             var controllerAllocation = AllocateController(animation);
             var controller = controllerAllocation.Value;
-            controller.Play(mode, animation);
+            controller.Play(mode, animation, speedMultiplier);
             ordering[controllerAllocation.Key] = ++orderingCounter;
             return controller;
         }

@@ -52,18 +52,20 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (!IsPlaying || IsPaused)
                 return;
 
+            var elapsedSeconds = (time.ElapsedTime.TotalSeconds * SpeedMultiplier);
+
             switch (currentAnimationMode)
             {
                 case SkinnedAnimationMode.Loop:
                     {
-                        var updatedAnimationTime = (currentAnimationTime + time.ElapsedTime.TotalSeconds) % currentAnimation.Duration;
+                        var updatedAnimationTime = (currentAnimationTime + elapsedSeconds) % currentAnimation.Duration;
                         currentAnimationTime = updatedAnimationTime;
                     }
                     break;
 
                 case SkinnedAnimationMode.FireAndForget:
                     {
-                        var updatedAnimationTime = (currentAnimationTime + time.ElapsedTime.TotalSeconds);
+                        var updatedAnimationTime = (currentAnimationTime + elapsedSeconds);
                         if (updatedAnimationTime >= currentAnimation.Duration)
                         {
                             Stop();
@@ -87,13 +89,15 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         /// <param name="mode">The animation mode.</param>
         /// <param name="animation">The animation to play.</param>
-        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation)
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier)
         {
             Contract.Require(animation, nameof(animation));
 
             this.currentAnimationMode = mode;
             this.currentAnimation = animation;
             this.currentAnimationTime = 0.0;
+            this.SpeedMultiplier = speedMultiplier;
 
             UpdateAnimationState();
         }
@@ -106,6 +110,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.currentAnimationMode = SkinnedAnimationMode.Loop;
             this.currentAnimation = null;
             this.currentAnimationTime = 0.0;
+            this.SpeedMultiplier = 0.0;
         }
 
         /// <summary>
@@ -152,6 +157,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the duration of the controller's current animation.
         /// </summary>
         public Double Duration => currentAnimation?.Duration ?? 0.0;
+
+        /// <summary>
+        /// Gets the speed multiplier which is being applied to the current animation.
+        /// </summary>
+        public Double SpeedMultiplier { get; set; }
 
         /// <summary>
         /// Updates the animation state for all affected nodes.

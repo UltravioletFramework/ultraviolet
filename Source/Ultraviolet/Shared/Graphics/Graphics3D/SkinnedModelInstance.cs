@@ -57,8 +57,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationName">The name of the animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
         /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, String animationName)
+        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier = 1.0f)
         {
             Contract.Require(animationName, nameof(animationName));
 
@@ -66,7 +67,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (animation == null)
                 return null;
 
-            return controllerManager.PlayAnimation(mode, animation);
+            return controllerManager.PlayAnimation(mode, animation, speedMultiplier);
         }
 
         /// <summary>
@@ -75,8 +76,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationIndex">The index of the animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
         /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex)
+        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier = 1.0f)
         {
             Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
 
@@ -84,7 +86,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return null;
 
             var animation = Template.Animations[animationIndex];
-            return controllerManager.PlayAnimation(mode, animation);
+            return controllerManager.PlayAnimation(mode, animation, speedMultiplier);
         }
 
         /// <summary>
