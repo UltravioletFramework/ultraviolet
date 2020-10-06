@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
 {
@@ -71,6 +72,21 @@ namespace Ultraviolet.Graphics.Graphics3D
                 throw new ArgumentException(UltravioletStrings.NonAffineTransformationMatrix);
 
             this.matrix = transform;
+        }
+        
+        /// <summary>
+        /// Updates this <see cref="AffineTransform"/> instance to match the affine transformation
+        /// described by the specified <see cref="AffineTransform"/> instance.
+        /// </summary>
+        /// <param name="transform">An affine transformation.</param>
+        public void UpdateFromAffineTransform(AffineTransform transform)
+        {
+            Contract.Require(transform, nameof(transform));
+
+            this.translation = transform.translation;
+            this.rotation = transform.rotation;
+            this.scale = transform.scale;
+            this.matrix = transform.matrix;
         }
 
         /// <summary>

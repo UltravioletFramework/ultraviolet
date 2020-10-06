@@ -71,16 +71,21 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="time">The time within the animation timeline at which to sample values.</param>
         public void UpdateAnimationState(SkinnedModelNodeAnimation animation, Double time)
         {
-            Contract.Require(animation, nameof(animation));
+            if (animation != null)
+            {
+                var templatedTransform = Template.Transform;
 
-            var templatedTransform = Template.Transform;
+                var t = (Single)time;
+                var animatedTranslation = animation.Translation?.Evaluate(t, default) ?? templatedTransform.Translation;
+                var animatedRotation = animation.Rotation?.Evaluate(t, default) ?? templatedTransform.Rotation;
+                var animatedScale = animation.Scale?.Evaluate(t, default) ?? templatedTransform.Scale;
 
-            var t = (Single)time;
-            var animatedTranslation = animation.Translation?.Evaluate(t, default) ?? templatedTransform.Translation;
-            var animatedRotation = animation.Rotation?.Evaluate(t, default) ?? templatedTransform.Rotation;
-            var animatedScale = animation.Scale?.Evaluate(t, default) ?? templatedTransform.Scale;
-
-            this.LocalTransform.UpdateFromTranslationRotationScale(animatedTranslation, animatedRotation, animatedScale);
+                this.LocalTransform.UpdateFromTranslationRotationScale(animatedTranslation, animatedRotation, animatedScale);
+            }
+            else
+            {
+                this.LocalTransform.UpdateFromAffineTransform(this.Template.Transform);
+            }
         }
 
         /// <summary>

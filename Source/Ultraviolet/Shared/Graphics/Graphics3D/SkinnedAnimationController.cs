@@ -68,7 +68,9 @@ namespace Ultraviolet.Graphics.Graphics3D
                         var updatedAnimationTime = (currentAnimationTime + elapsedSeconds);
                         if (updatedAnimationTime >= currentAnimation.Duration)
                         {
+                            UpdateAnimationState();
                             Stop();
+                            return;
                         }
                         else
                         {
