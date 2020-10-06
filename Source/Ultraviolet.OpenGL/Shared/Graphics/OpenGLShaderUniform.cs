@@ -13,6 +13,16 @@ namespace Ultraviolet.OpenGL.Graphics
     public unsafe sealed class OpenGLShaderUniform
     {
         /// <summary>
+        /// Represents a method which is used to transpose matrices.
+        /// </summary>
+        private delegate void MatrixTransposeDelegate(IntPtr ptr, Int32 index);
+
+        /// <summary>
+        /// Represents a method which is used to upload matrix data to the graphics device.
+        /// </summary>
+        private delegate void MatrixUploadDelegate(Int32 location, Int32 count, Boolean transpose, IntPtr value);
+
+        /// <summary>
         /// Initializes a new instance of the OpenGLShaderUniform class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -506,22 +516,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat2* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat2.Transpose(ref pValue[i], out pValue[i]);
-            }
-
-            gl.UniformMatrix2fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat2.Transpose(ref pValue[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat2>((IntPtr)pValue, count,
+                (ptr, index) => Mat2.Transpose(ref ((Mat2*)ptr)[index], out ((Mat2*)ptr)[index]),
+                (ptr, index) => Mat2.Transpose(ref ((Mat2*)ptr)[index], out ((Mat2*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix2fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -552,22 +550,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat2x3* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat2x3.Transpose(ref pValue[i], out ((Mat3x2*)pValue)[i]);
-            }
-
-            gl.UniformMatrix2x3fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat3x2.Transpose(ref ((Mat3x2*)pValue)[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat2x3>((IntPtr)pValue, count,
+                (ptr, index) => Mat2x3.Transpose(ref ((Mat2x3*)ptr)[index], out ((Mat3x2*)ptr)[index]),
+                (ptr, index) => Mat3x2.Transpose(ref ((Mat3x2*)ptr)[index], out ((Mat2x3*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix2x3fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -598,22 +584,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat2x4* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat2x4.Transpose(ref pValue[i], out ((Mat4x2*)pValue)[i]);
-            }
-
-            gl.UniformMatrix2x4fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat4x2.Transpose(ref ((Mat4x2*)pValue)[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat2x4>((IntPtr)pValue, count,
+                (ptr, index) => Mat2x4.Transpose(ref ((Mat2x4*)ptr)[index], out ((Mat4x2*)ptr)[index]),
+                (ptr, index) => Mat4x2.Transpose(ref ((Mat4x2*)ptr)[index], out ((Mat2x4*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix2x4fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -637,22 +611,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat3* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat3.Transpose(ref pValue[i], out pValue[i]);
-            }
-
-            gl.UniformMatrix3fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat3.Transpose(ref pValue[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat3>((IntPtr)pValue, count,
+                (ptr, index) => Mat3.Transpose(ref ((Mat3*)ptr)[index], out ((Mat3*)ptr)[index]),
+                (ptr, index) => Mat3.Transpose(ref ((Mat3*)ptr)[index], out ((Mat3*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix3fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -683,22 +645,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat3x2* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat3x2.Transpose(ref pValue[i], out ((Mat2x3*)pValue)[i]);
-            }
-
-            gl.UniformMatrix4x2fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat2x3.Transpose(ref ((Mat2x3*)pValue)[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat3x2>((IntPtr)pValue, count,
+                (ptr, index) => Mat3x2.Transpose(ref ((Mat3x2*)ptr)[index], out ((Mat2x3*)ptr)[index]),
+                (ptr, index) => Mat2x3.Transpose(ref ((Mat2x3*)ptr)[index], out ((Mat3x2*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix3x2fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -729,22 +679,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat3x4* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat3x4.Transpose(ref pValue[i], out ((Mat4x3*)pValue)[i]);
-            }
-
-            gl.UniformMatrix3x4fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat4x3.Transpose(ref ((Mat4x3*)pValue)[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat3x4>((IntPtr)pValue, count,
+                (ptr, index) => Mat3x4.Transpose(ref ((Mat3x4*)ptr)[index], out ((Mat4x3*)ptr)[index]),
+                (ptr, index) => Mat4x3.Transpose(ref ((Mat4x3*)ptr)[index], out ((Mat3x4*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix3x4fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -768,22 +706,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Matrix* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Matrix.Transpose(ref pValue[i], out pValue[i]);
-            }
-
-            gl.UniformMatrix4fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Matrix.Transpose(ref pValue[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Matrix>((IntPtr)pValue, count,
+                (ptr, index) => Matrix.Transpose(ref ((Matrix*)ptr)[index], out ((Matrix*)ptr)[index]),
+                (ptr, index) => Matrix.Transpose(ref ((Matrix*)ptr)[index], out ((Matrix*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix4fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -814,22 +740,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat4x2* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat4x2.Transpose(ref pValue[i], out ((Mat2x4*)pValue)[i]);
-            }
-
-            gl.UniformMatrix4x2fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat2x4.Transpose(ref ((Mat2x4*)pValue)[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat4x2>((IntPtr)pValue, count,
+                (ptr, index) => Mat4x2.Transpose(ref ((Mat4x2*)ptr)[index], out ((Mat2x4*)ptr)[index]),
+                (ptr, index) => Mat2x4.Transpose(ref ((Mat2x4*)ptr)[index], out ((Mat4x2*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix4x2fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -860,22 +774,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Mat4x3* pValue, Int32 count)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat4x3.Transpose(ref pValue[i], out ((Mat3x4*)pValue)[i]);
-            }
-
-            gl.UniformMatrix4x3fv(location, count, transpose, (Single*)pValue);
-            gl.ThrowIfError();
-
-            if (!transpose)
-            {
-                for (var i = 0; i < count; i++)
-                    Mat3x4.Transpose(ref ((Mat3x4*)pValue)[i], out pValue[i]);
-            }
+            SetMatrixArrayValueInternal<Mat4x3>((IntPtr)pValue, count,
+                (ptr, index) => Mat4x3.Transpose(ref ((Mat4x3*)ptr)[index], out ((Mat3x4*)ptr)[index]),
+                (ptr, index) => Mat3x4.Transpose(ref ((Mat3x4*)ptr)[index], out ((Mat4x3*)ptr)[index]),
+                (location, count, transpose, value) => gl.UniformMatrix4x3fv(location, count, transpose, (Single*)value));
         }
 
         /// <summary>
@@ -985,6 +887,48 @@ namespace Ultraviolet.OpenGL.Graphics
                     return count * sizeof(Single) * 12;
                 default:
                     return 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        private void SetMatrixArrayValueInternal<TMatrix>(IntPtr pValue, Int32 count,
+            MatrixTransposeDelegate transpose, MatrixTransposeDelegate untranspose, MatrixUploadDelegate upload) where TMatrix : unmanaged
+        {
+            var glslTranspositionAvailable = gl.IsMatrixTranspositionAvailable;
+            if (glslTranspositionAvailable)
+            {
+                upload(location, count, true, pValue);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                var transpositionBufferSize = sizeof(TMatrix) * count;
+                if (transpositionBufferSize > MemoryPool<Byte>.Shared.MaxBufferSize)
+                {
+                    for (var i = 0; i < count; i++)
+                        transpose(pValue, i);
+
+                    upload(location, count, false, pValue);
+                    gl.ThrowIfError();
+
+                    for (var i = 0; i < count; i++)
+                        untranspose(pValue, i);
+
+                }
+                else
+                {
+                    using (var transpositionBuffer = MemoryPool<Byte>.Shared.Rent(transpositionBufferSize))
+                    using (var transpositionBufferHandle = transpositionBuffer.Memory.Pin())
+                    {
+                        for (var i = 0; i < count; i++)
+                            transpose(pValue, i);
+
+                        upload(location, count, false, pValue);
+                        gl.ThrowIfError();
+                    }
+                }
             }
         }
 
