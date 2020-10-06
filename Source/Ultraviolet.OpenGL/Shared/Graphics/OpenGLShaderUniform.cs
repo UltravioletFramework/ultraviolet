@@ -519,7 +519,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat2>((IntPtr)pValue, count,
                 (ptr, index) => Mat2.Transpose(ref ((Mat2*)ptr)[index], out ((Mat2*)ptr)[index]),
                 (ptr, index) => Mat2.Transpose(ref ((Mat2*)ptr)[index], out ((Mat2*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix2fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix2fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -553,7 +553,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat2x3>((IntPtr)pValue, count,
                 (ptr, index) => Mat2x3.Transpose(ref ((Mat2x3*)ptr)[index], out ((Mat3x2*)ptr)[index]),
                 (ptr, index) => Mat3x2.Transpose(ref ((Mat3x2*)ptr)[index], out ((Mat2x3*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix2x3fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix2x3fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat2x4>((IntPtr)pValue, count,
                 (ptr, index) => Mat2x4.Transpose(ref ((Mat2x4*)ptr)[index], out ((Mat4x2*)ptr)[index]),
                 (ptr, index) => Mat4x2.Transpose(ref ((Mat4x2*)ptr)[index], out ((Mat2x4*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix2x4fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix2x4fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -614,7 +614,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat3>((IntPtr)pValue, count,
                 (ptr, index) => Mat3.Transpose(ref ((Mat3*)ptr)[index], out ((Mat3*)ptr)[index]),
                 (ptr, index) => Mat3.Transpose(ref ((Mat3*)ptr)[index], out ((Mat3*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix3fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix3fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -648,7 +648,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat3x2>((IntPtr)pValue, count,
                 (ptr, index) => Mat3x2.Transpose(ref ((Mat3x2*)ptr)[index], out ((Mat2x3*)ptr)[index]),
                 (ptr, index) => Mat2x3.Transpose(ref ((Mat2x3*)ptr)[index], out ((Mat3x2*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix3x2fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix3x2fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -682,7 +682,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat3x4>((IntPtr)pValue, count,
                 (ptr, index) => Mat3x4.Transpose(ref ((Mat3x4*)ptr)[index], out ((Mat4x3*)ptr)[index]),
                 (ptr, index) => Mat4x3.Transpose(ref ((Mat4x3*)ptr)[index], out ((Mat3x4*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix3x4fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix3x4fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -709,7 +709,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Matrix>((IntPtr)pValue, count,
                 (ptr, index) => Matrix.Transpose(ref ((Matrix*)ptr)[index], out ((Matrix*)ptr)[index]),
                 (ptr, index) => Matrix.Transpose(ref ((Matrix*)ptr)[index], out ((Matrix*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix4fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix4fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -743,7 +743,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat4x2>((IntPtr)pValue, count,
                 (ptr, index) => Mat4x2.Transpose(ref ((Mat4x2*)ptr)[index], out ((Mat2x4*)ptr)[index]),
                 (ptr, index) => Mat2x4.Transpose(ref ((Mat2x4*)ptr)[index], out ((Mat4x2*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix4x2fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix4x2fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -777,7 +777,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat4x3>((IntPtr)pValue, count,
                 (ptr, index) => Mat4x3.Transpose(ref ((Mat4x3*)ptr)[index], out ((Mat3x4*)ptr)[index]),
                 (ptr, index) => Mat3x4.Transpose(ref ((Mat3x4*)ptr)[index], out ((Mat4x3*)ptr)[index]),
-                (location, count, transpose, value) => gl.UniformMatrix4x3fv(location, count, transpose, (Single*)value));
+                (l, c, t, v) => gl.UniformMatrix4x3fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
