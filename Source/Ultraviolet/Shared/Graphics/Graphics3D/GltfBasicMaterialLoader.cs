@@ -155,6 +155,21 @@ namespace Ultraviolet.Graphics.Graphics3D
             return null;
         }
 
+        /// <summary>
+        /// Creates a new blank texture.
+        /// </summary>
+        protected Texture2D GetBlankTexture()
+        {
+            if (textureCache.TryGetValue(String.Empty, out var blank))
+                return blank;
+
+            var texture = Texture2D.CreateTexture(1, 1, TextureOptions.Default);
+            texture.SetData(new[] { Color.White });
+            textureCache[String.Empty] = texture;
+
+            return texture;
+        }
+
         // A cache which contains all of the textures used by the model.
         private readonly Dictionary<String, Texture2D> textureCache = new Dictionary<String, Texture2D>();
     }

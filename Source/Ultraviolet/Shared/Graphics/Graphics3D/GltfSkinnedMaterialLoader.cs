@@ -24,7 +24,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 SpecularPower = GetMaterialSpecularPower(primitive.Material),
                 SpecularColor = GetMaterialSpecularColor(primitive.Material),
                 EmissiveColor = GetMaterialEmissiveColor(primitive.Material),
-                Texture = GetMaterialTexture(contentManager, primitive.Material)
+                Texture = GetMaterialTexture(contentManager, primitive.Material) ?? GetBlankTexture(),
             };
         }
     }
