@@ -326,14 +326,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat2)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat2;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat2;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat2*)pValData) = new Mat2(value);
-                }
+                *((Mat2*)pValData) = new Mat2(value);
             }
         }
 
@@ -358,14 +355,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat2x3)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat2x3;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat2x3;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat2x3*)pValData) = new Mat2x3(value);
-                }
+                *((Mat2x3*)pValData) = new Mat2x3(value);
             }
         }
 
@@ -390,14 +384,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat2x4)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat2x4;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat2x4;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat2x4*)pValData) = new Mat2x4(value);
-                }
+                *((Mat2x4*)pValData) = new Mat2x4(value);
             }
         }
 
@@ -422,14 +413,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat3)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat3;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat3;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat3*)pValData) = new Mat3(value);
-                }
+                *((Mat3*)pValData) = new Mat3(value);
             }
         }
 
@@ -454,14 +442,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat3x2)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat3x2;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat3x2;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat3x2*)pValData) = new Mat3x2(value);
-                }
+                *((Mat3x2*)pValData) = new Mat3x2(value);
             }
         }
 
@@ -486,14 +471,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat3x4)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat3x4;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat3x4;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat3x4*)pValData) = new Mat3x4(value);
-                }
+                *((Mat3x4*)pValData) = new Mat3x4(value);
             }
         }
 
@@ -518,14 +500,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat4)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat4;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat4;
+                ElementCount = 1;
+                Version++;
 
-                    *((Matrix*)pValData) = value;
-                }
+                *((Matrix*)pValData) = value;
             }
         }
 
@@ -550,14 +529,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat4x2)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat4x2;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat4x2;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat4x2*)pValData) = new Mat4x2(value);
-                }
+                *((Mat4x2*)pValData) = new Mat4x2(value);
             }
         }
 
@@ -582,14 +558,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Byte* pValData = valData)
             {
-                if (DataType != OpenGLEffectParameterDataType.Mat4x3)
-                {
-                    DataType = OpenGLEffectParameterDataType.Mat4x3;
-                    ElementCount = 1;
-                    Version++;
+                DataType = OpenGLEffectParameterDataType.Mat4x3;
+                ElementCount = 1;
+                Version++;
 
-                    *((Mat4x3*)pValData) = new Mat4x3(value);
-                }
+                *((Mat4x3*)pValData) = new Mat4x3(value);
             }
         }
 
