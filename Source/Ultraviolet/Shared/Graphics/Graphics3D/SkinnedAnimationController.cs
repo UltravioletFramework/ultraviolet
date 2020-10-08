@@ -1,191 +1,220 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics3D
 {
     /// <summary>
-    /// Represents the state of a particular <see cref="SkinnedAnimation"/> as applied to one <see cref="SkinnedModelInstance"/>.
+    /// Controls a collection of <see cref="SkinnedAnimationTrack"/> instances which are associated
+    /// with a particular skinned model instance.
     /// </summary>
-    public class SkinnedAnimationController
+    internal class SkinnedAnimationController
     {
+        private struct AnimationPosition { public SkinnedModelNodeAnimation Animation; public Double Time; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedAnimationController"/> class.
         /// </summary>
-        /// <param name="model">The model that owns this controller.</param>
-        public SkinnedAnimationController(SkinnedModelInstance model)
+        /// <param name="model">The model instance that owns this manager.</param>
+        /// <param name="tracks">The number of animation tracks to allocate for the model.</param>
+        public SkinnedAnimationController(SkinnedModelInstance model, Int32 tracks)
         {
             Contract.Require(model, nameof(model));
 
-            this.Model = model;
+            this.model = model;
+            this.tracks = new SkinnedAnimationTrack[tracks];
+            this.nodeAnimations = new AnimationPosition?[tracks];
+            this.ordering = new Int64[tracks];
+
+            for (var i = 0; i < tracks; i++)
+                this.tracks[i] = new SkinnedAnimationTrack(model);
         }
 
         /// <summary>
-        /// Sets the controller's position within the current animation's timeline.
-        /// </summary>
-        /// <param name="position">The position to set.</param>
-        /// <returns><see langword="true"/> if the position was set; otherwise, <see langword="false"/>.</returns>
-        public Boolean SetPosition(Double position)
-        {
-            if (currentAnimation == null)
-                return false;
-
-            if (position < 0)
-                position = 0;
-
-            if (position > currentAnimation.Duration)
-                position = currentAnimation.Duration;
-
-            currentAnimationTime = position;
-
-            UpdateAnimationState();
-            return true;
-        }
-
-        /// <summary>
-        /// Updates the animation controller's state.
+        /// Updates the controller manager's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last update.</param>
         public void Update(UltravioletTime time)
         {
-            Contract.Require(time, nameof(time));
-
-            if (!IsPlaying || IsPaused)
-                return;
-
-            var elapsedSeconds = (time.ElapsedTime.TotalSeconds * SpeedMultiplier);
-
-            switch (currentAnimationMode)
+            var wasUpdated = false;
+            for (var i = 0; i < tracks.Length; i++)
             {
-                case SkinnedAnimationMode.Loop:
-                    {
-                        var updatedAnimationTime = (currentAnimationTime + elapsedSeconds) % currentAnimation.Duration;
-                        currentAnimationTime = updatedAnimationTime;
-                    }
-                    break;
-
-                case SkinnedAnimationMode.FireAndForget:
-                    {
-                        var updatedAnimationTime = (currentAnimationTime + elapsedSeconds);
-                        if (updatedAnimationTime >= currentAnimation.Duration)
-                        {
-                            UpdateAnimationState();
-                            Stop();
-                            return;
-                        }
-                        else
-                        {
-                            currentAnimationTime = updatedAnimationTime;
-                        }
-                    }
-                    break;
-
-                case SkinnedAnimationMode.Manual:
-                    return;
+                if (tracks[i].Update(time))
+                    wasUpdated = true;
             }
 
-            UpdateAnimationState();
+            if (wasUpdated)
+                UpdateAnimationState();
         }
 
         /// <summary>
-        /// Plays the specified animation.
+        /// Resets all of the manager's animations.
         /// </summary>
-        /// <param name="mode">The animation mode.</param>
+        public void ResetAnimations()
+        {
+            foreach (var controller in tracks)
+                controller.Reset();
+        }
+
+        /// <summary>
+        /// Plays the specified animation. If the animation is already playing,
+        /// it will be restarted using the specified mode.
+        /// </summary>
+        /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animation">The animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
-        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier)
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier)
         {
-            Contract.Require(animation, nameof(animation));
-
-            this.currentAnimationMode = mode;
-            this.currentAnimation = animation;
-            this.currentAnimationTime = 0.0;
-            this.SpeedMultiplier = speedMultiplier;
-
-            UpdateAnimationState();
+            var controllerAllocation = AllocateTrack(animation);
+            var controller = controllerAllocation.Value;
+            controller.Play(mode, animation, speedMultiplier);
+            ordering[controllerAllocation.Key] = ++orderingCounter;
+            return controller;
         }
 
         /// <summary>
-        /// Stops the currently playing animation.
+        /// Stops the specified animation.
         /// </summary>
-        public void Stop()
+        /// <param name="animation">The animation to stop.</param>
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which was playing the animation, or <see langword="null"/> if the animation was not being played.</returns>
+        public SkinnedAnimationTrack StopAnimation(SkinnedAnimation animation)
         {
-            this.currentAnimationMode = SkinnedAnimationMode.Loop;
-            this.currentAnimation = null;
-            this.currentAnimationTime = 0.0;
-            this.SpeedMultiplier = 0.0;
+            var controller = GetTrackForAnimation(animation);
+            if (controller != null)
+            {
+                controller.Stop();
+                return controller;
+            }
+            return null;
         }
 
         /// <summary>
-        /// Resets the currently playing animation to the beginning.
-        /// </summary>
-        public void Reset()
-        {
-            currentAnimationTime = 0.0;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="SkinnedModelInstance"/> that owns this controller.
-        /// </summary>
-        public SkinnedModelInstance Model { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the controller is currently playing the specified animation.
+        /// Gets the track that is currently playing the specified animation.
         /// </summary>
         /// <param name="animation">The animation to evaluate.</param>
-        /// <returns><see langword="true"/> if the controller is currently playing the specified animation; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsPlayingAnimation(SkinnedAnimation animation)
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is currently playing the specified 
+        /// animation, or <see langword="null"/> if no track is playing the animation.</returns>
+        public SkinnedAnimationTrack GetTrackForAnimation(SkinnedAnimation animation)
         {
-            Contract.Require(animation, nameof(animation));
-
-            return animation == currentAnimation;
+            return GetTrackForAnimationInternal(animation).Value;
         }
 
         /// <summary>
-        /// Gets a value indicating whether the controller is currently playing an animation.
+        /// Gets the track that is currently playing the specified animation.
         /// </summary>
-        public Boolean IsPlaying => currentAnimation != null;
+        private KeyValuePair<Int32, SkinnedAnimationTrack> GetTrackForAnimationInternal(SkinnedAnimation animation)
+        {
+            for (var i = 0; i < tracks.Length; i++)
+            {
+                var controller = tracks[i];
+                if (controller.IsPlayingAnimation(animation))
+                {
+                    return new KeyValuePair<Int32, SkinnedAnimationTrack>(i, controller);
+                }
+            }
+            return new KeyValuePair<Int32, SkinnedAnimationTrack>(-1, null);
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the animation is currently paused.
+        /// Allocates a track to play the specified animation.
         /// </summary>
-        public Boolean IsPaused { get; set; }
+        private KeyValuePair<Int32, SkinnedAnimationTrack> AllocateTrack(SkinnedAnimation animation)
+        {
+            var existing = GetTrackForAnimationInternal(animation);
+            if (existing.Value != null)
+                return existing;
+
+            // If no existing controller, find one that isn't playing.
+            var leastRecentlyPlayed = default(SkinnedAnimationTrack);
+            var leastRecentlyPlayedIndex = -1;
+            var leastRecentlyPlayedOrder = Int64.MaxValue;
+            for (var i = 0; i < tracks.Length; i++)
+            {
+                var controller = tracks[i];
+                var order = ordering[i];
+
+                if (leastRecentlyPlayed == null || order < leastRecentlyPlayedOrder)
+                {
+                    leastRecentlyPlayed = controller;
+                    leastRecentlyPlayedIndex = i;
+                    leastRecentlyPlayedOrder = order;
+                }
+
+                if (!controller.IsPlaying)
+                    return new KeyValuePair<Int32, SkinnedAnimationTrack>(i, controller);
+            }
+
+            // If no stopped controller, override the one that was least recently played.
+            return new KeyValuePair<Int32, SkinnedAnimationTrack>(leastRecentlyPlayedIndex, leastRecentlyPlayed);
+        }
 
         /// <summary>
-        /// Gets the controller's current position within its animation timeline.
-        /// </summary>
-        public Double Position => (currentAnimation == null) ? 0.0 : currentAnimationTime;
-
-        /// <summary>
-        /// Gets the duration of the controller's current animation.
-        /// </summary>
-        public Double Duration => currentAnimation?.Duration ?? 0.0;
-
-        /// <summary>
-        /// Gets the speed multiplier which is being applied to the current animation.
-        /// </summary>
-        public Double SpeedMultiplier { get; set; }
-
-        /// <summary>
-        /// Updates the animation state for all affected nodes.
+        /// Updates the animation's state and applies transforms to the model instance's nodes.
         /// </summary>
         private void UpdateAnimationState()
         {
-            Model.TraverseNodes((node, state) =>
+            model.TraverseNodes((node, state) =>
             {
                 var controller = (SkinnedAnimationController)state;
-                var controllerTime = controller.currentAnimationTime;
 
-                var nodeAnimation = controller.currentAnimation.GetNodeAnimation(node.Template.LogicalIndex);
-                if (nodeAnimation != null)
+                var activeTracks = 0;
+                for (var i = 0; i < controller.tracks.Length; i++)
                 {
-                    node.UpdateAnimationState(nodeAnimation, controllerTime);
+                    controller.nodeAnimations[i] = null;
+
+                    var track = controller.tracks[i];
+                    var trackAnimation = track.CurrentAnimation;
+                    if (trackAnimation != null)
+                    {
+                        var nodeAnimation = trackAnimation.GetNodeAnimation(node.Template.LogicalIndex);
+                        if (nodeAnimation != null)
+                        {
+                            controller.nodeAnimations[i] = new AnimationPosition { Animation = nodeAnimation, Time = track.Position };
+                            activeTracks++;
+                        }
+                    }
+
+                    controller.UpdateAnimatedNodeTransforms(node);
                 }
             }, this);
+
+            for (var i = 0; i < nodeAnimations.Length; i++)
+                nodeAnimations[i] = null;
         }
 
-        // The current animation state for this controller.
-        private SkinnedAnimationMode currentAnimationMode;
-        private SkinnedAnimation currentAnimation;
-        private Double currentAnimationTime;
+        /// <summary>
+        /// Updates the animated transforms for the specified node.
+        /// </summary>
+        private void UpdateAnimatedNodeTransforms(SkinnedModelNodeInstance node)
+        {
+            // TODO: Implement weighted blending
+
+            for (var i = 0; i < nodeAnimations.Length; i++)
+            {
+                var nodeAnimation = nodeAnimations[i];
+                if (nodeAnimation != null)
+                {
+                    var templatedTransform = node.Template.Transform;
+
+                    var t = (Single)nodeAnimation.Value.Time;
+                    var animation = nodeAnimation.Value.Animation;
+                    var animatedTranslation = animation.Translation?.Evaluate(t, default) ?? templatedTransform.Translation;
+                    var animatedRotation = animation.Rotation?.Evaluate(t, default) ?? templatedTransform.Rotation;
+                    var animatedScale = animation.Scale?.Evaluate(t, default) ?? templatedTransform.Scale;
+
+                    node.LocalTransform.UpdateFromTranslationRotationScale(animatedTranslation, animatedRotation, animatedScale);
+                    return;
+                }
+            }
+        }
+
+        // Animation state for this model.
+        private readonly SkinnedModelInstance model;
+        private readonly SkinnedAnimationTrack[] tracks;
+        private readonly AnimationPosition?[] nodeAnimations;
+        private readonly Int64[] ordering;
+        private Int32 orderingCounter;
+
     }
 }

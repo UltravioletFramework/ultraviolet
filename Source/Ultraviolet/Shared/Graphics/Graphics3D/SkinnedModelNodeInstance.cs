@@ -65,30 +65,6 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
-        /// Updates the animation state of this node instance.
-        /// </summary>
-        /// <param name="animation">The animation from which to sample animated values.</param>
-        /// <param name="time">The time within the animation timeline at which to sample values.</param>
-        public void UpdateAnimationState(SkinnedModelNodeAnimation animation, Double time)
-        {
-            if (animation != null)
-            {
-                var templatedTransform = Template.Transform;
-
-                var t = (Single)time;
-                var animatedTranslation = animation.Translation?.Evaluate(t, default) ?? templatedTransform.Translation;
-                var animatedRotation = animation.Rotation?.Evaluate(t, default) ?? templatedTransform.Rotation;
-                var animatedScale = animation.Scale?.Evaluate(t, default) ?? templatedTransform.Scale;
-
-                this.LocalTransform.UpdateFromTranslationRotationScale(animatedTranslation, animatedRotation, animatedScale);
-            }
-            else
-            {
-                this.LocalTransform.UpdateFromAffineTransform(this.Template.Transform);
-            }
-        }
-
-        /// <summary>
         /// Gets the node's world matrix.
         /// </summary>
         /// <param name="worldMatrix">The node's world matrix.</param>

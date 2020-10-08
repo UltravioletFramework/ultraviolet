@@ -1,7 +1,7 @@
 ﻿namespace Ultraviolet.Graphics.Graphics3D
 {
     /// <summary>
-    /// Represents the different modes in which a <see cref="SkinnedAnimationController"/> can play a particular animation.
+    /// Represents the different modes in which a <see cref="SkinnedAnimationTrack"/> can play a particular animation.
     /// </summary>
     public enum SkinnedAnimationMode
     {

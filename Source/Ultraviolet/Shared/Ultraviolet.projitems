@@ -46,8 +46,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelResourceCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinJoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationTrack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationControllerManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelInstanceNodeManager.cs" />

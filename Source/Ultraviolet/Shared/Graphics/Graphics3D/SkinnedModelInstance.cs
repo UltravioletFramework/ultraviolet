@@ -25,7 +25,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.Scenes = new SkinnedModelSceneInstanceCollection(template.Scenes.Select(x => new SkinnedModelSceneInstance(x, this)), 
                 template.Scenes.DefaultScene.LogicalIndex);
 
-            this.controllerManager = new SkinnedAnimationControllerManager(this, maxSimultaneousAnimations);
+            this.controllerManager = new SkinnedAnimationController(this, maxSimultaneousAnimations);
             this.nodeManager = new SkinnedModelInstanceNodeManager(this);
         }
 
@@ -58,8 +58,8 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationName">The name of the animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
-        /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier = 1.0f)
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier = 1.0f)
         {
             Contract.Require(animationName, nameof(animationName));
 
@@ -77,8 +77,8 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationIndex">The index of the animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
-        /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationController PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier = 1.0f)
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier = 1.0f)
         {
             Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
 
@@ -122,13 +122,13 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
-        /// Gets the <see cref="SkinnedAnimationController"/> that is playing the specified animation,
+        /// Gets the <see cref="SkinnedAnimationTrack"/> that is playing the specified animation,
         /// if that animation is currently being played.
         /// </summary>
         /// <param name="animationName">The name of the animation for which to retrieve a controller.</param>
-        /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the specified animation,
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the specified animation,
         /// or <see langword="null"/> if no controller is playing the animation.</returns>
-        public SkinnedAnimationController GetAnimationController(String animationName)
+        public SkinnedAnimationTrack GetAnimationController(String animationName)
         {
             Contract.Require(animationName, nameof(animationName));
 
@@ -136,17 +136,17 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (animation == null)
                 return null;
 
-            return controllerManager.GetControllerForAnimation(animation);
+            return controllerManager.GetTrackForAnimation(animation);
         }
 
         /// <summary>
-        /// Gets the <see cref="SkinnedAnimationController"/> that is playing the specified animation,
+        /// Gets the <see cref="SkinnedAnimationTrack"/> that is playing the specified animation,
         /// if that animation is currently being played.
         /// </summary>
         /// <param name="animationIndex">The index of the animation for which to retrieve a controller.</param>
-        /// <returns>The <see cref="SkinnedAnimationController"/> which is playing the specified animation,
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the specified animation,
         /// or <see langword="null"/> if no controller is playing the animation.</returns>
-        public SkinnedAnimationController GetAnimationController(Int32 animationIndex)
+        public SkinnedAnimationTrack GetAnimationController(Int32 animationIndex)
         {
             Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
 
@@ -154,7 +154,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return null;
 
             var animation = Template.Animations[animationIndex];
-            return controllerManager.GetControllerForAnimation(animation);
+            return controllerManager.GetTrackForAnimation(animation);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         public SkinnedModelSceneInstanceCollection Scenes { get; }
 
         // Internal state trackers.
-        private readonly SkinnedAnimationControllerManager controllerManager;
+        private readonly SkinnedAnimationController controllerManager;
         private readonly SkinnedModelInstanceNodeManager nodeManager;
     }
 }
