@@ -43,29 +43,28 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Updates the animation track's state.
         /// </summary>
-        /// <param name="time">Time elapsed since the last update.</param>
+        /// <param name="elapsedSeconds">The number of seconds by which to advance the animation time.</param>
         /// <returns><see langword="true"/> if the track is playing and updated its state; otherwise, <see langword="false"/>.</returns>
-        public Boolean Update(UltravioletTime time)
+        public Boolean AdvanceTime(Double elapsedSeconds)
         {
-            Contract.Require(time, nameof(time));
-
             if (!IsPlaying || IsPaused)
                 return false;
 
-            var elapsedSeconds = (time.ElapsedTime.TotalSeconds * SpeedMultiplier);
+            var effectiveElapsedSeconds = elapsedSeconds * SpeedMultiplier;
 
             switch (currentAnimationMode)
             {
+                case SkinnedAnimationMode.Manual:
                 case SkinnedAnimationMode.Loop:
                     {
-                        var updatedAnimationTime = (currentAnimationTime + elapsedSeconds) % CurrentAnimation.Duration;
+                        var updatedAnimationTime = (currentAnimationTime + effectiveElapsedSeconds) % CurrentAnimation.Duration;
                         currentAnimationTime = updatedAnimationTime;
                     }
                     break;
 
                 case SkinnedAnimationMode.FireAndForget:
                     {
-                        var updatedAnimationTime = (currentAnimationTime + elapsedSeconds);
+                        var updatedAnimationTime = (currentAnimationTime + effectiveElapsedSeconds);
                         if (updatedAnimationTime >= CurrentAnimation.Duration)
                         {
                             Stop();
@@ -125,6 +124,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Gets the animation which is currently playing on this track.
         /// </summary>
         public SkinnedAnimation CurrentAnimation { get; private set; }
+
+        /// <summary>
+        /// Gets the track's current animation mode.
+        /// </summary>
+        public SkinnedAnimationMode CurrentAnimationMode => (CurrentAnimation == null) ? SkinnedAnimationMode.Loop : currentAnimationMode;
 
         /// <summary>
         /// Gets a value indicating whether the track is currently playing the specified animation.

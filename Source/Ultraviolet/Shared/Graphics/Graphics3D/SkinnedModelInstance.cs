@@ -14,19 +14,37 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Initializes a new instance of the <see cref="SkinnedModelInstance"/> class.
         /// </summary>
         /// <param name="template">The <see cref="SkinnedModel"/> which serves as this instance's template.</param>
-        /// <param name="maxSimultaneousAnimations">The maximum number of animations which can simultaneously play on this instance.</param>
-        public SkinnedModelInstance(SkinnedModel template, Int32 maxSimultaneousAnimations = 4)
+        /// <param name="tracks">The number of animation tracks to allocate for the model instance.</param>
+        public SkinnedModelInstance(SkinnedModel template, Int32 tracks = 4)
         {
             Contract.Require(template, nameof(template));
-            Contract.EnsureRange(maxSimultaneousAnimations >= 1, nameof(maxSimultaneousAnimations));
+            Contract.EnsureRange(tracks >= 1, nameof(tracks));
 
             this.Template = template;
             this.Skins = new SkinInstanceCollection(template.Skins.Select(x => new SkinInstance(x, this)));
             this.Scenes = new SkinnedModelSceneInstanceCollection(template.Scenes.Select(x => new SkinnedModelSceneInstance(x, this)), 
                 template.Scenes.DefaultScene.LogicalIndex);
 
-            this.controllerManager = new SkinnedAnimationController(this, maxSimultaneousAnimations);
+            this.controller = new SkinnedAnimationController(this, tracks);
             this.nodeManager = new SkinnedModelInstanceNodeManager(this);
+        }
+
+        /// <summary>
+        /// Advances time for the model's animation tracks.
+        /// </summary>
+        /// <param name="elapsedSeconds">The number of seconds by which to advance the model's animation tracks.</param>
+        /// <returns><see langword="true"/> if advancing time caused the model's animation state to change; otherwise, <see langword="false"/>.</returns>
+        public void AdvanceTime(Double elapsedSeconds)
+        {
+            if (controller.AdvanceTime(elapsedSeconds))
+            {
+                foreach (var skin in Skins)
+                    skin.Update();
+            }
+            else
+            {
+                Console.WriteLine();
+            }
         }
 
         /// <summary>
@@ -37,7 +55,19 @@ namespace Ultraviolet.Graphics.Graphics3D
         {
             Contract.Require(time, nameof(time));
 
-            controllerManager.Update(time);
+            if (controller.Update(time))
+            {
+                foreach (var skin in Skins)
+                    skin.Update();
+            }
+        }
+
+        /// <summary>
+        /// Updates the model instance's animation state.
+        /// </summary>
+        public void UpdateAnimationState()
+        {
+            controller.UpdateAnimationState();
 
             foreach (var skin in Skins)
                 skin.Update();
@@ -48,7 +78,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         public void ResetAnimations()
         {
-            controllerManager.ResetAnimations();
+            controller.ResetAnimations();
         }
 
         /// <summary>
@@ -67,7 +97,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (animation == null)
                 return null;
 
-            return controllerManager.PlayAnimation(mode, animation, speedMultiplier);
+            return controller.PlayAnimation(mode, animation, speedMultiplier);
         }
 
         /// <summary>
@@ -86,7 +116,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return null;
 
             var animation = Template.Animations[animationIndex];
-            return controllerManager.PlayAnimation(mode, animation, speedMultiplier);
+            return controller.PlayAnimation(mode, animation, speedMultiplier);
         }
 
         /// <summary>
@@ -102,7 +132,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (animation == null)
                 return false;
 
-            return controllerManager.StopAnimation(animation) != null;
+            return controller.StopAnimation(animation) != null;
         }
 
         /// <summary>
@@ -118,7 +148,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return false;
 
             var animation = Template.Animations[animationIndex];
-            return controllerManager.StopAnimation(animation) != null;
+            return controller.StopAnimation(animation) != null;
         }
 
         /// <summary>
@@ -136,7 +166,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (animation == null)
                 return null;
 
-            return controllerManager.GetTrackForAnimation(animation);
+            return controller.GetTrackForAnimation(animation);
         }
 
         /// <summary>
@@ -154,7 +184,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return null;
 
             var animation = Template.Animations[animationIndex];
-            return controllerManager.GetTrackForAnimation(animation);
+            return controller.GetTrackForAnimation(animation);
         }
 
         /// <summary>
@@ -193,7 +223,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         public SkinnedModelSceneInstanceCollection Scenes { get; }
 
         // Internal state trackers.
-        private readonly SkinnedAnimationController controllerManager;
+        private readonly SkinnedAnimationController controller;
         private readonly SkinnedModelInstanceNodeManager nodeManager;
     }
 }

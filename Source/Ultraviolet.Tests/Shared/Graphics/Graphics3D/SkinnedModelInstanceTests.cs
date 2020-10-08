@@ -52,20 +52,20 @@ namespace Ultraviolet.Tests.Graphics.Graphics3D
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithContent(content =>
                 {
+                    const Double TimeDelta = 0.25;
+
                     var expectedByTime = LoadBoneData(modelBoneDataFile);
 
                     var model = content.Load<SkinnedModel>(modelAssetFile);
                     var modelInstance = new SkinnedModelInstance(model);
 
-                    var animationController = modelInstance.PlayAnimation(SkinnedAnimationMode.Manual, 0);
+                    var animationTrack = modelInstance.PlayAnimation(SkinnedAnimationMode.Manual, 0);
+                    modelInstance.UpdateAnimationState();
+
                     var animationDuration = (Int32)Math.Ceiling(model.Animations[0].Duration);
-                    for (var t = 0.0; t < animationDuration; t += 0.25)
+                    for (var t = 0.0; t < animationDuration; t += TimeDelta)
                     {
-                        animationController.SetPosition(t % animationController.Duration);
-
-                        var skin = animationController.Model.Skins[0];
-                        skin.Update();
-
+                        var skin = animationTrack.Model.Skins[0];
                         var boneCount = skin.BoneCount;
                         var boneTransforms = skin.GetBoneTransforms();
                         var boneTransformsExpected = expectedByTime[t];
@@ -78,6 +78,8 @@ namespace Ultraviolet.Tests.Graphics.Graphics3D
                             TheResultingValue(boneTransformsExpected[i])
                                 .WithinDelta(0.0001f).ShouldBe(boneTransforms[i]);
                         }
+
+                        modelInstance.AdvanceTime(TimeDelta);
                     }
                 })
                 .RunForOneFrame();

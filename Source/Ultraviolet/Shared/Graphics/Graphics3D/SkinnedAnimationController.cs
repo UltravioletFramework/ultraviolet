@@ -16,7 +16,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// Initializes a new instance of the <see cref="SkinnedAnimationController"/> class.
         /// </summary>
         /// <param name="model">The model instance that owns this manager.</param>
-        /// <param name="tracks">The number of animation tracks to allocate for the model.</param>
+        /// <param name="tracks">The number of animation tracks to allocate for the model instance.</param>
         public SkinnedAnimationController(SkinnedModelInstance model, Int32 tracks)
         {
             Contract.Require(model, nameof(model));
@@ -31,20 +31,59 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Advances time for the controller's tracks.
+        /// </summary>
+        /// <param name="elapsedSeconds">The number of seconds by which to advance the controller's tracks.</param>
+        /// <returns><see langword="true"/> if advancing time caused the model's animation state to change; otherwise, <see langword="false"/>.</returns>
+        public Boolean AdvanceTime(Double elapsedSeconds)
+        {
+            return AdvanceTimeInternal(elapsedSeconds, true);
+        }
+
+        /// <summary>
         /// Updates the controller manager's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last update.</param>
-        public void Update(UltravioletTime time)
+        /// <returns><see langword="true"/> if the controller's animation state was updated; otherwise, <see langword="false"/>.</returns>
+        public Boolean Update(UltravioletTime time)
         {
-            var wasUpdated = false;
-            for (var i = 0; i < tracks.Length; i++)
-            {
-                if (tracks[i].Update(time))
-                    wasUpdated = true;
-            }
+            Contract.Require(time, nameof(time));
 
-            if (wasUpdated)
-                UpdateAnimationState();
+            return AdvanceTimeInternal(time.ElapsedTime.TotalSeconds, false);
+        }
+
+        /// <summary>
+        /// Updates the animation's state and applies transforms to the model instance's nodes.
+        /// </summary>
+        public void UpdateAnimationState()
+        {
+            model.TraverseNodes((node, state) =>
+            {
+                var controller = (SkinnedAnimationController)state;
+
+                var activeTracks = 0;
+                for (var i = 0; i < controller.tracks.Length; i++)
+                {
+                    controller.nodeAnimations[i] = null;
+
+                    var track = controller.tracks[i];
+                    var trackAnimation = track.CurrentAnimation;
+                    if (trackAnimation != null)
+                    {
+                        var nodeAnimation = trackAnimation.GetNodeAnimation(node.Template.LogicalIndex);
+                        if (nodeAnimation != null)
+                        {
+                            controller.nodeAnimations[i] = new AnimationPosition { Animation = nodeAnimation, Time = track.Position };
+                            activeTracks++;
+                        }
+                    }
+                }
+
+                controller.UpdateAnimatedNodeTransforms(node);
+            }, this);
+
+            for (var i = 0; i < nodeAnimations.Length; i++)
+                nodeAnimations[i] = null;
         }
 
         /// <summary>
@@ -70,6 +109,8 @@ namespace Ultraviolet.Graphics.Graphics3D
             var controller = controllerAllocation.Value;
             controller.Play(mode, animation, speedMultiplier);
             ordering[controllerAllocation.Key] = ++orderingCounter;
+            UpdateAnimationState();
+
             return controller;
         }
 
@@ -84,6 +125,8 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (controller != null)
             {
                 controller.Stop();
+                UpdateAnimationState();
+
                 return controller;
             }
             return null;
@@ -98,6 +141,28 @@ namespace Ultraviolet.Graphics.Graphics3D
         public SkinnedAnimationTrack GetTrackForAnimation(SkinnedAnimation animation)
         {
             return GetTrackForAnimationInternal(animation).Value;
+        }
+
+        /// <summary>
+        /// Advances time for the controller's tracks.
+        /// </summary>
+        private Boolean AdvanceTimeInternal(Double elapsedSeconds, Boolean advanceManualTracks)
+        {
+            var wasUpdated = false;
+            for (var i = 0; i < tracks.Length; i++)
+            {
+                var track = tracks[i];
+                if (track.CurrentAnimationMode != SkinnedAnimationMode.Manual || advanceManualTracks)
+                {
+                    if (track.AdvanceTime(elapsedSeconds))
+                        wasUpdated = true;
+                }
+            }
+
+            if (wasUpdated)
+                UpdateAnimationState();
+
+            return wasUpdated;
         }
 
         /// <summary>
@@ -150,40 +215,6 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
-        /// Updates the animation's state and applies transforms to the model instance's nodes.
-        /// </summary>
-        private void UpdateAnimationState()
-        {
-            model.TraverseNodes((node, state) =>
-            {
-                var controller = (SkinnedAnimationController)state;
-
-                var activeTracks = 0;
-                for (var i = 0; i < controller.tracks.Length; i++)
-                {
-                    controller.nodeAnimations[i] = null;
-
-                    var track = controller.tracks[i];
-                    var trackAnimation = track.CurrentAnimation;
-                    if (trackAnimation != null)
-                    {
-                        var nodeAnimation = trackAnimation.GetNodeAnimation(node.Template.LogicalIndex);
-                        if (nodeAnimation != null)
-                        {
-                            controller.nodeAnimations[i] = new AnimationPosition { Animation = nodeAnimation, Time = track.Position };
-                            activeTracks++;
-                        }
-                    }
-
-                    controller.UpdateAnimatedNodeTransforms(node);
-                }
-            }, this);
-
-            for (var i = 0; i < nodeAnimations.Length; i++)
-                nodeAnimations[i] = null;
-        }
-
-        /// <summary>
         /// Updates the animated transforms for the specified node.
         /// </summary>
         private void UpdateAnimatedNodeTransforms(SkinnedModelNodeInstance node)
@@ -204,7 +235,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                     var animatedScale = animation.Scale?.Evaluate(t, default) ?? templatedTransform.Scale;
 
                     node.LocalTransform.UpdateFromTranslationRotationScale(animatedTranslation, animatedRotation, animatedScale);
-                    return;
+                    break;
                 }
             }
         }
