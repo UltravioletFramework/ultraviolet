@@ -102,12 +102,13 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animation">The animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier = 1f)
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier = 1f, SkinnedAnimationCallbacks? callbacks = null)
         {
             var controllerAllocation = AllocateTrack(animation);
             var controller = controllerAllocation.Value;
-            controller.Play(mode, animation, speedMultiplier);
+            controller.Play(mode, animation, speedMultiplier, callbacks);
             ordering[controllerAllocation.Key] = ++orderingCounter;
             UpdateAnimationState();
 
@@ -125,13 +126,14 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
         /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
         /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
         public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier,
-            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration, SkinnedAnimationCallbacks? callbacks = null)
         {
             var controllerAllocation = AllocateTrack(animation);
             var controller = controllerAllocation.Value;
-            controller.Play(mode, animation, speedMultiplier, easeInFunction, easeInDuration, easeOutFunction, easeOutDuration);
+            controller.Play(mode, animation, speedMultiplier, easeInFunction, easeInDuration, easeOutFunction, easeOutDuration, callbacks);
             ordering[controllerAllocation.Key] = ++orderingCounter;
             UpdateAnimationState();
 

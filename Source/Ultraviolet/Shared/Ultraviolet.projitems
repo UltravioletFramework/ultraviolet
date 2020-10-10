@@ -37,6 +37,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\GltfSkinnedMaterialLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\IModelNodeProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\IModelSceneProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedAnimationCallbacks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\SkinnedModelSceneRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics3D\ModelSceneRendererBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectMaterialColor.cs" />

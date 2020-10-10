@@ -88,8 +88,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationName">The name of the animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier = 1.0f)
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier = 1.0f, SkinnedAnimationCallbacks? callbacks = null)
         {
             Contract.Require(animationName, nameof(animationName));
 
@@ -97,7 +98,7 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (animation == null)
                 return null;
 
-            return controller.PlayAnimation(mode, animation, speedMultiplier);
+            return controller.PlayAnimation(mode, animation, speedMultiplier, callbacks);
         }
 
         /// <summary>
@@ -111,9 +112,10 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
         /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
         /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
         public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier,
-            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration, SkinnedAnimationCallbacks? callbacks = null)
         {
             Contract.Require(animationName, nameof(animationName));
 
@@ -122,7 +124,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return null;
 
             return controller.PlayAnimation(mode, animation, speedMultiplier,
-                easeInFunction, easeInDuration, easeOutFunction, easeOutDuration);
+                easeInFunction, easeInDuration, easeOutFunction, easeOutDuration, callbacks);
         }
 
         /// <summary>
@@ -132,8 +134,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationIndex">The index of the animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier = 1.0f)
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier = 1.0f, SkinnedAnimationCallbacks? callbacks = null)
         {
             Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
 
@@ -141,7 +144,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                 return null;
 
             var animation = Template.Animations[animationIndex];
-            return controller.PlayAnimation(mode, animation, speedMultiplier);
+            return controller.PlayAnimation(mode, animation, speedMultiplier, callbacks);
         }
 
         /// <summary>
@@ -155,9 +158,10 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
         /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
         /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
         public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier,
-            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration, SkinnedAnimationCallbacks? callbacks = null)
         {
             Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
 
@@ -166,7 +170,7 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             var animation = Template.Animations[animationIndex];
             return controller.PlayAnimation(mode, animation, speedMultiplier, 
-                easeInFunction, easeInDuration, easeOutFunction, easeOutDuration);
+                easeInFunction, easeInDuration, easeOutFunction, easeOutDuration, callbacks);
         }
 
         /// <summary>

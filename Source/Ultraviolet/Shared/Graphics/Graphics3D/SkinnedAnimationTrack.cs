@@ -50,6 +50,8 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (!IsPlaying || IsPaused)
                 return false;
 
+            var shouldBeStopped = false;
+            var previousAnimationTime = currentAnimationTime;
             var effectiveElapsedSeconds = elapsedSeconds * SpeedMultiplier;
 
             switch (currentAnimationMode)
@@ -67,16 +69,19 @@ namespace Ultraviolet.Graphics.Graphics3D
                         var updatedAnimationTime = (currentAnimationTime + effectiveElapsedSeconds);
                         if (updatedAnimationTime >= CurrentAnimation.Duration - easeOutDuration && !IsStopping)
                             Stop();
-                        
+
                         if (updatedAnimationTime >= CurrentAnimation.Duration)
-                            StopImmediate();
+                            shouldBeStopped = true;
 
                         currentAnimationTime = updatedAnimationTime;
                     }
                     break;
             }
 
-            if (ApplyEasing(effectiveElapsedSeconds))
+            if (callbacks.HasValue)
+                callbacks.Value.OnAdvanced?.Invoke(Model, previousAnimationTime, currentAnimationTime, callbacks.Value.OnAdvancedState);
+
+            if (shouldBeStopped || ApplyEasing(effectiveElapsedSeconds))
                 StopImmediate();
 
             return true;
@@ -88,9 +93,10 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">The animation mode.</param>
         /// <param name="animation">The animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
-        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier = 1f)
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
+        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier = 1f, SkinnedAnimationCallbacks? callbacks = null)
         {
-            Play(mode, animation, speedMultiplier, Easings.EaseInLinear, 0.0, Easings.EaseOutLinear, 0.0);
+            Play(mode, animation, speedMultiplier, Easings.EaseInLinear, 0.0, Easings.EaseOutLinear, 0.0, callbacks);
         }
 
         /// <summary>
@@ -103,8 +109,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
         /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
         /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <param name="callbacks">The set of callbacks to invoke for this animation.</param>
         public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier,
-            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration, SkinnedAnimationCallbacks? callbacks = null)
         {
             Contract.Require(animation, nameof(animation));
             Contract.Require(easeInFunction, nameof(easeInFunction));
@@ -134,6 +141,8 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             this.easeInElasped = 0;
             this.easeOutElapsed = 0;
+
+            this.callbacks = callbacks;
         }
 
         /// <summary>
@@ -141,6 +150,9 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         public void Stop()
         {
+            if (!IsPlaying)
+                return;
+
             if (this.easeOutDuration == 0.0)
             {
                 StopImmediate();
@@ -156,6 +168,12 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         public void StopImmediate()
         {
+            if (!IsPlaying)
+                return;
+
+            if (callbacks.HasValue)
+                callbacks.Value.OnStopped?.Invoke(Model, callbacks.Value.OnStoppedState);
+
             this.currentAnimationMode = SkinnedAnimationMode.Loop;
             this.CurrentAnimation = null;
             this.currentAnimationTime = 0.0;
@@ -166,6 +184,8 @@ namespace Ultraviolet.Graphics.Graphics3D
             this.easeInDuration = 0.0;
             this.easeOutFunction = null;
             this.easeOutDuration = 0.0;
+
+            this.callbacks = null;
 
             this.IsStopping = false;
         }
@@ -287,5 +307,8 @@ namespace Ultraviolet.Graphics.Graphics3D
         private EasingFunction easeOutFunction;
         private Double easeOutDuration;
         private Double easeOutElapsed;
+
+        // Callbacks.
+        private SkinnedAnimationCallbacks? callbacks;
     }
 }
