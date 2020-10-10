@@ -105,6 +105,31 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// it will be restarted using the specified mode.
         /// </summary>
         /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
+        /// <param name="animationName">The name of the animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="easeInFunction">The easing function to apply when easing in the animation.</param>
+        /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
+        /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
+        /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, String animationName, Single speedMultiplier,
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+        {
+            Contract.Require(animationName, nameof(animationName));
+
+            var animation = Template.Animations.TryGetAnimationByName(animationName);
+            if (animation == null)
+                return null;
+
+            return controller.PlayAnimation(mode, animation, speedMultiplier,
+                easeInFunction, easeInDuration, easeOutFunction, easeOutDuration);
+        }
+
+        /// <summary>
+        /// Plays the specified animation on this instance, if it exists. If the animation is already playing,
+        /// it will be restarted using the specified mode.
+        /// </summary>
+        /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
         /// <param name="animationIndex">The index of the animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
@@ -117,6 +142,31 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             var animation = Template.Animations[animationIndex];
             return controller.PlayAnimation(mode, animation, speedMultiplier);
+        }
+
+        /// <summary>
+        /// Plays the specified animation on this instance, if it exists. If the animation is already playing,
+        /// it will be restarted using the specified mode.
+        /// </summary>
+        /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
+        /// <param name="animationIndex">The index of the animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="easeInFunction">The easing function to apply when easing in the animation.</param>
+        /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
+        /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
+        /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, Int32 animationIndex, Single speedMultiplier,
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+        {
+            Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
+
+            if (animationIndex >= Template.Animations.Count)
+                return null;
+
+            var animation = Template.Animations[animationIndex];
+            return controller.PlayAnimation(mode, animation, speedMultiplier, 
+                easeInFunction, easeInDuration, easeOutFunction, easeOutDuration);
         }
 
         /// <summary>
@@ -136,6 +186,22 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Immediately stops the specified animation on this instance, if it is playing, without performing any easing.
+        /// </summary>
+        /// <param name="animationName">The name of the animation to stop playing.</param>
+        /// <returns><see langword="true"/> if the animation was stopped; otherwise, <see langword="false"/>.</returns>
+        public Boolean StopAnimationImmediate(String animationName)
+        {
+            Contract.Require(animationName, nameof(animationName));
+
+            var animation = Template.Animations.TryGetAnimationByName(animationName);
+            if (animation == null)
+                return false;
+
+            return controller.StopAnimationImmediate(animation) != null;
+        }
+
+        /// <summary>
         /// Stops the specified animation on this instance, if it is playing.
         /// </summary>
         /// <param name="animationIndex">The index of the animation to stop playing.</param>
@@ -149,6 +215,22 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             var animation = Template.Animations[animationIndex];
             return controller.StopAnimation(animation) != null;
+        }
+
+        /// <summary>
+        /// Immediately stops the specified animation on this instance, if it is playing, without performing any easing.
+        /// </summary>
+        /// <param name="animationIndex">The index of the animation to stop playing.</param>
+        /// <returns><see langword="true"/> if the animation was stopped; otherwise, <see langword="false"/>.</returns>
+        public Boolean StopAnimationImmediate(Int32 animationIndex)
+        {
+            Contract.EnsureRange(animationIndex >= 0, nameof(animationIndex));
+
+            if (animationIndex >= Template.Animations.Count)
+                return false;
+
+            var animation = Template.Animations[animationIndex];
+            return controller.StopAnimationImmediate(animation) != null;
         }
 
         /// <summary>

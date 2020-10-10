@@ -65,17 +65,19 @@ namespace Ultraviolet.Graphics.Graphics3D
                 case SkinnedAnimationMode.FireAndForget:
                     {
                         var updatedAnimationTime = (currentAnimationTime + effectiveElapsedSeconds);
-                        if (updatedAnimationTime >= CurrentAnimation.Duration)
-                        {
+                        if (updatedAnimationTime >= CurrentAnimation.Duration - easeOutDuration && !IsStopping)
                             Stop();
-                        }
-                        else
-                        {
-                            currentAnimationTime = updatedAnimationTime;
-                        }
+                        
+                        if (updatedAnimationTime >= CurrentAnimation.Duration)
+                            StopImmediate();
+
+                        currentAnimationTime = updatedAnimationTime;
                     }
                     break;
             }
+
+            if (ApplyEasing(effectiveElapsedSeconds))
+                StopImmediate();
 
             return true;
         }
@@ -86,25 +88,86 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="mode">The animation mode.</param>
         /// <param name="animation">The animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
-        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier)
+        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier = 1f)
+        {
+            Play(mode, animation, speedMultiplier, Easings.EaseInLinear, 0.0, Easings.EaseOutLinear, 0.0);
+        }
+
+        /// <summary>
+        /// Plays the specified animation.
+        /// </summary>
+        /// <param name="mode">The animation mode.</param>
+        /// <param name="animation">The animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="easeInFunction">The easing function to apply when easing in the animation.</param>
+        /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
+        /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
+        /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        public void Play(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier,
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
         {
             Contract.Require(animation, nameof(animation));
+            Contract.Require(easeInFunction, nameof(easeInFunction));
+            Contract.EnsureRange(easeInDuration >= 0, nameof(easeInDuration));
+            Contract.Require(easeOutFunction, nameof(easeOutFunction));
+            Contract.EnsureRange(easeOutDuration >= 0, nameof(easeOutDuration));
 
             this.currentAnimationMode = mode;
             this.CurrentAnimation = animation;
             this.currentAnimationTime = 0.0;
             this.SpeedMultiplier = speedMultiplier;
+
+            if (mode != SkinnedAnimationMode.Manual)
+            {
+                this.easeInFunction = easeInFunction;
+                this.easeInDuration = easeInDuration;
+                this.easeOutFunction = easeOutFunction;
+                this.easeOutDuration = easeOutDuration;
+            }
+            else
+            {
+                this.easeInFunction = null;
+                this.easeInDuration = 0;
+                this.easeOutFunction = null;
+                this.easeOutDuration = 0;
+            }
+
+            this.easeInElasped = 0;
+            this.easeOutElapsed = 0;
         }
 
         /// <summary>
-        /// Stops the currently playing animation.
+        /// Stops the currently playing animation using the current easing settings.
         /// </summary>
         public void Stop()
+        {
+            if (this.easeOutDuration == 0.0)
+            {
+                StopImmediate();
+            }
+            else
+            {
+                IsStopping = true;
+            }
+        }
+
+        /// <summary>
+        /// Immediately stops the currently playing animation without performing any easing.
+        /// </summary>
+        public void StopImmediate()
         {
             this.currentAnimationMode = SkinnedAnimationMode.Loop;
             this.CurrentAnimation = null;
             this.currentAnimationTime = 0.0;
             this.SpeedMultiplier = 0.0;
+            this.BlendingWeight = 0.0f;
+
+            this.easeInFunction = null;
+            this.easeInDuration = 0.0;
+            this.easeOutFunction = null;
+            this.easeOutDuration = 0.0;
+
+            this.IsStopping = false;
         }
 
         /// <summary>
@@ -148,6 +211,11 @@ namespace Ultraviolet.Graphics.Graphics3D
         public Boolean IsPlaying => CurrentAnimation != null;
 
         /// <summary>
+        /// Gets a value indicating whether the track is currently stopping.
+        /// </summary>
+        public Boolean IsStopping { get; private set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the animation is currently paused.
         /// </summary>
         public Boolean IsPaused { get; set; }
@@ -167,8 +235,57 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         public Double SpeedMultiplier { get; set; }
 
+        /// <summary>
+        /// Gets the blending weight for this track.
+        /// </summary>
+        public Single BlendingWeight { get; private set; }
+
+        /// <summary>
+        /// Applies easing to the animation track and calculates its blend weight.
+        /// </summary>
+        private Boolean ApplyEasing(Double elapsedSeconds)
+        {
+            BlendingWeight = 1f;
+
+            if (!IsPlaying)
+                return false;
+
+            if (easeInDuration > 0 && easeInElasped < easeInDuration)
+            {
+                easeInElasped += elapsedSeconds;
+                if (easeInElasped > easeInDuration)
+                    easeInElasped = easeInDuration;
+
+                var t = (Single)(easeInElasped / easeInDuration);
+                BlendingWeight = MathUtil.Clamp(easeInFunction(t), 0f, 1f);
+            }
+
+            if (!IsStopping)
+                return false;
+
+            if (easeOutDuration > 0 && easeOutElapsed < easeInDuration)
+            {
+                easeOutElapsed += elapsedSeconds;
+                if (easeOutElapsed > easeOutDuration)
+                    easeOutElapsed = easeOutDuration;
+
+                var t = 1f - (Single)(easeOutElapsed / easeOutDuration);
+                BlendingWeight = MathUtil.Clamp(easeOutFunction(t), 0f, 1f);
+            }
+
+            return easeOutElapsed >= easeOutDuration;
+        }
+
         // The current animation state for this track.
         private SkinnedAnimationMode currentAnimationMode;
         private Double currentAnimationTime;
+
+        // Easing data.
+        private EasingFunction easeInFunction;
+        private Double easeInDuration;
+        private Double easeInElasped;
+        private EasingFunction easeOutFunction;
+        private Double easeOutDuration;
+        private Double easeOutElapsed;
     }
 }

@@ -10,7 +10,7 @@ namespace Ultraviolet.Graphics.Graphics3D
     /// </summary>
     internal class SkinnedAnimationController
     {
-        private struct AnimationPosition { public SkinnedModelNodeAnimation Animation; public Double Time; }
+        private struct AnimationPosition { public SkinnedModelNodeAnimation Animation; public Double Time; public Single Weight; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinnedAnimationController"/> class.
@@ -73,7 +73,7 @@ namespace Ultraviolet.Graphics.Graphics3D
                         var nodeAnimation = trackAnimation.GetNodeAnimation(node.Template.LogicalIndex);
                         if (nodeAnimation != null)
                         {
-                            controller.nodeAnimations[i] = new AnimationPosition { Animation = nodeAnimation, Time = track.Position };
+                            controller.nodeAnimations[i] = new AnimationPosition { Animation = nodeAnimation, Time = track.Position, Weight = track.BlendingWeight };
                             activeTracks++;
                         }
                     }
@@ -103,11 +103,35 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <param name="animation">The animation to play.</param>
         /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
         /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
-        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier)
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier = 1f)
         {
             var controllerAllocation = AllocateTrack(animation);
             var controller = controllerAllocation.Value;
             controller.Play(mode, animation, speedMultiplier);
+            ordering[controllerAllocation.Key] = ++orderingCounter;
+            UpdateAnimationState();
+
+            return controller;
+        }
+
+        /// <summary>
+        /// Plays the specified animation. If the animation is already playing,
+        /// it will be restarted using the specified mode.
+        /// </summary>
+        /// <param name="mode">A <see cref="SkinnedAnimationMode"/> value which describes the animation mode.</param>
+        /// <param name="animation">The animation to play.</param>
+        /// <param name="speedMultiplier">The relative speed at which to play the animation.</param>
+        /// <param name="easeInFunction">The easing function to apply when easing in the animation.</param>
+        /// <param name="easeInDuration">The number of seconds over which to ease in the animation.</param>
+        /// <param name="easeOutFunction">The easing function to apply when easing out the animation.</param>
+        /// <param name="easeOutDuration">The number of seconds over which to ease out the animation.</param>
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which is playing the animation, or <see langword="null"/> if the animation could not be played.</returns>
+        public SkinnedAnimationTrack PlayAnimation(SkinnedAnimationMode mode, SkinnedAnimation animation, Single speedMultiplier,
+            EasingFunction easeInFunction, Double easeInDuration, EasingFunction easeOutFunction, Double easeOutDuration)
+        {
+            var controllerAllocation = AllocateTrack(animation);
+            var controller = controllerAllocation.Value;
+            controller.Play(mode, animation, speedMultiplier, easeInFunction, easeInDuration, easeOutFunction, easeOutDuration);
             ordering[controllerAllocation.Key] = ++orderingCounter;
             UpdateAnimationState();
 
@@ -125,6 +149,24 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (controller != null)
             {
                 controller.Stop();
+                UpdateAnimationState();
+
+                return controller;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Immediately stops the specified animation without performing any easing.
+        /// </summary>
+        /// <param name="animation">The animation to stop.</param>
+        /// <returns>The <see cref="SkinnedAnimationTrack"/> which was playing the animation, or <see langword="null"/> if the animation was not being played.</returns>
+        public SkinnedAnimationTrack StopAnimationImmediate(SkinnedAnimation animation)
+        {
+            var controller = GetTrackForAnimation(animation);
+            if (controller != null)
+            {
+                controller.StopImmediate();
                 UpdateAnimationState();
 
                 return controller;
@@ -219,7 +261,10 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private void UpdateAnimatedNodeTransforms(SkinnedModelNodeInstance node)
         {
-            // TODO: Implement weighted blending
+            var update = false;
+            var currentTranslation = Vector3.Zero;
+            var currentRotation = Quaternion.Identity;
+            var currentScale = Vector3.One;
 
             for (var i = 0; i < nodeAnimations.Length; i++)
             {
@@ -234,10 +279,17 @@ namespace Ultraviolet.Graphics.Graphics3D
                     var animatedRotation = animation.Rotation?.Evaluate(t, default) ?? templatedTransform.Rotation;
                     var animatedScale = animation.Scale?.Evaluate(t, default) ?? templatedTransform.Scale;
 
-                    node.LocalTransform.UpdateFromTranslationRotationScale(animatedTranslation, animatedRotation, animatedScale);
-                    break;
+                    var weight = nodeAnimation.Value.Weight;
+                    Vector3.Lerp(ref currentTranslation, ref animatedTranslation, weight, out currentTranslation);
+                    Quaternion.Slerp(ref currentRotation, ref animatedRotation, weight, out currentRotation);
+                    Vector3.Lerp(ref currentScale, ref animatedScale, weight, out currentScale);
+
+                    update = true;
                 }
             }
+
+            if (update)
+                node.LocalTransform.UpdateFromTranslationRotationScale(currentTranslation, currentRotation, currentScale);
         }
 
         // Animation state for this model.
