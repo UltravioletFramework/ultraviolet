@@ -141,6 +141,7 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             this.easeInElasped = 0;
             this.easeOutElapsed = 0;
+            this.BlendingWeight = 1f;
 
             this.callbacks = callbacks;
         }
