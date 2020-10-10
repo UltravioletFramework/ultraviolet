@@ -27,7 +27,7 @@ Some core features of the Ultraviolet Framework:
  
  * __High-level 3D rendering abstractions__
    
-   Coming in a future release.
+   Built-in support for [glTF 2.0 models](https://www.khronos.org/gltf/) and skinned animation makes it easy to get started with 3D rendering. Alternatively, you can write your own GLSL shader programs to take full control of the rendering process, and support for additional model types can be provided by extending the runtime content pipeline.
  
  * __Low-level rendering functionality__
    
