@@ -20,9 +20,11 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   <dependencies>
     <group targetFramework="netstandard2.0">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="SharpGLTF.Core" version="v1.0.0-alpha0020" />
     </group>
     <group targetFramework="netstandard2.1">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="SharpGLTF.Core" version="v1.0.0-alpha0020" />
     </group>
   </dependencies>
   </metadata>
