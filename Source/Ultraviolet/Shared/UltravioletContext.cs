@@ -922,7 +922,9 @@ namespace Ultraviolet
                 {
                     switch (RuntimeVersion?.Major ?? 0)
                     {
+                        case 0:
                         case 1:
+                        case 4:
                             throw new NotSupportedException();
 
                         case 2:
