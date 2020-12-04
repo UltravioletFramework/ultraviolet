@@ -40,6 +40,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             this.SpriteBatch = SpriteBatch.Create();
             this.Font = content.Load<UltravioletFont>(FontPath ?? "Fonts/Garamond");
+            this.FontAlternate = content.Load<UltravioletFont>(FontPath ?? "Fonts/SegoeUI");
 
             this.TextIcons = content.Load<Sprite>(IconPath ?? "Sprites/InterfaceIcons");
 
@@ -53,6 +54,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             this.TextRenderer = new TextRenderer();
             this.TextRenderer.LayoutEngine.RegisterIcon("test", this.TextIcons["test"]);
+            this.TextRenderer.LayoutEngine.RegisterFont("alt", FontAlternate);
 
             this.BlankTexture = Texture2D.CreateTexture(1, 1);
             this.BlankTexture.SetData(new[] { Color.White });
@@ -64,6 +66,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             this.SpriteBatch = SpriteBatch.Create();
             this.Font = content.Load<UltravioletFont>(FontPath ?? "Fonts/FiraSans");
+            this.FontAlternate = content.Load<UltravioletFont>(FontPath ?? "Fonts/SegoeUI");
 
             this.TextIcons = content.Load<Sprite>(IconPath ?? "Sprites/InterfaceIcons");
 
@@ -79,6 +82,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             this.TextRenderer = new TextRenderer();
             this.TextRenderer.LayoutEngine.RegisterTextShaper(TextShaper.Create());
             this.TextRenderer.LayoutEngine.RegisterIcon("test", this.TextIcons["test"]);
+            this.TextRenderer.LayoutEngine.RegisterFont("alt", FontAlternate);
 
             this.BlankTexture = Texture2D.CreateTexture(1, 1);
             this.BlankTexture.SetData(new[] { Color.White });
@@ -86,6 +90,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         public SpriteBatch SpriteBatch { get; private set; }
         public UltravioletFont Font { get; private set; }
+        public UltravioletFont FontAlternate { get; private set; }
         public String FontPath { get; set; }
         public String IconPath { get; set; }
         public String Text { get; private set; }

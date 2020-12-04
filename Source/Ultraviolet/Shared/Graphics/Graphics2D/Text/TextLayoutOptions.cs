@@ -22,5 +22,35 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Indicates that the text should be shaped during layout.
         /// </summary>
         Shape = 0x0002,
+
+        /// <summary>
+        /// Indicates that commands which change the text color should be ignored.
+        /// </summary>
+        IgnoreColorChanges = 0x0004,
+
+        /// <summary>
+        /// Indicates that commands which change the font face should be ignored.
+        /// </summary>
+        IgnoreFontFaceChanges = 0x0008,
+
+        /// <summary>
+        /// Indicates that commands which change the font style should be ignored.
+        /// </summary>
+        IgnoreFontStyleChanges = 0x0010,
+
+        /// <summary>
+        /// Indicates that glyph shaders should be ignored.
+        /// </summary>
+        IgnoreGlyphShaders = 0x0020,
+
+        /// <summary>
+        /// Indicates that custom commands should be ignored.
+        /// </summary>
+        IgnoreCustomCommands = 0x0040,
+
+        /// <summary>
+        /// Indicates that commands which change the text style should be ignored.
+        /// </summary>
+        IgnoreStyleChanges = IgnoreColorChanges | TextLayoutOptions.IgnoreFontFaceChanges | TextLayoutOptions.IgnoreFontStyleChanges | TextLayoutOptions.IgnoreCustomCommands,
     }
 }

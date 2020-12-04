@@ -232,6 +232,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var state = new LayoutState() { LineInfoCommandIndex = 1 };
 
+            var ignoreColorChanges = (settings.Options & TextLayoutOptions.IgnoreColorChanges) == TextLayoutOptions.IgnoreColorChanges;
+            var ignoreFontFaceChanges = (settings.Options & TextLayoutOptions.IgnoreFontFaceChanges) == TextLayoutOptions.IgnoreFontFaceChanges;
+            var ignoreFontStyleChanges = (settings.Options & TextLayoutOptions.IgnoreFontStyleChanges) == TextLayoutOptions.IgnoreFontStyleChanges;
+            var ignoreGlyphShaders = (settings.Options & TextLayoutOptions.IgnoreGlyphShaders) == TextLayoutOptions.IgnoreGlyphShaders;
+            var ignoreCustomCommands = (settings.Options & TextLayoutOptions.IgnoreCustomCommands) == TextLayoutOptions.IgnoreCustomCommands;
+
             output.Clear();
             output.SourceText = input.SourceText;
             output.ParserOptions = input.ParserOptions;
@@ -282,27 +288,27 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         break;
 
                     case TextParserTokenType.ToggleBold:
-                        ProcessToggleBoldToken(output, ref bold, ref state, ref index);
+                        ProcessToggleBoldToken(output, ref bold, ref state, ref index, ignoreFontStyleChanges);
                         break;
 
                     case TextParserTokenType.ToggleItalic:
-                        ProcessToggleItalicToken(output, ref italic, ref state, ref index);
+                        ProcessToggleItalicToken(output, ref italic, ref state, ref index, ignoreFontStyleChanges);
                         break;
 
                     case TextParserTokenType.PushFont:
-                        ProcessPushFontToken(output, ref token, ref state, ref index);
+                        ProcessPushFontToken(output, ref token, ref state, ref index, ignoreFontFaceChanges);
                         break;
 
                     case TextParserTokenType.PushColor:
-                        ProcessPushColorToken(output, ref token, ref state, ref index);
+                        ProcessPushColorToken(output, ref token, ref state, ref index, ignoreColorChanges);
                         break;
 
                     case TextParserTokenType.PushStyle:
-                        ProcessPushStyleToken(output, ref bold, ref italic, ref token, ref state, ref index);
+                        ProcessPushStyleToken(output, ref bold, ref italic, ref token, ref state, ref index, ignoreFontStyleChanges);
                         break;
 
                     case TextParserTokenType.PushGlyphShader:
-                        ProcessPushGlyphShaderToken(output, ref token, ref state, ref index);
+                        ProcessPushGlyphShaderToken(output, ref token, ref state, ref index, ignoreGlyphShaders);
                         break;
 
                     case TextParserTokenType.PushLink:
@@ -310,29 +316,29 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         break;
 
                     case TextParserTokenType.PopFont:
-                        ProcessPopFontToken(output, ref token, ref state, ref index);
+                        ProcessPopFontToken(output, ref token, ref state, ref index, ignoreFontFaceChanges);
                         break;
 
                     case TextParserTokenType.PopColor:
-                        ProcessPopColorToken(output, ref token, ref state, ref index);
+                        ProcessPopColorToken(output, ref token, ref state, ref index, ignoreColorChanges);
                         break;
 
                     case TextParserTokenType.PopStyle:
-                        ProcessPopStyleToken(output, ref bold, ref italic, ref token, ref state, ref index);
+                        ProcessPopStyleToken(output, ref bold, ref italic, ref token, ref state, ref index, ignoreFontStyleChanges);
                         break;
 
                     case TextParserTokenType.PopGlyphShader:
-                        ProcessPopGlyphShaderToken(output, ref token, ref state, ref index);
+                        ProcessPopGlyphShaderToken(output, ref token, ref state, ref index, ignoreGlyphShaders);
                         break;
-                        
+
                     case TextParserTokenType.PopLink:
                         ProcessPopLinkToken(output, ref token, ref state, ref index);
                         break;
-                        
+
                     default:
                         if (token.TokenType >= TextParserTokenType.Custom)
                         {
-                            ProcessCustomCommandToken(output, ref token, ref state, ref index);
+                            ProcessCustomCommandToken(output, ref token, ref state, ref index, ignoreCustomCommands);
                             break;
                         }
                         else throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
@@ -579,77 +585,98 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Processes a parser token with type <see cref="TextParserTokenType.ToggleBold"/>.
         /// </summary>
         private void ProcessToggleBoldToken(TextLayoutCommandStream output, ref Boolean bold,
-            ref LayoutState state, ref Int32 index)
+            ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            output.WriteToggleBold();
             state.AdvanceLineToNextCommand();
-            bold = !bold;
             index++;
+
+            if (!skip)
+            {
+                bold = !bold;
+                output.WriteToggleBold();
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.ToggleItalic"/>.
         /// </summary>
         private void ProcessToggleItalicToken(TextLayoutCommandStream output, ref Boolean italic,
-            ref LayoutState state, ref Int32 index)
+            ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            output.WriteToggleItalic();
             state.AdvanceLineToNextCommand();
-            italic = !italic;
             index++;
+
+            if (!skip)
+            {
+                italic = !italic;
+                output.WriteToggleItalic();
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PushFont"/>.
         /// </summary>
         private void ProcessPushFontToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            var pushedFont = default(UltravioletFont);
-            var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
-            output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
             state.AdvanceLineToNextCommand();
-            PushFont(pushedFont);
             index++;
+
+            if (!skip)
+            {
+                var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out var pushedFont);
+                output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
+                PushFont(pushedFont);
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PushColor"/>.
         /// </summary>
         private void ProcessPushColorToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            var pushedColor = ParseColor(token.Text);
-            output.WritePushColor(new TextLayoutColorCommand(pushedColor));
             state.AdvanceLineToNextCommand();
             index++;
+
+            if (!skip)
+            {
+                var pushedColor = ParseColor(token.Text);
+                output.WritePushColor(new TextLayoutColorCommand(pushedColor));
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PushStyle"/>.
         /// </summary>
         private void ProcessPushStyleToken(TextLayoutCommandStream output, ref Boolean bold, ref Boolean italic,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            var pushedStyle = default(TextStyle);
-            var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
-            output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
             state.AdvanceLineToNextCommand();
-            PushStyle(pushedStyle, ref bold, ref italic);
             index++;
+
+            if (!skip)
+            {
+                var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out var pushedStyle);
+                output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
+                PushStyle(pushedStyle, ref bold, ref italic);
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PushGlyphShader"/>.
         /// </summary>
         private void ProcessPushGlyphShaderToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            var pushedGlyphShader = default(GlyphShader);
-            var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out pushedGlyphShader);
-            output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
             state.AdvanceLineToNextCommand();
             index++;
+
+            if (!skip)
+            {
+                var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out var pushedGlyphShader);
+                output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
+            }
         }
 
         /// <summary>
@@ -658,56 +685,73 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void ProcessPushLinkToken(TextLayoutCommandStream output,
             ref TextParserToken token, ref LayoutState state, ref Int32 index)
         {
-            var pushedLinkTargetIndex = RegisterLinkTargetWithCommandStream(output, token.Text);
-            output.WritePushLink(new TextLayoutLinkCommand(pushedLinkTargetIndex));
             state.AdvanceLineToNextCommand();
             index++;
+
+            var pushedLinkTargetIndex = RegisterLinkTargetWithCommandStream(output, token.Text);
+            output.WritePushLink(new TextLayoutLinkCommand(pushedLinkTargetIndex));
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PopFont"/>.
         /// </summary>
         private void ProcessPopFontToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            output.WritePopFont();
             state.AdvanceLineToNextCommand();
-            PopFont();
             index++;
+
+            if (!skip)
+            {
+                output.WritePopFont();
+                PopFont();
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PopColor"/>.
         /// </summary>
         private void ProcessPopColorToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            output.WritePopColor();
             state.AdvanceLineToNextCommand();
             index++;
+
+            if (!skip)
+            {
+                output.WritePopColor();
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PopStyle"/>.
         /// </summary>
         private void ProcessPopStyleToken(TextLayoutCommandStream output, ref Boolean bold, ref Boolean italic,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            output.WritePopStyle();
             state.AdvanceLineToNextCommand();
-            PopStyle(ref bold, ref italic);
             index++;
+
+            if (!skip)
+            {
+                output.WritePopStyle();
+                PopStyle(ref bold, ref italic);
+            }
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PopGlyphShader"/>.
         /// </summary>
         private void ProcessPopGlyphShaderToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            output.WritePopGlyphShader();
             state.AdvanceLineToNextCommand();
             index++;
+
+            if (!skip)
+            {
+                output.WritePopGlyphShader();
+            }
         }
 
         /// <summary>
@@ -716,22 +760,27 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void ProcessPopLinkToken(TextLayoutCommandStream output,
             ref TextParserToken token, ref LayoutState state, ref Int32 index)
         {
-            output.WritePopLink();
             state.AdvanceLineToNextCommand();
             index++;
+
+            output.WritePopLink();
         }
 
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.Custom"/>.
         /// </summary>
         private void ProcessCustomCommandToken(TextLayoutCommandStream output,
-            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+            ref TextParserToken token, ref LayoutState state, ref Int32 index, Boolean skip)
         {
-            var commandID = (token.TokenType - TextParserTokenType.Custom);
-            var commandValue = token.Text.IsEmpty ? default(Int32) : StringSegmentConversion.ParseInt32(token.Text);
-            output.WriteCustomCommand(new TextLayoutCustomCommand(commandID, commandValue));
             state.AdvanceLineToNextCommand();
             index++;
+
+            if (!skip)
+            {
+                var commandID = (token.TokenType - TextParserTokenType.Custom);
+                var commandValue = token.Text.IsEmpty ? default(Int32) : StringSegmentConversion.ParseInt32(token.Text);
+                output.WriteCustomCommand(new TextLayoutCustomCommand(commandID, commandValue));
+            }
         }
 
         /// <summary>

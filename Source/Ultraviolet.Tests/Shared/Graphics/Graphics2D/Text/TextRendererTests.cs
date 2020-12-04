@@ -1627,6 +1627,40 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_AssignsCorrectSourceIndicesToShapedText.png");
         }
 
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the text renderer can optionally ignore certain layout components, such as color changes or font changes.")]
+        public void TextRenderer_IgnoresSpecifiedLayoutComponents()
+        {
+            var content = new TextRendererTestContent("Hello, |c:ffff0000|world|c|! This is |b|bold|b|, |i|italic|i|, |font:alt|stylized|font| text!");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var settings1 = new TextLayoutSettings(content.Font, null, null, TextFlags.Standard, TextLayoutOptions.None, null);
+                    var settings2 = new TextLayoutSettings(content.Font, null, null, TextFlags.Standard, TextLayoutOptions.IgnoreColorChanges, null);
+                    var settings3 = new TextLayoutSettings(content.Font, null, null, TextFlags.Standard, TextLayoutOptions.IgnoreFontFaceChanges, null);
+                    var settings4 = new TextLayoutSettings(content.Font, null, null, TextFlags.Standard, TextLayoutOptions.IgnoreFontStyleChanges, null);
+                    var settings5 = new TextLayoutSettings(content.Font, null, null, TextFlags.Standard, TextLayoutOptions.IgnoreStyleChanges, null);
+
+                    var cy = 0;
+
+                    content.SpriteBatch.Begin();
+                    cy += (Int32)content.TextRenderer.Draw(content.SpriteBatch, content.Text, new Vector2(0, cy), Color.White, settings1).Height;
+                    cy += (Int32)content.TextRenderer.Draw(content.SpriteBatch, content.Text, new Vector2(0, cy), Color.White, settings2).Height;
+                    cy += (Int32)content.TextRenderer.Draw(content.SpriteBatch, content.Text, new Vector2(0, cy), Color.White, settings3).Height;
+                    cy += (Int32)content.TextRenderer.Draw(content.SpriteBatch, content.Text, new Vector2(0, cy), Color.White, settings4).Height;
+                    cy += (Int32)content.TextRenderer.Draw(content.SpriteBatch, content.Text, new Vector2(0, cy), Color.White, settings5).Height;
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_IgnoresSpecifiedLayoutComponents.png");
+        }
+
         protected static LineInfoResult TheResultingValue(LineInfo obj)
         {
             return new LineInfoResult(obj);
