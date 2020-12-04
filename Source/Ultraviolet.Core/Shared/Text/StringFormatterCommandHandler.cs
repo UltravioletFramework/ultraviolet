@@ -90,6 +90,18 @@ namespace Ultraviolet.Core.Text
         { throw new NotSupportedException(CoreStrings.FmtCmdInvalidForArgument.Format(command, typeof(Int32))); }
 
         /// <summary>
+        /// Handles a command which has an associated formatter argument value of <see cref="Int64"/> type.
+        /// </summary>
+        /// <param name="formatter">The formatter which is parsing the command.</param>
+        /// <param name="output">The output buffer.</param>
+        /// <param name="command">The name of the command being handled.</param>
+        /// <param name="arguments">The arguments for the command being handled.</param>
+        /// <param name="value">The command's associated value.</param>
+        public virtual void HandleCommandInt64(StringFormatter formatter, StringBuilder output,
+            StringSegment command, StringFormatterCommandArguments arguments, Int64 value)
+        { throw new NotSupportedException(CoreStrings.FmtCmdInvalidForArgument.Format(command, typeof(Int64))); }
+
+        /// <summary>
         /// Handles a command which has an associated formatter argument value of <see cref="UInt16"/> type.
         /// </summary>
         /// <param name="formatter">The formatter which is parsing the command.</param>
@@ -114,6 +126,19 @@ namespace Ultraviolet.Core.Text
         public virtual void HandleCommandUInt32(StringFormatter formatter, StringBuilder output,
             StringSegment command, StringFormatterCommandArguments arguments, UInt32 value)
         { throw new NotSupportedException(CoreStrings.FmtCmdInvalidForArgument.Format(command, typeof(UInt32))); }
+
+        /// <summary>
+        /// Handles a command which has an associated formatter argument value of <see cref="UInt64"/> type.
+        /// </summary>
+        /// <param name="formatter">The formatter which is parsing the command.</param>
+        /// <param name="output">The output buffer.</param>
+        /// <param name="command">The name of the command being handled.</param>
+        /// <param name="arguments">The arguments for the command being handled.</param>
+        /// <param name="value">The command's associated value.</param>
+        [CLSCompliant(false)]
+        public virtual void HandleCommandUInt64(StringFormatter formatter, StringBuilder output,
+            StringSegment command, StringFormatterCommandArguments arguments, UInt64 value)
+        { throw new NotSupportedException(CoreStrings.FmtCmdInvalidForArgument.Format(command, typeof(UInt64))); }
 
         /// <summary>
         /// Handles a command which has an associated formatter argument value of <see cref="Single"/> type.

@@ -26,36 +26,11 @@ namespace Ultraviolet.Core.Text
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParseInt32(StringSegment segment, out Int32 result)
         {
-            var spaceCountLeading = CountLeadingSpace(ref segment);
-            var spaceCountTrailing = CountTrailingSpace(ref segment);
-
-            var valueStart = spaceCountLeading;
-            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
-
-            var sign = 1;
-            if (segment[spaceCountTrailing] == '-')
+            if (!TryParseInt64(segment, out var total))
             {
-                sign = -1;
-                valueStart++;
-                valueLength--;
+                result = default(Int32);
+                return false;
             }
-
-            var magnitude = (Int64)Math.Pow(10, valueLength - 1);
-            var digit = 0;
-            var total = 0L;
-            for (int i = 0; i < valueLength; i++)
-            {
-                if (!ConvertDecimalDigit(segment[valueStart + i], out digit))
-                {
-                    result = 0;
-                    return false;
-                }
-
-                total += (magnitude * digit);
-                magnitude /= 10;
-            }
-
-            total *= sign;
 
             if (total < Int32.MinValue || total > Int32.MaxValue)
                 throw new OverflowException();
@@ -82,25 +57,10 @@ namespace Ultraviolet.Core.Text
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParseHexadecimalInt32(StringSegment segment, out Int32 result)
         {
-            var spaceCountLeading = CountLeadingSpace(ref segment);
-            var spaceCountTrailing = CountTrailingSpace(ref segment);
-            
-            var valueStart = spaceCountLeading;
-            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
-            
-            var magnitude = (Int64)Math.Pow(16, valueLength - 1);
-            var digit = 0;
-            var total = 0L;
-            for (int i = 0; i < valueLength; i++)
+            if (!TryParseHexadecimalInt64(segment, out var total))
             {
-                if (!ConvertHexadecimalDigit(segment[valueStart + i], out digit))
-                {
-                    result = 0;
-                    return false;
-                }
-
-                total += (magnitude * digit);
-                magnitude /= 16;
+                result = 0;
+                return false;
             }
 
             if (total > Int32.MaxValue)
@@ -130,25 +90,10 @@ namespace Ultraviolet.Core.Text
         [CLSCompliant(false)]
         public static Boolean TryParseUInt32(StringSegment segment, out UInt32 result)
         {
-            var spaceCountLeading = CountLeadingSpace(ref segment);
-            var spaceCountTrailing = CountTrailingSpace(ref segment);
-
-            var valueStart = spaceCountLeading;
-            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
-
-            var magnitude = (Int64)Math.Pow(10, valueLength - 1);
-            var digit = 0;
-            var total = 0L;
-            for (int i = 0; i < valueLength; i++)
+            if (!TryParseUInt64(segment, out var total))
             {
-                if (!ConvertDecimalDigit(segment[valueStart + i], out digit))
-                {
-                    result = 0;
-                    return false;
-                }
-
-                total += (magnitude * digit);
-                magnitude /= 10;
+                result = 0;
+                return false;
             }
 
             if (total > UInt32.MaxValue)
@@ -178,14 +123,98 @@ namespace Ultraviolet.Core.Text
         [CLSCompliant(false)]
         public static Boolean TryParseHexadecimalUInt32(StringSegment segment, out UInt32 result)
         {
+            if (!TryParseHexadecimalUInt64(segment, out var total))
+            {
+                result = 0;
+                return false;
+            }
+
+            if (total > UInt32.MaxValue)
+                throw new OverflowException();
+
+            result = (UInt32)total;
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the decimal text of the specified <see cref="StringSegment"/> to an
+        /// instance of <see cref="Int64"/>, throwing a <see cref="FormatException"/> if the conversion fails.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <returns>The converted value.</returns>
+        public static Int64 ParseInt64(StringSegment segment) =>
+            TryParseInt64(segment, out var value) ? value : throw new FormatException();
+
+        /// <summary>
+        /// Converts the decimal text of the specified <see cref="StringSegment"/> to an 
+        /// instance of <see cref="Int64"/> if possible.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        public static Boolean TryParseInt64(StringSegment segment, out Int64 result)
+        {
             var spaceCountLeading = CountLeadingSpace(ref segment);
             var spaceCountTrailing = CountTrailingSpace(ref segment);
 
             var valueStart = spaceCountLeading;
             var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
-            
+
+            var sign = 1;
+            if (segment[spaceCountTrailing] == '-')
+            {
+                sign = -1;
+                valueStart++;
+                valueLength--;
+            }
+
+            var magnitude = (Int64)Math.Pow(10, valueLength - 1);
+            var digit = 0U;
+            var total = 0L;
+            for (int i = 0; i < valueLength; i++)
+            {
+                if (!ConvertDecimalDigit(segment[valueStart + i], out digit))
+                {
+                    result = 0;
+                    return false;
+                }
+
+                total += (magnitude * digit);
+                magnitude /= 10;
+            }
+
+            total *= sign;
+
+            result = total;
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an
+        /// instance of <see cref="Int64"/>, throwing a <see cref="FormatException"/> if the conversion fails.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <returns>The converted value.</returns>
+        public static Int64 ParseHexadecimalInt64(StringSegment segment) =>
+            TryParseHexadecimalInt64(segment, out var value) ? value : throw new FormatException();
+
+        /// <summary>
+        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an 
+        /// instance of <see cref="Int64"/> if possible.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        public static Boolean TryParseHexadecimalInt64(StringSegment segment, out Int64 result)
+        {
+            var spaceCountLeading = CountLeadingSpace(ref segment);
+            var spaceCountTrailing = CountTrailingSpace(ref segment);
+
+            var valueStart = spaceCountLeading;
+            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
+
             var magnitude = (Int64)Math.Pow(16, valueLength - 1);
-            var digit = 0;
+            var digit = 0U;
             var total = 0L;
             for (int i = 0; i < valueLength; i++)
             {
@@ -199,10 +228,97 @@ namespace Ultraviolet.Core.Text
                 magnitude /= 16;
             }
 
-            if (total > UInt32.MaxValue)
-                throw new OverflowException();
+            result = total;
+            return true;
+        }
 
-            result = (UInt32)total;
+        /// <summary>
+        /// Converts the decimal text of the specified <see cref="StringSegment"/> to an
+        /// instance of <see cref="UInt64"/>, throwing a <see cref="FormatException"/> if the conversion fails.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <returns>The converted value.</returns>
+        [CLSCompliant(false)]
+        public static UInt64 ParseUInt64(StringSegment segment) =>
+            TryParseUInt64(segment, out var value) ? value : throw new FormatException();
+
+        /// <summary>
+        /// Converts the decimal text of the specified <see cref="StringSegment"/> to an 
+        /// instance of <see cref="UInt64"/> if possible.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        [CLSCompliant(false)]
+        public static Boolean TryParseUInt64(StringSegment segment, out UInt64 result)
+        {
+            var spaceCountLeading = CountLeadingSpace(ref segment);
+            var spaceCountTrailing = CountTrailingSpace(ref segment);
+
+            var valueStart = spaceCountLeading;
+            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
+
+            var magnitude = (UInt64)Math.Pow(10, valueLength - 1);
+            var digit = 0U;
+            var total = 0UL;
+            for (int i = 0; i < valueLength; i++)
+            {
+                if (!ConvertDecimalDigit(segment[valueStart + i], out digit))
+                {
+                    result = 0;
+                    return false;
+                }
+
+                total += (magnitude * digit);
+                magnitude /= 10;
+            }
+
+            result = total;
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an
+        /// instance of <see cref="UInt64"/>, throwing a <see cref="FormatException"/> if the conversion fails.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <returns>The converted value.</returns>
+        [CLSCompliant(false)]
+        public static UInt64 ParseHexadecimalUInt64(StringSegment segment) =>
+            TryParseHexadecimalUInt64(segment, out var value) ? value : throw new FormatException();
+
+        /// <summary>
+        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an 
+        /// instance of <see cref="UInt64"/> if possible.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        [CLSCompliant(false)]
+        public static Boolean TryParseHexadecimalUInt64(StringSegment segment, out UInt64 result)
+        {
+            var spaceCountLeading = CountLeadingSpace(ref segment);
+            var spaceCountTrailing = CountTrailingSpace(ref segment);
+
+            var valueStart = spaceCountLeading;
+            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
+
+            var magnitude = (UInt64)Math.Pow(16, valueLength - 1);
+            var digit = 0U;
+            var total = 0UL;
+            for (int i = 0; i < valueLength; i++)
+            {
+                if (!ConvertHexadecimalDigit(segment[valueStart + i], out digit))
+                {
+                    result = 0;
+                    return false;
+                }
+
+                total += (magnitude * digit);
+                magnitude /= 16;
+            }
+
+            result = total;
             return true;
         }
 
@@ -245,7 +361,7 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Converts a character that represents a decimal digit into an integer value.
         /// </summary>
-        private static Boolean ConvertDecimalDigit(Char digit, out Int32 value)
+        private static Boolean ConvertDecimalDigit(Char digit, out UInt32 value)
         {
             switch (digit)
             {
@@ -267,7 +383,7 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Converts a character that represents a hexadecimal digit into an integer value.
         /// </summary>
-        private static Boolean ConvertHexadecimalDigit(Char digit, out Int32 value)
+        private static Boolean ConvertHexadecimalDigit(Char digit, out UInt32 value)
         {
             switch (digit)
             {

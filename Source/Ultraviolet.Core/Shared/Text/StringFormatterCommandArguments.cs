@@ -21,18 +21,25 @@ namespace Ultraviolet.Core.Text
 
             var argcount = 0;
 
-            for (int i = 0; i < length; i++)
+            if (Length > 0)
             {
-                var c = input[start + i];
+                for (int i = 0; i < length; i++)
+                {
+                    var c = input[start + i];
 
-                if (c == '}')
-                    break;
+                    if (c == '}')
+                        break;
 
-                if (c == ':')
-                    argcount++;
+                    if (c == ':')
+                        argcount++;
+                }
+
+                Count = argcount + 1;
             }
-
-            Count = argcount + 1;
+            else
+            {
+                Count = 0;
+            }
         }
 
         /// <inheritdoc/>

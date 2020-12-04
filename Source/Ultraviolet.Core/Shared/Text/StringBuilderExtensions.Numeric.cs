@@ -21,14 +21,14 @@ namespace Ultraviolet.Core.Text
         private static readonly char ms_default_pad_char = '0';
 
         //! Convert a given unsigned integer value to a string and concatenate onto the stringbuilder. Any base value allowed.
-        internal static StringBuilder Concat(this StringBuilder string_builder, uint uint_val, uint pad_amount, char pad_char, uint base_val)
+        internal static StringBuilder Concat(this StringBuilder string_builder, ulong ulong_val, uint pad_amount, char pad_char, uint base_val)
         {
             Debug.Assert(pad_amount >= 0);
             Debug.Assert(base_val > 0 && base_val <= 16);
 
             // Calculate length of integer when written out
-            uint length = 0;
-            uint length_calc = uint_val;
+            ulong length = 0;
+            ulong length_calc = ulong_val;
 
             do
             {
@@ -48,9 +48,9 @@ namespace Ultraviolet.Core.Text
                 strpos--;
 
                 // Lookup from static char array, to cover hex values too
-                string_builder[strpos] = ms_digits[uint_val % base_val];
+                string_builder[strpos] = ms_digits[ulong_val % base_val];
 
-                uint_val /= base_val;
+                ulong_val /= base_val;
                 length--;
             }
 
@@ -58,65 +58,65 @@ namespace Ultraviolet.Core.Text
         }
 
         //! Convert a given unsigned integer value to a string and concatenate onto the stringbuilder. Assume no padding and base ten.
-        internal static StringBuilder Concat(this StringBuilder string_builder, uint uint_val)
+        internal static StringBuilder Concat(this StringBuilder string_builder, ulong ulong_val)
         {
-            string_builder.Concat(uint_val, 0, ms_default_pad_char, 10);
+            string_builder.Concat(ulong_val, 0, ms_default_pad_char, 10);
             return string_builder;
         }
 
         //! Convert a given unsigned integer value to a string and concatenate onto the stringbuilder. Assume base ten.
-        internal static StringBuilder Concat(this StringBuilder string_builder, uint uint_val, uint pad_amount)
+        internal static StringBuilder Concat(this StringBuilder string_builder, ulong ulong_val, uint pad_amount)
         {
-            string_builder.Concat(uint_val, pad_amount, ms_default_pad_char, 10);
+            string_builder.Concat(ulong_val, pad_amount, ms_default_pad_char, 10);
             return string_builder;
         }
 
         //! Convert a given unsigned integer value to a string and concatenate onto the stringbuilder. Assume base ten.
-        internal static StringBuilder Concat(this StringBuilder string_builder, uint uint_val, uint pad_amount, char pad_char)
+        internal static StringBuilder Concat(this StringBuilder string_builder, ulong ulong_val, uint pad_amount, char pad_char)
         {
-            string_builder.Concat(uint_val, pad_amount, pad_char, 10);
+            string_builder.Concat(ulong_val, pad_amount, pad_char, 10);
             return string_builder;
         }
 
         //! Convert a given signed integer value to a string and concatenate onto the stringbuilder. Any base value allowed.
-        internal static StringBuilder Concat(this StringBuilder string_builder, int int_val, uint pad_amount, char pad_char, uint base_val)
+        internal static StringBuilder Concat(this StringBuilder string_builder, long long_val, uint pad_amount, char pad_char, uint base_val)
         {
             Debug.Assert(pad_amount >= 0);
             Debug.Assert(base_val > 0 && base_val <= 16);
 
             // Deal with negative numbers
-            if (int_val < 0)
+            if (long_val < 0)
             {
                 string_builder.Append('-');
-                uint uint_val = uint.MaxValue - ((uint)int_val) + 1; //< This is to deal with Int32.MinValue
-                string_builder.Concat(uint_val, pad_amount, pad_char, base_val);
+                ulong ulong_val = ulong.MaxValue - ((ulong)long_val) + 1; //< This is to deal with Int64.MinValue
+                string_builder.Concat(ulong_val, pad_amount, pad_char, base_val);
             }
             else
             {
-                string_builder.Concat((uint)int_val, pad_amount, pad_char, base_val);
+                string_builder.Concat((ulong)long_val, pad_amount, pad_char, base_val);
             }
 
             return string_builder;
         }
 
         //! Convert a given signed integer value to a string and concatenate onto the stringbuilder. Assume no padding and base ten.
-        internal static StringBuilder Concat(this StringBuilder string_builder, int int_val)
+        internal static StringBuilder Concat(this StringBuilder string_builder, long long_val)
         {
-            string_builder.Concat(int_val, 0, ms_default_pad_char, 10);
+            string_builder.Concat(long_val, 0, ms_default_pad_char, 10);
             return string_builder;
         }
 
         //! Convert a given signed integer value to a string and concatenate onto the stringbuilder. Assume base ten.
-        internal static StringBuilder Concat(this StringBuilder string_builder, int int_val, uint pad_amount)
+        internal static StringBuilder Concat(this StringBuilder string_builder, long long_val, uint pad_amount)
         {
-            string_builder.Concat(int_val, pad_amount, ms_default_pad_char, 10);
+            string_builder.Concat(long_val, pad_amount, ms_default_pad_char, 10);
             return string_builder;
         }
 
         //! Convert a given signed integer value to a string and concatenate onto the stringbuilder. Assume base ten.
-        internal static StringBuilder Concat(this StringBuilder string_builder, int int_val, uint pad_amount, char pad_char)
+        internal static StringBuilder Concat(this StringBuilder string_builder, long long_val, uint pad_amount, char pad_char)
         {
-            string_builder.Concat(int_val, pad_amount, pad_char, 10);
+            string_builder.Concat(long_val, pad_amount, pad_char, 10);
             return string_builder;
         }
 

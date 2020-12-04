@@ -410,6 +410,58 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <summary>
+        /// Retrieves the argument's value and converts it to an instance of <see cref="Int64"/>
+        /// if possible, or throws an exception if the conversion is not possible.
+        /// </summary>
+        /// <returns>The converted value.</returns>
+        public Int64 GetValueAsInt64()
+        {
+            Int64 result;
+            if (!TryGetValueAsInt64(out result))
+                throw new FormatException();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Attempts to retrieve the argument's value and convert it to an 
+        /// instance of <see cref="Int64"/> if possible.
+        /// </summary>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        public Boolean TryGetValueAsInt64(out Int64 result)
+        {
+            return StringSegmentConversion.TryParseInt64(Text, out result);
+        }
+
+        /// <summary>
+        /// Retrieves the argument's value and converts it to an instance of <see cref="UInt64"/>
+        /// if possible, or throws an exception if the conversion is not possible.
+        /// </summary>
+        /// <returns>The converted value.</returns>
+        [CLSCompliant(false)]
+        public UInt64 GetValueAsUInt64()
+        {
+            UInt64 result;
+            if (!TryGetValueAsUInt64(out result))
+                throw new FormatException();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Attempts to retrieve the argument's value and convert it to an 
+        /// instance of <see cref="UInt64"/> if possible.
+        /// </summary>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        [CLSCompliant(false)]
+        public Boolean TryGetValueAsUInt64(out UInt64 result)
+        {
+            return StringSegmentConversion.TryParseUInt64(Text, out result);
+        }
+
+        /// <summary>
         /// Gets the argument's text.
         /// </summary>
         public StringSegment Text { get; }

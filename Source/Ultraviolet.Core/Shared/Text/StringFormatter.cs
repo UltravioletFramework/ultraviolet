@@ -48,8 +48,10 @@ namespace Ultraviolet.Core.Text
             AddArgumentHandler<Char>(ArgumentHandler_Char);
             AddArgumentHandler<Int16>(ArgumentHandler_Int16);
             AddArgumentHandler<Int32>(ArgumentHandler_Int32);
+            AddArgumentHandler<Int64>(ArgumentHandler_Int64);
             AddArgumentHandler<UInt16>(ArgumentHandler_UInt16);
             AddArgumentHandler<UInt32>(ArgumentHandler_UInt32);
+            AddArgumentHandler<UInt64>(ArgumentHandler_UInt64);
             AddArgumentHandler<Single>(ArgumentHandler_Single);
             AddArgumentHandler<Double>(ArgumentHandler_Double);
             AddArgumentHandler<LocalizedString>(ArgumentHandler_LocalizedString);
@@ -62,6 +64,7 @@ namespace Ultraviolet.Core.Text
         {
             RegisterCommandHandler(stdCmd_Pad);
             RegisterCommandHandler(stdCmd_Decimals);
+            RegisterCommandHandler(stdCmd_Hex);
             RegisterCommandHandler(stdCmd_Variant);
             RegisterCommandHandler(stdCmd_Match);
         }
@@ -156,6 +159,15 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
+        public void AddArgument(Int64 value)
+        {
+            arguments.Add(new StringFormatterArgument(typeof(Int64), *(ulong*)&value));
+        }
+
+        /// <summary>
+        /// Adds an argument to the string formatter.
+        /// </summary>
+        /// <param name="value">The value to add as an argument.</param>
         [CLSCompliant(false)]
         public void AddArgument(UInt16 value)
         {
@@ -170,6 +182,16 @@ namespace Ultraviolet.Core.Text
         public void AddArgument(UInt32 value)
         {
             arguments.Add(new StringFormatterArgument(typeof(UInt32), *(ulong*)&value));
+        }
+
+        /// <summary>
+        /// Adds an argument to the string formatter.
+        /// </summary>
+        /// <param name="value">The value to add as an argument.</param>
+        [CLSCompliant(false)]
+        public void AddArgument(UInt64 value)
+        {
+            arguments.Add(new StringFormatterArgument(typeof(UInt64), value));
         }
 
         /// <summary>
@@ -565,7 +587,27 @@ namespace Ultraviolet.Core.Text
                 output.Concat(value);
             }
         }
-        
+
+        /// <summary>
+        /// Handles <see cref="Int64"/> formatter arguments.
+        /// </summary>
+        private static void ArgumentHandler_Int64(StringFormatter formatter,
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
+        {
+            var raw = argument.Value;
+            var value = *(Int64*)&raw;
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandInt64(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                output.Concat(value);
+            }
+        }
+
         /// <summary>
         /// Handles <see cref="UInt16"/> formatter arguments.
         /// </summary>
@@ -605,7 +647,27 @@ namespace Ultraviolet.Core.Text
                 output.Concat(value);
             }
         }
-        
+
+        /// <summary>
+        /// Handles <see cref="UInt64"/> formatter arguments.
+        /// </summary>
+        private static void ArgumentHandler_UInt64(StringFormatter formatter,
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
+        {
+            var raw = argument.Value;
+            var value = *(UInt64*)&raw;
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandUInt64(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                output.Concat(value);
+            }
+        }
+
         /// <summary>
         /// Handles <see cref="Single"/> formatter arguments.
         /// </summary>
@@ -678,6 +740,7 @@ namespace Ultraviolet.Core.Text
         // Standard command handlers.
         private static readonly StringFormatterCommandHandler stdCmd_Pad = new PadCommandHandler();
         private static readonly StringFormatterCommandHandler stdCmd_Decimals = new DecimalsCommandHandler();
+        private static readonly StringFormatterCommandHandler stdCmd_Hex = new HexCommandHandler();
         private static readonly StringFormatterCommandHandler stdCmd_Variant = new VariantCommandHandler();
         private static readonly StringFormatterCommandHandler stdCmd_Match = new MatchCommandHandler();
     }
