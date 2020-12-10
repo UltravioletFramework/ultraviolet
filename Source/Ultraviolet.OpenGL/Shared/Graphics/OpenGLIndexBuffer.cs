@@ -50,7 +50,10 @@ namespace Ultraviolet.OpenGL.Graphics
             if (inputSizeInBytes > size.ToInt32())
                 throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
 
-            SetDataInternal(data, 0, 0, inputSizeInBytes, SetDataOptions.None);
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+                SetDataInternal_OnMainThread(data, 0, 0, inputSizeInBytes, SetDataOptions.None);
+            else
+                SetDataInternal_OnBackgroundThread(data, 0, 0, inputSizeInBytes, SetDataOptions.None);
         }
 
         /// <inheritdoc/>
@@ -65,7 +68,10 @@ namespace Ultraviolet.OpenGL.Graphics
             if (inputSizeInBytes > size.ToInt32())
                 throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
 
-            SetDataInternal(data, (offset * inputElemSize), 0, inputSizeInBytes, options);
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+                SetDataInternal_OnMainThread(data, (offset * inputElemSize), 0, inputSizeInBytes, options);
+            else
+                SetDataInternal_OnBackgroundThread(data, (offset * inputElemSize), 0, inputSizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -75,7 +81,10 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(dstOffsetInBytes >= 0, nameof(dstOffsetInBytes));
             Contract.EnsureRange(sizeInBytes >= 0, nameof(sizeInBytes));
 
-            SetRawDataInternal(data + srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+                SetRawDataInternal_OnMainThread(data + srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
+            else
+                SetRawDataInternal_OnBackgroundThread(data + srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -205,11 +214,24 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Sets the buffer's data from native memory. Should only be called from the main Ultraviolet thread.
+        /// </summary>
+        private void SetDataInternal_OnMainThread(Object data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 countInBytes, SetDataOptions options)
+        {
+                var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    Upload(pData.AddrOfPinnedObject() + srcOffsetInBytes, dstOffsetInBytes, countInBytes, options);
+                }
+                finally { pData.Free(); }
+        }
+
+        /// <summary>
         /// Sets the buffer's data from native memory.
         /// </summary>
-        private void SetDataInternal(Object data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 countInBytes, SetDataOptions options)
+        private void SetDataInternal_OnBackgroundThread(Object data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 countInBytes, SetDataOptions options)
         {
-            if (Ultraviolet.IsExecutingOnCurrentThread)
+            Ultraviolet.QueueWorkItem(state =>
             {
                 var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
@@ -217,37 +239,26 @@ namespace Ultraviolet.OpenGL.Graphics
                     Upload(pData.AddrOfPinnedObject() + srcOffsetInBytes, dstOffsetInBytes, countInBytes, options);
                 }
                 finally { pData.Free(); }
-            }
-            else
-            {
-                Ultraviolet.QueueWorkItem(state =>
-                {
-                    var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
-                    try
-                    {
-                        Upload(pData.AddrOfPinnedObject() + srcOffsetInBytes, dstOffsetInBytes, countInBytes, options);
-                    }
-                    finally { pData.Free(); }
-                }, null, WorkItemOptions.ForceAsynchronousExecution)?.Wait();
-            }
+            }, null, WorkItemOptions.ForceAsynchronousExecution)?.Wait();
         }
 
         /// <summary>
         /// Sets the buffer's data from native memory.
         /// </summary>
-        private void SetRawDataInternal(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        private void SetRawDataInternal_OnMainThread(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
         {
-            if (Ultraviolet.IsExecutingOnCurrentThread)
+            Upload(data, offsetInBytes, countInBytes, options);
+        }
+
+        /// <summary>
+        /// Sets the buffer's data from native memory.
+        /// </summary>
+        private void SetRawDataInternal_OnBackgroundThread(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        {
+            Ultraviolet.QueueWorkItem(state =>
             {
                 Upload(data, offsetInBytes, countInBytes, options);
-            }
-            else
-            {
-                Ultraviolet.QueueWorkItem(state =>
-                {
-                    Upload(data, offsetInBytes, countInBytes, options);
-                }, null, WorkItemOptions.ForceAsynchronousExecution)?.Wait();
-            }
+            }, null, WorkItemOptions.ForceAsynchronousExecution)?.Wait();
         }
 
         /// <summary>
