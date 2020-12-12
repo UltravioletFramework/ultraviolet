@@ -120,6 +120,12 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libhidapi.so">
+      <Link>lib\armeabi-v7a\libhidapi.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libhidapi.so">
+      <Link>lib\x86\libhidapi.so</Link>
+    </AndroidNativeLibrary>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />

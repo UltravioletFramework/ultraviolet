@@ -4,8 +4,16 @@
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\armeabi-v7a\libhidapi.so">
+      <Link>lib\armeabi-v7a\libhidapi.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86\libhidapi.so">
+      <Link>lib\x86\libhidapi.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
   </ItemGroup>
