@@ -13,9 +13,7 @@ namespace Ultraviolet.BASS
     /// <summary>
     /// Represents the BASS implementation of the Ultraviolet audio subsystem.
     /// </summary>
-    public sealed unsafe class BASSUltravioletAudio : UltravioletResource,
-        IUltravioletAudio,
-        IMessageSubscriber<UltravioletMessageID>
+    public sealed unsafe class BASSUltravioletAudio : UltravioletResource, IUltravioletAudio, IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes a new instance of the BASSUltravioletAudio class.
@@ -24,6 +22,8 @@ namespace Ultraviolet.BASS
         public BASSUltravioletAudio(UltravioletContext uv)
             : base(uv)
         {
+            this.Capabilities = new BASSAudioCapabilities();
+
             if (uv.Platform == UltravioletPlatform.Windows || uv.Platform == UltravioletPlatform.macOS)
             {
                 if (!BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1))
@@ -187,6 +187,9 @@ namespace Ultraviolet.BASS
                 }
             }
         }
+
+        /// <inheritdoc/>
+        public AudioCapabilities Capabilities { get; }
 
         /// <inheritdoc/>
         public Single AudioMasterVolume 

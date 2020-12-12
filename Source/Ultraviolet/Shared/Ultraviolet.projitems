@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ArraySegmentExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\AudioCapabilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\DummyAudioCapabilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\IUltravioletAudioDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\PlaybackState.cs" />

@@ -38,6 +38,11 @@ namespace Ultraviolet
         IUltravioletAudioDevice PlaybackDevice { get; set; }
 
         /// <summary>
+        /// Gets a <see cref="AudioCapabilities"/> object which exposes the capabilities of the current audio device.
+        /// </summary>
+        AudioCapabilities Capabilities { get; }
+
+        /// <summary>
         /// Gets or sets the master volume for all audio output.
         /// </summary>
         Single AudioMasterVolume { get; set; }

@@ -18,9 +18,7 @@ namespace Ultraviolet.FMOD
     /// <summary>
     /// Represents the FMOD implementation of the Ultraviolet audio subsystem.
     /// </summary>
-    public sealed unsafe partial class FMODUltravioletAudio : UltravioletResource,
-        IUltravioletAudio,
-        IMessageSubscriber<UltravioletMessageID>
+    public sealed unsafe partial class FMODUltravioletAudio : UltravioletResource, IUltravioletAudio, IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes a new instance of the FMODUltravioletAudio class.
@@ -32,6 +30,8 @@ namespace Ultraviolet.FMOD
         {
             platformSpecificImpl = FMODPlatformSpecificImplementationDetails.Create();
             platformSpecificImpl.OnInitialized();
+
+            this.Capabilities = new FMODAudioCapabilities();
 
             InitializeLogging(configuration);
 
@@ -233,6 +233,9 @@ namespace Ultraviolet.FMOD
                 }
             }
         }
+
+        /// <inheritdoc/>
+        public AudioCapabilities Capabilities { get; }
 
         /// <inheritdoc/>
         public Single AudioMasterVolume

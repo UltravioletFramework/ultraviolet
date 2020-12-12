@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.BASS</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSAudioCapabilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSMediaDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSMediaImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSong.cs" />

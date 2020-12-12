@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.FMOD</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODAudioCapabilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODMediaDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODUltravioletAudioDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODMediaImporter.cs" />

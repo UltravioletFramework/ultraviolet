@@ -63,6 +63,9 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
+        public AudioCapabilities Capabilities { get; } = new DummyAudioCapabilities();
+
+        /// <inheritdoc/>
         public Single AudioMasterVolume
         {
             get { return 1f; }
