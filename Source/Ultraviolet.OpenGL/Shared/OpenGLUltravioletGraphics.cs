@@ -708,6 +708,8 @@ namespace Ultraviolet.OpenGL
         public void UpdateFrameCount()
         {
             frameCounter++;
+            frameTimeInMilliseconds = (Single)frameTimer.Elapsed.TotalMilliseconds;
+            frameTimer.Restart();
         }
 
         /// <summary>
@@ -728,10 +730,13 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
+        public GraphicsCapabilities Capabilities { get; private set; }
+
+        /// <inheritdoc/>
         public Single FrameRate => frameRate;
 
         /// <inheritdoc/>
-        public GraphicsCapabilities Capabilities { get; private set; }
+        public Single FrameTimeInMilliseconds => frameTimeInMilliseconds;
 
         /// <inheritdoc/>
         public Boolean CurrentRenderTargetIsSrgbEncoded => 
@@ -1146,9 +1151,11 @@ namespace Ultraviolet.OpenGL
         private RenderTargetUsage backBufferRenderTargetUsage;
 
         // Frame rate counter.
+        private readonly Stopwatch frameTimer = new Stopwatch();
         private TimeSpan frameCounterElapsed;
         private Int32 frameCounter;
         private Int32 frameRate;
+        private Single frameTimeInMilliseconds;
 
         // Current textures.
         private readonly Int32 maxTextureStages;

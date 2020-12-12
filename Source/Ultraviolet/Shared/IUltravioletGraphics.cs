@@ -13,7 +13,7 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="color">The <see cref="Color"/> to which to clear the color buffer.</param>
         void Clear(Color color);
-        
+
         /// <summary>
         /// Clears the back buffer to the specified color, depth, and stencil values.
         /// </summary>
@@ -291,20 +291,19 @@ namespace Ultraviolet
         void DrawInstancedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count, Int32 instances, Int32 baseInstance);
 
         /// <summary>
-        /// Gets the current frame rate.
-        /// </summary>
-        Single FrameRate
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets a <see cref="GraphicsCapabilities"/> object which exposes the capabilities of the current graphics device.
         /// </summary>
-        GraphicsCapabilities Capabilities 
-        { 
-            get; 
-        }
+        GraphicsCapabilities Capabilities { get; }
+
+        /// <summary>
+        /// Gets the current frame rate.
+        /// </summary>
+        Single FrameRate { get; }
+        
+        /// <summary>
+        /// Gets the previous frame time in milliseconds.
+        /// </summary>
+        Single FrameTimeInMilliseconds { get; }
 
         /// <summary>
         /// Gets a value indicating whether the current render target uses sRGB encoded color.

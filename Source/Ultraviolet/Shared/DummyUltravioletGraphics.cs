@@ -286,10 +286,13 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
+        public GraphicsCapabilities Capabilities { get; } = new DummyGraphicsCapabilities();
+
+        /// <inheritdoc/>
         public Single FrameRate => 60f;
 
         /// <inheritdoc/>
-        public GraphicsCapabilities Capabilities { get; } = new DummyGraphicsCapabilities();
+        public Single FrameTimeInMilliseconds => 16.67f;
 
         /// <inheritdoc/>
         public Boolean CurrentRenderTargetIsSrgbEncoded => false;
