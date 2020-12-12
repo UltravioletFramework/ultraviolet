@@ -199,9 +199,9 @@ namespace Ultraviolet.SDL2.Platform
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(scale >= 1f, nameof(scale));
 
-            this.WindowedPosition = new Point2((Int32)SDL_WINDOWPOS_CENTERED_MASK, (Int32)SDL_WINDOWPOS_CENTERED_MASK);
             this.WindowedClientSize = size;
             this.WindowScale = scale;
+            this.WindowedPosition = new Point2((Int32)SDL_WINDOWPOS_CENTERED_MASK, (Int32)SDL_WINDOWPOS_CENTERED_MASK);
         }
 
         /// <inheritdoc/>
