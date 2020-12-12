@@ -152,8 +152,6 @@ namespace Ultraviolet.OpenGL.Graphics
             if (mismatches.Any())
                 throw new InvalidOperationException(OpenGLStrings.EffectUniformTypeMismatch.Format(mismatches.First().Key));
 
-            System.Diagnostics.Debug.WriteLine(String.Join(", ", uniforms.Select(x => x.Key)));
-
             foreach (var kvp in uniforms)
             {
                 var uniformName = kvp.Key;
