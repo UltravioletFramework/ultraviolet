@@ -126,7 +126,9 @@ namespace Ultraviolet.FMOD
         /// <inheritdoc/>
         public IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices()
         {
-            return new IUltravioletAudioDevice[0];
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            return knownAudioDevices;
         }
 
         /// <inheritdoc/>
@@ -485,7 +487,7 @@ namespace Ultraviolet.FMOD
                 var namebuf = new StringBuilder(256);
                 var namelen = namebuf.Capacity;
 
-                for (int i = 0; i < numdrivers; i++)
+                for (var i = 0; i < numdrivers; i++)
                 {
                     result = FMOD_System_GetDriverInfo(system, i, namebuf, namelen, null, null, null, null);
                     if (result != FMOD_OK)
