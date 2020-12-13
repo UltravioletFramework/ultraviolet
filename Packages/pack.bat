@@ -33,6 +33,10 @@ powershell -Command "(gc Ultraviolet.BASS.nuspe_) -replace 'UV_VERSION', '%UV_VE
 nuget pack Ultraviolet.BASS.nuspec -Symbols -SymbolPackageFormat snupkg
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
+powershell -Command "(gc Ultraviolet.FMOD.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.FMOD.nuspec"
+nuget pack Ultraviolet.FMOD.nuspec
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
 powershell -Command "(gc Ultraviolet.Shims.NETCore2.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Shims.NETCore2.nuspec"
 nuget pack Ultraviolet.Shims.NETCore2.nuspec -Symbols -SymbolPackageFormat snupkg
 @if %errorlevel% neq 0 @exit /b %errorlevel%

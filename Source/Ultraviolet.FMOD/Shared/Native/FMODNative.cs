@@ -24,7 +24,7 @@ namespace Ultraviolet.FMOD.Native
             }
         }
         
-        public const UInt32 FMOD_VERSION = 0x00011003;
+        public const UInt32 FMOD_VERSION = 0x00020106;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FMOD_RESULT FMOD_Debug_Initialize(FMOD_DEBUG_FLAGS flags, FMOD_DEBUG_MODE mode, FMOD_DEBUG_CALLBACK callback, String filename) => impl.FMOD_Debug_Initialize(flags, mode, callback, filename);

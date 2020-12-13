@@ -5,7 +5,7 @@
     <Import Name="System.Text"/>
   </Imports>
   <Constants>
-    <Constant Name="FMOD_VERSION" Type="UInt32" Value="0x00011003"/>
+    <Constant Name="FMOD_VERSION" Type="UInt32" Value="0x00020106"/>
   </Constants>
   <OpaqueTypes>
     <OpaqueType Name="FMOD_SYSTEM"/>
