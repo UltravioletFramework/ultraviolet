@@ -8,6 +8,14 @@
       <Link>lib\armeabi-v7a\libhidapi.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\arm64-v8a\libSDL2.so">
+      <Link>lib\arm64-v8a\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\arm64-v8a\libhidapi.so">
+      <Link>lib\arm64-v8a\libhidapi.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -16,8 +24,16 @@
       <Link>lib\x86\libhidapi.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86_64\libSDL2.so">
+      <Link>lib\x86_64\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86_64\libhidapi.so">
+      <Link>lib\x86_64\libhidapi.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
   </ItemGroup>
   <PropertyGroup>  
-    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a,arm64-v8a,x86,x86_64</AndroidSupportedAbis>
   </PropertyGroup>
 </Project>

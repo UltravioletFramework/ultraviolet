@@ -28,7 +28,7 @@ namespace Ultraviolet.Tests.Audio
                     songPlayer.Play(song, 0.25f, 0.50f, 0.75f, false);
 
                     TheResultingValue(songPlayer.Volume).ShouldBe(0.25f);
-                    TheResultingValue(songPlayer.Pitch).ShouldBe(0.50f);
+                    TheResultingValue(songPlayer.Pitch).ShouldBe(content.Ultraviolet.GetAudio().Capabilities.SupportsPitchShifting ? 0.50f : 0.00f);
                     TheResultingValue(songPlayer.Pan).ShouldBe(0.75f);
                 })
                 .OnUpdate((app, time) =>
@@ -108,6 +108,8 @@ namespace Ultraviolet.Tests.Audio
             var songPlayer = default(SongPlayer);
             var song = default(Song);
 
+            var supported = false;
+
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
@@ -121,6 +123,8 @@ namespace Ultraviolet.Tests.Audio
                     TheResultingValue(songPlayer.Pitch).ShouldBe(0f);
 
                     songPlayer.SlidePitch(-1f, TimeSpan.FromSeconds(1));
+
+                    supported = content.Ultraviolet.GetAudio().Capabilities.SupportsPitchShifting;
                 })
                 .OnUpdate((app, time) =>
                 {
@@ -128,7 +132,7 @@ namespace Ultraviolet.Tests.Audio
                 })
                 .RunFor(TimeSpan.FromSeconds(2));
 
-            TheResultingValue(songPlayer.Pitch).ShouldBe(-1f);
+            TheResultingValue(songPlayer.Pitch).ShouldBe(supported ? -1f : 0f);
         }
 
         [Test]

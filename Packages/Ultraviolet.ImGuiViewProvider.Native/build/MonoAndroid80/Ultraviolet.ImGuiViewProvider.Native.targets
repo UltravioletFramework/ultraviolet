@@ -4,12 +4,20 @@
       <Link>lib\armeabi-v7a\libcimgui.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\arm64-v8a\libcimgui.so">
+      <Link>lib\arm64-v8a\libcimgui.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86\libcimgui.so">
       <Link>lib\x86\libcimgui.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86_64\libcimgui.so">
+      <Link>lib\x86_64\libcimgui.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
   </ItemGroup>
   <PropertyGroup>  
-    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a,arm64-v8a,x86,x86_64</AndroidSupportedAbis>
   </PropertyGroup>
 </Project>

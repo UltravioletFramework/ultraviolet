@@ -5,7 +5,6 @@ using Ultraviolet.BASS.Messages;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using static Ultraviolet.BASS.Native.BASSFXNative;
 using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
@@ -143,8 +142,6 @@ namespace Ultraviolet.BASS.Audio
             Contract.EnsureNotDisposed(this, Disposed);
 
             EnsureChannelIsValid();
-
-            BASSUtil.SlidePitch(stream, pitch, time);
         }
 
         /// <inheritdoc/>
@@ -245,11 +242,10 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Single Pitch
         {
-            get => IsChannelValid() ? BASSUtil.GetPitch(stream) : 0f;
+            get => 0f;
             set
             {
                 EnsureChannelIsValid();
-                BASSUtil.SetPitch(stream, MathUtil.Clamp(value, -1f, 1f));
             }
         }
 
@@ -310,8 +306,7 @@ namespace Ultraviolet.BASS.Audio
 
             Stop();
 
-            stream = ((BASSSong)song).CreateStream(BASS_STREAM_DECODE);
-            stream = BASS_FX_TempoCreate(stream, BASS_FX_FREESOURCE | BASS_STREAM_AUTOFREE);
+            stream = ((BASSSong)song).CreateStream(0);
             if (!BASSUtil.IsValidHandle(stream))
                 throw new BASSException();
 
@@ -320,7 +315,6 @@ namespace Ultraviolet.BASS.Audio
 
             BASSUtil.SetIsLooping(stream, autoloop);
             BASSUtil.SetVolume(stream, MathUtil.Clamp(volume, 0f, 1f));
-            BASSUtil.SetPitch(stream, MathUtil.Clamp(pitch, -1f, 1f));
             BASSUtil.SetPan(stream, MathUtil.Clamp(pan, -1f, 1f));
 
             if (loopStart > TimeSpan.Zero && loopLength <= TimeSpan.Zero)

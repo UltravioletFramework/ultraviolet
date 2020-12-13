@@ -165,53 +165,6 @@ namespace Ultraviolet.BASS.Audio
         }
 
         /// <summary>
-        /// Gets the pitch of the specified channel.
-        /// </summary>
-        /// <param name="handle">The handle that represents the channel to evaluate.</param>
-        /// <returns>The channel's pitch.</returns>
-        public static Single GetPitch(UInt32 handle)
-        {
-            unsafe
-            {
-                Single value;
-                if (!BASS_ChannelGetAttribute(handle, BASS_ATTRIB_TEMPO_PITCH, &value))
-                    throw new BASSException();
-                return value / SemitonesPerOctave;
-            }
-        }
-
-        /// <summary>
-        /// Sets the pitch of the specified channel.
-        /// </summary>
-        /// <param name="handle">The handle that represents the channel to adjust.</param>
-        /// <param name="pitch">The channel's new pitch.</param>
-        public static void SetPitch(UInt32 handle, Single pitch)
-        {
-            if (BASS_ChannelIsSliding(handle, BASS_ATTRIB_TEMPO_PITCH))
-            {
-                if (!BASS_ChannelSlideAttribute(handle, BASS_ATTRIB_TEMPO_PITCH, pitch * SemitonesPerOctave, 0))
-                    throw new BASSException();
-            }
-            else
-            {
-                if (!BASS_ChannelSetAttribute(handle, BASS_ATTRIB_TEMPO_PITCH, pitch * SemitonesPerOctave))
-                    throw new BASSException();
-            }
-
-            var tempo = (Math.Pow(2.0, pitch) - 1.0) * 100.0;
-            if (BASS_ChannelIsSliding(handle, BASS_ATTRIB_TEMPO))
-            {
-                if (!BASS_ChannelSlideAttribute(handle, BASS_ATTRIB_TEMPO, (float)tempo, 0))
-                    throw new BASSException();
-            }
-            else
-            {
-                if (!BASS_ChannelSetAttribute(handle, BASS_ATTRIB_TEMPO, (float)tempo))
-                    throw new BASSException();
-            }
-        }
-
-        /// <summary>
         /// Gets the pan of the specified channel.
         /// </summary>
         /// <param name="handle">The handle that represents the channel to evaluate.</param>
@@ -255,22 +208,6 @@ namespace Ultraviolet.BASS.Audio
         public static void SlideVolume(UInt32 handle, Single volume, TimeSpan time)
         {
             if (!BASS_ChannelSlideAttribute(handle, BASS_ATTRIB_VOL, volume, (uint)time.TotalMilliseconds))
-                throw new BASSException();
-        }
-
-        /// <summary>
-        /// Slides the pitch of the specified channel.
-        /// </summary>
-        /// <param name="handle">The handle that represents the channel to slide.</param>
-        /// <param name="pitch">The channel's new pitch.</param>
-        /// <param name="time">The time over which to perform the slide.</param>
-        public static void SlidePitch(UInt32 handle, Single pitch, TimeSpan time)
-        {
-            if (!BASS_ChannelSlideAttribute(handle, BASS_ATTRIB_TEMPO_PITCH, pitch * SemitonesPerOctave, (uint)time.TotalMilliseconds))
-                throw new BASSException();
-
-            var tempo = (Math.Pow(2.0, pitch) - 1.0) * 100.0;
-            if (!BASS_ChannelSlideAttribute(handle, BASS_ATTRIB_TEMPO, (float)tempo, (uint)time.TotalMilliseconds))
                 throw new BASSException();
         }
 

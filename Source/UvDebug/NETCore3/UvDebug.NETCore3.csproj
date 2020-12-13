@@ -42,13 +42,7 @@
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass.so" Link="x64\unix\libbass.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass_fx.so" Link="x64\unix\libbass_fx.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\ImGui\x64\win32nt\cimgui.dll" Link="x64\win32nt\cimgui.dll">
@@ -57,19 +51,10 @@
     <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass_fx.dll" Link="x64\win32nt\bass_fx.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass.so" Link="x86\unix\libbass.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass_fx.so" Link="x86\unix\libbass_fx.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass_fx.dll" Link="x86\win32nt\bass_fx.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib" Link="x64\osx\libSDL2.dylib">

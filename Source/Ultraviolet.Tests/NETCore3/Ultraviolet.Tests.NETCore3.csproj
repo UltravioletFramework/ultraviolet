@@ -31,13 +31,7 @@
     <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass_fx.dll" Link="x64\win32nt\bass_fx.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass_fx.dll" Link="x86\win32nt\bass_fx.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\freetype.dll" Link="x64\win32nt\freetype.dll">

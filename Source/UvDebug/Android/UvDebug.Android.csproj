@@ -42,7 +42,8 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>
+    </AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -81,9 +82,6 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass.so">
       <Link>lib\armeabi-v7a\libbass.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so">
-      <Link>lib\armeabi-v7a\libbass_fx.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so">
       <Link>lib\armeabi-v7a\libfreetype.so</Link>
     </AndroidNativeLibrary>
@@ -99,11 +97,36 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libhidapi.so">
+      <Link>lib\armeabi-v7a\libhidapi.so</Link>
+    </AndroidNativeLibrary>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\arm64-v8a\libbass.so">
+      <Link>lib\arm64-v8a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\arm64-v8a\libfreetype.so">
+      <Link>lib\arm64-v8a\libfreetype.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\arm64-v8a\libharfbuzz.so">
+      <Link>lib\arm64-v8a\libharfbuzz.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\arm64-v8a\libpng16.so">
+      <Link>lib\arm64-v8a\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\arm64-v8a\libcimgui.so">
+      <Link>lib\arm64-v8a\libcimgui.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\arm64-v8a\libSDL2.so">
+      <Link>lib\arm64-v8a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\arm64-v8a\libhidapi.so">
+      <Link>lib\arm64-v8a\libhidapi.so</Link>
+    </AndroidNativeLibrary>
+  </ItemGroup>
+  <ItemGroup>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass_fx.so">
-      <Link>lib\x86\libbass_fx.so</Link>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libfreetype.so">
       <Link>lib\x86\libfreetype.so</Link>
@@ -120,12 +143,34 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libhidapi.so">
-      <Link>lib\armeabi-v7a\libhidapi.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libhidapi.so">
       <Link>lib\x86\libhidapi.so</Link>
     </AndroidNativeLibrary>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86_64\libbass.so">
+      <Link>lib\x86_64\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86_64\libfreetype.so">
+      <Link>lib\x86_64\libfreetype.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86_64\libharfbuzz.so">
+      <Link>lib\x86_64\libharfbuzz.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86_64\libpng16.so">
+      <Link>lib\x86_64\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\x86_64\libcimgui.so">
+      <Link>lib\x86_64\libcimgui.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86_64\libSDL2.so">
+      <Link>lib\x86_64\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86_64\libhidapi.so">
+      <Link>lib\x86_64\libhidapi.so</Link>
+    </AndroidNativeLibrary>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />

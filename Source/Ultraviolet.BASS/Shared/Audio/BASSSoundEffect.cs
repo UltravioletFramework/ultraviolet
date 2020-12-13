@@ -4,7 +4,6 @@ using Ultraviolet.Audio;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
-using static Ultraviolet.BASS.Native.BASSFXNative;
 using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
@@ -80,32 +79,9 @@ namespace Ultraviolet.BASS.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var channel = 0u;
-
-            if (pitch == 0)
-            {
-                channel = BASS_SampleGetChannel(sample, false);
-                if (!BASSUtil.IsValidHandle(channel))
-                    throw new BASSException();
-            }
-            else
-            {
-                var stream = BASS_StreamCreate(sampleInfo.freq, sampleInfo.chans, sampleInfo.flags | BASS_STREAM_DECODE, STREAMPROC_PUSH, IntPtr.Zero);
-                if (!BASSUtil.IsValidHandle(stream))
-                    throw new BASSException();
-
-                var pushed = BASS_StreamPutData(stream, sampleData, sampleInfo.length);
-                if (!BASSUtil.IsValidValue(pushed))
-                    throw new BASSException();
-
-                stream = BASS_FX_TempoCreate(stream, BASS_FX_FREESOURCE | BASS_STREAM_AUTOFREE);
-                if (!BASSUtil.IsValidHandle(stream))
-                    throw new BASSException();
-
-                channel = stream;
-
-                BASSUtil.SetPitch(channel, MathUtil.Clamp(pitch, -1f, 1f));
-            }
+            var channel = BASS_SampleGetChannel(sample, false);
+            if (!BASSUtil.IsValidHandle(channel))
+                throw new BASSException();
 
             BASSUtil.SetVolume(channel, MathUtil.Clamp(volume, 0f, 1f));
             BASSUtil.SetPan(channel, MathUtil.Clamp(pan, -1f, 1f));

@@ -15,7 +15,7 @@ namespace Ultraviolet.Tests.Audio
         public void SoundEffectPlayer_PlaySetsVolumePitchAndPan(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
-            var sfx       = default(SoundEffect);
+            var sfx = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithAudioImplementation(audioImplementation)
@@ -23,12 +23,12 @@ namespace Ultraviolet.Tests.Audio
                 .WithContent(content =>
                 {
                     sfxPlayer = SoundEffectPlayer.Create();
-                    sfx       = content.Load<SoundEffect>("SoundEffects/grenade");
+                    sfx = content.Load<SoundEffect>("SoundEffects/grenade");
 
                     sfxPlayer.Play(sfx, 0.25f, 0.50f, 0.75f, false);
 
                     TheResultingValue(sfxPlayer.Volume).ShouldBe(0.25f);
-                    TheResultingValue(sfxPlayer.Pitch).ShouldBe(0.50f);
+                    TheResultingValue(sfxPlayer.Pitch).ShouldBe(content.Ultraviolet.GetAudio().Capabilities.SupportsPitchShifting ? 0.50f : 0.00f);
                     TheResultingValue(sfxPlayer.Pan).ShouldBe(0.75f);
                 })
                 .OnUpdate((app, time) =>
@@ -44,7 +44,7 @@ namespace Ultraviolet.Tests.Audio
         public void SoundEffectPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
-            var sfx       = default(SoundEffect);
+            var sfx = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithAudioImplementation(audioImplementation)
@@ -52,7 +52,7 @@ namespace Ultraviolet.Tests.Audio
                 .WithContent(content =>
                 {
                     sfxPlayer = SoundEffectPlayer.Create();
-                    sfx       = content.Load<SoundEffect>("SoundEffects/grenade");
+                    sfx = content.Load<SoundEffect>("SoundEffects/grenade");
 
                     sfxPlayer.Play(sfx, 0.25f, 0.50f, 0.75f, false);
                     sfxPlayer.Stop();
@@ -75,7 +75,7 @@ namespace Ultraviolet.Tests.Audio
         public void SoundEffectPlayer_SlidesVolumeCorrectly(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
-            var sfx       = default(SoundEffect);
+            var sfx = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithAudioImplementation(audioImplementation)
@@ -83,7 +83,7 @@ namespace Ultraviolet.Tests.Audio
                 .WithContent(content =>
                 {
                     sfxPlayer = SoundEffectPlayer.Create();
-                    sfx       = content.Load<SoundEffect>("SoundEffects/grenade");
+                    sfx = content.Load<SoundEffect>("SoundEffects/grenade");
 
                     sfxPlayer.Play(sfx, false);
 
@@ -106,7 +106,9 @@ namespace Ultraviolet.Tests.Audio
         public void SoundEffectPlayer_SlidesPitchCorrectly(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
-            var sfx       = default(SoundEffect);
+            var sfx = default(SoundEffect);
+
+            var supported = true;
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithAudioImplementation(audioImplementation)
@@ -114,13 +116,15 @@ namespace Ultraviolet.Tests.Audio
                 .WithContent(content =>
                 {
                     sfxPlayer = SoundEffectPlayer.Create();
-                    sfx       = content.Load<SoundEffect>("SoundEffects/grenade");
+                    sfx = content.Load<SoundEffect>("SoundEffects/grenade");
 
                     sfxPlayer.Play(sfx, false);
 
                     TheResultingValue(sfxPlayer.Pitch).ShouldBe(0f);
 
                     sfxPlayer.SlidePitch(-1f, TimeSpan.FromSeconds(1));
+
+                    supported = content.Ultraviolet.GetAudio().Capabilities.SupportsPitchShifting;
                 })
                 .OnUpdate((app, time) =>
                 {
@@ -128,7 +132,7 @@ namespace Ultraviolet.Tests.Audio
                 })
                 .RunFor(TimeSpan.FromSeconds(2));
 
-            TheResultingValue(sfxPlayer.Pitch).ShouldBe(-1f);
+            TheResultingValue(sfxPlayer.Pitch).ShouldBe(supported ? -1f : 0f);
         }
 
         [Test]
@@ -137,7 +141,7 @@ namespace Ultraviolet.Tests.Audio
         public void SoundEffectPlayer_SlidesPanCorrectly(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
-            var sfx       = default(SoundEffect);
+            var sfx = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithAudioImplementation(audioImplementation)
@@ -145,7 +149,7 @@ namespace Ultraviolet.Tests.Audio
                 .WithContent(content =>
                 {
                     sfxPlayer = SoundEffectPlayer.Create();
-                    sfx       = content.Load<SoundEffect>("SoundEffects/grenade");
+                    sfx = content.Load<SoundEffect>("SoundEffects/grenade");
 
                     sfxPlayer.Play(sfx, false);
 

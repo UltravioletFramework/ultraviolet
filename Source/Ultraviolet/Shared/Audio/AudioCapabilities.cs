@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ultraviolet.Audio
 {
@@ -9,6 +7,9 @@ namespace Ultraviolet.Audio
     /// </summary>
     public abstract class AudioCapabilities
     {
-
+        /// <summary>
+        /// Gets a value indicating whether the audio device supports shifting the pitch of songs and effects.
+        /// </summary>
+        public abstract Boolean SupportsPitchShifting { get; }
     }
 }

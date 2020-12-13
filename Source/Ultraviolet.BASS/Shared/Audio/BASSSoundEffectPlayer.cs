@@ -1,10 +1,8 @@
 ﻿using System;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Messages;
-using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using static Ultraviolet.BASS.Native.BASSFXNative;
 using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
@@ -118,8 +116,7 @@ namespace Ultraviolet.BASS.Audio
             if (State == PlaybackState.Stopped)
                 throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
-            PromoteToStream(0f);
-            BASSUtil.SlidePitch(channel, pitch, time);
+            /* No-op */
         }
 
         /// <inheritdoc/>
@@ -245,23 +242,11 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Single Pitch
         {
-            get
-            {
-                if (!IsHandleValid() || !promoted)
-                    return 0f;
-
-                return BASSUtil.GetPitch(channel);
-            }
+            get { return 0f; }
             set
             {
                 if (State == PlaybackState.Stopped)
-                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid); ;
-
-                var pitch = MathUtil.Clamp(value, -1f, 1f);
-                if (!PromoteToStream(pitch))
-                {
-                    BASSUtil.SetPitch(channel, pitch);
-                }
+                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
             }
         }
 
@@ -274,7 +259,7 @@ namespace Ultraviolet.BASS.Audio
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
-                BASSUtil.SetPitch(channel, MathUtil.Clamp(value, -1f, 1f));
+                BASSUtil.SetPan(channel, MathUtil.Clamp(value, -1f, 1f));
             }
         }
 
@@ -313,7 +298,7 @@ namespace Ultraviolet.BASS.Audio
             // Retrieve the sample data from the sound effect.
             Ultraviolet.ValidateResource(soundEffect);
             var bassfx = (BASSSoundEffect)soundEffect;
-            var sample = bassfx.GetSampleInfo(out this.sampleData, out this.sampleInfo);
+            var sample = bassfx.GetSampleInfo(out _, out _);
 
             // Get a channel on which to play the sample.
             channel = BASS_SampleGetChannel(sample, true);
@@ -327,16 +312,9 @@ namespace Ultraviolet.BASS.Audio
             }
 
             // Set the channel's attributes.
-            if (pitch == 0)
-            {
-                BASSUtil.SetIsLooping(channel, loop);
-                BASSUtil.SetVolume(channel, MathUtil.Clamp(volume, 0f, 1f));
-                BASSUtil.SetPan(channel, MathUtil.Clamp(pan, -1f, 1f));
-            }
-            else
-            {
-                PromoteToStream(volume, MathUtil.Clamp(pitch, -1f, 1f), pan, loop);
-            }
+            BASSUtil.SetIsLooping(channel, loop);
+            BASSUtil.SetVolume(channel, MathUtil.Clamp(volume, 0f, 1f));
+            BASSUtil.SetPan(channel, MathUtil.Clamp(pan, -1f, 1f));
 
             // Play the channel.
             if (!BASS_ChannelPlay(channel, true))
@@ -369,120 +347,16 @@ namespace Ultraviolet.BASS.Audio
             }
 
             channel = 0;
-            promoted = false;
             playing = null;
 
             return true;
         }
 
-        /// <summary>
-        /// Promotes the current channel to a stream.  
-        /// This is necessary if the pitch is shifted, because BASS_FX only works on streams.
-        /// </summary>
-        private Boolean PromoteToStream(Single pitch)
-        {
-            return PromoteToStream(Volume, pitch, Pan, IsLooping);
-        }
-
-        /// <summary>
-        /// Promotes the current channel to a stream.  
-        /// This is necessary if the pitch is shifted, because BASS_FX only works on streams.
-        /// </summary>
-        /// <param name="volume">The stream's initial volume.</param>
-        /// <param name="pitch">The stream's initial pitch.</param>
-        /// <param name="pan">The stream's initial pan.</param>
-        /// <param name="loop">A value indicating whether to loop the stream.</param>
-        private Boolean PromoteToStream(Single volume, Single pitch, Single pan, Boolean loop)
-        {
-            if (BASSUtil.IsValidHandle(stream))
-                return false;
-
-            // If the channel is currently playing, pause it.
-            var playing = (State == PlaybackState.Playing);
-            if (playing)
-            {
-                if (!BASS_ChannelPause(channel))
-                    throw new BASSException();
-            }
-
-            // Get the current position of the playing channel so that we can advance the stream to match.
-            var streampos = (uint)BASS_ChannelGetPosition(channel, 0);
-            if (!BASSUtil.IsValidValue(streampos))
-                throw new BASSException();
-
-            // Create a process for streaming data from our sample into the new stream.
-            sampleDataPosition = (int)streampos;
-            sampleDataLength = (int)sampleInfo.length;
-            sampleDataStreamProc = new StreamProc((handle, buffer, length, user) =>
-            {
-                if (sampleDataPosition >= sampleDataLength)
-                    sampleDataPosition = 0;
-
-                var sfx = (BASSSoundEffect)this.playing;
-                if (sfx == null || sfx.Disposed)
-                    return BASSNative.BASS_STREAMPROC_END;
-
-                var byteCount = Math.Min(length, (uint)sampleDataLength - streampos);
-                unsafe
-                {
-                    byte* pBufferSrc = (byte*)(sampleData + sampleDataPosition).ToPointer();
-                    byte* pBufferDst = (byte*)(buffer).ToPointer();
-                    for (int i = 0; i < byteCount; i++)
-                    {
-                        *pBufferDst++ = *pBufferSrc++;
-                    }
-                }
-                sampleDataPosition += (int)byteCount;
-
-                return streampos >= sampleDataLength ?
-                    byteCount | BASSNative.BASS_STREAMPROC_END :
-                    byteCount;
-            });
-
-            // Create a decoding stream based on our sample channel.
-            stream = BASS_StreamCreate(sampleInfo.freq, sampleInfo.chans, sampleInfo.flags | BASS_STREAM_DECODE, sampleDataStreamProc, IntPtr.Zero);
-            if (!BASSUtil.IsValidHandle(stream))
-                throw new BASSException();
-
-            // Create an FX stream to shift the sound effect's pitch.
-            stream = BASS_FX_TempoCreate(stream, BASS_FX_FREESOURCE);
-            if (!BASSUtil.IsValidHandle(stream))
-                throw new BASSException();
-
-            // Set the new stream's attributes.
-            BASSUtil.SetVolume(stream, volume);
-            BASSUtil.SetPitch(stream, pitch);
-            BASSUtil.SetPan(stream, pan);
-            BASSUtil.SetIsLooping(stream, loop);
-
-            // Stop the old channel and switch to the stream.
-            if (!BASS_ChannelStop(channel))
-                throw new BASSException();
-            channel = stream;
-
-            // If we were previously playing, play the stream.
-            if (playing)
-            {
-                if (!BASS_ChannelPlay(channel, false))
-                    throw new BASSException();
-            }
-
-            promoted = true;
-            return true;
-        }
-
         // The currently-playing BASS resources.
-        private Boolean promoted;
+        private Int32 sampleDataPosition;
         private UInt32 sample;
         private UInt32 stream;
         private UInt32 channel;
         private SoundEffect playing;
-
-        // The data source for promoted streams.
-        private BASS_SAMPLE sampleInfo;
-        private IntPtr sampleData;
-        private Int32 sampleDataLength;
-        private Int32 sampleDataPosition;
-        private StreamProc sampleDataStreamProc;
     }
 }

@@ -72,8 +72,14 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so" target="build\MonoAndroid80\lib\armeabi-v7a\libfreetype.so"/>
     <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so" target="build\MonoAndroid80\lib\armeabi-v7a\libharfbuzz.so"/>	
     <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so" target="build\MonoAndroid80\lib\armeabi-v7a\libpng16.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libfreetype.so" target="build\MonoAndroid80\lib\arm64-v8a\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libharfbuzz.so" target="build\MonoAndroid80\lib\arm64-v8a\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libpng16.so" target="build\MonoAndroid80\lib\arm64-v8a\libpng16.so"/>	
     <file src="..\Dependencies\FreeType2\Android\x86\libfreetype.so" target="build\MonoAndroid80\lib\x86\libfreetype.so"/>
     <file src="..\Dependencies\FreeType2\Android\x86\libharfbuzz.so" target="build\MonoAndroid80\lib\x86\libharfbuzz.so"/>	
     <file src="..\Dependencies\FreeType2\Android\x86\libpng16.so" target="build\MonoAndroid80\lib\x86\libpng16.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86_64\libfreetype.so" target="build\MonoAndroid80\lib\x86_64\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\x86_64\libharfbuzz.so" target="build\MonoAndroid80\lib\x86_64\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86_64\libpng16.so" target="build\MonoAndroid80\lib\x86_64\libpng16.so"/>	
   </files>  
 </package>
