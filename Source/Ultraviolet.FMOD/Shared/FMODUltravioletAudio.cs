@@ -74,6 +74,12 @@ namespace Ultraviolet.FMOD
             UpdateAudioDevices();
             PlaybackDevice = GetDefaultDevice();
 
+            FMOD_System_SetCallback(system, (system1, type, commanddata1, commanddata2, userdata) =>
+            {
+                UpdateAudioDevices();
+                return FMOD_OK;
+            }, FMOD_SYSTEM_CALLBACK_TYPE.DEVICELISTCHANGED | FMOD_SYSTEM_CALLBACK_TYPE.DEVICELOST);
+            
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationCreated);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
@@ -157,8 +163,6 @@ namespace Ultraviolet.FMOD
             if (result != FMOD_OK)
                 throw new FMODException(result);
             
-            UpdateAudioDevices();
-
             Updating?.Invoke(this, time);
         }
 
@@ -470,10 +474,8 @@ namespace Ultraviolet.FMOD
         /// </summary>
         private void UpdateAudioDevices()
         {
-            var result = default(FMOD_RESULT);
-
             var numdrivers = 0;
-            result = FMOD_System_GetNumDrivers(system, &numdrivers);
+            var result = FMOD_System_GetNumDrivers(system, &numdrivers);
             if (result != FMOD_OK)
                 throw new FMODException(result);
             
@@ -493,9 +495,11 @@ namespace Ultraviolet.FMOD
                     if (result != FMOD_OK)
                         throw new FMODException(result);
 
-                    var device = new FMODUltravioletAudioDevice(Ultraviolet, i, namebuf.ToString());
-                    device.IsValid = true;
-                    device.IsDefault = (i == 0);
+                    var device = new FMODUltravioletAudioDevice(Ultraviolet, i, namebuf.ToString())
+                    {
+                        IsValid = true,
+                        IsDefault = i == 0
+                    };
 
                     knownAudioDevices.Add(device);
                 }
@@ -560,8 +564,7 @@ namespace Ultraviolet.FMOD
 
         // Audio device cache.
         private FMODUltravioletAudioDevice playbackDevice;
-        private List<FMODUltravioletAudioDevice> knownAudioDevices =
-            new List<FMODUltravioletAudioDevice>();
+        private List<FMODUltravioletAudioDevice> knownAudioDevices = new List<FMODUltravioletAudioDevice>();
         
         // Debug output callbacks.
         private DebugCallback debugCallback;
