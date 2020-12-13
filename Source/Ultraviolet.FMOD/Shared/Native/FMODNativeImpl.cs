@@ -7,6 +7,8 @@ namespace Ultraviolet.FMOD.Native
 {
 #pragma warning disable 1591
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate FMOD_RESULT FMOD_SYSTEM_CALLBACK(void* system, FMOD_SYSTEM_CALLBACK_TYPE type, void* commanddata1, void* commanddata2, void* userdata);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate FMOD_RESULT FMOD_DEBUG_CALLBACK(FMOD_DEBUG_FLAGS flags, String file, Int32 line, String func, String message);
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate FMOD_RESULT FMOD_FILE_OPEN_CALLBACK(String name, UInt32* filesize, void** handle, void* userdata);
@@ -51,6 +53,7 @@ namespace Ultraviolet.FMOD.Native
         public abstract FMOD_RESULT FMOD_System_PlaySound(FMOD_SYSTEM* system, FMOD_SOUND* sound, FMOD_CHANNELGROUP* channelgroup, Boolean paused, FMOD_CHANNEL** channel);
         public abstract FMOD_RESULT FMOD_System_Close(FMOD_SYSTEM* system);
         public abstract FMOD_RESULT FMOD_System_Update(FMOD_SYSTEM* system);
+        public abstract FMOD_RESULT FMOD_System_SetCallback(FMOD_SYSTEM* system, FMOD_SYSTEM_CALLBACK callback, FMOD_SYSTEM_CALLBACK_TYPE callbackmask = FMOD_SYSTEM_CALLBACK_TYPE.ALL);
         public abstract FMOD_RESULT FMOD_System_MixerSuspend(FMOD_SYSTEM* system);
         public abstract FMOD_RESULT FMOD_System_MixerResume(FMOD_SYSTEM* system);
         public abstract FMOD_RESULT FMOD_System_CreateSound(FMOD_SYSTEM* system, String name_or_data, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO* exinfo, FMOD_SOUND** sound);
