@@ -73,12 +73,10 @@ namespace Ultraviolet.FMOD
             UpdateFileSource();
             UpdateAudioDevices();
             PlaybackDevice = GetDefaultDevice();
-
-            FMOD_System_SetCallback(system, (system1, type, commanddata1, commanddata2, userdata) =>
-            {
-                UpdateAudioDevices();
-                return FMOD_OK;
-            }, FMOD_SYSTEM_CALLBACK_TYPE.DEVICELISTCHANGED | FMOD_SYSTEM_CALLBACK_TYPE.DEVICELOST);
+            
+            systemDeviceCallbackFMOD = DeviceCallback;
+            
+            FMOD_System_SetCallback(system, systemDeviceCallbackFMOD, FMOD_SYSTEM_CALLBACK_TYPE.DEVICELISTCHANGED | FMOD_SYSTEM_CALLBACK_TYPE.DEVICELOST);
             
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationCreated);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
@@ -419,6 +417,16 @@ namespace Ultraviolet.FMOD
         }
 
         /// <summary>
+        /// Callback fired by FMOD in update() method when the device list change or when a device is lost
+        /// </summary>
+        [MonoPInvokeCallback(typeof(FMOD_SYSTEM_CALLBACK))]
+        private FMOD_RESULT DeviceCallback(void* system1, FMOD_SYSTEM_CALLBACK_TYPE type, void* commanddata1, void* commanddata2, void* userdata)
+        {
+            UpdateAudioDevices();
+            return FMOD_OK;
+        }
+        
+        /// <summary>
         /// Initializes FMOD's logging system.
         /// </summary>
         private void InitializeLogging(UltravioletConfiguration configuration)
@@ -570,6 +578,9 @@ namespace Ultraviolet.FMOD
         private DebugCallback debugCallback;
         private FMOD_DEBUG_CALLBACK debugCallbackFMOD;
 
+        // System callbacks.
+        private FMOD_SYSTEM_CALLBACK systemDeviceCallbackFMOD;
+        
         // Platform-specific details.
         private readonly FMODPlatformSpecificImplementationDetails platformSpecificImpl;
     }
