@@ -79,6 +79,15 @@
         <Parmaeter Name="result" Type="FMOD_RESULT"/>
       </Parameters>
     </FunctionPointer>
+    <FunctionPointer Name="FMOD_SYSTEM_CALLBACK" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="void*"/>
+        <Parameter Name="type" Type="FMOD_SYSTEM_CALLBACK_TYPE"/>
+        <Parameter Name="commanddata1" Type="void*"/>
+        <Parameter Name="commanddata2" Type="void*"/>
+        <Parameter Name="userdata" Type="void*"/>
+      </Parameters>
+    </FunctionPointer>
   </FunctionPointers>
   <Functions CallingConvention="StdCall">
     <Function Name="FMOD_Debug_Initialize" ReturnType="FMOD_RESULT">
@@ -160,6 +169,13 @@
     <Function Name="FMOD_System_Update" ReturnType="FMOD_RESULT">
       <Parameters>
         <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+      </Parameters>
+    </Function>
+    <Function Name="FMOD_System_SetCallback" ReturnType="FMOD_RESULT">
+      <Parameters>
+        <Parameter Name="system" Type="FMOD_SYSTEM*"/>
+        <Parameter Name="callback" Type="FMOD_SYSTEM_CALLBACK"/>
+        <Parameter Name="callbackmask" Type="FMOD_SYSTEM_CALLBACK_TYPE"/>
       </Parameters>
     </Function>
     <Function Name="FMOD_System_MixerSuspend" ReturnType="FMOD_RESULT">

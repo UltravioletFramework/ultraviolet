@@ -61,9 +61,9 @@ namespace Ultraviolet.FMOD.Native
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FMOD_RESULT FMOD_System_Update(FMOD_SYSTEM* system) => impl.FMOD_System_Update(system);
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static FMOD_RESULT FMOD_System_SetCallback(FMOD_SYSTEM* system, FMOD_SYSTEM_CALLBACK callback, FMOD_SYSTEM_CALLBACK_TYPE callbackmask = FMOD_SYSTEM_CALLBACK_TYPE.ALL) => impl.FMOD_System_SetCallback(system, callback, callbackmask);
+        public static FMOD_RESULT FMOD_System_SetCallback(FMOD_SYSTEM* system, FMOD_SYSTEM_CALLBACK callback, FMOD_SYSTEM_CALLBACK_TYPE callbackmask) => impl.FMOD_System_SetCallback(system, callback, callbackmask);
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FMOD_RESULT FMOD_System_MixerSuspend(FMOD_SYSTEM* system) => impl.FMOD_System_MixerSuspend(system);

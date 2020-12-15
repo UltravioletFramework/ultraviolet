@@ -76,7 +76,9 @@ namespace Ultraviolet.FMOD
             
             systemDeviceCallbackFMOD = DeviceCallback;
             
-            FMOD_System_SetCallback(system, systemDeviceCallbackFMOD, FMOD_SYSTEM_CALLBACK_TYPE.DEVICELISTCHANGED | FMOD_SYSTEM_CALLBACK_TYPE.DEVICELOST);
+            result = FMOD_System_SetCallback(system, systemDeviceCallbackFMOD, FMOD_SYSTEM_CALLBACK_TYPE.DEVICELISTCHANGED | FMOD_SYSTEM_CALLBACK_TYPE.DEVICELOST);
+            if (result != FMOD_OK)
+                throw new FMODException(result);
             
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationCreated);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
