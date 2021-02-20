@@ -269,7 +269,7 @@ namespace Ultraviolet.Presentation.Controls
         {
             if (IsMouseCaptured && IsMouseWithinEditor())
             {
-                data.Cursor = PART_Editor?.Cursor.Resource.Cursor ?? data.Cursor;
+                data.Cursor = PART_Editor?.Cursor.Resource?.Cursor ?? data.Cursor;
                 data.Handled = true;
             }
             base.OnQueryCursor(device, data);
