@@ -18,6 +18,6 @@
     </AndroidNativeLibrary>
   </ItemGroup>
   <PropertyGroup>  
-    <AndroidSupportedAbis>armeabi-v7a,arm64-v8a,x86,x864_64</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a,arm64-v8a,x86,x86_64</AndroidSupportedAbis>
   </PropertyGroup>
 </Project>
