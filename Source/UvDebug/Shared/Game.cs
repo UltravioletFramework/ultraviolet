@@ -500,7 +500,6 @@ namespace UvDebug
         // 3D geometry testing.
         private GeometryStream geometryStream;
         private VertexBuffer vertexBuffer;
-        private IndexBuffer indexBuffer;
         private BasicEffect effect;
         private RasterizerState rasterizerStateSolid;
         private RasterizerState rasterizerStateWireframe;

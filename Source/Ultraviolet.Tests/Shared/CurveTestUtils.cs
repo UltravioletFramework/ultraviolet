@@ -28,7 +28,7 @@ namespace Ultraviolet.Tests
             {
                 csv.Read();
                 csv.ReadHeader();
-                var header = csv.Context.HeaderRecord.Select((item, ix) => new { Item = item, Index = ix })
+                var header = csv.HeaderRecord.Select((item, ix) => new { Item = item, Index = ix })
                     .ToDictionary(x => x.Item, x => x.Index);
 
                 var keys = new List<CurveKey<TValue>>();
@@ -59,7 +59,7 @@ namespace Ultraviolet.Tests
             {
                 csv.Read();
                 csv.ReadHeader();
-                var header = csv.Context.HeaderRecord.Select((item, ix) => new { Item = item, Index = ix })
+                var header = csv.HeaderRecord.Select((item, ix) => new { Item = item, Index = ix })
                     .ToDictionary(x => x.Item, x => x.Index);
 
                 var keys = new List<CubicSplineCurveKey<TValue>>();
@@ -96,7 +96,7 @@ namespace Ultraviolet.Tests
             {
                 csv.Read();
                 csv.ReadHeader();
-                var header = csv.Context.HeaderRecord.Select((item, ix) => new { Item = item, Index = ix })
+                var header = csv.HeaderRecord.Select((item, ix) => new { Item = item, Index = ix })
                     .ToDictionary(x => x.Item, x => x.Index);
 
                 var samples = new List<(Single Position, TValue Value)>();
