@@ -374,11 +374,13 @@ namespace Ultraviolet.Presentation.Controls
             if (oldElement != null)
             {
                 oldElement.ChangeVisualParent(null);
+                oldElement.CacheLayoutParameters();
             }
 
             var newElement = newValue as UIElement;
             if (newElement != null)
             {
+                newElement.CacheLayoutParameters();
                 newElement.ChangeVisualParent(contentPresenter);
             }
             else
