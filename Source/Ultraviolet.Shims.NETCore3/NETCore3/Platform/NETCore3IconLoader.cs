@@ -26,13 +26,14 @@ namespace Ultraviolet.Shims.NETCore3.Platform
                 asmEntry.GetManifestResourceStream(asmResourceIcon) ??
                 asmLoader.GetManifestResourceStream($"Ultraviolet.Shims.NETCore3.icon.ico");
 
-            if (iconStream != null)
-            {
-                using (var source = SurfaceSource.Create(iconStream))
-                {
-                    return Surface2D.Create(source, SurfaceOptions.SrgbColor);
-                }
-            }
+            // ico ins't supported by imagesharp
+            //if (iconStream != null)
+            //{
+            //    using (var source = SurfaceSource.Create(iconStream))
+            //    {
+            //        return Surface2D.Create(source, SurfaceOptions.SrgbColor);
+            //    }
+            //}
 
             return null;
         }

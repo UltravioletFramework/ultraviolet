@@ -148,7 +148,8 @@ namespace Ultraviolet.TestApplication
         /// </summary>
         /// <param name="bitmap">The bitmap to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected BitmapResult TheResultingImage(Bitmap bitmap)
+        //protected BitmapResult TheResultingImage(Bitmap bitmap)
+        protected BitmapResult TheResultingImage(StbImageSharp.ImageResult bitmap)
         {
             return new BitmapResult(bitmap);
         }

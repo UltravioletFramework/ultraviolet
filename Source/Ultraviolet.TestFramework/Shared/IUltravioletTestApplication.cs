@@ -96,14 +96,14 @@ namespace Ultraviolet.TestFramework
         /// </summary>
         /// <param name="frameCount">The number of frames to skip.</param>
         /// <returns>The Ultraviolet test application.</returns>
-        IUltravioletTestApplication SkipFrames(Int32 frameCount);        
+        IUltravioletTestApplication SkipFrames(Int32 frameCount);
 
         /// <summary>
         /// Renders a scene and outputs the resulting image.
         /// </summary>
         /// <param name="renderer">An action which will render the desired scene.</param>
         /// <returns>A bitmap containing the result of rendering the specified scene.</returns>
-        Bitmap Render(Action<UltravioletContext> renderer);
+        StbImageSharp.ImageResult Render(Action<UltravioletContext> renderer);
 
         /// <summary>
         /// Runs the application until the specified predicate is true.

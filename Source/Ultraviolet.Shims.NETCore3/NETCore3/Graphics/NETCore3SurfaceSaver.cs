@@ -1,13 +1,26 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
-using GDIRect = System.Drawing.Rectangle;
 
 namespace Ultraviolet.Shims.NETCore3.Graphics
 {
+    /// <summary>
+    /// Surface image format
+    /// </summary>
+    public enum SurfaceImageFormat
+    {
+        /// <summary>
+        /// PNG Surface image format
+        /// </summary>
+        PNG,
+
+        /// <summary>
+        /// JPEG Surface image format
+        /// </summary>
+        JPEG
+    }
+
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for the .NET Core 3.0 platform.
     /// </summary>
@@ -19,7 +32,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(surface, nameof(surface));
             Contract.Require(stream, nameof(stream));
 
-            Save(surface, stream, ImageFormat.Png);
+            Save(surface, stream, SurfaceImageFormat.PNG);
         }
 
         /// <inheritdoc/>
@@ -28,7 +41,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(surface, nameof(surface));
             Contract.Require(stream, nameof(stream));
 
-            Save(surface, stream, ImageFormat.Jpeg);
+            Save(surface, stream, SurfaceImageFormat.JPEG);
         }
 
         /// <inheritdoc/>
@@ -37,7 +50,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(renderTarget, nameof(renderTarget));
             Contract.Require(stream, nameof(stream));
 
-            Save(renderTarget, stream, ImageFormat.Png);
+            Save(renderTarget, stream, SurfaceImageFormat.PNG);
         }
 
         /// <inheritdoc/>
@@ -46,7 +59,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(renderTarget, nameof(renderTarget));
             Contract.Require(stream, nameof(stream));
 
-            Save(renderTarget, stream, ImageFormat.Jpeg);
+            Save(renderTarget, stream, SurfaceImageFormat.JPEG);
         }
 
         /// <summary>
@@ -55,7 +68,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
         /// <param name="surface">The surface to save.</param>
         /// <param name="stream">The stream to which to save the surface data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private void Save(Surface2D surface, Stream stream, ImageFormat format)
+        private void Save(Surface2D surface, Stream stream, SurfaceImageFormat format)
         {
             var data = new Color[surface.Width * surface.Height];
             surface.GetData(data);
@@ -69,13 +82,15 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
         /// <param name="renderTarget">The render target to save.</param>
         /// <param name="stream">The stream to which to save the render target data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private void Save(RenderTarget2D renderTarget, Stream stream, ImageFormat format)
+        private void Save(RenderTarget2D renderTarget, Stream stream, SurfaceImageFormat format)
         {
             var data = new Color[renderTarget.Width * renderTarget.Height];
             renderTarget.GetData(data);
 
             Save(data, renderTarget.Width, renderTarget.Height, stream, format);
         }
+
+
 
         /// <summary>
         /// Saves the specified color data as an image with the specified format.
@@ -85,33 +100,35 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="stream">The stream to which to save the image data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private unsafe void Save(Color[] data, Int32 width, Int32 height, Stream stream, ImageFormat format)
+        private unsafe void Save(Color[] data, Int32 width, Int32 height, Stream stream, SurfaceImageFormat format)
         {
-            using (var bmp = new Bitmap(width, height))
+            var image = new StbImageSharp.ImageResult()
             {
-                var bmpData = bmp.LockBits(new GDIRect(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                Width = width,
+                Height = height,
+                Comp = StbImageSharp.ColorComponents.RedGreenBlueAlpha,
+                Data = new byte[width * height * 4]
+            };
 
-                fixed (Color* pData = data)
+            fixed (Color* pData = data)
+            {
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
-                    {
-                        var pSrc = pData + (y * width);
-                        var pDst = (Byte*)bmpData.Scan0 + (y * bmpData.Stride);
+                    var pSrc = pData + (y * width);
 
-                        for (int x = 0; x < width; x++)
-                        {
-                            var color = *pSrc++;
-                            *pDst++ = color.B;
-                            *pDst++ = color.G;
-                            *pDst++ = color.R;
-                            *pDst++ = color.A;
-                        }
+                    for (int x = 0; x < width; x++)
+                    {
+                        var color = *pSrc++;
+                        image.SetPixel(x, y, color.R, color.G, color.B, color.A);
                     }
                 }
-
-                bmp.UnlockBits(bmpData);
-                bmp.Save(stream, format);
             }
+
+            var imageWriter = new StbImageWriteSharp.ImageWriter();
+            if(format == SurfaceImageFormat.PNG)
+                imageWriter.WritePng(image.Data, image.Width, image.Height, StbImageWriteSharp.ColorComponents.RedGreenBlueAlpha, stream);
+            else
+                imageWriter.WriteJpg(image.Data, image.Width, image.Height, StbImageWriteSharp.ColorComponents.RedGreenBlueAlpha, stream, 100);
         }
     }
 }

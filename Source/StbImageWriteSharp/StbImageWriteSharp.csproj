@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Authors>StbImageWriteSharpTeam</Authors>
+		<Product>StbImageWriteSharp</Product>
+		<PackageId>StbImageWriteSharp</PackageId>
+		<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+		<Description>C# port of the stb_image_write.h</Description>
+		<PackageLicenseUrl>Public Domain</PackageLicenseUrl>
+		<PackageProjectUrl>https://github.com/StbSharp/StbImageWriteSharp</PackageProjectUrl>
+		<Version>1.16.6</Version>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+</Project>

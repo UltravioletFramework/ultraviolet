@@ -168,7 +168,7 @@ namespace Ultraviolet.TestApplication
         }
 
         /// <inheritdoc/>
-        public Bitmap Render(Action<UltravioletContext> renderer)
+        public StbImageSharp.ImageResult Render(Action<UltravioletContext> renderer)
         {
             if (headless)
                 throw new InvalidOperationException("Cannot render a headless window.");
@@ -468,7 +468,7 @@ namespace Ultraviolet.TestApplication
         /// </summary>
         /// <param name="rt">The render target to convert.</param>
         /// <returns>The converted bitmap image.</returns>
-        private Bitmap ConvertRenderTargetToBitmap(RenderTarget2D rt)
+        private StbImageSharp.ImageResult ConvertRenderTargetToBitmap(RenderTarget2D rt)
         {
             // HACK: Our buffer has been rounded up to the nearest
             // power of two, so at this point we clip it back down
@@ -481,7 +481,13 @@ namespace Ultraviolet.TestApplication
             var data = new Color[rt.Width * rt.Height];
             rt.GetData(data);
 
-            var bmp = new Bitmap(windowWidth, windowHeight);
+            var img = new StbImageSharp.ImageResult() { 
+                Width = windowWidth, 
+                Height = windowHeight, 
+                Comp = StbImageSharp.ColorComponents.RedGreenBlueAlpha,
+                Data = new byte[windowWidth * windowHeight * 4]
+            };
+
             var pixel = 0;
             for (int y = 0; y < rt.Height; y++)
             {
@@ -490,16 +496,14 @@ namespace Ultraviolet.TestApplication
                     if (x < windowWidth && y < windowHeight)
                     {
                         var rawColor = data[pixel];
-                        
-                        bmp.SetPixel(x, y, 
-                            System.Drawing.Color.FromArgb(255, 
-                            System.Drawing.Color.FromArgb((Int32)rawColor.ToArgb())));
+
+                        img.SetPixel(x, y, rawColor.R, rawColor.G, rawColor.B, 255);
                     }
                     pixel++;
                 }
             }
 
-            return bmp;
+            return img;
         }
 
         // State values.
@@ -512,7 +516,7 @@ namespace Ultraviolet.TestApplication
         private Action<ContentManager> loader;
         private Action<UltravioletContext> renderer;
         private Action disposer;
-        private Bitmap bmp;
+        private StbImageSharp.ImageResult bmp;
         private Int32 updateCount;
         private Int32 renderCount;
         private Int32 frameCount;

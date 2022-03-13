@@ -21,7 +21,7 @@ namespace Ultraviolet.TestApplication
         /// Initializes a new instance of the BitmapResult class.
         /// </summary>
         /// <param name="bitmap">The bitmap being examined.</param>
-        internal BitmapResult(Bitmap bitmap)
+        internal BitmapResult(StbImageSharp.ImageResult bitmap)
         {
             this.Bitmap = bitmap;
         }
@@ -63,7 +63,9 @@ namespace Ultraviolet.TestApplication
             var machineName = UltravioletTestFramework.GetSanitizedMachineName();
             Directory.CreateDirectory(machineName);
 
-            var expected = (Bitmap)Image.FromFile(filename);
+            var fileStream = File.Open(filename, FileMode.Open);
+
+            var expected = StbImageSharp.ImageResult.FromStream(fileStream, StbImageSharp.ColorComponents.RedGreenBlueAlpha);
 
             var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
 
@@ -78,11 +80,17 @@ namespace Ultraviolet.TestApplication
                 Assert.Fail("Images do not match due to differing dimensions");
             }
 
-            var mismatchesFound    = 0;
+            var mismatchesFound = 0;
             var mismatchesRequired = (thresholdType == BitmapResultThresholdType.Percentage) ?
                 (Int32)((Bitmap.Width * Bitmap.Height) * threshold) : (Int32)threshold;
 
-            using (var diff = new Bitmap(expected.Width, expected.Height))
+            var diff = new StbImageSharp.ImageResult() { 
+                Width = expected.Width, 
+                Height = expected.Height, 
+                Comp = StbImageSharp.ColorComponents.RedGreenBlueAlpha, 
+                Data = new byte[expected.Width * expected.Height * 4] 
+            };
+
             {
                 // Ignore pixels that are within about 1% of the expected value.
                 const Int32 PixelDiffThreshold = 2;
@@ -91,8 +99,8 @@ namespace Ultraviolet.TestApplication
                 {
                     for (int x = 0; x < expected.Width; x++)
                     {
-                        var pixelExpected = expected.GetPixel(x, y);
-                        var pixelActual   = Bitmap.GetPixel(x, y);
+                        expected.GetPixel(x, y, out Pixel4 pixelExpected);
+                        Bitmap.GetPixel(x, y, out Pixel4 pixelActual);
 
                         var diffR = Math.Abs(pixelExpected.R + pixelActual.R - 2 * Math.Min(pixelExpected.R, pixelActual.R));
                         var diffG = Math.Abs(pixelExpected.G + pixelActual.G - 2 * Math.Min(pixelExpected.G, pixelActual.G));
@@ -103,7 +111,7 @@ namespace Ultraviolet.TestApplication
                             mismatchesFound++;
                         }
 
-                        diff.SetPixel(x, y, System.Drawing.Color.FromArgb(255, diffR, diffG, diffB));
+                        diff.SetPixel(x, y, (byte)diffR, (byte)diffG, (byte)diffB, 255);
                     }
                 }
 
@@ -120,18 +128,20 @@ namespace Ultraviolet.TestApplication
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public Bitmap Bitmap { get; }
+        //public Bitmap Bitmap { get; }
+        public StbImageSharp.ImageResult Bitmap { get; }
 
         /// <summary>
         /// Saves a bitmap to thhe specified file.
         /// </summary>
-        private void SaveBitmap(Bitmap bitmap, String filename)
+        private void SaveBitmap(StbImageSharp.ImageResult bitmap, String filename)
         {
             // NOTE: We first open a FileStream because it gives us potentially more
             // useful exception information than "A generic error occurred in GDI+".
             using (var fs = new FileStream(filename, FileMode.Create))
             {
-                bitmap.Save(fs, ImageFormat.Png);
+                StbImageWriteSharp.ImageWriter writer = new StbImageWriteSharp.ImageWriter();
+                writer.WritePng(bitmap.Data, bitmap.Width, bitmap.Height, StbImageWriteSharp.ColorComponents.RedGreenBlueAlpha, fs);
             }
         }
 
