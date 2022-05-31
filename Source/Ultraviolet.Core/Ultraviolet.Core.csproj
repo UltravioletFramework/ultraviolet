@@ -3,8 +3,8 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Shims.NETCore3</AssemblyName>
-    <RootNamespace>Ultraviolet.Shims.NETCore3</RootNamespace>
+    <AssemblyName>Ultraviolet.Core</AssemblyName>
+    <RootNamespace>Ultraviolet.Core</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -23,34 +23,30 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <EmbeddedResource Include="icon.ico" />
-  </ItemGroup>
-  
-  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StbImageSharp\StbImageSharp.csproj" />
-    <ProjectReference Include="..\StbImageWriteSharp\StbImageWriteSharp.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
-    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
   </ItemGroup>
 
 </Project>

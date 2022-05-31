@@ -3,8 +3,8 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Tests</AssemblyName>
-    <RootNamespace>Ultraviolet.Tests</RootNamespace>
+    <AssemblyName>Ultraviolet.Presentation.Tests</AssemblyName>
+    <RootNamespace>Ultraviolet.Presentation.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -15,11 +15,7 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
-  </ItemGroup>
-  
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
@@ -28,12 +24,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <PackageReference Include="nunit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="3.0.117" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.BASS\Ultraviolet.BASS.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
+    <ProjectReference Include="..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Presentation.Tests.ViewModels\Ultraviolet.Presentation.Tests.ViewModels.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
+    <ProjectReference Include="..\Ultraviolet.TestApplication\Ultraviolet.TestApplication.csproj" />
+    <ProjectReference Include="..\Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.csproj" />
+    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\..\Dependencies\FreeType2\x64\win32nt\freetype.dll" Link="x64\win32nt\freetype.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -52,6 +70,15 @@
     <None Include="..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" Link="x86\win32nt\libpng16.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\Dependencies\SDL2\x64\win32nt\SDL2.dll" Link="x64\win32nt\SDL2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -60,45 +87,14 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="27.2.1" />
-    <PackageReference Include="nunit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="NunitXml.TestLogger" Version="3.0.117" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.BASS\Ultraviolet.BASS.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
-    <ProjectReference Include="..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj" />
-    <ProjectReference Include="..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
-    <ProjectReference Include="..\Ultraviolet.TestApplication\Ultraviolet.TestApplication.csproj" />
-    <ProjectReference Include="..\Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.csproj">
-      <Private>True</Private>
-      <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
-      <EmbedInteropTypes></EmbedInteropTypes>
-      <ReferenceOutputAssembly>True</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="x64\win32nt\" />
-    <Folder Include="x86\win32nt\" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<Content Include="Resources\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Content\UI\Screens\**" />
 	</ItemGroup>
 
 </Project>
