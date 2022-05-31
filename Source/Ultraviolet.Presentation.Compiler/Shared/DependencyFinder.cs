@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using Ultraviolet.Core;
 
@@ -41,8 +42,17 @@ namespace Ultraviolet.Presentation.Compiler
             var dir = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             var exe = Path.Combine(dir, "nuget.exe");
 
-            using (var client = new WebClient())
-                client.DownloadFile("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", exe);
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe").Result; // bad
+
+                var stream = response.Content.ReadAsStream();
+
+                using (var fs = new FileStream(exe, FileMode.CreateNew))
+                {
+                    stream.CopyTo(fs);
+                }
+            }
 
             Debug.WriteLine("done.");
 

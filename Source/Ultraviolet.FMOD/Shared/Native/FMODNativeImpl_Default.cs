@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Native;
 using System.Text;
+using NativeLibrary = Ultraviolet.Core.Native.NativeLibrary;
 
 namespace Ultraviolet.FMOD.Native
 {

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Native;
+using NativeLibrary = Ultraviolet.Core.Native.NativeLibrary;
 
 namespace Ultraviolet.ImGuiViewProvider.Bindings
 {

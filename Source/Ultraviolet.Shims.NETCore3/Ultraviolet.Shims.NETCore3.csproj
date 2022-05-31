@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Ultraviolet.Shims.NETCore3</AssemblyName>
     <RootNamespace>Ultraviolet.Shims.NETCore3</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>

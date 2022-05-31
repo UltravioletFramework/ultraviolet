@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
@@ -11,6 +12,7 @@ namespace Ultraviolet.Windows.Forms
     /// <summary>
     /// Represents a panel designed to be enlisted into an Ultraviolet context.
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public partial class UltravioletPanel : UserControl
     {
         /// <summary>

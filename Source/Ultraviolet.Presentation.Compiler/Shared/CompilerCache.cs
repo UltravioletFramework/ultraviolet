@@ -237,7 +237,7 @@ namespace Ultraviolet.Presentation.Compiler
         {
             var output = new StringBuilder();
 
-            var sha = new SHA1CryptoServiceProvider();
+            var sha = SHA1.Create();
             var bytes = Encoding.UTF8.GetBytes(input.ToString());
             var hashBytes = sha.ComputeHash(bytes);
 

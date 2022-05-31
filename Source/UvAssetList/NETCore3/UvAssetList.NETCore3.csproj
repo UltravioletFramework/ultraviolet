@@ -3,7 +3,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>uvassetlist</AssemblyName>
     <RootNamespace>UvAssetList</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>

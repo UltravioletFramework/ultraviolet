@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Ultraviolet.FreeType2</AssemblyName>
     <RootNamespace>Ultraviolet.FreeType2</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>

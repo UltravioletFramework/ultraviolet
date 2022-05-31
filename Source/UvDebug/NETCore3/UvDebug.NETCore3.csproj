@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>uvdebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
