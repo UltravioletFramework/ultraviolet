@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Ultraviolet.OpenGL.Environment</AssemblyName>
     <RootNamespace>Ultraviolet.OpenGL.Environment</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>

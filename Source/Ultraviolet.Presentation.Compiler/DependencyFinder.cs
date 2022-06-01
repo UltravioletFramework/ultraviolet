@@ -46,7 +46,7 @@ namespace Ultraviolet.Presentation.Compiler
             {
                 var response = client.GetAsync("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe").Result; // bad
 
-                var stream = response.Content.ReadAsStream();
+                var stream = response.Content.ReadAsStreamAsync().Result; // bad
 
                 using (var fs = new FileStream(exe, FileMode.CreateNew))
                 {

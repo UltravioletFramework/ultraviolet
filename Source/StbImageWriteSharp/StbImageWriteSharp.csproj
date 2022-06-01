@@ -3,7 +3,7 @@
 		<Authors>StbImageWriteSharpTeam</Authors>
 		<Product>StbImageWriteSharp</Product>
 		<PackageId>StbImageWriteSharp</PackageId>
-		<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net45</TargetFrameworks>
 		<Description>C# port of the stb_image_write.h</Description>
 		<PackageLicenseUrl>Public Domain</PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/StbSharp/StbImageWriteSharp</PackageProjectUrl>

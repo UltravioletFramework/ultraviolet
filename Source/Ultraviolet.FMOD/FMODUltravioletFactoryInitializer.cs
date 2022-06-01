@@ -23,7 +23,7 @@ namespace Ultraviolet.FMOD
             {
                 if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Android)
                 {
-                    var shim = Assembly.Load("Ultraviolet.Shims.Android.FMOD.dll");
+                    var shim = Assembly.Load("Ultraviolet.Android.FMOD.dll");
                     var type = shim.GetTypes().Where(x => x.IsClass && !x.IsAbstract && typeof(FMODPlatformSpecificImplementationDetails).IsAssignableFrom(x)).SingleOrDefault();
                     if (type == null)
                         throw new InvalidOperationException(FMODStrings.CannotFindPlatformShimClass);

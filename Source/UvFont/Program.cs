@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -19,6 +20,7 @@ using Ultraviolet.Tooling;
 
 namespace UvFont
 {
+    [SupportedOSPlatform("windows")]
     public class Program
     {
         public static void Main(String[] args)

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Ultraviolet.Presentation.Uvss</AssemblyName>
     <RootNamespace>Ultraviolet.Presentation.Uvss</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>

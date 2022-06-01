@@ -78,7 +78,7 @@
     <ProjectReference Include="..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj" />
     <ProjectReference Include="..\Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.csproj" />
     <ProjectReference Include="..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Desktop\Ultraviolet.Desktop.csproj" />
     <ProjectReference Include="..\Ultraviolet.TestApplication\Ultraviolet.TestApplication.csproj" />
     <ProjectReference Include="..\Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj" />
     <ProjectReference Include="..\Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.csproj">

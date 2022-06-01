@@ -932,7 +932,7 @@ namespace Ultraviolet
                             break;
 
                         default:
-                            shim = Assembly.Load("Ultraviolet.Shims.NETCore3, PublicKey=" + publicKeyString);
+                            shim = Assembly.Load("Ultraviolet.Desktop, PublicKey=" + publicKeyString);
                             break;
                     }
                 }
@@ -941,7 +941,7 @@ namespace Ultraviolet
                     switch (Platform)
                     {
                         case UltravioletPlatform.Android:
-                            shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
+                            shim = Assembly.Load("Ultraviolet.Android.dll");
                             break;
 
                         case UltravioletPlatform.iOS:

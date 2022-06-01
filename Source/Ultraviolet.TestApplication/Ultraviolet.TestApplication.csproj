@@ -33,7 +33,7 @@
     <ProjectReference Include="..\Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj" />
     <ProjectReference Include="..\Ultraviolet.FMOD\Ultraviolet.FMOD.csproj" />
     <ProjectReference Include="..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Desktop\Ultraviolet.Desktop.csproj" />
     <ProjectReference Include="..\Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj" />
     <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
   </ItemGroup>
