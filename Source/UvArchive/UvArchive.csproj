@@ -1,27 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>UvArchive</AssemblyName>
-    <RootNamespace>UvArchive</RootNamespace>
-    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+		<HasSharedItems>true</HasSharedItems>
+		<SharedGUID>f6eb09d1-242b-4f29-bdc9-e9288711d7d0</SharedGUID>
+	</PropertyGroup>
+	<PropertyGroup Label="Configuration">
+		<Import_RootNamespace>UvArchive</Import_RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
-  </ItemGroup>
+	<PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<AssemblyName>UvArchive</AssemblyName>
+		<RootNamespace>UvArchive</RootNamespace>
+		<PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Tooling\Ultraviolet.Tooling.csproj" />
-    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\Version.cs" Link="Properties\Version.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ultraviolet.Tooling\Ultraviolet.Tooling.csproj" />
+		<ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+	</ItemGroup>
 
 </Project>

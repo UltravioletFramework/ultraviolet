@@ -1,6 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+		<HasSharedItems>true</HasSharedItems>
+		<SharedGUID>084c6292-2de5-4f12-a40f-6b9bdd6154f5</SharedGUID>
+	</PropertyGroup>
+	<PropertyGroup Label="Configuration">
+		<Import_RootNamespace>Ultraviolet.Tests</Import_RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Ultraviolet.Tests</AssemblyName>
@@ -81,12 +90,6 @@
     <ProjectReference Include="..\Ultraviolet.Desktop\Ultraviolet.Desktop.csproj" />
     <ProjectReference Include="..\Ultraviolet.TestApplication\Ultraviolet.TestApplication.csproj" />
     <ProjectReference Include="..\Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.csproj">
-      <Private>True</Private>
-      <CopyLocalSatelliteAssemblies>True</CopyLocalSatelliteAssemblies>
-      <EmbedInteropTypes></EmbedInteropTypes>
-      <ReferenceOutputAssembly>True</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
   </ItemGroup>
 
@@ -95,14 +98,402 @@
     <Folder Include="x86\win32nt\" />
   </ItemGroup>
 
+	<!-- start-->
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics3D\BoneMatrices_SimpleSkin.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics3D\BoneMatrices_CesiumMan.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_CubicSpline_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_CubicSpline_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Linear_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Linear_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Step_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\QuaternionCurve_Step_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_CubicSpline_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_CubicSpline_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Linear_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Linear_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Step_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\SingleCurve_Step_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_CubicSpline_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_CubicSpline_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Linear_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Linear_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Step_keys.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Vector3Curve_Step_samples.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\DynamicTextureAtlas_FailsToReserveSpace_WhenAtlasIsFull.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\DynamicTextureAtlas_IsConstructedCorrectly.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Srgb%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Linear%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Linear%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Srgb%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28SpriteFont,Linear%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings_RightToLeft.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderStrokedSimpleStrings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersShapedArabicScript.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersStrokedEastAsianCharacters.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_RendersDefaultSubstitutionGlyphForSpriteFont.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_RendersSpecifiedSubstitutionGlyphForSpriteFont.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromJson.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromXml.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Sprite_CanBeConstructedProgrammatically.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromJson.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromXml.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_AssignsCorrectSourceIndicesToShapedText.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28FreeType2,Shaped%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2,Shaped%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Linear,Shaped%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Srgb%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Srgb,Shaped%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Linear%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Srgb%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Linear%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersLinks.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersLinks_WithColorizer.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28FreeType2%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28SpriteFont%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph%28Shaped%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph%28Shaped%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Surface2D_RendersCorrectly_WhenFlipped.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Surface2D_RendersCorrectly_WhenFlippedDuringBlit.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Texture2D_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Texture2D_LoadsNonPremultiplied_WhenGivenContentMetadata.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromJson.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromXml.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRender3DTextures.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRender3DTextures_FromPreprocessedAsset.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Srgb%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Linear%29.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderSprites_WhenUsingCustomVertexElementNames.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(Basic).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLighting).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTx).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTxNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTxVc).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingTxVcNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingVc).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicPixelLightingVcNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTx).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTxNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTxVc).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicTxVcNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVc).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVcNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLighting).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTx).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTxNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTxVc).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingTxVcNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingVc).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\BasicEffect_RendersACubeCorrectly(BasicVertexLightingVcNoFog).png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_IgnoresSpecifiedLayoutComponents.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<!-- end -->
+	
+	
+	<!--
 	<ItemGroup>
 		<Content Include="Resources\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+	-->
 
-	<ItemGroup>
-		<EmbeddedResource Include="..\Ultraviolet.Tests.Content\**\*.uvmeta" />
-	</ItemGroup>
+	<Import Project="..\Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems" Label="Shared" />
 
 </Project>

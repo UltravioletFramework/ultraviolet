@@ -338,45 +338,13 @@ namespace Ultraviolet.Presentation.Compiler
                 }
             }
 
-            var excludeList = new List<string>()
-            {
-                "api-ms-win",
-                "clretwrc.dll",
-                "clrjit.dll",
-                "coreclr.dll",
-                "dbgshim.dll",
-                "hostpolicy.dll",
-                "Microsoft.DiaSymReader.Native.amd64.dll",
-                "mscordaccore",
-                "mscordbi.dll",
-                "mscorrc.dll",
-                "msquic.dll",
-                "System.IO.Compression.Native.dll",
-                "ucrtbase.dll"
-            };
-            Func<string, bool> exclude = (lib) => {
-                foreach (var item in excludeList)
-                {
-                    if (lib.Contains(item))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            };
-
             var refDllFiles = Directory.GetFiles(netStandardRefAsmDir, "*.dll");
             foreach (var refDllFile in refDllFiles)
             {
-                if (exclude(refDllFile))
-                    continue;
                 referencedAssemblies.Add(refDllFile);
             }
             foreach (var refDllFile in netStandardRefAdditionalPaths)
             {
-                if (exclude(refDllFile))
-                    continue;
                 referencedAssemblies.Add(refDllFile);
             }
 

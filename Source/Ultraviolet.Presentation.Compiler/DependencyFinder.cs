@@ -104,21 +104,8 @@ namespace Ultraviolet.Presentation.Compiler
         /// Gets the path to the NuGet cache directory, if it exists.
         /// </summary>
         /// <returns>The path to the NuGet cache directory, or <see langword="null"/> if it doesn't exist.</returns>
-        public static String GetNuGetSDKDirectory()
-        {
-            var nugetSDKDir = Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES"), "dotnet", "shared", "Microsoft.NETCore.App");
-
-            return Directory.Exists(nugetSDKDir) ? nugetSDKDir : null;
-        }
-
-        /// <summary>
-        /// Gets the path to the NuGet cache directory, if it exists.
-        /// </summary>
-        /// <returns>The path to the NuGet cache directory, or <see langword="null"/> if it doesn't exist.</returns>
         public static String GetNuGetCacheDirectory()
         {
-            var nugetSDKDir = new DirectoryInfo(Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES"), "dotnet", "sdk"));
-
             var nugetPackagesDir = Environment.GetEnvironmentVariable("NUGET_PACKAGES");
             if (Directory.Exists(nugetPackagesDir))
             {
@@ -183,20 +170,6 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         private static String GetNetStandardLibraryDirFromNuGetCache_Standard21(IList<String> additionalPaths)
         {
-            var nugetSDKDir = GetNuGetSDKDirectory();
-            if (nugetSDKDir != null)
-            {
-                var sdkDirInfo = new DirectoryInfo(nugetSDKDir);
-                var best = sdkDirInfo.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName)), Version = TryParseVersion(x.Name) })
-                    .Where(x => x.Version != null && x.Version >= new Version(2, 1, 0) && x.Target.Exists)
-                    .OrderByDescending(x => x.Version)
-                    .FirstOrDefault();
-                if (best != null)
-                {
-                    return best.Target.FullName;
-                }
-            }
-
             var cache = GetNuGetCacheDirectory();
             if (cache == null)
                 return null;
@@ -204,16 +177,6 @@ namespace Ultraviolet.Presentation.Compiler
             var dir = new DirectoryInfo(Path.Combine(cache, "netstandard.library.ref"));
             if (dir.Exists)
             {
-                foreach (var dirInfo in dir.EnumerateDirectories())
-                {
-                    var directory = dirInfo;
-                    var target = new DirectoryInfo(Path.Combine(directory.FullName, "ref", "netstandard2.1"));
-                    var version = TryParseVersion(directory.Name);
-
-                    if (version == null || version < new Version(2, 1, 0) || !target.Exists)
-                        continue;
-                }
-
                 var best = dir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "ref", "netstandard2.1")), Version = TryParseVersion(x.Name) })
                     .Where(x => x.Version != null && x.Version >= new Version(2, 1, 0) && x.Target.Exists)
                     .OrderByDescending(x => x.Version)

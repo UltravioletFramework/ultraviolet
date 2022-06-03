@@ -65,8 +65,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvFont", "UvFont\UvFont.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvNativeCodeGen", "UvNativeCodeGen\UvNativeCodeGen.csproj", "{117308B2-66A8-4B2E-9D2F-47B5E36C7A20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tests.Content", "Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.csproj", "{99592CE4-4C1B-488F-848E-A4E56F0AF475}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Android.FMOD", "Ultraviolet.Android.FMOD\Ultraviolet.Android.FMOD.csproj", "{30E0136E-DAB4-4738-87C4-C4CCCCB30DD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Android", "Ultraviolet.Android\Ultraviolet.Android.csproj", "{19BC2D12-6E14-4A15-9F33-5C6DC92BDEAF}"
@@ -78,6 +76,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebug.Android", "UvDebug\Android\UvDebug.Android.csproj", "{BFEBD22B-7789-43A8-A1EA-550C316C29FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Desktop", "Ultraviolet.Desktop\Ultraviolet.Desktop.csproj", "{9CF7D0E9-5842-47BF-AFA1-854FE95AF5CE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Tests.Content", "Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.shproj", "{0E2B1BC3-D1C3-4626-8AA3-37BF3039E43F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -209,10 +209,6 @@ Global
 		{117308B2-66A8-4B2E-9D2F-47B5E36C7A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{117308B2-66A8-4B2E-9D2F-47B5E36C7A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{117308B2-66A8-4B2E-9D2F-47B5E36C7A20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99592CE4-4C1B-488F-848E-A4E56F0AF475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99592CE4-4C1B-488F-848E-A4E56F0AF475}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99592CE4-4C1B-488F-848E-A4E56F0AF475}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99592CE4-4C1B-488F-848E-A4E56F0AF475}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30E0136E-DAB4-4738-87C4-C4CCCCB30DD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30E0136E-DAB4-4738-87C4-C4CCCCB30DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30E0136E-DAB4-4738-87C4-C4CCCCB30DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -243,8 +239,11 @@ Global
 		SolutionGuid = {B38DD73E-F4D3-413C-890E-A832C047786A}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems*{0e2b1bc3-d1c3-4626-8aa3-37bf3039e43f}*SharedItemsImports = 13
 		UvDebug\Shared\UvDebug.projitems*{3e9869b0-d202-4b00-949b-21deeff4144e}*SharedItemsImports = 5
 		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
+		Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems*{9ed3c75c-4e78-47e0-8928-c5661e3d272d}*SharedItemsImports = 5
 		UvDebug\Shared\UvDebug.projitems*{bfebd22b-7789-43a8-a1ea-550c316c29fd}*SharedItemsImports = 4
+		Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems*{eef79b7d-fd00-4d37-b864-53397eb81ae4}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

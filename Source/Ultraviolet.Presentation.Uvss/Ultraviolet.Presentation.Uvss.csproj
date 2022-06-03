@@ -1,5 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2def7217-0b35-423c-9085-ec46260682c7</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Ultraviolet.Presentation.Uvss</Import_RootNamespace>
+  </PropertyGroup>
+	
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.1</TargetFramework>
