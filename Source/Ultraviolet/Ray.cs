@@ -203,7 +203,7 @@ namespace Ultraviolet
                 {
                     var temp = minY;
                     minY = maxY;
-                    maxY = minY;
+                    maxY = temp;
                 }
 
                 if (min == null || minY > min)
@@ -230,7 +230,7 @@ namespace Ultraviolet
                 {
                     var temp = minZ;
                     minZ = maxZ;
-                    maxZ = minZ;
+                    maxZ = temp;
                 }
 
                 if (min == null || minZ > min)
