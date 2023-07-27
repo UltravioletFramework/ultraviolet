@@ -57,7 +57,7 @@ namespace Ultraviolet.BASS.Audio
 
                     unsafe
                     {
-                        stream = BASS_StreamCreateFileUser(1, BASS_STREAM_DECODE, &procs, new IntPtr((int)instanceID));
+                        stream = BASS_StreamCreateFileUser(1, flags, &procs, new IntPtr((int)instanceID));
                         if (!BASSUtil.IsValidHandle(stream))
                             throw new BASSException();
                     }
