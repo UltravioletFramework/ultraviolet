@@ -21,7 +21,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <group targetFramework="netcoreapp3.1">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="System.Drawing.Common" version="5.0.2" />
+      <dependency id="Ultraviolet.Image" version="UV_VERSION" />
     </group>
   </dependencies>
   </metadata>

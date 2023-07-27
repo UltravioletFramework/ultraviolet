@@ -107,15 +107,16 @@ namespace Ultraviolet.Shims.NETCore3.Platform
         /// </summary>
         private Boolean InitFallback(UltravioletContext uv, IUltravioletDisplay display)
         {
-            using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
-            {
-                this.densityX = graphics.DpiX;
-                this.densityY = graphics.DpiY;
-                this.densityScale = graphics.DpiX / 96f;
-                this.densityBucket = GuessBucketFromDensityScale(densityScale);
-            }
+            //using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            //{
+            //    this.densityX = graphics.DpiX;
+            //    this.densityY = graphics.DpiY;
+            //    this.densityScale = graphics.DpiX / 96f;
+            //    this.densityBucket = GuessBucketFromDensityScale(densityScale);
+            //}
 
-            return true;
+            //return true;
+            return false;
         }
 
         // State values.

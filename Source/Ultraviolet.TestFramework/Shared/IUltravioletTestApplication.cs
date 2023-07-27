@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Drawing;
 using Ultraviolet.Content;
+using Ultraviolet.Image;
 using Ultraviolet.Input;
 
 namespace Ultraviolet.TestFramework
@@ -103,7 +103,7 @@ namespace Ultraviolet.TestFramework
         /// </summary>
         /// <param name="renderer">An action which will render the desired scene.</param>
         /// <returns>A bitmap containing the result of rendering the specified scene.</returns>
-        Bitmap Render(Action<UltravioletContext> renderer);
+        UltravioletImage Render(Action<UltravioletContext> renderer);
 
         /// <summary>
         /// Runs the application until the specified predicate is true.

@@ -96,3 +96,7 @@ nuget pack Ultraviolet.Tools.nuspec
 powershell -Command "(gc Ultraviolet.Windows.Forms.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Windows.Forms.nuspec"
 nuget pack Ultraviolet.Windows.Forms.nuspec -Symbols -SymbolPackageFormat snupkg
 @if %errorlevel% neq 0 @exit /b %errorlevel%
+
+powershell -Command "(gc Ultraviolet.Image.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Image.nuspec"
+nuget pack Ultraviolet.Image.nuspec -Symbols -SymbolPackageFormat snupkg
+@if %errorlevel% neq 0 @exit /b %errorlevel%

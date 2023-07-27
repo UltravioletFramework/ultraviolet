@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.Image</id>
+    <version>UV_VERSION</version>
+    <authors>Robert Campbell</authors>
+    <owners>Robert Campbell</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/UltravioletFramework/ultraviolet</projectUrl>
+    <repository type="git" url="https://github.com/UltravioletFramework/ultraviolet" />
+    <icon>images\icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Ultraviolet.Image is a library for loading images, used by the Ultraviolet Framework.</summary>
+    <description>Ultraviolet.Image is a library for loading images, used by the Ultraviolet Framework.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <group targetFramework="netstandard2.1">
+    </group>
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
+
+    <!-- .NET Standard 2.1 -->
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Image.dll" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Image.XML" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Image.pdb" target="lib\netstandard2.1\"/>
+  </files>  
+</package>

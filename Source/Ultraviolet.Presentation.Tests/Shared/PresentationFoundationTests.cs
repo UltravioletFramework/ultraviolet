@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using NUnit.Framework;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Image;
 using Ultraviolet.Presentation.Media;
 using Ultraviolet.Presentation.Tests.Screens;
 using Ultraviolet.UI;
@@ -398,7 +398,7 @@ namespace Ultraviolet.Presentation.Tests
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>
-        private Bitmap RunPresentationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
+        private UltravioletImage RunPresentationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
         {
             return GivenAPresentationFoundationTestFor<T>(ctor)
                 .Render(uv =>

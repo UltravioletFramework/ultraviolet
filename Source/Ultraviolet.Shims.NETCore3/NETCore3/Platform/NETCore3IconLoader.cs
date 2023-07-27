@@ -28,10 +28,10 @@ namespace Ultraviolet.Shims.NETCore3.Platform
 
             if (iconStream != null)
             {
-                using (var source = SurfaceSource.Create(iconStream))
-                {
-                    return Surface2D.Create(source, SurfaceOptions.SrgbColor);
-                }
+                //using (var source = SurfaceSource.Create(iconStream))
+                //{
+                //    return Surface2D.Create(source, SurfaceOptions.SrgbColor);
+                //}
             }
 
             return null;

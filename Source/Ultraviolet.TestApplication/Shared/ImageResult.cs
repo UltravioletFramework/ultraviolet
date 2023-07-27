@@ -1,29 +1,28 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using NUnit.Framework;
+using Ultraviolet.Image;
 using Ultraviolet.TestFramework;
 
 namespace Ultraviolet.TestApplication
 {
     /// <summary>
-    /// Represents a unit test result containing a bitmap image.
+    /// Represents a unit test result containing an Ultraviolet image.
     /// </summary>
-    public sealed class BitmapResult
+    public sealed class ImageResult
     {
         /// <summary>
-        /// Represents the type of threshold that is used to compare bitmap results to expected images.
+        /// Represents the type of threshold that is used to compare image results to expected images.
         /// </summary>
-        private enum BitmapResultThresholdType { Percentage, Count };
+        private enum ImageResultThresholdType { Percentage, Count };
 
         /// <summary>
-        /// Initializes a new instance of the BitmapResult class.
+        /// Initializes a new instance of the ImageResult class.
         /// </summary>
-        /// <param name="bitmap">The bitmap being examined.</param>
-        internal BitmapResult(Bitmap bitmap)
+        /// <param name="image">The image being examined.</param>
+        internal ImageResult(UltravioletImage image)
         {
-            this.Bitmap = bitmap;
+            this.Image = image;
         }
 
         /// <summary>
@@ -33,9 +32,9 @@ namespace Ultraviolet.TestApplication
         /// </summary>
         /// <param name="threshold">The threshold value to set.</param>
         /// <returns>The result object.</returns>
-        public BitmapResult WithinPercentageThreshold(Single threshold)
+        public ImageResult WithinPercentageThreshold(Single threshold)
         {
-            this.thresholdType = BitmapResultThresholdType.Percentage;
+            this.thresholdType = ImageResultThresholdType.Percentage;
             this.threshold = threshold;
             return this;
         }
@@ -47,42 +46,42 @@ namespace Ultraviolet.TestApplication
         /// </summary>
         /// <param name="threshold">The threshold value to set.</param>
         /// <returns>The result object.</returns>
-        public BitmapResult WithinAbsoluteThreshold(Int32 threshold)
+        public ImageResult WithinAbsoluteThreshold(Int32 threshold)
         {
-            this.thresholdType = BitmapResultThresholdType.Count;
+            this.thresholdType = ImageResultThresholdType.Count;
             this.threshold = threshold;
             return this;
         }
 
         /// <summary>
-        /// Asserts that the bitmap matches the image in the specified file.
+        /// Asserts that the image matches the image in the specified file.
         /// </summary>
-        /// <param name="filename">The filename of the image to match against the bitmap.</param>
+        /// <param name="filename">The filename of the image to match against the image.</param>
         public void ShouldMatch(String filename)
         {
             var machineName = UltravioletTestFramework.GetSanitizedMachineName();
             Directory.CreateDirectory(machineName);
 
-            var expected = (Bitmap)Image.FromFile(filename);
+            var expected = UltravioletImage.FromFile(filename);
 
             var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
 
             var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
-            SaveBitmap(expected, Path.Combine(machineName, filenameExpected));
+            SaveImage(expected, Path.Combine(machineName, filenameExpected));
 
             var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
-            SaveBitmap(Bitmap, Path.Combine(machineName, filenameActual));
+            SaveImage(Image, Path.Combine(machineName, filenameActual));
 
-            if (expected.Width != Bitmap.Width || expected.Height != Bitmap.Height)
+            if (expected.Width != Image.Width || expected.Height != Image.Height)
             {
                 Assert.Fail("Images do not match due to differing dimensions");
             }
 
             var mismatchesFound    = 0;
-            var mismatchesRequired = (thresholdType == BitmapResultThresholdType.Percentage) ?
-                (Int32)((Bitmap.Width * Bitmap.Height) * threshold) : (Int32)threshold;
+            var mismatchesRequired = (thresholdType == ImageResultThresholdType.Percentage) ?
+                (Int32)((Image.Width * Image.Height) * threshold) : (Int32)threshold;
 
-            using (var diff = new Bitmap(expected.Width, expected.Height))
+            using (var diff = new UltravioletImage(expected.Width, expected.Height))
             {
                 // Ignore pixels that are within about 1% of the expected value.
                 const Int32 PixelDiffThreshold = 2;
@@ -91,8 +90,8 @@ namespace Ultraviolet.TestApplication
                 {
                     for (int x = 0; x < expected.Width; x++)
                     {
-                        var pixelExpected = expected.GetPixel(x, y);
-                        var pixelActual   = Bitmap.GetPixel(x, y);
+                        expected.GetPixel(x, y, out Pixel4 pixelExpected);
+                        Image.GetPixel(x, y, out Pixel4 pixelActual);
 
                         var diffR = Math.Abs(pixelExpected.R + pixelActual.R - 2 * Math.Min(pixelExpected.R, pixelActual.R));
                         var diffG = Math.Abs(pixelExpected.G + pixelActual.G - 2 * Math.Min(pixelExpected.G, pixelActual.G));
@@ -103,12 +102,12 @@ namespace Ultraviolet.TestApplication
                             mismatchesFound++;
                         }
 
-                        diff.SetPixel(x, y, System.Drawing.Color.FromArgb(255, diffR, diffG, diffB));
+                        diff.SetPixel(x, y, new Pixel4 { R = (Byte)diffR, G = (Byte)diffG, B = (Byte)diffB, A = 255 });
                     }
                 }
 
                 var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
-                SaveBitmap(diff, Path.Combine(machineName, filenameDiff));
+                SaveImage(diff, Path.Combine(machineName, filenameDiff));
 
                 if (mismatchesFound > mismatchesRequired)
                 {
@@ -120,23 +119,23 @@ namespace Ultraviolet.TestApplication
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public Bitmap Bitmap { get; }
+        public UltravioletImage Image { get; }
 
         /// <summary>
         /// Saves a bitmap to thhe specified file.
         /// </summary>
-        private void SaveBitmap(Bitmap bitmap, String filename)
+        private void SaveImage(UltravioletImage image, String filename)
         {
             // NOTE: We first open a FileStream because it gives us potentially more
             // useful exception information than "A generic error occurred in GDI+".
             using (var fs = new FileStream(filename, FileMode.Create))
             {
-                bitmap.Save(fs, ImageFormat.Png);
+                image.SaveAsPng(fs);
             }
         }
 
         // Image comparison threshold.
-        private BitmapResultThresholdType thresholdType = BitmapResultThresholdType.Percentage;
+        private ImageResultThresholdType thresholdType = ImageResultThresholdType.Percentage;
         private Single threshold = 0.0f;
     }
 }

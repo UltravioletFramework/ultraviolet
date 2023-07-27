@@ -30,12 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore3\Ultraviolet.Core.TestFramework.NETCore3.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Image\Ultraviolet.Image.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard21\Ultraviolet.SDL2.NETStandard21.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>

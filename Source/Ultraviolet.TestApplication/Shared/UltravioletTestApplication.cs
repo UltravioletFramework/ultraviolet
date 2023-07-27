@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using Ultraviolet.BASS;
@@ -8,6 +7,7 @@ using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.FMOD;
 using Ultraviolet.Graphics;
+using Ultraviolet.Image;
 using Ultraviolet.Input;
 using Ultraviolet.OpenGL;
 using Ultraviolet.SDL2;
@@ -168,7 +168,7 @@ namespace Ultraviolet.TestApplication
         }
 
         /// <inheritdoc/>
-        public Bitmap Render(Action<UltravioletContext> renderer)
+        public UltravioletImage Render(Action<UltravioletContext> renderer)
         {
             if (headless)
                 throw new InvalidOperationException("Cannot render a headless window.");
@@ -178,7 +178,7 @@ namespace Ultraviolet.TestApplication
             this.renderer = renderer;
             this.Run();
 
-            return bmp;
+            return image;
         }
 
         /// <inheritdoc/>
@@ -402,7 +402,7 @@ namespace Ultraviolet.TestApplication
 
                 Ultraviolet.GetGraphics().SetRenderTargetToBackBuffer();
                 Ultraviolet.GetGraphics().Clear(Color.CornflowerBlue);
-                bmp = ConvertRenderTargetToBitmap(rtarget);
+                image = ConvertRenderTargetToImage(rtarget);
             }
             else
             {
@@ -464,11 +464,11 @@ namespace Ultraviolet.TestApplication
         }
 
         /// <summary>
-        /// Converts the specified render target to a bitmap image.
+        /// Converts the specified render target to an Ultraviolet image.
         /// </summary>
         /// <param name="rt">The render target to convert.</param>
-        /// <returns>The converted bitmap image.</returns>
-        private Bitmap ConvertRenderTargetToBitmap(RenderTarget2D rt)
+        /// <returns>The converted image.</returns>
+        private UltravioletImage ConvertRenderTargetToImage(RenderTarget2D rt)
         {
             // HACK: Our buffer has been rounded up to the nearest
             // power of two, so at this point we clip it back down
@@ -481,7 +481,7 @@ namespace Ultraviolet.TestApplication
             var data = new Color[rt.Width * rt.Height];
             rt.GetData(data);
 
-            var bmp = new Bitmap(windowWidth, windowHeight);
+            var image = new UltravioletImage(windowWidth, windowHeight);
             var pixel = 0;
             for (int y = 0; y < rt.Height; y++)
             {
@@ -491,15 +491,13 @@ namespace Ultraviolet.TestApplication
                     {
                         var rawColor = data[pixel];
                         
-                        bmp.SetPixel(x, y, 
-                            System.Drawing.Color.FromArgb(255, 
-                            System.Drawing.Color.FromArgb((Int32)rawColor.ToArgb())));
+                        image.SetPixel(x, y, rawColor.R, rawColor.G, rawColor.B, 255);
                     }
                     pixel++;
                 }
             }
 
-            return bmp;
+            return image;
         }
 
         // State values.
@@ -512,7 +510,7 @@ namespace Ultraviolet.TestApplication
         private Action<ContentManager> loader;
         private Action<UltravioletContext> renderer;
         private Action disposer;
-        private Bitmap bmp;
+        private UltravioletImage image;
         private Int32 updateCount;
         private Int32 renderCount;
         private Int32 frameCount;

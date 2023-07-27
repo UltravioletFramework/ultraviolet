@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
-using GDIRect = System.Drawing.Rectangle;
+using Ultraviolet.Image;
 
 namespace Ultraviolet.Shims.NETCore3.Graphics
 {
@@ -19,7 +17,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(surface, nameof(surface));
             Contract.Require(stream, nameof(stream));
 
-            Save(surface, stream, ImageFormat.Png);
+            Save(surface, stream, UltravioletImageFormat.PNG);
         }
 
         /// <inheritdoc/>
@@ -28,7 +26,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(surface, nameof(surface));
             Contract.Require(stream, nameof(stream));
 
-            Save(surface, stream, ImageFormat.Jpeg);
+            Save(surface, stream, UltravioletImageFormat.JPEG);
         }
 
         /// <inheritdoc/>
@@ -37,7 +35,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(renderTarget, nameof(renderTarget));
             Contract.Require(stream, nameof(stream));
 
-            Save(renderTarget, stream, ImageFormat.Png);
+            Save(renderTarget, stream, UltravioletImageFormat.PNG);
         }
 
         /// <inheritdoc/>
@@ -46,7 +44,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             Contract.Require(renderTarget, nameof(renderTarget));
             Contract.Require(stream, nameof(stream));
 
-            Save(renderTarget, stream, ImageFormat.Jpeg);
+            Save(renderTarget, stream, UltravioletImageFormat.JPEG);
         }
 
         /// <summary>
@@ -55,7 +53,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
         /// <param name="surface">The surface to save.</param>
         /// <param name="stream">The stream to which to save the surface data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private void Save(Surface2D surface, Stream stream, ImageFormat format)
+        private void Save(Surface2D surface, Stream stream, UltravioletImageFormat format)
         {
             var data = new Color[surface.Width * surface.Height];
             surface.GetData(data);
@@ -69,7 +67,7 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
         /// <param name="renderTarget">The render target to save.</param>
         /// <param name="stream">The stream to which to save the render target data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private void Save(RenderTarget2D renderTarget, Stream stream, ImageFormat format)
+        private void Save(RenderTarget2D renderTarget, Stream stream, UltravioletImageFormat format)
         {
             var data = new Color[renderTarget.Width * renderTarget.Height];
             renderTarget.GetData(data);
@@ -85,32 +83,25 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="stream">The stream to which to save the image data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private unsafe void Save(Color[] data, Int32 width, Int32 height, Stream stream, ImageFormat format)
+        private unsafe void Save(Color[] data, Int32 width, Int32 height, Stream stream, UltravioletImageFormat format)
         {
-            using (var bmp = new Bitmap(width, height))
+            using (var image = new UltravioletImage(width, height))
             {
-                var bmpData = bmp.LockBits(new GDIRect(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
                 fixed (Color* pData = data)
                 {
                     for (int y = 0; y < height; y++)
                     {
                         var pSrc = pData + (y * width);
-                        var pDst = (Byte*)bmpData.Scan0 + (y * bmpData.Stride);
 
                         for (int x = 0; x < width; x++)
                         {
                             var color = *pSrc++;
-                            *pDst++ = color.B;
-                            *pDst++ = color.G;
-                            *pDst++ = color.R;
-                            *pDst++ = color.A;
+                            image.SetPixel(x, y, color.R, color.G, color.B, color.A);
                         }
                     }
                 }
 
-                bmp.UnlockBits(bmpData);
-                bmp.Save(stream, format);
+                image.Save(stream, format);
             }
         }
     }

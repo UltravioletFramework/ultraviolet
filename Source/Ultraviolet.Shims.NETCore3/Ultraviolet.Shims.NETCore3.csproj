@@ -44,11 +44,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Image\Ultraviolet.Image.csproj" />
     <ProjectReference Include="..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>
 

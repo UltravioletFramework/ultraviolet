@@ -9,7 +9,7 @@
     <Import_RootNamespace>Ultraviolet.TestApplication</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BitmapResult.cs" />
+    <Compile Include="..\Shared\ImageResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletApplicationTestFramework.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletTestApplication.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletTestApplication.FrameAction.cs" />

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+using System.Buffers;
 using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
+using Ultraviolet.Image;
 
 namespace Ultraviolet.Shims.NETCore3.Graphics
 {
@@ -26,21 +26,23 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
 
             using (var mstream = new MemoryStream(data))
             {
-                this.bmp = new Bitmap(mstream);
-                this.bmpData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                this.image = UltravioletImage.FromStream(mstream);
+                this.imageMemory = new Memory<byte>(this.image.Data);
+                this.imageMemoryHandle = this.imageMemory.Pin();
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NETCore3SurfaceSource"/> class.
         /// </summary>
-        /// <param name="bmp">The bitmap from which to read surface data.</param>
-        public NETCore3SurfaceSource(Bitmap bmp)
+        /// <param name="sourceImage">The image from which to read surface data.</param>
+        public NETCore3SurfaceSource(UltravioletImage sourceImage)
         {
-            Contract.Require(bmp, nameof(bmp));
+            Contract.Require(sourceImage, nameof(sourceImage));
 
-            this.bmp = bmp;
-            this.bmpData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            this.image = UltravioletImage.FromMemory(sourceImage.Data);
+            this.imageMemory = new Memory<byte>(this.image.Data);
+            this.imageMemoryHandle = this.imageMemory.Pin();
         }
 
         /// <inheritdoc/>
@@ -57,32 +59,25 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                unsafe
-                {
-                    var pixel = ((byte*)bmpData.Scan0) + (bmpData.Stride * y) + (x * sizeof(UInt32));
-                    var b = *pixel++;
-                    var g = *pixel++;
-                    var r = *pixel++;
-                    var a = *pixel++;
-                    return new Color(r, g, b, a);
-                }
+                this.image.GetPixel(x, y, out Pixel4 pixel);
+                return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
             }
         }
 
         /// <inheritdoc/>
-        public override IntPtr Data => bmpData.Scan0;
+        public unsafe override IntPtr Data => (IntPtr)imageMemoryHandle.Pointer;
 
         /// <inheritdoc/>
-        public override Int32 Stride => bmpData.Stride;
+        public override Int32 Stride => image.GetStride();
 
         /// <inheritdoc/>
-        public override Int32 Width => bmp.Width;
+        public override Int32 Width => image.Width;
 
         /// <inheritdoc/>
-        public override Int32 Height => bmp.Height;
+        public override Int32 Height => image.Height;
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -95,16 +90,17 @@ namespace Ultraviolet.Shims.NETCore3.Graphics
 
             if (disposing)
             {
-                bmp.UnlockBits(bmpData);
-                bmp.Dispose();
+                imageMemoryHandle.Dispose();
+                image.Dispose();
             }
 
             disposed = true;
         }
 
         // State values.
-        private readonly Bitmap bmp;
-        private readonly BitmapData bmpData;
+        private readonly UltravioletImage image; 
+        private readonly MemoryHandle imageMemoryHandle;
+        private readonly Memory<byte> imageMemory;
         private Boolean disposed;
     }
 }

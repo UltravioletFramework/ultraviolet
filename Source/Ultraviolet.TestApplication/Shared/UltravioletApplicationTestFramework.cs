@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.Image;
 using Ultraviolet.TestFramework;
 
 namespace Ultraviolet.TestApplication
@@ -148,9 +148,9 @@ namespace Ultraviolet.TestApplication
         /// </summary>
         /// <param name="bitmap">The bitmap to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected BitmapResult TheResultingImage(Bitmap bitmap)
+        protected ImageResult TheResultingImage(UltravioletImage bitmap)
         {
-            return new BitmapResult(bitmap);
+            return new ImageResult(bitmap);
         }
 
         /// <summary>
