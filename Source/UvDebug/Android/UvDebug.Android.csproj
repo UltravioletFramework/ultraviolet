@@ -82,6 +82,9 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass.so">
       <Link>lib\armeabi-v7a\libbass.so</Link>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FMOD\Android\armeabi-v7a\libfmod.so">
+      <Link>lib\armeabi-v7a\libfmod.so</Link>
+    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so">
       <Link>lib\armeabi-v7a\libfreetype.so</Link>
     </AndroidNativeLibrary>
@@ -104,6 +107,9 @@
   <ItemGroup>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\arm64-v8a\libbass.so">
       <Link>lib\arm64-v8a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FMOD\Android\arm64-v8a\libfmod.so">
+      <Link>lib\arm64-v8a\libfmod.so</Link>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\arm64-v8a\libfreetype.so">
       <Link>lib\arm64-v8a\libfreetype.so</Link>
@@ -128,6 +134,9 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FMOD\Android\x86\libfmod.so">
+      <Link>lib\x86\libfmod.so</Link>
+    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libfreetype.so">
       <Link>lib\x86\libfreetype.so</Link>
     </AndroidNativeLibrary>
@@ -150,6 +159,9 @@
   <ItemGroup>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86_64\libbass.so">
       <Link>lib\x86_64\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FMOD\Android\x86_64\libfmod.so">
+      <Link>lib\x86_64\libfmod.so</Link>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86_64\libfreetype.so">
       <Link>lib\x86_64\libfreetype.so</Link>

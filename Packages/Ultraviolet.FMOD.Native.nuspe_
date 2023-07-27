@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.FMOD.Native</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <repository type="git" url="https://github.com/tlgkccampbell/ultraviolet" />
+    <icon>images\icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Ultraviolet.FMOD Native Dependencies</title>
+    <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the FMOD implementation of the Framework's audio subsystem.</summary>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the FMOD implementation of the Framework's audio subsystem.
+   
+Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki
+
+Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
+    <tags>ultraviolet gamedev</tags>	
+    <dependencies>
+      <group targetFramework="netcoreapp2.2"/>
+      <group targetFramework="netcoreapp3.1"/>
+      <group targetFramework="MonoAndroid80"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
+
+    <!-- .NET Core 2.2 -->
+    <file src="Ultraviolet.FMOD.Native\build\netcoreapp2.2\Ultraviolet.FMOD.Native.targets" target="build\netcoreapp2.2\Ultraviolet.FMOD.Native.targets"/>
+    <file src="_._" target="lib\netcoreapp2.2\_._"/>
+    <!-- x86 -->
+    <file src="..\Dependencies\FMOD\x86\win32nt\fmod.dll" target="build\netcoreapp2.2\x86\win32nt\fmod.dll"/>
+    <file src="..\Dependencies\FMOD\x86\unix\libfmod.so" target="build\netcoreapp2.2\x86\unix\libfmod.so"/>
+    <!-- x64 -->
+    <file src="..\Dependencies\FMOD\x64\win32nt\fmod.dll" target="build\netcoreapp2.2\x64\win32nt\fmod.dll"/>
+    <file src="..\Dependencies\FMOD\x64\unix\libfmod.so" target="build\netcoreapp2.2\x64\unix\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\x64\osx\libfmod.dylib" target="build\netcoreapp2.2\x64\osx\libfmod.dylib"/>
+
+    <!-- .NET Core 3.1 -->
+    <file src="Ultraviolet.FMOD.Native\build\netcoreapp3.1\Ultraviolet.FMOD.Native.targets" target="build\netcoreapp3.1\Ultraviolet.FMOD.Native.targets"/>
+    <file src="_._" target="lib\netcoreapp3.1\_._"/>
+    <!-- x86 -->
+    <file src="..\Dependencies\FMOD\x86\win32nt\fmod.dll" target="build\netcoreapp3.1\x86\win32nt\fmod.dll"/>
+    <file src="..\Dependencies\FMOD\x86\unix\libfmod.so" target="build\netcoreapp3.1\x86\unix\libfmod.so"/>
+    <!-- x64 -->
+    <file src="..\Dependencies\FMOD\x64\win32nt\fmod.dll" target="build\netcoreapp3.1\x64\win32nt\fmod.dll"/>
+    <file src="..\Dependencies\FMOD\x64\unix\libfmod.so" target="build\netcoreapp3.1\x64\unix\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\x64\osx\libfmod.dylib" target="build\netcoreapp3.1\x64\osx\libfmod.dylib"/>
+    
+    <!-- Android -->
+    <file src="Ultraviolet.FMOD.Native\build\MonoAndroid80\Ultraviolet.FMOD.Native.targets" target="build\MonoAndroid80\Ultraviolet.FMOD.Native.targets"/>
+    <file src="_._" target="lib\MonoAndroid80\_._"/>
+    <file src="..\Dependencies\FMOD\Android\armeabi-v7a\libfmod.so" target="build\MonoAndroid80\lib\armeabi-v7a\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\Android\arm64-v8a\libfmod.so" target="build\MonoAndroid80\lib\arm64-v8a\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\Android\x86\libfmod.so" target="build\MonoAndroid80\lib\x86\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\Android\x86_64\libfmod.so" target="build\MonoAndroid80\lib\x86_64\libfmod.so"/>
+  </files>  
+</package>

@@ -11,6 +11,7 @@ namespace Ultraviolet.Tests.Audio
     {
         [Test]
         [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void Song_LoadsTags_FromOggVorbisFile(AudioImplementation audioImplementation)
         {

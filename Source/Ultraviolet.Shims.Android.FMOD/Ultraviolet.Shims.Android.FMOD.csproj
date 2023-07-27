@@ -43,6 +43,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <FMODJarPath>$(MSBuildProjectDirectory)\Jars\fmod.jar</FMODJarPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
@@ -64,7 +67,7 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedJar Include="$(FMOD_JAR)">
+    <EmbeddedJar Include="$(FMODJarPath)">
       <Link>Jars\fmod.jar</Link>
     </EmbeddedJar>
   </ItemGroup>
@@ -87,6 +90,7 @@
   </Target>
   -->
   <Target Name="BeforeBuild">
-    <Error Text="Cannot find fmod.jar. Define an environment variable called FMOD_JAR which points to this file." Condition=" '$(FMOD_JAR)' == '' Or !Exists('$(FMOD_JAR)')" />
+    <Message Text="$(FMODJarPath)" Importance="high" />
+    <Error Text="Cannot find fmod.jar. Ensure the property $(FMODJarPath) points to the correct file." Condition=" '$(FMODJarPath)' == '' Or !Exists('$(FMODJarPath)')" />
   </Target>
 </Project>
