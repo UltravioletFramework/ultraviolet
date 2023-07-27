@@ -184,7 +184,7 @@ namespace Ultraviolet.Core.Collections
         public void CopyTo(T[] array, int arrayIndex)
         {
             EnsureSort();
-            Array.Copy(data, array, count);
+            Array.Copy(data, arrayIndex, array, 0, count);
         }
 
         /// <summary>
