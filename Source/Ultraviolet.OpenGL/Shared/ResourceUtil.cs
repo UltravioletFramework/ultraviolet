@@ -57,7 +57,17 @@ namespace Ultraviolet.OpenGL
                 }
             }
 
-            return ShaderSource.ProcessRawSource(null, null, ReadResourceString(name));
+            ShaderStage stage = ShaderStage.Unknown;
+            if (name.Contains(".frag"))
+            {
+                stage = ShaderStage.Fragment;
+            }
+            else if (name.Contains(".vert"))
+            {
+                stage = ShaderStage.Vertex;
+            }
+
+            return ShaderSource.ProcessRawSource(null, null, ReadResourceString(name), stage);
         }
 
         // The manifest resource names for this assembly.

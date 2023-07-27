@@ -32,8 +32,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="manager">The <see cref="ContentManager"/> that is loading the shader source.</param>
         /// <param name="metadata">The content processor metadata for the shader source that is being loaded.</param>
         /// <param name="source">The raw shader source to process.</param>
+        /// <param name="stage">The shader stage.</param>
         /// <returns>A <see cref="ShaderSource"/> object that represents the processed shader source.</returns>
-        public static ShaderSource ProcessRawSource(ContentManager manager, IContentProcessorMetadata metadata, String source)
+        public static ShaderSource ProcessRawSource(ContentManager manager, IContentProcessorMetadata metadata, String source, ShaderStage stage)
         {
             var ssmd = new ShaderSourceMetadata();
 
@@ -42,10 +43,13 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (ProcessIncludeDirective(manager, metadata, line, output, ssmd))
                     return true;
 
-                if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd))
+                if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd, stage))
                     return true;
 
-                if (ProcessIfVerDirective(manager, metadata, line, output, ssmd))
+                if (ProcessIfVerDirective(manager, metadata, line, output, ssmd, stage))
+                    return true;
+
+                if (ProcessIfStageDirective(manager, metadata, line, output, ssmd, stage))
                     return true;
 
                 if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
@@ -216,7 +220,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Processes #includeres directives.
         /// </summary>
-        private static Boolean ProcessIncludeResourceDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
+        private static Boolean ProcessIncludeResourceDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd, ShaderStage stage)
         {
             var includeResourceMatch = regexincludeResourceDirective.Match(line);
             if (includeResourceMatch.Success)
@@ -234,7 +238,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 using (var resStream = asm.GetManifestResourceStream(includeResource))
                 using (var resReader = new StreamReader(resStream))
                 {
-                    var includeSrc = ProcessRawSource(manager, metadata, resReader.ReadToEnd());
+                    var includeSrc = ProcessRawSource(manager, metadata, resReader.ReadToEnd(), stage);
                     ssmd.Concat(includeSrc.Metadata);
                     output.Append(includeSrc.Source);
 
@@ -250,7 +254,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Processes #ifver directives.
         /// </summary>
-        private static Boolean ProcessIfVerDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
+        private static Boolean ProcessIfVerDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd, ShaderStage stage)
         {
             var ifVerMatch = regexIfVerDirective.Match(line);
             if (ifVerMatch.Success)
@@ -296,7 +300,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 if (dirSatisfied)
                 {
-                    var includedSource = ProcessRawSource(manager, metadata, source);
+                    var includedSource = ProcessRawSource(manager, metadata, source, stage);
                     ssmd.Concat(includedSource.Metadata);
                     output.Append(includedSource.Source);
 
@@ -362,6 +366,42 @@ namespace Ultraviolet.OpenGL.Graphics
             return false;
         }
 
+        /// <summary>
+        /// Processes #ifstage directives.
+        /// </summary>
+        private static Boolean ProcessIfStageDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd, ShaderStage shaderStage)
+        {
+            var ifStageMatch = regexIfStageDirective.Match(line);
+            if (ifStageMatch.Success)
+            {
+                var source = ifStageMatch.Groups["source"].Value;
+                var stage = ifStageMatch.Groups["stage"].Value?.ToLower();
+
+                ShaderStage dirStage = ShaderStage.Unknown;
+                if (stage == "vertex")
+                {
+                    dirStage = ShaderStage.Vertex;
+                }
+                else if (stage == "fragment")
+                {
+                    dirStage = ShaderStage.Fragment;
+                }
+
+                if (dirStage == shaderStage)
+                {
+                    var includedSource = ProcessRawSource(manager, metadata, source, shaderStage);
+                    ssmd.Concat(includedSource.Metadata);
+                    output.Append(includedSource.Source);
+
+                    if (!includedSource.Source.EndsWith("\n"))
+                        output.AppendLine();
+                }
+
+                return true;
+            }
+            return false;
+        }
+
         // Regular expressions used to identify directives
         private static readonly Regex regexCStyleComment =
             new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
@@ -379,5 +419,7 @@ namespace Ultraviolet.OpenGL.Graphics
             new Regex(@"^\s*(\/\/)?#param\s+""(?<parameter>.*?)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexCameraDirective =
             new Regex(@"^\s*(\/\/)?#camera\((?<parameter>\w+)\)\s*""(?<uniform>\w+)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex regexIfStageDirective =
+            new Regex(@"^\s*(\/\/)?#ifstage\s+\""(?<stage>\w+)?\""\s+\{\s*(?<source>.+)\s*\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

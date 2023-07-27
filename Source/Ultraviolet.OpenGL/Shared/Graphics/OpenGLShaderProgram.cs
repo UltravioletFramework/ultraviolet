@@ -7,6 +7,26 @@ using Ultraviolet.OpenGL.Bindings;
 
 namespace Ultraviolet.OpenGL.Graphics
 {
+    // todo: move this
+    /// <summary>
+    /// Shader stage
+    /// </summary>
+    public enum ShaderStage
+    {
+        /// <summary>
+        /// Unknown
+        /// </summary>
+        Unknown,
+        /// <summary>
+        /// Vertex
+        /// </summary>
+        Vertex,
+        /// <summary>
+        /// Fragment
+        /// </summary>
+        Fragment
+    }
+
     /// <summary>
     /// Represents an OpenGL shader program.
     /// </summary>

@@ -12,7 +12,16 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override ShaderSource Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            return ShaderSource.ProcessRawSource(manager, metadata, input);
+            ShaderStage stage = ShaderStage.Unknown;
+            if (metadata?.Extension?.Contains(".frag") ?? false)
+            {
+                stage = ShaderStage.Fragment;
+            }
+            else if (metadata?.Extension?.Contains(".vert") ?? false)
+            {
+                stage = ShaderStage.Vertex;
+            }
+            return ShaderSource.ProcessRawSource(manager, metadata, input, stage);
         }
     }
 }
