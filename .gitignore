@@ -12,7 +12,6 @@
 
 [Dd]ebug/
 [Rr]elease/
-x64/
 build/
 [Bb]in/
 [Oo]bj/
@@ -182,5 +181,5 @@ gen/
 !/Samples/Dependencies/Android/x86
 !/Samples/Dependencies/iOS/*.a
 /Samples/Version.cs
-**/packages/
+#**/packages/
 /Binaries
