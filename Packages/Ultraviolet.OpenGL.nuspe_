@@ -18,12 +18,6 @@ Quick start guides for development using the Ultraviolet Framework are available
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <group targetFramework="netstandard2.0">
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />
-      <dependency id="Ultraviolet.OpenGL.Environment" version="UV_VERSION" />  
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-    </group>
     <group targetFramework="netstandard2.1">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />
@@ -34,11 +28,6 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </metadata>
   <files>
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
-
-    <!-- .NET Standard 2.0 -->
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.OpenGL.dll" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.OpenGL.XML" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.OpenGL.pdb" target="lib\netstandard2.0\"/>
 
     <!-- .NET Standard 2.1 -->
     <file src="..\Binaries\NETCore3\Release\Ultraviolet.OpenGL.dll" target="lib\netstandard2.1\"/>

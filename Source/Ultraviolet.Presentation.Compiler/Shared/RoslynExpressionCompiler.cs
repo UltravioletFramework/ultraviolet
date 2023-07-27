@@ -368,7 +368,7 @@ namespace Ultraviolet.Presentation.Compiler
             writer.WriteLine("using System.Reflection;");
             writer.WriteLine("using System.Runtime.Versioning;");
             writer.WriteLine();
-            writer.WriteLine("[assembly: TargetFramework(\".NETStandard,Version=v2.0\", FrameworkDisplayName = \"\")]");
+            writer.WriteLine("[assembly: TargetFramework(\".NETStandard,Version=v2.1\", FrameworkDisplayName = \"\")]");
             writer.WriteLine("[assembly: AssemblyCompany(\"Ultraviolet Framework\")]");
             writer.WriteLine("[assembly: AssemblyConfiguration(\"" + (debug ? "Debug" : "Release") + "\")]");
             writer.WriteLine("[assembly: AssemblyFileVersion(\"{0}\")]", applicationVersion);

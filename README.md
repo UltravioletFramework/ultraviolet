@@ -49,7 +49,7 @@ A [dedicated repository](https://github.com/UltravioletFramework/ultraviolet-sam
 Requirements
 ============
 
-Ultraviolet can be used with any version of .NET which supports .NET Standard 2.0 or .NET Standard 2.1.
+Ultraviolet can be used with any version of .NET which supports .NET Standard 2.1.
 
 Building Ultraviolet requires .NET Core SDK 3.1.
 

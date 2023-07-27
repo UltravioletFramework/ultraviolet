@@ -18,10 +18,6 @@ Quick start guides for development using the Ultraviolet Framework are available
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <group targetFramework="netstandard2.0">
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-    </group>
     <group targetFramework="netstandard2.1">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
@@ -30,14 +26,6 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </metadata>
   <files>
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
-
-    <!-- .NET Standard 2.0 -->
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.dll" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.XML" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.pdb" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.Uvss.dll" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.Uvss.XML" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.Uvss.pdb" target="lib\netstandard2.0\"/>
 
     <!-- .NET Standard 2.1 -->
     <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.dll" target="lib\netstandard2.1\"/>

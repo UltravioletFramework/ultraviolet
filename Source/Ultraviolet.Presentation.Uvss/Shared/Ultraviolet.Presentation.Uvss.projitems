@@ -109,7 +109,4 @@
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.Presentation.Tests.NETStandard20.csproj" />
-  </ItemGroup>
 </Project>
