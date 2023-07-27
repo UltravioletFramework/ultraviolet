@@ -158,14 +158,15 @@ namespace Ultraviolet.Core.Collections
                 return;
 
             var old = storage;
+            var oldLength = old?.Length ?? 0;
 
             storage = new T[capacity];
-            if (count > 0)
+            if (oldLength > 0)
             {
-                Array.Copy(old, storage, count);
+                Array.Copy(old, storage, old.Length);
             }
 
-            for (int i = 0; i < storage.Length; i++)
+            for (int i = oldLength; i < storage.Length; i++)
                 storage[i] = allocator();
         }
 
