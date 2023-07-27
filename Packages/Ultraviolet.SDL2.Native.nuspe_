@@ -55,7 +55,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid80\lib\armeabi-v7a\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libhidapi.so" target="build\MonoAndroid80\lib\armeabi-v7a\libhidapi.so"/>
     <file src="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2.so" target="build\MonoAndroid80\lib\arm64-v8a\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\arm64-v8a\libhidapi.so" target="build\MonoAndroid80\lib\arme64-v8a\libhidapi.so"/>
+    <file src="..\Dependencies\SDL2\Android\arm64-v8a\libhidapi.so" target="build\MonoAndroid80\lib\arm64-v8a\libhidapi.so"/>
     <file src="..\Dependencies\SDL2\Android\x86\libSDL2.so" target="build\MonoAndroid80\lib\x86\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\Android\x86\libhidapi.so" target="build\MonoAndroid80\lib\x86\libhidapi.so"/>
     <file src="..\Dependencies\SDL2\Android\x86_64\libSDL2.so" target="build\MonoAndroid80\lib\x86_64\libSDL2.so"/>

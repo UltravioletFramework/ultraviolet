@@ -24,7 +24,7 @@ namespace Ultraviolet.Shims.NETCore3
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new NETCore3SurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new NETCore3IconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
-            factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new NETCore3ScreenOrientationService(display));
+            factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new NETCore3ScreenRotationService(display));
 
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
@@ -37,7 +37,7 @@ namespace Ultraviolet.Shims.NETCore3
                     break;
             }
 
-            var softwareKeyboardService = new NETCore2SoftwareKeyboardService();
+            var softwareKeyboardService = new NETCore3SoftwareKeyboardService();
             factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);
         }
     }

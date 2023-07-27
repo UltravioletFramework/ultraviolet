@@ -6,7 +6,7 @@ namespace Ultraviolet.Shims.NETCore3.Input
     /// <summary>
     /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for the .NET Core 3.0 platform.
     /// </summary>
-    public sealed class NETCore2SoftwareKeyboardService : SoftwareKeyboardService
+    public sealed class NETCore3SoftwareKeyboardService : SoftwareKeyboardService
     {
         /// <inheritdoc/>
         public override Boolean ShowSoftwareKeyboard(KeyboardMode mode)

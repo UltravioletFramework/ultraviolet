@@ -42,8 +42,7 @@ namespace Ultraviolet.SDL2
             {
                 unsafe
                 {
-                    var service = SoftwareKeyboardService.Create();
-                    var region = service.TextInputRegion;
+                    var region = softwareKeyboardService.TextInputRegion;
                     if (region.HasValue)
                     {
                         var rect = new SDL_Rect()

@@ -50,7 +50,7 @@ namespace Ultraviolet.Shims.Android.Graphics
         /// <summary>
         /// Saves the specified surface as an image with the specified format.
         /// </summary>
-        /// <param name="renderTarget">The surface to save.</param>
+        /// <param name="surface">The surface to save.</param>
         /// <param name="stream">The stream to which to save the surface data.</param>
         /// <param name="format">The format with which to save the image.</param>
         private void Save(Surface2D surface, Stream stream, Bitmap.CompressFormat format)
