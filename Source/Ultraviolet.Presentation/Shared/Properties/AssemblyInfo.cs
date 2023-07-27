@@ -5,12 +5,6 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
 
-[assembly: InternalsVisibleTo("Ultraviolet.Presentation.Tests.NETCore2, PublicKey=" +
-    "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +
-    "79d63e81ea2cce6eeb67e8bde9256a39ba0ae06d5c96eef50905c7ee69ac28905ef5f2c9a8efce" +
-    "6cc414dafe1ef66180873448e75c875dafa6d976c9642cc1dbf14ec53c97d81046059d7a17f0ed" +
-    "30184ead039903031f7d8cbd02fa5021796e92dd810141ad3288ace425af60305ed8b090910d12" +
-    "59a204da")]
 [assembly: InternalsVisibleTo("Ultraviolet.Presentation.Tests.NETCore3, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +
     "79d63e81ea2cce6eeb67e8bde9256a39ba0ae06d5c96eef50905c7ee69ac28905ef5f2c9a8efce" +

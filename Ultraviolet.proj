@@ -8,9 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Ultraviolet_NETCore2_Solution Include="Source/Ultraviolet.NETCore2.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_NETCore2_Solution>
     <Ultraviolet_NETCore3_Solution Include="Source/Ultraviolet.NETCore3.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_NETCore3_Solution>
@@ -101,30 +98,6 @@
     <Copy SourceFiles="@(uvfont)" DestinationFiles="@(uvfont->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvfont/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvarchive)" DestinationFiles="@(uvarchive->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvarchive/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvassetlist)" DestinationFiles="@(uvassetlist->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvassetlist/%(RecursiveDir)%(Filename)%(Extension)')"/>
-  </Target>
-
-  <!-- NETCORE 2 -->
-  <Target Name="SetNETCore2BuildParameters">
-    <PropertyGroup>
-        <BinaryDir>NETCore2</BinaryDir>
-        <UvLibPlatform>NETStandard20</UvLibPlatform>
-        <UvAppPlatform>NETCore2</UvAppPlatform>
-        <NETStandardSuffix>/netstandard2.0</NETStandardSuffix>
-        <NETCoreSuffix>/netcoreapp2.2</NETCoreSuffix>
-    </PropertyGroup>
-  </Target>
-  <Target Name="CleanNETCore2">
-    <Exec Command="dotnet clean &quot;@(Ultraviolet_NETCore2_Solution)&quot;"/>
-  </Target>
-  <Target Name="BuildNETCore2" DependsOnTargets="SetNETCore2BuildParameters">
-    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore2_Solution)&quot; -c $(Configuration)"/>
-  </Target>
-  <Target Name="CopyNETCore2Binaries" AfterTargets="BuildNETCore2">
-    <CreateItem Include="Source/Ultraviolet.Shims.NETCore2/bin/$(Configuration)$(NETCoreSuffix)/Ultraviolet.Shims.NETCore2.*">
-      <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_NETCore2"/>
-    </CreateItem>
-    <CallTarget Targets="CopyStandardBinaries"/>
-    <Copy SourceFiles="@(Ultraviolet_Shims_NETCore2)" DestinationFiles="@(Ultraviolet_Shims_NETCore2->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 
   <!-- NETCORE 3 -->

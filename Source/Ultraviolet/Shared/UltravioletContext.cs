@@ -924,12 +924,9 @@ namespace Ultraviolet
                     {
                         case 0:
                         case 1:
+                        case 2:
                         case 4:
                             throw new NotSupportedException();
-
-                        case 2:
-                            shim = Assembly.Load("Ultraviolet.Shims.NETCore2, PublicKey=" + publicKeyString);
-                            break;
 
                         default:
                             shim = Assembly.Load("Ultraviolet.Shims.NETCore3, PublicKey=" + publicKeyString);

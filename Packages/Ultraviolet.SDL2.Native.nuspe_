@@ -19,24 +19,12 @@ Quick start guides for development using the Ultraviolet Framework are available
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
-      <group targetFramework="netcoreapp2.2"/>
       <group targetFramework="netcoreapp3.1"/>
       <group targetFramework="MonoAndroid80"/>
     </dependencies>
   </metadata>
   <files>    
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
-
-    <!-- .NET Core 2.2 -->
-    <file src="Ultraviolet.SDL2.Native\build\netcoreapp2.2\Ultraviolet.SDL2.Native.targets" target="build\netcoreapp2.2\Ultraviolet.SDL2.Native.targets"/>
-    <file src="_._" target="lib\netcoreapp2.2\_._"/>
-    <!-- x86 -->
-    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\netcoreapp2.2\x86\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\netcoreapp2.2\x86\unix\libSDL2.so"/>
-    <!-- x64 -->
-    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\netcoreapp2.2\x64\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\netcoreapp2.2\x64\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\netcoreapp2.2\x64\osx\libSDL2.dylib"/>
 
     <!-- .NET Core 3.1 -->
     <file src="Ultraviolet.SDL2.Native\build\netcoreapp3.1\Ultraviolet.SDL2.Native.targets" target="build\netcoreapp3.1\Ultraviolet.SDL2.Native.targets"/>
