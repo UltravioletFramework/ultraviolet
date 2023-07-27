@@ -2,7 +2,7 @@
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    static partial class gl
+    static partial class GL
     {
         /// <summary>
         /// Gets a value indicating whether instanced rendering is supported by the current OpenGL context..

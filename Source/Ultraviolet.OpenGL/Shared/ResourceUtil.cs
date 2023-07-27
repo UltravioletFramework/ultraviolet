@@ -48,7 +48,7 @@ namespace Ultraviolet.OpenGL
         {
             Contract.RequireNotEmpty(name, nameof(name));
 
-            if (gl.IsGLES)
+            if (GL.IsGLES)
             {
                 var glesName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(name) + "ES", Path.GetExtension(name));
                 if (manifestResourceNames.Contains("Ultraviolet.OpenGL.Resources." + glesName))

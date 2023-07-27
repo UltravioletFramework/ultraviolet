@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedCapability FromDevice(UInt32 cap)
         {
-            var enabled = gl.IsEnabled(cap);
-            gl.ThrowIfError();
+            var enabled = GL.IsEnabled(cap);
+            GL.ThrowIfError();
 
             return enabled;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.Enable(cap, desired);
-            gl.ThrowIfError();
+            GL.Enable(cap, desired);
+            GL.ThrowIfError();
 
             return true;
         }

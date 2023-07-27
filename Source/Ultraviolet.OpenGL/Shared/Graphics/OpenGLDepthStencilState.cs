@@ -107,21 +107,21 @@ namespace Ultraviolet.OpenGL.Graphics
             switch (func)
             {
                 case CompareFunction.Always:
-                    return gl.GL_ALWAYS;
+                    return GL.GL_ALWAYS;
                 case CompareFunction.Never:
-                    return gl.GL_NEVER;
+                    return GL.GL_NEVER;
                 case CompareFunction.Equal:
-                    return gl.GL_EQUAL;
+                    return GL.GL_EQUAL;
                 case CompareFunction.NotEqual:
-                    return gl.GL_NOTEQUAL;
+                    return GL.GL_NOTEQUAL;
                 case CompareFunction.Greater:
-                    return gl.GL_GREATER;
+                    return GL.GL_GREATER;
                 case CompareFunction.GreaterEqual:
-                    return gl.GL_GEQUAL;
+                    return GL.GL_GEQUAL;
                 case CompareFunction.Less:
-                    return gl.GL_LESS;
+                    return GL.GL_LESS;
                 case CompareFunction.LessEqual:
-                    return gl.GL_LEQUAL;
+                    return GL.GL_LEQUAL;
             }
             throw new NotSupportedException();
         }
@@ -136,21 +136,21 @@ namespace Ultraviolet.OpenGL.Graphics
             switch (op)
             {
                 case StencilOperation.Decrement:
-                    return gl.GL_DECR_WRAP;
+                    return GL.GL_DECR_WRAP;
                 case StencilOperation.DecrementSaturation:
-                    return gl.GL_DECR;
+                    return GL.GL_DECR;
                 case StencilOperation.Increment:
-                    return gl.GL_INCR_WRAP;
+                    return GL.GL_INCR_WRAP;
                 case StencilOperation.IncrementSaturation:
-                    return gl.GL_INCR;
+                    return GL.GL_INCR;
                 case StencilOperation.Invert:
-                    return gl.GL_INVERT;
+                    return GL.GL_INVERT;
                 case StencilOperation.Keep:
-                    return gl.GL_KEEP;
+                    return GL.GL_KEEP;
                 case StencilOperation.Replace:
-                    return gl.GL_REPLACE;
+                    return GL.GL_REPLACE;
                 case StencilOperation.Zero:
-                    return gl.GL_ZERO;
+                    return GL.GL_ZERO;
             }
             throw new NotSupportedException();
         }

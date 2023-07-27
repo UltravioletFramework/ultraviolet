@@ -2,7 +2,7 @@
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    partial class gl
+    partial class GL
     {
         /// <summary>
         /// Implements DSA functions for OpenGL contexts which do not support DSA. Unlike true DSA implementations,

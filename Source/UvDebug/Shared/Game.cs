@@ -354,7 +354,7 @@ namespace UvDebug
             effect.Texture = texture;
             DrawGeometry(rasterizerStateSolid, DepthStencilState.Default);
 
-            if (!gl.IsGLES)
+            if (!GL.IsGLES)
             {
                 effect.LightingEnabled = false;
                 effect.FogEnabled = false;

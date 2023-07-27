@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         [MonoNativeFunctionWrapper]
         private delegate void glDrawArraysInstancedDelegate(uint mode, int first, int count, int primcount);

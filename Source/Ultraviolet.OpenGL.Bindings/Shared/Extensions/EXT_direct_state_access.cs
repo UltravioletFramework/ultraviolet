@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         /* NOTE: Functions which are shared with the ARB extension are defined in GL_ARB_direct_state_access.cs */
 

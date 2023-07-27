@@ -16,11 +16,11 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedBlendEquation FromDevice()
         {
-            var modeRGB = (UInt32)gl.GetInteger(gl.GL_BLEND_EQUATION_RGB);
-            gl.ThrowIfError();
+            var modeRGB = (UInt32)GL.GetInteger(GL.GL_BLEND_EQUATION_RGB);
+            GL.ThrowIfError();
 
-            var modeAlpha = (UInt32)gl.GetInteger(gl.GL_BLEND_EQUATION_ALPHA);
-            gl.ThrowIfError();
+            var modeAlpha = (UInt32)GL.GetInteger(GL.GL_BLEND_EQUATION_ALPHA);
+            GL.ThrowIfError();
 
             return new CachedBlendEquation(modeRGB, modeAlpha);
         }
@@ -33,13 +33,13 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
             current = desired;
             if (desired.modeRGB == desired.modeAlpha)
             {
-                gl.BlendEquation(desired.modeRGB);
-                gl.ThrowIfError();
+                GL.BlendEquation(desired.modeRGB);
+                GL.ThrowIfError();
             }
             else
             {
-                gl.BlendEquationSeparate(desired.modeRGB, desired.modeAlpha);
-                gl.ThrowIfError();
+                GL.BlendEquationSeparate(desired.modeRGB, desired.modeAlpha);
+                GL.ThrowIfError();
             }
 
             return true;

@@ -20,8 +20,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
         public static CachedClearColor FromDevice()
         {
             var components = stackalloc float[4];
-            gl.GetFloatv(gl.GL_COLOR_CLEAR_VALUE, components);
-            gl.ThrowIfError();
+            GL.GetFloatv(GL.GL_COLOR_CLEAR_VALUE, components);
+            GL.ThrowIfError();
 
             return new Color(
                 (Byte)(components[0] * Byte.MaxValue),
@@ -36,8 +36,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.ClearColor(desired.R / 255f, desired.G / 255f, desired.B / 255f, desired.A / 255f);
-            gl.ThrowIfError();
+            GL.ClearColor(desired.R / 255f, desired.G / 255f, desired.B / 255f, desired.A / 255f);
+            GL.ThrowIfError();
 
             return true;
         }

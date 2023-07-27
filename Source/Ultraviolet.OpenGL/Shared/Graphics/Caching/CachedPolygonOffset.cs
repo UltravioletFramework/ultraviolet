@@ -16,11 +16,11 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedPolygonOffset FromDevice()
         {
-            var factor = gl.GetFloat(gl.GL_POLYGON_OFFSET_FACTOR);
-            gl.ThrowIfError();
+            var factor = GL.GetFloat(GL.GL_POLYGON_OFFSET_FACTOR);
+            GL.ThrowIfError();
 
-            var units = gl.GetFloat(gl.GL_POLYGON_OFFSET_UNITS);
-            gl.ThrowIfError();
+            var units = GL.GetFloat(GL.GL_POLYGON_OFFSET_UNITS);
+            GL.ThrowIfError();
 
             return new CachedPolygonOffset(factor, units);
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.PolygonOffset(desired.factor, desired.units);
-            gl.ThrowIfError();
+            GL.PolygonOffset(desired.factor, desired.units);
+            GL.ThrowIfError();
 
             return true;
         }

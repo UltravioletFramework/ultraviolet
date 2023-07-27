@@ -86,10 +86,10 @@ namespace Ultraviolet.OpenGL.Graphics
                 var layerHeight = layerSurfaces[0].Height;
 
                 var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
-                var format = (layerSurfaces[0].DataFormat == SurfaceSourceDataFormat.RGBA) ? gl.GL_RGBA : gl.GL_BGRA;
+                var format = (layerSurfaces[0].DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
 
                 return new OpenGLTexture3D(manager.Ultraviolet, internalformat, layerWidth, layerHeight, format, 
-                    gl.GL_UNSIGNED_BYTE, layerPointers, true);
+                    GL.GL_UNSIGNED_BYTE, layerPointers, true);
             }
             finally
             {

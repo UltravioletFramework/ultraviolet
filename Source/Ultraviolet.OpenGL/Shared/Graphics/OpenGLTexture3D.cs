@@ -39,7 +39,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var format = OpenGLTextureUtil.GetFormatFromBytesPerPixel(bytesPerPixel);
             var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(bytesPerPixel, srgbEncoded);
 
-            if (format == gl.GL_NONE || internalformat == gl.GL_NONE)
+            if (format == GL.GL_NONE || internalformat == GL.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
             var pixels = IntPtr.Zero;
@@ -47,7 +47,7 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 pixels = CreateConcatenatedPixelBuffer(data, width * height * bytesPerPixel);
                 CreateNativeTexture(uv, internalformat, width, height, data.Count, format, 
-                    gl.GL_UNSIGNED_BYTE, (void*)pixels, true);
+                    GL.GL_UNSIGNED_BYTE, (void*)pixels, true);
             }
             finally
             {
@@ -82,7 +82,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var format = OpenGLTextureUtil.GetFormatFromBytesPerPixel(4);
             var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
 
-            CreateNativeTexture(uv, internalformat, width, height, depth, format, gl.GL_UNSIGNED_BYTE, null, immutable);
+            CreateNativeTexture(uv, internalformat, width, height, depth, format, GL.GL_UNSIGNED_BYTE, null, immutable);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             this.rbuffer = rbuffer;
 
-            var bytesPerPixel = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
+            var bytesPerPixel = (format == GL.GL_RGB || format == GL.GL_BGR) ? 3 : 4;
             var pixels = IntPtr.Zero;
             try
             {
@@ -329,8 +329,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     ((OpenGLUltravioletGraphics)Ultraviolet.GetGraphics()).UnbindTexture(this);
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteTexture(glname);
-                        gl.ThrowIfError();
+                        GL.DeleteTexture(glname);
+                        GL.ThrowIfError();
                     }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
 
@@ -432,10 +432,10 @@ namespace Ultraviolet.OpenGL.Graphics
             this.type = type;
             this.immutable = immutable;
             this.srgbEncoded =
-                internalformat == gl.GL_SRGB ||
-                internalformat == gl.GL_SRGB_ALPHA ||
-                internalformat == gl.GL_SRGB8 ||
-                internalformat == gl.GL_SRGB8_ALPHA8;
+                internalformat == GL.GL_SRGB ||
+                internalformat == GL.GL_SRGB_ALPHA ||
+                internalformat == GL.GL_SRGB8 ||
+                internalformat == GL.GL_SRGB8_ALPHA8;
 
             this.texture = uv.QueueWorkItem(state =>
             {
@@ -443,44 +443,44 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 using (OpenGLState.ScopedCreateTexture3D(out glname))
                 {
-                    if (gl.IsTextureMaxLevelSupported)
+                    if (GL.IsTextureMaxLevelSupported)
                     {
-                        gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_MAX_LEVEL, 0);
-                        gl.ThrowIfError();
+                        GL.TextureParameteri(glname, GL.GL_TEXTURE_3D, GL.GL_TEXTURE_MAX_LEVEL, 0);
+                        GL.ThrowIfError();
                     }
 
-                    gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    GL.TextureParameteri(glname, GL.GL_TEXTURE_3D, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_LINEAR);
+                    GL.ThrowIfError();
 
-                    gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    GL.TextureParameteri(glname, GL.GL_TEXTURE_3D, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_LINEAR);
+                    GL.ThrowIfError();
 
-                    gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_R, (int)gl.GL_CLAMP_TO_EDGE);
-                    gl.ThrowIfError();
+                    GL.TextureParameteri(glname, GL.GL_TEXTURE_3D, GL.GL_TEXTURE_WRAP_R, (int)GL.GL_CLAMP_TO_EDGE);
+                    GL.ThrowIfError();
 
-                    gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_S, (int)gl.GL_CLAMP_TO_EDGE);
-                    gl.ThrowIfError();
+                    GL.TextureParameteri(glname, GL.GL_TEXTURE_3D, GL.GL_TEXTURE_WRAP_S, (int)GL.GL_CLAMP_TO_EDGE);
+                    GL.ThrowIfError();
 
-                    gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
-                    gl.ThrowIfError();
+                    GL.TextureParameteri(glname, GL.GL_TEXTURE_3D, GL.GL_TEXTURE_WRAP_T, (int)GL.GL_CLAMP_TO_EDGE);
+                    GL.ThrowIfError();
 
                     if (immutable)
                     {
-                        if (gl.IsTextureStorageAvailable)
+                        if (GL.IsTextureStorageAvailable)
                         {
-                            gl.TextureStorage3D(glname, gl.GL_TEXTURE_3D, 1, internalformat, width, height, depth);
-                            gl.ThrowIfError();
+                            GL.TextureStorage3D(glname, GL.GL_TEXTURE_3D, 1, internalformat, width, height, depth);
+                            GL.ThrowIfError();
 
                             if (pixels != null)
                             {
-                                gl.TextureSubImage3D(glname, gl.GL_TEXTURE_3D, 0, 0, 0, 0, width, height, depth, format, type, pixels);
-                                gl.ThrowIfError();
+                                GL.TextureSubImage3D(glname, GL.GL_TEXTURE_3D, 0, 0, 0, 0, width, height, depth, format, type, pixels);
+                                GL.ThrowIfError();
                             }
                         }
                         else
                         {
-                            gl.TextureImage3D(glname, gl.GL_TEXTURE_3D, 0, (int)internalformat, width, height, depth, 0, format, type, pixels);
-                            gl.ThrowIfError();
+                            GL.TextureImage3D(glname, GL.GL_TEXTURE_3D, 0, (int)internalformat, width, height, depth, 0, format, type, pixels);
+                            GL.ThrowIfError();
                         }
                     }
                 }
@@ -489,8 +489,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     using (OpenGLState.ScopedBindTexture3D(glname, true))
                     {
-                        gl.TexImage3D(gl.GL_TEXTURE_3D, 0, (int)internalformat, width, height, depth, 0, format, type, pixels);
-                        gl.ThrowIfError();
+                        GL.TexImage3D(GL.GL_TEXTURE_3D, 0, (int)internalformat, width, height, depth, 0, format, type, pixels);
+                        GL.ThrowIfError();
                     }
                 }
 
@@ -505,7 +505,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             using (OpenGLState.ScopedBindTexture3D(texture, true))
             {
-                gl.TexImage3D(gl.GL_TEXTURE_3D, 0, (int)internalformat,
+                GL.TexImage3D(GL.GL_TEXTURE_3D, 0, (int)internalformat,
                     width, height, depth, 0, format, type, null);
             }
         }
@@ -548,7 +548,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var height = bottom - top;
             var depth = back - front;
 
-            var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
+            var pixelSizeInBytes = (format == GL.GL_RGB || format == GL.GL_BGR) ? 3 : 4;
             if (pixelSizeInBytes * width * height * depth != sizeInBytes)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
@@ -564,7 +564,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var height = bottom - top;
             var depth = back - front;
 
-            var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
+            var pixelSizeInBytes = (format == GL.GL_RGB || format == GL.GL_BGR) ? 3 : 4;
             if (pixelSizeInBytes * width * height * depth != sizeInBytes)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
@@ -582,9 +582,9 @@ namespace Ultraviolet.OpenGL.Graphics
             using (OpenGLState.ScopedBindTexture3D(OpenGLName))
             {
                 var pData = data + offsetInBytes;
-                gl.TextureSubImage3D(OpenGLName, gl.GL_TEXTURE_3D, level, left, top, front,
+                GL.TextureSubImage3D(OpenGLName, GL.GL_TEXTURE_3D, level, left, top, front,
                     right - left, bottom - top, back - front, format, type, (void*)pData);
-                gl.ThrowIfError();
+                GL.ThrowIfError();
             }
         }
 

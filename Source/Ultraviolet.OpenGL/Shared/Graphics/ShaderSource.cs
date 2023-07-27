@@ -267,9 +267,9 @@ namespace Ultraviolet.OpenGL.Graphics
                 var dirVersion = new Version(dirVersionMajor, dirVersionMinor);
                 var dirSatisfied = false;
 
-                var uvVersionIsGLES = gl.IsGLES;
-                var uvVersionMajor = gl.MajorVersion;
-                var uvVersionMinor = gl.MinorVersion;
+                var uvVersionIsGLES = GL.IsGLES;
+                var uvVersionMajor = GL.MajorVersion;
+                var uvVersionMinor = GL.MinorVersion;
                 var uvVersion = new Version(uvVersionMajor, uvVersionMinor);
 
                 if (dirVersionIsGLES != uvVersionIsGLES)

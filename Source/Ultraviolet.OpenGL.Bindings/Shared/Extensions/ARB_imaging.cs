@@ -4,7 +4,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         [MonoNativeFunctionWrapper]
         private delegate void glColorSubTableDelegate(uint target, int start, int count, uint format, uint type, IntPtr data);

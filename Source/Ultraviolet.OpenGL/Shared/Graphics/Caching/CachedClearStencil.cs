@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedClearStencil FromDevice()
         {
-            var value = gl.GetInteger(gl.GL_STENCIL_CLEAR_VALUE);
-            gl.ThrowIfError();
+            var value = GL.GetInteger(GL.GL_STENCIL_CLEAR_VALUE);
+            GL.ThrowIfError();
 
             return value;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.ClearStencil(desired);
-            gl.ThrowIfError();
+            GL.ClearStencil(desired);
+            GL.ThrowIfError();
 
             return true;
         }

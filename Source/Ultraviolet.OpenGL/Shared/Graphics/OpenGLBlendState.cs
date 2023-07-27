@@ -127,15 +127,15 @@ namespace Ultraviolet.OpenGL.Graphics
             switch (fn)
             {
                 case BlendFunction.Add:
-                    return gl.GL_FUNC_ADD;
+                    return GL.GL_FUNC_ADD;
                 case BlendFunction.Min:
-                    return gl.GL_MIN;
+                    return GL.GL_MIN;
                 case BlendFunction.Max:
-                    return gl.GL_MAX;
+                    return GL.GL_MAX;
                 case BlendFunction.ReverseSubtract:
-                    return gl.GL_FUNC_REVERSE_SUBTRACT;
+                    return GL.GL_FUNC_REVERSE_SUBTRACT;
                 case BlendFunction.Subtract:
-                    return gl.GL_FUNC_SUBTRACT;
+                    return GL.GL_FUNC_SUBTRACT;
             }
             throw new NotSupportedException();
         }
@@ -151,31 +151,31 @@ namespace Ultraviolet.OpenGL.Graphics
             switch (blend)
             {
                 case Blend.Zero:
-                    return gl.GL_ZERO;
+                    return GL.GL_ZERO;
                 case Blend.One:
-                    return gl.GL_ONE;
+                    return GL.GL_ONE;
                 case Blend.SourceColor:
-                    return gl.GL_SRC_COLOR;
+                    return GL.GL_SRC_COLOR;
                 case Blend.InverseSourceColor:
-                    return gl.GL_ONE_MINUS_SRC_COLOR;
+                    return GL.GL_ONE_MINUS_SRC_COLOR;
                 case Blend.SourceAlpha:
-                    return gl.GL_SRC_ALPHA;
+                    return GL.GL_SRC_ALPHA;
                 case Blend.InverseSourceAlpha:
-                    return gl.GL_ONE_MINUS_SRC_ALPHA;
+                    return GL.GL_ONE_MINUS_SRC_ALPHA;
                 case Blend.DestinationAlpha:
-                    return gl.GL_DST_ALPHA;
+                    return GL.GL_DST_ALPHA;
                 case Blend.InverseDestinationAlpha:
-                    return gl.GL_ONE_MINUS_DST_ALPHA;
+                    return GL.GL_ONE_MINUS_DST_ALPHA;
                 case Blend.DestinationColor:
-                    return gl.GL_DST_COLOR;
+                    return GL.GL_DST_COLOR;
                 case Blend.InverseDestinationColor:
-                    return gl.GL_ONE_MINUS_DST_COLOR;
+                    return GL.GL_ONE_MINUS_DST_COLOR;
                 case Blend.SourceAlphaSaturation:
-                    return gl.GL_SRC_ALPHA_SATURATE;
+                    return GL.GL_SRC_ALPHA_SATURATE;
                 case Blend.BlendFactor:
-                    return alpha ? gl.GL_CONSTANT_ALPHA : gl.GL_CONSTANT_COLOR;
+                    return alpha ? GL.GL_CONSTANT_ALPHA : GL.GL_CONSTANT_COLOR;
                 case Blend.InverseBlendFactor:
-                    return alpha ? gl.GL_ONE_MINUS_CONSTANT_ALPHA : gl.GL_ONE_MINUS_CONSTANT_COLOR;
+                    return alpha ? GL.GL_ONE_MINUS_CONSTANT_ALPHA : GL.GL_ONE_MINUS_CONSTANT_COLOR;
             }
             throw new NotSupportedException();
         }

@@ -59,7 +59,7 @@ namespace Ultraviolet.OpenGL.Graphics
         [Conditional("VERIFY_OPENGL_CACHE")]
         public void Verify()
         {
-            var valueOnContext = gl.GetInteger(pname);
+            var valueOnContext = GL.GetInteger(pname);
             if (valueOnContext != value)
             {
                 throw new InvalidOperationException(OpenGLStrings.StaleOpenGLCache.Format(name));

@@ -18,17 +18,17 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedBlendFunction FromDevice()
         {
-            var srcRGB = (UInt32)gl.GetInteger(gl.GL_BLEND_SRC_RGB);
-            gl.ThrowIfError();
+            var srcRGB = (UInt32)GL.GetInteger(GL.GL_BLEND_SRC_RGB);
+            GL.ThrowIfError();
 
-            var srcAlpha = (UInt32)gl.GetInteger(gl.GL_BLEND_SRC_ALPHA);
-            gl.ThrowIfError();
+            var srcAlpha = (UInt32)GL.GetInteger(GL.GL_BLEND_SRC_ALPHA);
+            GL.ThrowIfError();
 
-            var dstRGB = (UInt32)gl.GetInteger(gl.GL_BLEND_DST_RGB);
-            gl.ThrowIfError();
+            var dstRGB = (UInt32)GL.GetInteger(GL.GL_BLEND_DST_RGB);
+            GL.ThrowIfError();
 
-            var dstAlpha = (UInt32)gl.GetInteger(gl.GL_BLEND_DST_ALPHA);
-            gl.ThrowIfError();
+            var dstAlpha = (UInt32)GL.GetInteger(GL.GL_BLEND_DST_ALPHA);
+            GL.ThrowIfError();
 
             return new CachedBlendFunction(srcRGB, srcAlpha, dstRGB, dstAlpha);
         }
@@ -44,13 +44,13 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
             current = desired;
             if (desired.srcRGB == desired.srcAlpha && desired.dstRGB == desired.dstAlpha)
             {
-                gl.BlendFunc(desired.srcRGB, desired.dstRGB);
-                gl.ThrowIfError();
+                GL.BlendFunc(desired.srcRGB, desired.dstRGB);
+                GL.ThrowIfError();
             }
             else
             {
-                gl.BlendFuncSeparate(desired.srcRGB, desired.dstRGB, desired.srcAlpha, desired.dstAlpha);
-                gl.ThrowIfError();
+                GL.BlendFuncSeparate(desired.srcRGB, desired.dstRGB, desired.srcAlpha, desired.dstAlpha);
+                GL.ThrowIfError();
             }
 
             return true;

@@ -2,7 +2,7 @@
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         public const UInt32 GL_TEXTURE_COMPARE_MODE_ARB = 0x884C;
         public const UInt32 GL_TEXTURE_COMPARE_FUNC_ARB = 0x884D;

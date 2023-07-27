@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedDepthFunc FromDevice()
         {
-            var value = (UInt32)gl.GetInteger(gl.GL_DEPTH_FUNC);
-            gl.ThrowIfError();
+            var value = (UInt32)GL.GetInteger(GL.GL_DEPTH_FUNC);
+            GL.ThrowIfError();
 
             return value;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.DepthFunc(desired);
-            gl.ThrowIfError();
+            GL.DepthFunc(desired);
+            GL.ThrowIfError();
 
             return true;
         }

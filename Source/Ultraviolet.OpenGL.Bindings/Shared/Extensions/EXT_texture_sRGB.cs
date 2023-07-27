@@ -2,7 +2,7 @@
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         public const UInt32 GL_SRGB_EXT = 0x8C40;
         public const UInt32 GL_SRGB8_EXT = 0x8C41;

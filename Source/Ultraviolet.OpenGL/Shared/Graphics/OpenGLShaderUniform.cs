@@ -268,8 +268,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Boolean value)
         {
-            gl.Uniform1i(location, value ? 1 : 0);
-            gl.ThrowIfError();
+            GL.Uniform1i(location, value ? 1 : 0);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -278,8 +278,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Int32 value)
         {
-            gl.Uniform1i(location, value);
-            gl.ThrowIfError();
+            GL.Uniform1i(location, value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -289,8 +289,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Int32* pValue, Int32 count)
         {
-            gl.Uniform1iv(location, count, pValue);
-            gl.ThrowIfError();
+            GL.Uniform1iv(location, count, pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -299,8 +299,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(UInt32 value)
         {
-            gl.Uniform1ui(location, value);
-            gl.ThrowIfError();
+            GL.Uniform1ui(location, value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -310,8 +310,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(UInt32* pValue, Int32 count)
         {
-            gl.Uniform1uiv(location, count, pValue);
-            gl.ThrowIfError();
+            GL.Uniform1uiv(location, count, pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -320,8 +320,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Single value)
         {
-            gl.Uniform1f(location, value);
-            gl.ThrowIfError();
+            GL.Uniform1f(location, value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -331,8 +331,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Single* pValue, Int32 count)
         {
-            gl.Uniform1fv(location, count, pValue);
-            gl.ThrowIfError();
+            GL.Uniform1fv(location, count, pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -341,8 +341,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Double value)
         {
-            gl.Uniform1d(location, value);
-            gl.ThrowIfError();
+            GL.Uniform1d(location, value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -352,8 +352,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Double* pValue, Int32 count)
         {
-            gl.Uniform1dv(location, count, pValue);
-            gl.ThrowIfError();
+            GL.Uniform1dv(location, count, pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -362,8 +362,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Vector2 value)
         {
-            gl.Uniform2f(location, value.X, value.Y);
-            gl.ThrowIfError();
+            GL.Uniform2f(location, value.X, value.Y);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -373,8 +373,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Vector2* pValue, Int32 count)
         {
-            gl.Uniform2fv(location, count, (Single*)pValue);
-            gl.ThrowIfError();
+            GL.Uniform2fv(location, count, (Single*)pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -383,8 +383,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Vector3 value)
         {
-            gl.Uniform3f(location, value.X, value.Y, value.Z);
-            gl.ThrowIfError();
+            GL.Uniform3f(location, value.X, value.Y, value.Z);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -394,8 +394,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Vector3* pValue, Int32 count)
         {
-            gl.Uniform3fv(location, count, (Single*)pValue);
-            gl.ThrowIfError();
+            GL.Uniform3fv(location, count, (Single*)pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -404,8 +404,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Vector4 value)
         {
-            gl.Uniform4f(location, value.X, value.Y, value.Z, value.W);
-            gl.ThrowIfError();
+            GL.Uniform4f(location, value.X, value.Y, value.Z, value.W);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -415,8 +415,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="count">The number of elements in the array to set.</param>
         public void SetValue(Vector4* pValue, Int32 count)
         {
-            gl.Uniform4fv(location, count, (Single*)pValue);
-            gl.ThrowIfError();
+            GL.Uniform4fv(location, count, (Single*)pValue);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -430,15 +430,15 @@ namespace Ultraviolet.OpenGL.Graphics
             var nb = value.B / (float)Byte.MaxValue;
             var na = value.A / (float)Byte.MaxValue;
 
-            if (Type == gl.GL_FLOAT_VEC3)
+            if (Type == GL.GL_FLOAT_VEC3)
             {
-                gl.Uniform3f(location, nr, ng, nb);
+                GL.Uniform3f(location, nr, ng, nb);
             }
             else
             {
-                gl.Uniform4f(location, nr, ng, nb, na);
+                GL.Uniform4f(location, nr, ng, nb, na);
             }
-            gl.ThrowIfError();
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -450,20 +450,20 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             if (pValue == null)
             {
-                if (Type == gl.GL_FLOAT_VEC3)
+                if (Type == GL.GL_FLOAT_VEC3)
                 {
-                    gl.Uniform3fv(location, 0, null);
-                    gl.ThrowIfError();
+                    GL.Uniform3fv(location, 0, null);
+                    GL.ThrowIfError();
                 }
                 else
                 {
-                    gl.Uniform4fv(location, 0, null);
-                    gl.ThrowIfError();
+                    GL.Uniform4fv(location, 0, null);
+                    GL.ThrowIfError();
                 }
             }
             else
             {
-                if (Type == gl.GL_FLOAT_VEC3)
+                if (Type == GL.GL_FLOAT_VEC3)
                 {
                     var normalized = stackalloc float[3 * count];
                     for (var i = 0; i < count; i++)
@@ -474,8 +474,8 @@ namespace Ultraviolet.OpenGL.Graphics
                         normalized[(i * 3) + 2] = c.B / (float)Byte.MaxValue;
                     }
 
-                    gl.Uniform3fv(location, count, normalized);
-                    gl.ThrowIfError();
+                    GL.Uniform3fv(location, count, normalized);
+                    GL.ThrowIfError();
                 }
                 else
                 {
@@ -489,8 +489,8 @@ namespace Ultraviolet.OpenGL.Graphics
                         normalized[(i * 4) + 3] = c.A / (float)Byte.MaxValue;
                     }
 
-                    gl.Uniform4fv(location, count, normalized);
-                    gl.ThrowIfError();
+                    GL.Uniform4fv(location, count, normalized);
+                    GL.ThrowIfError();
                 }
             }
         }
@@ -501,12 +501,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat2 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (!transpose)
                 Mat2.Transpose(ref value, out value);
 
-            gl.UniformMatrix2fv(location, 1, transpose, (float*)&value);
-            gl.ThrowIfError();
+            GL.UniformMatrix2fv(location, 1, transpose, (float*)&value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat2>((IntPtr)pValue, count,
                 (ptr, index) => Mat2.Transpose(ref ((Mat2*)ptr)[index], out ((Mat2*)ptr)[index]),
                 (ptr, index) => Mat2.Transpose(ref ((Mat2*)ptr)[index], out ((Mat2*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix2fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix2fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -528,18 +528,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat2x3 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (transpose)
             {
-                gl.UniformMatrix2x3fv(location, 1, true, (Single*)&value);
-                gl.ThrowIfError();
+                GL.UniformMatrix2x3fv(location, 1, true, (Single*)&value);
+                GL.ThrowIfError();
             }
             else
             {
                 Mat2x3.Transpose(ref value, out var valueTransposed);
 
-                gl.UniformMatrix2x3fv(location, 1, false, (Single*)&valueTransposed);
-                gl.ThrowIfError();
+                GL.UniformMatrix2x3fv(location, 1, false, (Single*)&valueTransposed);
+                GL.ThrowIfError();
             }
         }
 
@@ -553,7 +553,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat2x3>((IntPtr)pValue, count,
                 (ptr, index) => Mat2x3.Transpose(ref ((Mat2x3*)ptr)[index], out ((Mat3x2*)ptr)[index]),
                 (ptr, index) => Mat3x2.Transpose(ref ((Mat3x2*)ptr)[index], out ((Mat2x3*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix2x3fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix2x3fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -562,18 +562,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat2x4 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (transpose)
             {
-                gl.UniformMatrix2x4fv(location, 1, true, (Single*)&value);
-                gl.ThrowIfError();
+                GL.UniformMatrix2x4fv(location, 1, true, (Single*)&value);
+                GL.ThrowIfError();
             }
             else
             {
                 Mat2x4.Transpose(ref value, out var valueTransposed);
 
-                gl.UniformMatrix2x4fv(location, 1, false, (Single*)&valueTransposed);
-                gl.ThrowIfError();
+                GL.UniformMatrix2x4fv(location, 1, false, (Single*)&valueTransposed);
+                GL.ThrowIfError();
             }
         }
 
@@ -587,7 +587,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat2x4>((IntPtr)pValue, count,
                 (ptr, index) => Mat2x4.Transpose(ref ((Mat2x4*)ptr)[index], out ((Mat4x2*)ptr)[index]),
                 (ptr, index) => Mat4x2.Transpose(ref ((Mat4x2*)ptr)[index], out ((Mat2x4*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix2x4fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix2x4fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -596,12 +596,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat3 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (!transpose)
                 Mat3.Transpose(ref value, out value);
 
-            gl.UniformMatrix3fv(location, 1, transpose, (Single*)&value);
-            gl.ThrowIfError();
+            GL.UniformMatrix3fv(location, 1, transpose, (Single*)&value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -614,7 +614,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat3>((IntPtr)pValue, count,
                 (ptr, index) => Mat3.Transpose(ref ((Mat3*)ptr)[index], out ((Mat3*)ptr)[index]),
                 (ptr, index) => Mat3.Transpose(ref ((Mat3*)ptr)[index], out ((Mat3*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix3fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix3fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -623,18 +623,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat3x2 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (transpose)
             {
-                gl.UniformMatrix3x2fv(location, 1, true, (Single*)&value);
-                gl.ThrowIfError();
+                GL.UniformMatrix3x2fv(location, 1, true, (Single*)&value);
+                GL.ThrowIfError();
             }
             else
             {
                 Mat3x2.Transpose(ref value, out var valueTransposed);
 
-                gl.UniformMatrix3x2fv(location, 1, false, (Single*)&valueTransposed);
-                gl.ThrowIfError();
+                GL.UniformMatrix3x2fv(location, 1, false, (Single*)&valueTransposed);
+                GL.ThrowIfError();
             }
         }
        
@@ -648,7 +648,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat3x2>((IntPtr)pValue, count,
                 (ptr, index) => Mat3x2.Transpose(ref ((Mat3x2*)ptr)[index], out ((Mat2x3*)ptr)[index]),
                 (ptr, index) => Mat2x3.Transpose(ref ((Mat2x3*)ptr)[index], out ((Mat3x2*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix3x2fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix3x2fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -657,18 +657,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat3x4 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (transpose)
             {
-                gl.UniformMatrix3x4fv(location, 1, true, (Single*)&value);
-                gl.ThrowIfError();
+                GL.UniformMatrix3x4fv(location, 1, true, (Single*)&value);
+                GL.ThrowIfError();
             }
             else
             {
                 Mat3x4.Transpose(ref value, out var valueTransposed);
 
-                gl.UniformMatrix3x4fv(location, 1, false, (Single*)&valueTransposed);
-                gl.ThrowIfError();
+                GL.UniformMatrix3x4fv(location, 1, false, (Single*)&valueTransposed);
+                GL.ThrowIfError();
             }
         }
 
@@ -682,7 +682,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat3x4>((IntPtr)pValue, count,
                 (ptr, index) => Mat3x4.Transpose(ref ((Mat3x4*)ptr)[index], out ((Mat4x3*)ptr)[index]),
                 (ptr, index) => Mat4x3.Transpose(ref ((Mat4x3*)ptr)[index], out ((Mat3x4*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix3x4fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix3x4fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -691,12 +691,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Matrix value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (!transpose)
                 Matrix.Transpose(ref value, out value);
 
-            gl.UniformMatrix4fv(location, 1, transpose, (Single*)&value);
-            gl.ThrowIfError();
+            GL.UniformMatrix4fv(location, 1, transpose, (Single*)&value);
+            GL.ThrowIfError();
         }
 
         /// <summary>
@@ -709,7 +709,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Matrix>((IntPtr)pValue, count,
                 (ptr, index) => Matrix.Transpose(ref ((Matrix*)ptr)[index], out ((Matrix*)ptr)[index]),
                 (ptr, index) => Matrix.Transpose(ref ((Matrix*)ptr)[index], out ((Matrix*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix4fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix4fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -718,18 +718,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat4x2 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (transpose)
             {
-                gl.UniformMatrix4x2fv(location, 1, true, (Single*)&value);
-                gl.ThrowIfError();
+                GL.UniformMatrix4x2fv(location, 1, true, (Single*)&value);
+                GL.ThrowIfError();
             }
             else
             {
                 Mat4x2.Transpose(ref value, out var valueTransposed);
 
-                gl.UniformMatrix4x2fv(location, 1, false, (Single*)&valueTransposed);
-                gl.ThrowIfError();
+                GL.UniformMatrix4x2fv(location, 1, false, (Single*)&valueTransposed);
+                GL.ThrowIfError();
             }
         }
 
@@ -743,7 +743,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat4x2>((IntPtr)pValue, count,
                 (ptr, index) => Mat4x2.Transpose(ref ((Mat4x2*)ptr)[index], out ((Mat2x4*)ptr)[index]),
                 (ptr, index) => Mat2x4.Transpose(ref ((Mat2x4*)ptr)[index], out ((Mat4x2*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix4x2fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix4x2fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -752,18 +752,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Mat4x3 value)
         {
-            var transpose = gl.IsMatrixTranspositionAvailable;
+            var transpose = GL.IsMatrixTranspositionAvailable;
             if (transpose)
             {
-                gl.UniformMatrix4x3fv(location, 1, true, (Single*)&value);
-                gl.ThrowIfError();
+                GL.UniformMatrix4x3fv(location, 1, true, (Single*)&value);
+                GL.ThrowIfError();
             }
             else
             {
                 Mat4x3.Transpose(ref value, out var valueTransposed);
 
-                gl.UniformMatrix4x3fv(location, 1, false, (Single*)&valueTransposed);
-                gl.ThrowIfError();
+                GL.UniformMatrix4x3fv(location, 1, false, (Single*)&valueTransposed);
+                GL.ThrowIfError();
             }
         }
 
@@ -777,7 +777,7 @@ namespace Ultraviolet.OpenGL.Graphics
             SetMatrixArrayValueInternal<Mat4x3>((IntPtr)pValue, count,
                 (ptr, index) => Mat4x3.Transpose(ref ((Mat4x3*)ptr)[index], out ((Mat3x4*)ptr)[index]),
                 (ptr, index) => Mat3x4.Transpose(ref ((Mat3x4*)ptr)[index], out ((Mat4x3*)ptr)[index]),
-                (l, c, t, v) => gl.UniformMatrix4x3fv(l, c, t, (Single*)v));
+                (l, c, t, v) => GL.UniformMatrix4x3fv(l, c, t, (Single*)v));
         }
 
         /// <summary>
@@ -786,8 +786,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Texture2D value)
         {
-            gl.Uniform1i(location, sampler);
-            gl.ThrowIfError();
+            GL.Uniform1i(location, sampler);
+            GL.ThrowIfError();
 
             uv.GetGraphics().SetTexture(sampler, value);
         }
@@ -798,8 +798,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Texture3D value)
         {
-            gl.Uniform1i(location, sampler);
-            gl.ThrowIfError();
+            GL.Uniform1i(location, sampler);
+            GL.ThrowIfError();
 
             uv.GetGraphics().SetTexture(sampler, value);
         }
@@ -836,54 +836,54 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             switch (type)
             {
-                case gl.GL_FLOAT:
+                case GL.GL_FLOAT:
                     return count * sizeof(Single);
-                case gl.GL_FLOAT_VEC2:
+                case GL.GL_FLOAT_VEC2:
                     return count * sizeof(Single) * 2;
-                case gl.GL_FLOAT_VEC3:
+                case GL.GL_FLOAT_VEC3:
                     return count * sizeof(Single) * 3;
-                case gl.GL_FLOAT_VEC4:
+                case GL.GL_FLOAT_VEC4:
                     return count * sizeof(Single) * 4;
-                case gl.GL_DOUBLE:
+                case GL.GL_DOUBLE:
                     return count * sizeof(Double);
-                case gl.GL_INT:
+                case GL.GL_INT:
                     return count * sizeof(Int32);
-                case gl.GL_INT_VEC2:
+                case GL.GL_INT_VEC2:
                     return count * sizeof(Int32) * 2;
-                case gl.GL_INT_VEC3:
+                case GL.GL_INT_VEC3:
                     return count * sizeof(Int32) * 3;
-                case gl.GL_INT_VEC4:
+                case GL.GL_INT_VEC4:
                     return count * sizeof(Int32) * 4;
-                case gl.GL_UNSIGNED_INT:
+                case GL.GL_UNSIGNED_INT:
                     return count * sizeof(UInt32);
-                case gl.GL_UNSIGNED_INT_VEC2:
+                case GL.GL_UNSIGNED_INT_VEC2:
                     return count * sizeof(UInt32) * 2;
-                case gl.GL_UNSIGNED_INT_VEC3:
+                case GL.GL_UNSIGNED_INT_VEC3:
                     return count * sizeof(UInt32) * 3;
-                case gl.GL_UNSIGNED_INT_VEC4:
+                case GL.GL_UNSIGNED_INT_VEC4:
                     return count * sizeof(UInt32) * 4;
-                case gl.GL_BOOL:
+                case GL.GL_BOOL:
                     return count * sizeof(Boolean);
-                case gl.GL_BOOL_VEC2:
+                case GL.GL_BOOL_VEC2:
                     return count * sizeof(Boolean) * 2;
-                case gl.GL_BOOL_VEC3:
+                case GL.GL_BOOL_VEC3:
                     return count * sizeof(Boolean) * 3;
-                case gl.GL_BOOL_VEC4:
+                case GL.GL_BOOL_VEC4:
                     return count * sizeof(Boolean) * 4;
-                case gl.GL_FLOAT_MAT2:
+                case GL.GL_FLOAT_MAT2:
                     return count * sizeof(Single) * 4;
-                case gl.GL_FLOAT_MAT3:
+                case GL.GL_FLOAT_MAT3:
                     return count * sizeof(Single) * 9;
-                case gl.GL_FLOAT_MAT4:
+                case GL.GL_FLOAT_MAT4:
                     return count * sizeof(Single) * 16;
-                case gl.GL_FLOAT_MAT2x3:
-                case gl.GL_FLOAT_MAT3x2:
+                case GL.GL_FLOAT_MAT2x3:
+                case GL.GL_FLOAT_MAT3x2:
                     return count * sizeof(Single) * 6;
-                case gl.GL_FLOAT_MAT2x4:
-                case gl.GL_FLOAT_MAT4x2:
+                case GL.GL_FLOAT_MAT2x4:
+                case GL.GL_FLOAT_MAT4x2:
                     return count * sizeof(Single) * 8;
-                case gl.GL_FLOAT_MAT3x4:
-                case gl.GL_FLOAT_MAT4x3:
+                case GL.GL_FLOAT_MAT3x4:
+                case GL.GL_FLOAT_MAT4x3:
                     return count * sizeof(Single) * 12;
                 default:
                     return 0;
@@ -896,11 +896,11 @@ namespace Ultraviolet.OpenGL.Graphics
         private void SetMatrixArrayValueInternal<TMatrix>(IntPtr pValue, Int32 count,
             MatrixTransposeDelegate transpose, MatrixTransposeDelegate untranspose, MatrixUploadDelegate upload) where TMatrix : unmanaged
         {
-            var glslTranspositionAvailable = gl.IsMatrixTranspositionAvailable;
+            var glslTranspositionAvailable = GL.IsMatrixTranspositionAvailable;
             if (glslTranspositionAvailable)
             {
                 upload(location, count, true, pValue);
-                gl.ThrowIfError();
+                GL.ThrowIfError();
             }
             else
             {
@@ -911,7 +911,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         transpose(pValue, i);
 
                     upload(location, count, false, pValue);
-                    gl.ThrowIfError();
+                    GL.ThrowIfError();
 
                     for (var i = 0; i < count; i++)
                         untranspose(pValue, i);
@@ -926,7 +926,7 @@ namespace Ultraviolet.OpenGL.Graphics
                             transpose(pValue, i);
 
                         upload(location, count, false, pValue);
-                        gl.ThrowIfError();
+                        GL.ThrowIfError();
                     }
                 }
             }

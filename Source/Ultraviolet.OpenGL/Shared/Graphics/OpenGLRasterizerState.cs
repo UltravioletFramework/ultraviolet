@@ -65,10 +65,10 @@ namespace Ultraviolet.OpenGL.Graphics
         internal void Apply()
         {
             if (FillMode != FillMode.Solid)
-                gl.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
+                GL.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
 
             OpenGLState.CullingEnabled = (CullMode != CullMode.None);
-            OpenGLState.CulledFace = gl.GL_BACK;
+            OpenGLState.CulledFace = GL.GL_BACK;
             OpenGLState.FrontFace = GetFrontFaceGL(CullMode);
             OpenGLState.PolygonMode = GetFillModeGL(FillMode);            
             OpenGLState.ScissorTestEnabled = ScissorTestEnable;
@@ -96,11 +96,11 @@ namespace Ultraviolet.OpenGL.Graphics
                 case CullMode.None:
                 case CullMode.CullCounterClockwiseFace:
                     // Cull back faces with counterclockwise vertices, i.e. front is clockwise
-                    return gl.GL_CW;
+                    return GL.GL_CW;
 
                 case CullMode.CullClockwiseFace:
                     // Cull back faces with clockwise vertices, i.e. front is counterclockwise
-                    return gl.GL_CCW;
+                    return GL.GL_CCW;
             }
             throw new NotSupportedException();
         }
@@ -115,9 +115,9 @@ namespace Ultraviolet.OpenGL.Graphics
             switch (mode)
             {
                 case FillMode.Solid:
-                    return gl.GL_FILL;
+                    return GL.GL_FILL;
                 case FillMode.Wireframe:
-                    return gl.GL_LINE;
+                    return GL.GL_LINE;
             }
             throw new NotSupportedException();
         }

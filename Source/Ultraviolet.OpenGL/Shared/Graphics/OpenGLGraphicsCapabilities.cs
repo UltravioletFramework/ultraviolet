@@ -18,52 +18,52 @@ namespace Ultraviolet.OpenGL.Graphics
             if (glGraphicsConfiguration == null)
                 throw new InvalidOperationException(OpenGLStrings.InvalidGraphicsConfiguration);
 
-            this.MaximumTextureSize = gl.GetInteger(gl.GL_MAX_TEXTURE_SIZE);
-            gl.ThrowIfError();
+            this.MaximumTextureSize = GL.GetInteger(GL.GL_MAX_TEXTURE_SIZE);
+            GL.ThrowIfError();
 
             var viewportDims = stackalloc int[2];
-            gl.GetIntegerv(gl.GL_MAX_VIEWPORT_DIMS, viewportDims);
-            gl.ThrowIfError();
+            GL.GetIntegerv(GL.GL_MAX_VIEWPORT_DIMS, viewportDims);
+            GL.ThrowIfError();
 
             this.MaximumViewportWidth = viewportDims[0];
             this.MaximumViewportHeight = viewportDims[1];
 
-            this.SupportsInstancedRendering = gl.IsInstancedRenderingAvailable;
-            this.Supports3DTextures = gl.IsTexture3DAvailable;
-            this.SupportsDepthStencilTextures = gl.IsCombinedDepthStencilAvailable;
+            this.SupportsInstancedRendering = GL.IsInstancedRenderingAvailable;
+            this.Supports3DTextures = GL.IsTexture3DAvailable;
+            this.SupportsDepthStencilTextures = GL.IsCombinedDepthStencilAvailable;
 
-            if (gl.IsGLES2 && !this.SupportsDepthStencilTextures)
+            if (GL.IsGLES2 && !this.SupportsDepthStencilTextures)
             {
                 // HACK: Guess what? The Visual Studio Emulator for Android flat-out lies about this.
                 // So it seems the only reliable way to determine support for depth/stencil is to
                 // actually try to create one and see if it fails. I hate Android emulators.
-                var rb = gl.GenRenderbuffer();
+                var rb = GL.GenRenderbuffer();
                 using (var state = OpenGLState.ScopedBindRenderbuffer(rb, true))
                 {
-                    gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH24_STENCIL8, 32, 32);
-                    this.SupportsDepthStencilTextures = (gl.GetError() == gl.GL_NO_ERROR);
+                    GL.RenderbufferStorage(GL.GL_RENDERBUFFER, GL.GL_DEPTH24_STENCIL8, 32, 32);
+                    this.SupportsDepthStencilTextures = (GL.GetError() == GL.GL_NO_ERROR);
                 }
-                gl.DeleteRenderBuffers(rb);
+                GL.DeleteRenderBuffers(rb);
             }
 
-            this.SupportsNonZeroBaseInstance = gl.IsNonZeroBaseInstanceAvailable;
-            this.SupportsIndependentSamplerState = gl.IsSamplerObjectAvailable;
-            this.SupportsIntegerVertexAttributes = gl.IsIntegerVertexAttribAvailable;
-            this.SupportsDoublePrecisionVertexAttributes = gl.IsDoublePrecisionVertexAttribAvailable;                         
+            this.SupportsNonZeroBaseInstance = GL.IsNonZeroBaseInstanceAvailable;
+            this.SupportsIndependentSamplerState = GL.IsSamplerObjectAvailable;
+            this.SupportsIntegerVertexAttributes = GL.IsIntegerVertexAttribAvailable;
+            this.SupportsDoublePrecisionVertexAttributes = GL.IsDoublePrecisionVertexAttribAvailable;                         
 
-            this.MinMapBufferAlignment = gl.IsExtensionSupported("GL_ARB_map_buffer_alignment") ?
-                gl.GetInteger(gl.GL_MIN_MAP_BUFFER_ALIGNMENT) : 0;
+            this.MinMapBufferAlignment = GL.IsExtensionSupported("GL_ARB_map_buffer_alignment") ?
+                GL.GetInteger(GL.GL_MIN_MAP_BUFFER_ALIGNMENT) : 0;
 
             // SRGB is always supported unless we're on GLES2, in which case we need an extension.
             // If it wasn't explicitly enabled in the configuration, we treat it like it's not supported.
-            this.SrgbEncodingEnabled = glGraphicsConfiguration.SrgbBuffersEnabled && gl.IsHardwareSrgbSupportAvailable;                
+            this.SrgbEncodingEnabled = glGraphicsConfiguration.SrgbBuffersEnabled && GL.IsHardwareSrgbSupportAvailable;                
 
             // There seems to be a bug in the version of Mesa which is distributed
             // with Ubuntu 16.04 that causes long stalls when using glMapBufferRange.
             // Testing indicates that this is fixed in 11.2.2.
             if (glGraphicsConfiguration.UseBufferMapping)
             {
-                var version = gl.GetString(gl.GL_VERSION);
+                var version = GL.GetString(GL.GL_VERSION);
                 var versionMatchMesa = Regex.Match(version, "Mesa (?<major>\\d+).(?<minor>\\d+).(?<build>\\d+)");
                 if (versionMatchMesa != null && versionMatchMesa.Success)
                 {
@@ -79,7 +79,7 @@ namespace Ultraviolet.OpenGL.Graphics
             }
 
             // If we've been explicitly told to disable buffer mapping, override the caps from the driver.
-            if (!gl.IsMapBufferRangeAvailable || !glGraphicsConfiguration.UseBufferMapping)
+            if (!GL.IsMapBufferRangeAvailable || !glGraphicsConfiguration.UseBufferMapping)
                 this.MinMapBufferAlignment = Int32.MinValue;
         }
 

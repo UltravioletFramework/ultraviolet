@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         public const UInt32 GL_COLOR_EXT = 0x1800;
         public const UInt32 GL_DEPTH_EXT = 0x1801;

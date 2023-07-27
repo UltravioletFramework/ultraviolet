@@ -24,8 +24,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
             uv.QueueWorkItem(state =>
             {
-                shader = gl.CreateShader(gl.GL_VERTEX_SHADER);
-                gl.ThrowIfError();
+                shader = GL.CreateShader(GL.GL_VERTEX_SHADER);
+                GL.ThrowIfError();
                 
                 if (!ShaderCompiler.Compile(shader, source, out var log, out ssmd))
                     throw new InvalidOperationException(log);                
@@ -72,8 +72,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteShader(glname);
-                        gl.ThrowIfError();
+                        GL.DeleteShader(glname);
+                        GL.ThrowIfError();
                     }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
 

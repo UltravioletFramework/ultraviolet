@@ -19,31 +19,31 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
         {
             switch (face)
             {
-                case gl.GL_NONE:
-                case gl.GL_FRONT:
+                case GL.GL_NONE:
+                case GL.GL_FRONT:
                     {
-                        var func = (UInt32)gl.GetInteger(gl.GL_STENCIL_FUNC);
-                        gl.ThrowIfError();
+                        var func = (UInt32)GL.GetInteger(GL.GL_STENCIL_FUNC);
+                        GL.ThrowIfError();
 
-                        var reference = gl.GetInteger(gl.GL_STENCIL_REF);
-                        gl.ThrowIfError();
+                        var reference = GL.GetInteger(GL.GL_STENCIL_REF);
+                        GL.ThrowIfError();
 
-                        var mask = gl.GetInteger(gl.GL_STENCIL_VALUE_MASK);
-                        gl.ThrowIfError();
+                        var mask = GL.GetInteger(GL.GL_STENCIL_VALUE_MASK);
+                        GL.ThrowIfError();
 
                         return new CachedStencilFunc(func, reference, mask);
                     }
 
-                case gl.GL_BACK:
+                case GL.GL_BACK:
                     {
-                        var func = (UInt32)gl.GetInteger(gl.GL_STENCIL_BACK_FUNC);
-                        gl.ThrowIfError();
+                        var func = (UInt32)GL.GetInteger(GL.GL_STENCIL_BACK_FUNC);
+                        GL.ThrowIfError();
 
-                        var reference = gl.GetInteger(gl.GL_STENCIL_BACK_REF);
-                        gl.ThrowIfError();
+                        var reference = GL.GetInteger(GL.GL_STENCIL_BACK_REF);
+                        GL.ThrowIfError();
 
-                        var mask = gl.GetInteger(gl.GL_STENCIL_BACK_VALUE_MASK);
-                        gl.ThrowIfError();
+                        var mask = GL.GetInteger(GL.GL_STENCIL_BACK_VALUE_MASK);
+                        GL.ThrowIfError();
 
                         return new CachedStencilFunc(func, reference, mask);
                     }
@@ -59,8 +59,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.StencilFuncSeparate(face, desired.func, desired.reference, (UInt32)desired.mask);
-            gl.ThrowIfError();
+            GL.StencilFuncSeparate(face, desired.func, desired.reference, (UInt32)desired.mask);
+            GL.ThrowIfError();
 
             return true;
         }
@@ -76,8 +76,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
             front = desired;
             back = desired;
-            gl.StencilFunc(desired.func, desired.reference, (UInt32)desired.mask);
-            gl.ThrowIfError();
+            GL.StencilFunc(desired.func, desired.reference, (UInt32)desired.mask);
+            GL.ThrowIfError();
 
             return true;
         }

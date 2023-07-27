@@ -60,26 +60,26 @@ namespace Ultraviolet.OpenGL.Graphics
 
             uv.QueueWorkItem(state =>
             {
-                program = gl.CreateProgram();
-                gl.ThrowIfError();
+                program = GL.CreateProgram();
+                GL.ThrowIfError();
 
-                gl.AttachShader(program, vertexShader.OpenGLName);
-                gl.ThrowIfError();
+                GL.AttachShader(program, vertexShader.OpenGLName);
+                GL.ThrowIfError();
 
-                gl.AttachShader(program, fragmentShader.OpenGLName);
-                gl.ThrowIfError();
+                GL.AttachShader(program, fragmentShader.OpenGLName);
+                GL.ThrowIfError();
 
-                gl.LinkProgram(program);
-                gl.ThrowIfError();
+                GL.LinkProgram(program);
+                GL.ThrowIfError();
 
-                var log = gl.GetProgramInfoLog(program);
-                gl.ThrowIfError();
+                var log = GL.GetProgramInfoLog(program);
+                GL.ThrowIfError();
 
-                var status = gl.GetProgrami(program, gl.GL_LINK_STATUS);
-                gl.ThrowIfError();
+                var status = GL.GetProgrami(program, GL.GL_LINK_STATUS);
+                GL.ThrowIfError();
 
-                var attributeCount = gl.GetProgrami(program, gl.GL_ACTIVE_ATTRIBUTES);
-                gl.ThrowIfError();
+                var attributeCount = GL.GetProgrami(program, GL.GL_ACTIVE_ATTRIBUTES);
+                GL.ThrowIfError();
 
                 unsafe
                 {
@@ -92,13 +92,13 @@ namespace Ultraviolet.OpenGL.Graphics
                             var attrName = default(String);
                             var attrSize = 0;
                             var attrType = 0u;
-                            gl.GetActiveAttrib(program, (uint)i, 256, &attrNameLen, &attrSize, &attrType, (sbyte*)namebuf);
-                            gl.ThrowIfError();
+                            GL.GetActiveAttrib(program, (uint)i, 256, &attrNameLen, &attrSize, &attrType, (sbyte*)namebuf);
+                            GL.ThrowIfError();
 
                             attrName = Marshal.PtrToStringAnsi(namebuf);
 
-                            var location = gl.GetAttribLocation(program, attrName);
-                            gl.ThrowIfError();
+                            var location = GL.GetAttribLocation(program, attrName);
+                            GL.ThrowIfError();
 
                             attributeLocations[attrName] = location;
                             attributeTypes[attrName] = attrType;
@@ -141,18 +141,18 @@ namespace Ultraviolet.OpenGL.Graphics
                 var type = attributeTypes[name];
                 switch (type)
                 {
-                    case gl.GL_INT:
-                    case gl.GL_INT_VEC2:
-                    case gl.GL_INT_VEC3:
-                    case gl.GL_INT_VEC4:
-                    case gl.GL_UNSIGNED_INT:
-                    case gl.GL_UNSIGNED_INT_VEC2:
-                    case gl.GL_UNSIGNED_INT_VEC3:
-                    case gl.GL_UNSIGNED_INT_VEC4:
+                    case GL.GL_INT:
+                    case GL.GL_INT_VEC2:
+                    case GL.GL_INT_VEC3:
+                    case GL.GL_INT_VEC4:
+                    case GL.GL_UNSIGNED_INT:
+                    case GL.GL_UNSIGNED_INT_VEC2:
+                    case GL.GL_UNSIGNED_INT_VEC3:
+                    case GL.GL_UNSIGNED_INT_VEC4:
                         category = OpenGLAttribCategory.Integer;
                         break;
 
-                    case gl.GL_DOUBLE:
+                    case GL.GL_DOUBLE:
                         category = OpenGLAttribCategory.Double;
                         break;
                 }
@@ -201,8 +201,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteProgram(glname);
-                        gl.ThrowIfError();
+                        GL.DeleteProgram(glname);
+                        GL.ThrowIfError();
                     }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
 
@@ -232,37 +232,37 @@ namespace Ultraviolet.OpenGL.Graphics
                 var uniforms = new List<OpenGLShaderUniform>();
                 var samplerCount = 0;
 
-                var count = gl.GetProgrami(program, gl.GL_ACTIVE_UNIFORMS);
-                gl.ThrowIfError();
+                var count = GL.GetProgrami(program, GL.GL_ACTIVE_UNIFORMS);
+                GL.ThrowIfError();
 
                 for (uint i = 0; i < count; i++)
                 {
-                    var name = gl.GetActiveUniform(program, i, out var type, out var elements);
-                    gl.ThrowIfError();
+                    var name = GL.GetActiveUniform(program, i, out var type, out var elements);
+                    GL.ThrowIfError();
 
-                    var location = gl.GetUniformLocation(program, name);
-                    gl.ThrowIfError();
+                    var location = GL.GetUniformLocation(program, name);
+                    GL.ThrowIfError();
 
                     var isSampler = false;
                     switch (type)
                     {
-                        case gl.GL_SAMPLER_1D:
-                        case gl.GL_SAMPLER_1D_ARRAY:
-                        case gl.GL_SAMPLER_1D_ARRAY_SHADOW:
-                        case gl.GL_SAMPLER_1D_SHADOW:
-                        case gl.GL_SAMPLER_2D:
-                        case gl.GL_SAMPLER_2D_ARRAY:
-                        case gl.GL_SAMPLER_2D_ARRAY_SHADOW:
-                        case gl.GL_SAMPLER_2D_MULTISAMPLE:
-                        case gl.GL_SAMPLER_2D_MULTISAMPLE_ARRAY:
-                        case gl.GL_SAMPLER_2D_RECT:
-                        case gl.GL_SAMPLER_2D_RECT_SHADOW:
-                        case gl.GL_SAMPLER_2D_SHADOW:
-                        case gl.GL_SAMPLER_3D:
-                        case gl.GL_SAMPLER_CUBE:
-                        case gl.GL_SAMPLER_CUBE_MAP_ARRAY:
-                        case gl.GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW:
-                        case gl.GL_SAMPLER_CUBE_SHADOW:
+                        case GL.GL_SAMPLER_1D:
+                        case GL.GL_SAMPLER_1D_ARRAY:
+                        case GL.GL_SAMPLER_1D_ARRAY_SHADOW:
+                        case GL.GL_SAMPLER_1D_SHADOW:
+                        case GL.GL_SAMPLER_2D:
+                        case GL.GL_SAMPLER_2D_ARRAY:
+                        case GL.GL_SAMPLER_2D_ARRAY_SHADOW:
+                        case GL.GL_SAMPLER_2D_MULTISAMPLE:
+                        case GL.GL_SAMPLER_2D_MULTISAMPLE_ARRAY:
+                        case GL.GL_SAMPLER_2D_RECT:
+                        case GL.GL_SAMPLER_2D_RECT_SHADOW:
+                        case GL.GL_SAMPLER_2D_SHADOW:
+                        case GL.GL_SAMPLER_3D:
+                        case GL.GL_SAMPLER_CUBE:
+                        case GL.GL_SAMPLER_CUBE_MAP_ARRAY:
+                        case GL.GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW:
+                        case GL.GL_SAMPLER_CUBE_SHADOW:
                             isSampler = true;
                             break;
                     }

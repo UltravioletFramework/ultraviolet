@@ -2,7 +2,7 @@
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    partial class gl
+    partial class GL
     {
         /// <summary>
         /// Implements DSA functions for OpenGL contexts which support the GL_EXT_direct_state_access extension.

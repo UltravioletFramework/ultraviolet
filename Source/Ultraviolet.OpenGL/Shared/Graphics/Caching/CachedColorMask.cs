@@ -21,8 +21,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
         public static CachedColorMask FromDevice()
         {
             var colorMaskComponents = stackalloc bool[4];
-            gl.GetBooleanv(gl.GL_COLOR_WRITEMASK, colorMaskComponents);
-            gl.ThrowIfError();
+            GL.GetBooleanv(GL.GL_COLOR_WRITEMASK, colorMaskComponents);
+            GL.ThrowIfError();
             
             return
                 (colorMaskComponents[0] ? ColorWriteChannels.Red : ColorWriteChannels.None) |
@@ -37,12 +37,12 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.ColorMask(
+            GL.ColorMask(
                 (desired & ColorWriteChannels.Red) == ColorWriteChannels.Red,
                 (desired & ColorWriteChannels.Green) == ColorWriteChannels.Green,
                 (desired & ColorWriteChannels.Blue) == ColorWriteChannels.Blue,
                 (desired & ColorWriteChannels.Alpha) == ColorWriteChannels.Alpha);
-            gl.ThrowIfError();
+            GL.ThrowIfError();
 
             return true;
         }

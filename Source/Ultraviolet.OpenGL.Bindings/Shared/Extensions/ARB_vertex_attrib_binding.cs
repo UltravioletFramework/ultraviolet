@@ -4,7 +4,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Bindings
 {
-    partial class gl
+    partial class GL
     {
         [MonoNativeFunctionWrapper]
         private delegate void glBindVertexBufferDelegate(uint bindingindex, uint buffer, IntPtr offset, int stride);

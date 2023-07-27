@@ -16,10 +16,10 @@ namespace Ultraviolet.OpenGL
         {
             // Core classes
             factory.SetFactoryMethod<GeometryStreamFactory>((uv) => new OpenGLGeometryStream(uv));
-            factory.SetFactoryMethod<VertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, gl.GL_STATIC_DRAW));
-            factory.SetFactoryMethod<IndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_STATIC_DRAW));
-            factory.SetFactoryMethod<DynamicVertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, gl.GL_DYNAMIC_DRAW));
-            factory.SetFactoryMethod<DynamicIndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_DYNAMIC_DRAW));
+            factory.SetFactoryMethod<VertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, GL.GL_STATIC_DRAW));
+            factory.SetFactoryMethod<IndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, GL.GL_STATIC_DRAW));
+            factory.SetFactoryMethod<DynamicVertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, GL.GL_DYNAMIC_DRAW));
+            factory.SetFactoryMethod<DynamicIndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, GL.GL_DYNAMIC_DRAW));
             factory.SetFactoryMethod<Texture2DFromRawDataFactory>((uv, pixels, width, height, bytesPerPixel, srgb) => new OpenGLTexture2D(uv, pixels, width, height, bytesPerPixel, srgb));
             factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, options) => new OpenGLTexture2D(uv, width, height, options));
             factory.SetFactoryMethod<Texture3DFromRawDataFactory>((uv, layers, width, height, bytesPerPixel, srgb) => new OpenGLTexture3D(uv, layers, width, height, bytesPerPixel, srgb));

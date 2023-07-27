@@ -67,8 +67,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     AttachRenderBuffer(oglBuffer);
 
-                    framebufferStatus = gl.CheckNamedFramebufferStatus(framebuffer, gl.GL_FRAMEBUFFER);
-                    gl.ThrowIfError();
+                    framebufferStatus = GL.CheckNamedFramebufferStatus(framebuffer, GL.GL_FRAMEBUFFER);
+                    GL.ThrowIfError();
                 }
             }).Wait();
 
@@ -130,12 +130,12 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
 
             // If we don't have any support for framebuffer invalidation, simply do nothing.
-            if (!gl.IsFramebufferInvalidationAvailable)
+            if (!GL.IsFramebufferInvalidationAvailable)
                 return;
 
             // If we're relying on EXT_discard_framebuffer, then we can only discard the first color
             // attachment. If that leaves us with nothing to do, bail out.
-            if (!gl.IsInvalidateSubdataAvailable)
+            if (!GL.IsInvalidateSubdataAvailable)
             {
                 if (colorOffset != 0)
                 {
@@ -163,32 +163,32 @@ namespace Ultraviolet.OpenGL.Graphics
                 if (color)
                 {
                     for (int i = 0; i < colorCount; i++)
-                        attachments[attachmentsIx++] = (UInt32)(gl.GL_COLOR_ATTACHMENT0 + colorOffset + i);
+                        attachments[attachmentsIx++] = (UInt32)(GL.GL_COLOR_ATTACHMENT0 + colorOffset + i);
                 }
 
                 if (depth)
-                    attachments[attachmentsIx++] = gl.GL_DEPTH_ATTACHMENT;
+                    attachments[attachmentsIx++] = GL.GL_DEPTH_ATTACHMENT;
 
                 if (stencil)
-                    attachments[attachmentsIx++] = gl.GL_STENCIL_ATTACHMENT;
+                    attachments[attachmentsIx++] = GL.GL_STENCIL_ATTACHMENT;
 
                 if (depthStencil)
-                    attachments[attachmentsIx++] = gl.GL_DEPTH_STENCIL_ATTACHMENT;
+                    attachments[attachmentsIx++] = GL.GL_DEPTH_STENCIL_ATTACHMENT;
 
-                if (gl.IsInvalidateSubdataAvailable)
+                if (GL.IsInvalidateSubdataAvailable)
                 {
                     // The EXT DSA extension doesn't seem to provide glInvalidateNamedFramebuffer, so...
-                    using (OpenGLState.ScopedBindFramebuffer(framebuffer, gl.IsEXTDirectStateAccessAvailable))
+                    using (OpenGLState.ScopedBindFramebuffer(framebuffer, GL.IsEXTDirectStateAccessAvailable))
                     {
-                        if (gl.IsEXTDirectStateAccessAvailable)
+                        if (GL.IsEXTDirectStateAccessAvailable)
                         {
-                            gl.InvalidateFramebuffer(gl.GL_FRAMEBUFFER, numAttachments, (IntPtr)attachments);
-                            gl.ThrowIfError();
+                            GL.InvalidateFramebuffer(GL.GL_FRAMEBUFFER, numAttachments, (IntPtr)attachments);
+                            GL.ThrowIfError();
                         }
                         else
                         {
-                            gl.InvalidateNamedFramebufferData(gl.GL_FRAMEBUFFER, framebuffer, numAttachments, (IntPtr)attachments);
-                            gl.ThrowIfError();
+                            GL.InvalidateNamedFramebufferData(GL.GL_FRAMEBUFFER, framebuffer, numAttachments, (IntPtr)attachments);
+                            GL.ThrowIfError();
                         }
                     }
                 }
@@ -196,8 +196,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     using (OpenGLState.ScopedBindFramebuffer(framebuffer, true))
                     {
-                        gl.DiscardFramebufferEXT(gl.GL_FRAMEBUFFER, numAttachments, (IntPtr)attachments);
-                        gl.ThrowIfError();
+                        GL.DiscardFramebufferEXT(GL.GL_FRAMEBUFFER, numAttachments, (IntPtr)attachments);
+                        GL.ThrowIfError();
                     }
                 }
             }
@@ -213,32 +213,32 @@ namespace Ultraviolet.OpenGL.Graphics
             if (colorAttachments == 0 && depthAttachments == 0 && stencilAttachments == 0 && depthStencilAttachments == 0)
                 throw new InvalidOperationException(OpenGLStrings.RenderTargetNeedsBuffers);
 
-            if (framebufferStatus != gl.GL_FRAMEBUFFER_COMPLETE)
+            if (framebufferStatus != GL.GL_FRAMEBUFFER_COMPLETE)
             {
                 switch (framebufferStatus)
                 {
-                    case gl.GL_FRAMEBUFFER_UNDEFINED:
+                    case GL.GL_FRAMEBUFFER_UNDEFINED:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_UNDEFINED"));
 
-                    case gl.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+                    case GL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT"));
 
-                    case gl.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+                    case GL.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"));
 
-                    case gl.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+                    case GL.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER"));
 
-                    case gl.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+                    case GL.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER"));
 
-                    case gl.GL_FRAMEBUFFER_UNSUPPORTED:
+                    case GL.GL_FRAMEBUFFER_UNSUPPORTED:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_UNSUPPORTED"));
 
-                    case gl.GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+                    case GL.GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE"));
 
-                    case gl.GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+                    case GL.GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
                         throw new InvalidOperationException(OpenGLStrings.RenderTargetFramebufferIsNotComplete.Format("GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS"));
 
                     default:
@@ -366,8 +366,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteFramebuffer(glname);
-                        gl.ThrowIfError();
+                        GL.DeleteFramebuffer(glname);
+                        GL.ThrowIfError();
                     }, null, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
                 buffers.Clear();
@@ -425,23 +425,23 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER,
-                    (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                gl.ThrowIfError();
+                GL.NamedFramebufferRenderbuffer(framebuffer, GL.GL_FRAMEBUFFER,
+                    (uint)(GL.GL_COLOR_ATTACHMENT0 + colorAttachments), GL.GL_RENDERBUFFER, buffer.OpenGLName);
+                GL.ThrowIfError();
             }
             else
             {
-                if (!gl.IsFramebufferTextureAvailable)
+                if (!GL.IsFramebufferTextureAvailable)
                 {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, 
-                        (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
+                    GL.FramebufferTexture2D(GL.GL_FRAMEBUFFER, 
+                        (uint)(GL.GL_COLOR_ATTACHMENT0 + colorAttachments), GL.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    GL.ThrowIfError();
                 }
                 else
                 {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER,
-                        (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
+                    GL.NamedFramebufferTexture(framebuffer, GL.GL_FRAMEBUFFER,
+                        (uint)(GL.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
+                    GL.ThrowIfError();
                 }
             }
                         
@@ -458,20 +458,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                gl.ThrowIfError();
+                GL.NamedFramebufferRenderbuffer(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_DEPTH_ATTACHMENT, GL.GL_RENDERBUFFER, buffer.OpenGLName);
+                GL.ThrowIfError();
             }
             else
             {
-                if (!gl.IsFramebufferTextureAvailable)
+                if (!GL.IsFramebufferTextureAvailable)
                 {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
+                    GL.FramebufferTexture2D(GL.GL_FRAMEBUFFER, GL.GL_DEPTH_ATTACHMENT, GL.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    GL.ThrowIfError();
                 }
                 else
                 {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
+                    GL.NamedFramebufferTexture(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
+                    GL.ThrowIfError();
                 }
             }
 
@@ -488,20 +488,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                gl.ThrowIfError();
+                GL.NamedFramebufferRenderbuffer(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_STENCIL_ATTACHMENT, GL.GL_RENDERBUFFER, buffer.OpenGLName);
+                GL.ThrowIfError();
             }
             else
             {
-                if (!gl.IsFramebufferTextureAvailable)
+                if (!GL.IsFramebufferTextureAvailable)
                 {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
+                    GL.FramebufferTexture2D(GL.GL_FRAMEBUFFER, GL.GL_STENCIL_ATTACHMENT, GL.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    GL.ThrowIfError();
                 }
                 else
                 {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
+                    GL.NamedFramebufferTexture(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                    GL.ThrowIfError();
                 }
             }
 
@@ -518,52 +518,52 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                if (gl.IsCombinedDepthStencilAvailable)
+                if (GL.IsCombinedDepthStencilAvailable)
                 {
-                    gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                    gl.ThrowIfError();
+                    GL.NamedFramebufferRenderbuffer(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_DEPTH_STENCIL_ATTACHMENT, GL.GL_RENDERBUFFER, buffer.OpenGLName);
+                    GL.ThrowIfError();
                 }
                 else
                 {
-                    gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                    gl.ThrowIfError();
+                    GL.NamedFramebufferRenderbuffer(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_DEPTH_ATTACHMENT, GL.GL_RENDERBUFFER, buffer.OpenGLName);
+                    GL.ThrowIfError();
 
-                    gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                    gl.ThrowIfError();
+                    GL.NamedFramebufferRenderbuffer(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_STENCIL_ATTACHMENT, GL.GL_RENDERBUFFER, buffer.OpenGLName);
+                    GL.ThrowIfError();
                 }
             }
             else
             {
-                if (!gl.IsFramebufferTextureAvailable)
+                if (!GL.IsFramebufferTextureAvailable)
                 {
-                    if (gl.IsCombinedDepthStencilAvailable)
+                    if (GL.IsCombinedDepthStencilAvailable)
                     {
-                        gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                        gl.ThrowIfError();
+                        GL.FramebufferTexture2D(GL.GL_FRAMEBUFFER, GL.GL_DEPTH_STENCIL_ATTACHMENT, GL.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                        GL.ThrowIfError();
                     }
                     else
                     {
-                        gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                        gl.ThrowIfError();
+                        GL.FramebufferTexture2D(GL.GL_FRAMEBUFFER, GL.GL_DEPTH_ATTACHMENT, GL.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                        GL.ThrowIfError();
 
-                        gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                        gl.ThrowIfError();
+                        GL.FramebufferTexture2D(GL.GL_FRAMEBUFFER, GL.GL_STENCIL_ATTACHMENT, GL.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                        GL.ThrowIfError();
                     }
                 }
                 else
                 {
-                    if (gl.IsCombinedDepthStencilAvailable)
+                    if (GL.IsCombinedDepthStencilAvailable)
                     {
-                        gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
-                        gl.ThrowIfError();
+                        GL.NamedFramebufferTexture(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                        GL.ThrowIfError();
                     }
                     else
                     {
-                        gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
-                        gl.ThrowIfError();
+                        GL.NamedFramebufferTexture(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
+                        GL.ThrowIfError();
 
-                        gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
-                        gl.ThrowIfError();
+                        GL.NamedFramebufferTexture(framebuffer, GL.GL_FRAMEBUFFER, GL.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                        GL.ThrowIfError();
                     }
                 }
             }
@@ -582,14 +582,14 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 fixed (Color* pData = data)
                 {
-                    if (gl.IsReadBufferAvailable)
+                    if (GL.IsReadBufferAvailable)
                     {
-                        gl.ReadBuffer(gl.GL_COLOR_ATTACHMENT0);
-                        gl.ThrowIfError();
+                        GL.ReadBuffer(GL.GL_COLOR_ATTACHMENT0);
+                        GL.ThrowIfError();
                     }
 
-                    gl.ReadPixels(region.X, region.Y, region.Width, region.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, pData);
-                    gl.ThrowIfError();
+                    GL.ReadPixels(region.X, region.Y, region.Width, region.Height, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pData);
+                    GL.ThrowIfError();
                 }
             }
 
@@ -620,20 +620,20 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         private unsafe void UpdateDrawBuffers()
         {
-            if (!gl.IsDrawBuffersAvailable)
+            if (!GL.IsDrawBuffersAvailable)
                 return;
 
-            if (colorAttachments == 0 && gl.IsDrawBufferAvailable)
+            if (colorAttachments == 0 && GL.IsDrawBufferAvailable)
             {
-                gl.NamedFramebufferDrawBuffer(framebuffer, gl.GL_NONE);
+                GL.NamedFramebufferDrawBuffer(framebuffer, GL.GL_NONE);
             }
             else
             {
                 var bufs = stackalloc uint[colorAttachments];
                 for (int i = 0; i < colorAttachments; i++)
-                    bufs[i] = (uint)(gl.GL_COLOR_ATTACHMENT0 + i);
+                    bufs[i] = (uint)(GL.GL_COLOR_ATTACHMENT0 + i);
 
-                gl.NamedFramebufferDrawBuffers(framebuffer, colorAttachments, bufs);
+                GL.NamedFramebufferDrawBuffers(framebuffer, colorAttachments, bufs);
             }
         }
         
@@ -649,7 +649,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private Int32 depthAttachments;
         private Int32 stencilAttachments;
         private Int32 depthStencilAttachments;
-        private UInt32 framebufferStatus = gl.GL_FRAMEBUFFER_UNDEFINED;
+        private UInt32 framebufferStatus = GL.GL_FRAMEBUFFER_UNDEFINED;
 
         // The target's list of attached buffers.
         private readonly List<OpenGLRenderBuffer2D> buffers = new List<OpenGLRenderBuffer2D>();

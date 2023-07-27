@@ -38,14 +38,14 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 try
                 {
-                    gl.ShaderSource(shader, source.Length, (sbyte**)pSource, pLength);
-                    gl.ThrowIfError();
+                    GL.ShaderSource(shader, source.Length, (sbyte**)pSource, pLength);
+                    GL.ThrowIfError();
 
-                    gl.CompileShader(shader);
-                    gl.ThrowIfError();
+                    GL.CompileShader(shader);
+                    GL.ThrowIfError();
 
-                    gl.GetShaderInfoLog(shader, out log);
-                    gl.ThrowIfError();
+                    GL.GetShaderInfoLog(shader, out log);
+                    GL.ThrowIfError();
                 }
                 finally
                 {
@@ -55,8 +55,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     }
                 }
 
-                var status = gl.GetShaderi(shader, gl.GL_COMPILE_STATUS);
-                gl.ThrowIfError();
+                var status = GL.GetShaderi(shader, GL.GL_COMPILE_STATUS);
+                GL.ThrowIfError();
                 
                 return status != 0;
             }

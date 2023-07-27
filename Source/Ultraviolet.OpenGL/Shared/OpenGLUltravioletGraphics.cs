@@ -40,13 +40,13 @@ namespace Ultraviolet.OpenGL
             if (!OpenGLEnvironment.SetSwapInterval(1) && uv.Platform != UltravioletPlatform.iOS)
                 OpenGLEnvironment.ThrowPlatformErrorException();
 
-            if (gl.Initialized)
-                gl.Uninitialize();
+            if (GL.Initialized)
+                GL.Uninitialize();
 
-            gl.Initialize(new OpenGLInitializer(OpenGLEnvironment));
+            GL.Initialize(new OpenGLInitializer(OpenGLEnvironment));
             
-            if (!gl.IsVersionAtLeast(versionRequested ?? versionRequired))
-                throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(gl.MajorVersion, gl.MinorVersion, versionRequested.Major, versionRequested.Minor));
+            if (!GL.IsVersionAtLeast(versionRequested ?? versionRequired))
+                throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(GL.MajorVersion, GL.MinorVersion, versionRequested.Major, versionRequested.Minor));
             
             OpenGLState.ResetCache();
 
@@ -60,13 +60,13 @@ namespace Ultraviolet.OpenGL
             
             this.Capabilities = new OpenGLGraphicsCapabilities(configuration);
 
-            if (Capabilities.SrgbEncodingEnabled && gl.IsFramebufferSrgbAvailable)
+            if (Capabilities.SrgbEncodingEnabled && GL.IsFramebufferSrgbAvailable)
             {
-                gl.Enable(gl.GL_FRAMEBUFFER_SRGB);
-                gl.ThrowIfError();
+                GL.Enable(GL.GL_FRAMEBUFFER_SRGB);
+                GL.ThrowIfError();
             }
 
-            this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
+            this.maxTextureStages = GL.GetInteger(GL.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
             this.samplerObjects = Capabilities.SupportsIndependentSamplerState ? new OpenGLSamplerObject[maxTextureStages] : null;
@@ -129,7 +129,7 @@ namespace Ultraviolet.OpenGL
                 }
 
                 OpenGLState.ClearColor = color;
-                mask |= gl.GL_COLOR_BUFFER_BIT;
+                mask |= GL.GL_COLOR_BUFFER_BIT;
             }
 
             if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer || renderTarget.HasDepthStencilBuffer))
@@ -141,17 +141,17 @@ namespace Ultraviolet.OpenGL
                 }
 
                 OpenGLState.ClearDepth = depth;
-                mask |= gl.GL_DEPTH_BUFFER_BIT;
+                mask |= GL.GL_DEPTH_BUFFER_BIT;
             }
 
             if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer || renderTarget.HasDepthStencilBuffer))
             {
                 OpenGLState.ClearStencil = stencil;
-                mask |= gl.GL_STENCIL_BUFFER_BIT;
+                mask |= GL.GL_STENCIL_BUFFER_BIT;
             }
 
-            gl.Clear(mask);
-            gl.ThrowIfError();
+            GL.Clear(mask);
+            GL.ThrowIfError();
 
             if (resetColorWriteChannels)
                 OpenGLState.ColorMask = blendState.ColorWriteChannels;
@@ -239,8 +239,8 @@ namespace Ultraviolet.OpenGL
                 var y = viewport.Y;
                 ConvertScreenRegionUvToGL(ref x, ref y, viewport.Width, viewport.Height);
 
-                gl.Viewport(x, y, viewport.Width, viewport.Height);
-                gl.ThrowIfError();
+                GL.Viewport(x, y, viewport.Width, viewport.Height);
+                GL.ThrowIfError();
 
                 this.viewport = viewport;
 
@@ -340,7 +340,7 @@ namespace Ultraviolet.OpenGL
             if (this.textures[sampler] != texture)
             {
                 var textureName = (texture == null) ? 0 : ((IOpenGLResource)texture).OpenGLName;
-                OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
+                OpenGLState.ActiveTexture((uint)(GL.GL_TEXTURE0 + sampler));
                 if (texture is Texture3D)
                 {
                     OpenGLState.BindTexture3D(textureName);
@@ -370,7 +370,7 @@ namespace Ultraviolet.OpenGL
                     {
                         if (this.textures[i] == texture)
                         {
-                            var target = (texture is Texture3D) ? gl.GL_TEXTURE_3D : gl.GL_TEXTURE_2D;
+                            var target = (texture is Texture3D) ? GL.GL_TEXTURE_3D : GL.GL_TEXTURE_2D;
                             samplerState.Apply(sampler, target);
                         }
                     }
@@ -512,7 +512,7 @@ namespace Ultraviolet.OpenGL
                     var texture = this.textures[sampler];
                     if (texture != null)
                     {
-                        var target = (texture is Texture3D) ? gl.GL_TEXTURE_3D : gl.GL_TEXTURE_2D;
+                        var target = (texture is Texture3D) ? GL.GL_TEXTURE_3D : GL.GL_TEXTURE_2D;
                         oglstate.Apply(sampler, target);
 
                         for (int i = 0; i < samplerStates.Length; i++)
@@ -556,8 +556,8 @@ namespace Ultraviolet.OpenGL
             {
                 if (rect == null)
                 {
-                    gl.Disable(gl.GL_SCISSOR_TEST);
-                    gl.ThrowIfError();
+                    GL.Disable(GL.GL_SCISSOR_TEST);
+                    GL.ThrowIfError();
                 }
                 else
                 {
@@ -569,11 +569,11 @@ namespace Ultraviolet.OpenGL
                     var y = rectValue.Y;
                     ConvertScreenRegionUvToGL(ref x, ref y, rectValue.Width, rectValue.Height);
 
-                    gl.Enable(gl.GL_SCISSOR_TEST, rasterizerState.ScissorTestEnable);
-                    gl.ThrowIfError();
+                    GL.Enable(GL.GL_SCISSOR_TEST, rasterizerState.ScissorTestEnable);
+                    GL.ThrowIfError();
 
-                    gl.Scissor(x, y, rectValue.Width, rectValue.Height);
-                    gl.ThrowIfError();
+                    GL.Scissor(x, y, rectValue.Width, rectValue.Height);
+                    GL.ThrowIfError();
                 }
                 this.scissorRectangle = rect;
             }
@@ -610,8 +610,8 @@ namespace Ultraviolet.OpenGL
 
             var glVerts = 0;
             var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
-            gl.DrawArrays(glPrimitiveType, start, glVerts);
-            gl.ThrowIfError();
+            GL.DrawArrays(glPrimitiveType, start, glVerts);
+            GL.ThrowIfError();
         }
 
         /// <inheritdoc/>
@@ -644,8 +644,8 @@ namespace Ultraviolet.OpenGL
                 var glIndexType = GetIndexFormatGL(geometryStream.IndexBufferElementType, out glIndexSize);
                 var glOffset = (void*)(start * glIndexSize);
 
-                gl.DrawElements(glPrimitiveType, glVerts, glIndexType, glOffset);
-                gl.ThrowIfError();
+                GL.DrawElements(glPrimitiveType, glVerts, glIndexType, glOffset);
+                GL.ThrowIfError();
             }
         }
 
@@ -688,16 +688,16 @@ namespace Ultraviolet.OpenGL
 
                 if (baseInstance == 0)
                 {
-                    gl.DrawElementsInstanced(glPrimitiveType, glVerts, glIndexType, glOffset, instances);
-                    gl.ThrowIfError();
+                    GL.DrawElementsInstanced(glPrimitiveType, glVerts, glIndexType, glOffset, instances);
+                    GL.ThrowIfError();
                 }
                 else
                 {
                     if (!Capabilities.SupportsNonZeroBaseInstance)
                         throw new NotSupportedException(OpenGLStrings.NonZeroBaseInstanceNotSupported);
 
-                    gl.DrawElementsInstancedBaseInstance(glPrimitiveType, glVerts, glIndexType, glOffset, instances, (uint)baseInstance);
-                    gl.ThrowIfError();
+                    GL.DrawElementsInstancedBaseInstance(glPrimitiveType, glVerts, glIndexType, glOffset, instances, (uint)baseInstance);
+                    GL.ThrowIfError();
                 }
             }
         }
@@ -794,8 +794,8 @@ namespace Ultraviolet.OpenGL
                     SafeDispose.Dispose(samplerObjects[i]);
             }
 
-            if (gl.Initialized)
-                gl.Uninitialize();
+            if (GL.Initialized)
+                GL.Uninitialize();
 
             OpenGLEnvironment.DeleteOpenGLContext(context);
             context = IntPtr.Zero;
@@ -847,14 +847,14 @@ namespace Ultraviolet.OpenGL
         /// <returns>true if the graphics device is supported; otherwise, false.</returns>
         private static Boolean VerifyCapabilities()
         {
-            if (gl.IsGLES)
+            if (GL.IsGLES)
             {
-                return gl.IsVersionAtLeast(2, 0);
+                return GL.IsVersionAtLeast(2, 0);
             }
 
-            if (gl.IsVersionAtLeast(3, 1) || (
-                gl.IsExtensionSupported("GL_ARB_vertex_array_object") &&
-                gl.IsExtensionSupported("GL_ARB_framebuffer_object")))
+            if (GL.IsVersionAtLeast(3, 1) || (
+                GL.IsExtensionSupported("GL_ARB_vertex_array_object") &&
+                GL.IsExtensionSupported("GL_ARB_framebuffer_object")))
             {
                 return true;
             }
@@ -873,11 +873,11 @@ namespace Ultraviolet.OpenGL
             {
                 case IndexBufferElementType.Int16:
                     size = sizeof(short);
-                    return gl.GL_UNSIGNED_SHORT;
+                    return GL.GL_UNSIGNED_SHORT;
 
                 case IndexBufferElementType.Int32:
                     size = sizeof(int);
-                    return gl.GL_UNSIGNED_INT;
+                    return GL.GL_UNSIGNED_INT;
 
                 default:
                     throw new NotSupportedException(OpenGLStrings.UnsupportedIndexFormat);
@@ -897,19 +897,19 @@ namespace Ultraviolet.OpenGL
             {
                 case PrimitiveType.TriangleList:
                     vertices = count * 3;
-                    return gl.GL_TRIANGLES;
+                    return GL.GL_TRIANGLES;
                 
                 case PrimitiveType.TriangleStrip:
                     vertices = count + 2;
-                    return gl.GL_TRIANGLE_STRIP;
+                    return GL.GL_TRIANGLE_STRIP;
                 
                 case PrimitiveType.LineList:
                     vertices = count * 2;
-                    return gl.GL_LINES;
+                    return GL.GL_LINES;
                 
                 case PrimitiveType.LineStrip:
                     vertices = count + 1;
-                    return gl.GL_LINE_STRIP;
+                    return GL.GL_LINE_STRIP;
 
                 default:
                     throw new NotSupportedException(OpenGLStrings.UnsupportedPrimitiveType);
@@ -919,18 +919,18 @@ namespace Ultraviolet.OpenGL
         /// <summary>
         /// Represents a thunk which allows the native OpenGL driver to call into the managed debug callback.
         /// </summary>
-        [MonoPInvokeCallback(typeof(gl.DebugProc))]
+        [MonoPInvokeCallback(typeof(GL.DebugProc))]
         private static void DebugCallbackThunk(UInt32 source, UInt32 type, UInt32 id, UInt32 severity, Int32 length, IntPtr message, IntPtr userParam)
         {
             var messageString = Marshal.PtrToStringAnsi(message, length);
             var messageLevel = DebugLevels.Info;
             switch (severity)
             {
-                case gl.DEBUG_SEVERITY_MEDIUM:
+                case GL.DEBUG_SEVERITY_MEDIUM:
                     messageLevel = DebugLevels.Warning;
                     break;
 
-                case gl.DEBUG_SEVERITY_HIGH:
+                case GL.DEBUG_SEVERITY_HIGH:
                     messageLevel = DebugLevels.Error;
                     break;
             }
@@ -1001,7 +1001,7 @@ namespace Ultraviolet.OpenGL
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
         private void InitializeDebugOutput(UltravioletConfiguration configuration)
         {
-            if (!gl.IsExtensionSupported("GL_ARB_debug_output"))
+            if (!GL.IsExtensionSupported("GL_ARB_debug_output"))
             {
                 Debug.WriteLine(OpenGLStrings.DebugOutputNotSupported);
                 return;
@@ -1010,19 +1010,19 @@ namespace Ultraviolet.OpenGL
             debugCallback = configuration.DebugCallback;
             debugCallbackOpenGL = DebugCallbackThunk;
 
-            gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.GL_DONT_CARE, 0, IntPtr.Zero, false);
+            GL.DebugMessageControl(GL.GL_DONT_CARE, GL.GL_DONT_CARE, GL.GL_DONT_CARE, 0, IntPtr.Zero, false);
 
             if ((configuration.DebugLevels & DebugLevels.Info) == DebugLevels.Info)
             {
-                gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.DEBUG_SEVERITY_LOW, 0, IntPtr.Zero, true);
-                gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.DEBUG_SEVERITY_NOTIFICATION, 0, IntPtr.Zero, true);
+                GL.DebugMessageControl(GL.GL_DONT_CARE, GL.GL_DONT_CARE, GL.DEBUG_SEVERITY_LOW, 0, IntPtr.Zero, true);
+                GL.DebugMessageControl(GL.GL_DONT_CARE, GL.GL_DONT_CARE, GL.DEBUG_SEVERITY_NOTIFICATION, 0, IntPtr.Zero, true);
             }
             if ((configuration.DebugLevels & DebugLevels.Warning) == DebugLevels.Warning)
-                gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.DEBUG_SEVERITY_MEDIUM, 0, IntPtr.Zero, true);
+                GL.DebugMessageControl(GL.GL_DONT_CARE, GL.GL_DONT_CARE, GL.DEBUG_SEVERITY_MEDIUM, 0, IntPtr.Zero, true);
             if ((configuration.DebugLevels & DebugLevels.Error) == DebugLevels.Error)
-                gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.DEBUG_SEVERITY_HIGH, 0, IntPtr.Zero, true);
+                GL.DebugMessageControl(GL.GL_DONT_CARE, GL.GL_DONT_CARE, GL.DEBUG_SEVERITY_HIGH, 0, IntPtr.Zero, true);
 
-            gl.DebugMessageCallback(debugCallbackOpenGL, IntPtr.Zero);
+            GL.DebugMessageCallback(debugCallbackOpenGL, IntPtr.Zero);
         }
 
         /// <summary>
@@ -1077,7 +1077,7 @@ namespace Ultraviolet.OpenGL
             var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
             if (oglRenderTarget != this.renderTarget)
             {
-                var targetName = gl.DefaultFramebuffer;
+                var targetName = GL.DefaultFramebuffer;
                 var targetSize = Size2.Zero;
 
                 if (oglRenderTarget != null)
@@ -1165,6 +1165,6 @@ namespace Ultraviolet.OpenGL
 
         // Debug output callbacks.
         private DebugCallback debugCallback;
-        private gl.DebugProc debugCallbackOpenGL;
+        private GL.DebugProc debugCallbackOpenGL;
     }
 }

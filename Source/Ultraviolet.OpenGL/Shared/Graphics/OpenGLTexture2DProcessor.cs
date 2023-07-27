@@ -60,11 +60,11 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 using (var source = SurfaceSource.Create(stream))
                 {
-                    var format = (source.DataFormat == SurfaceSourceDataFormat.RGBA) ? gl.GL_RGBA : gl.GL_BGRA;
+                    var format = (source.DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
                     var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
 
                     return new OpenGLTexture2D(manager.Ultraviolet, internalformat,
-                        source.Width, source.Height, format, gl.GL_UNSIGNED_BYTE, source.Data, true);
+                        source.Width, source.Height, format, GL.GL_UNSIGNED_BYTE, source.Data, true);
                 }
             }
         }

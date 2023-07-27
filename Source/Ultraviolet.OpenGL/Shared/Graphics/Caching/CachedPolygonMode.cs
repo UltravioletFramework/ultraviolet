@@ -19,12 +19,12 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedPolygonMode FromDevice()
         {
-            if (!gl.IsPolygonModeAvailable)
-                return new CachedPolygonMode(gl.GL_FILL);
+            if (!GL.IsPolygonModeAvailable)
+                return new CachedPolygonMode(GL.GL_FILL);
 
             var modes = stackalloc int[2];
-            gl.GetIntegerv(gl.GL_POLYGON_MODE, modes);
-            gl.ThrowIfError();
+            GL.GetIntegerv(GL.GL_POLYGON_MODE, modes);
+            GL.ThrowIfError();
 
             return new CachedPolygonMode((UInt32)modes[0]);
         }
@@ -35,8 +35,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.PolygonMode(gl.GL_FRONT_AND_BACK, desired);
-            gl.ThrowIfError();
+            GL.PolygonMode(GL.GL_FRONT_AND_BACK, desired);
+            GL.ThrowIfError();
 
             return true;
         }

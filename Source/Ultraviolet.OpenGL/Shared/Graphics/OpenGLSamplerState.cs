@@ -125,67 +125,67 @@ namespace Ultraviolet.OpenGL.Graphics
             if (Ultraviolet.GetGraphics().Capabilities.SupportsIndependentSamplerState)
                 throw new InvalidOperationException(UltravioletStrings.GenericError);
 
-            OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
+            OpenGLState.ActiveTexture((uint)(GL.GL_TEXTURE0 + sampler));
 
             if (Ultraviolet.GetGraphics().Capabilities.Supports3DTextures)
             {
-                gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_R, GetTextureAddressModeGL(AddressW));
-                gl.ThrowIfError();
+                GL.TexParameteri(target, GL.GL_TEXTURE_WRAP_R, GetTextureAddressModeGL(AddressW));
+                GL.ThrowIfError();
             }
 
-            gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
-            gl.ThrowIfError();
+            GL.TexParameteri(target, GL.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
+            GL.ThrowIfError();
 
-            gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_T, GetTextureAddressModeGL(AddressV));
-            gl.ThrowIfError();
+            GL.TexParameteri(target, GL.GL_TEXTURE_WRAP_T, GetTextureAddressModeGL(AddressV));
+            GL.ThrowIfError();
 
             if (MipMapLevelOfDetailBias != 0)
             {
-                gl.ThrowIfGLES(OpenGLStrings.UnsupportedLODBiasGLES);
+                GL.ThrowIfGLES(OpenGLStrings.UnsupportedLODBiasGLES);
 
-                gl.TexParameterf(target, gl.GL_TEXTURE_LOD_BIAS, MipMapLevelOfDetailBias);
-                gl.ThrowIfError();
+                GL.TexParameterf(target, GL.GL_TEXTURE_LOD_BIAS, MipMapLevelOfDetailBias);
+                GL.ThrowIfError();
             }
 
             switch (Filter)
             {
                 case TextureFilter.Point:
-                    gl.TexParameterf(target, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
-                    gl.ThrowIfError();
+                    GL.TexParameterf(target, GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                    GL.ThrowIfError();
 
-                    gl.TexParameteri(target, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
-                    gl.ThrowIfError();
+                    GL.TexParameteri(target, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_NEAREST);
+                    GL.ThrowIfError();
 
-                    gl.TexParameteri(target, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
-                    gl.ThrowIfError();
+                    GL.TexParameteri(target, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_NEAREST);
+                    GL.ThrowIfError();
                     break;
 
                 case TextureFilter.Linear:
-                    if (gl.IsAnisotropicFilteringAvailable)
+                    if (GL.IsAnisotropicFilteringAvailable)
                     {
-                        gl.TexParameterf(target, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
-                        gl.ThrowIfError();
+                        GL.TexParameterf(target, GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                        GL.ThrowIfError();
                     }
 
-                    gl.TexParameteri(target, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    GL.TexParameteri(target, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_LINEAR);
+                    GL.ThrowIfError();
 
-                    gl.TexParameteri(target, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    GL.TexParameteri(target, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_LINEAR);
+                    GL.ThrowIfError();
                     break;
 
                 case TextureFilter.Anisotropic:
-                    if (gl.IsAnisotropicFilteringAvailable)
+                    if (GL.IsAnisotropicFilteringAvailable)
                     {
-                        gl.TexParameterf(target, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, MaxAnisotropy));
-                        gl.ThrowIfError();
+                        GL.TexParameterf(target, GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, MaxAnisotropy));
+                        GL.ThrowIfError();
                     }
 
-                    gl.TexParameteri(target, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    GL.TexParameteri(target, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_LINEAR);
+                    GL.ThrowIfError();
 
-                    gl.TexParameteri(target, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    GL.TexParameteri(target, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_LINEAR);
+                    GL.ThrowIfError();
                     break;
 
                 default:
@@ -203,11 +203,11 @@ namespace Ultraviolet.OpenGL.Graphics
             switch (mode)
             {
                 case TextureAddressMode.Clamp:
-                    return (int)gl.GL_CLAMP_TO_EDGE;
+                    return (int)GL.GL_CLAMP_TO_EDGE;
                 case TextureAddressMode.Wrap:
-                    return (int)gl.GL_REPEAT;
+                    return (int)GL.GL_REPEAT;
                 case TextureAddressMode.Mirror:
-                    return (int)gl.GL_MIRRORED_REPEAT;
+                    return (int)GL.GL_MIRRORED_REPEAT;
             }
             throw new NotSupportedException();
         }

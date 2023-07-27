@@ -20,8 +20,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
         public static CachedBlendColor FromDevice()
         {
             var components = stackalloc float[4];
-            gl.GetFloatv(gl.GL_BLEND_COLOR, components);
-            gl.ThrowIfError();
+            GL.GetFloatv(GL.GL_BLEND_COLOR, components);
+            GL.ThrowIfError();
 
             return new Color(
                 (Byte)(components[0] * Byte.MaxValue),
@@ -36,8 +36,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.BlendColor(desired.R / 255f, desired.G / 255f, desired.B / 255f, desired.A / 255f);
-            gl.ThrowIfError();
+            GL.BlendColor(desired.R / 255f, desired.G / 255f, desired.B / 255f, desired.A / 255f);
+            GL.ThrowIfError();
 
             return true;
         }

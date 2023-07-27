@@ -16,20 +16,20 @@ namespace Ultraviolet.OpenGL.Graphics
             if (bytesPerPixel == 4)
             {
                 if (srgbEncoded)
-                    return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_SRGB8_ALPHA8 : gl.GL_SRGB_ALPHA;
+                    return GL.IsSizedTextureInternalFormatAvailable ? GL.GL_SRGB8_ALPHA8 : GL.GL_SRGB_ALPHA;
 
-                return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_RGBA8 : gl.GL_RGBA;
+                return GL.IsSizedTextureInternalFormatAvailable ? GL.GL_RGBA8 : GL.GL_RGBA;
             }
 
             if (bytesPerPixel == 3)
             {
                 if (srgbEncoded)
-                    return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_SRGB8 : gl.GL_SRGB;
+                    return GL.IsSizedTextureInternalFormatAvailable ? GL.GL_SRGB8 : GL.GL_SRGB;
                 
-                return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_RGB8 : gl.GL_RGB;
+                return GL.IsSizedTextureInternalFormatAvailable ? GL.GL_RGB8 : GL.GL_RGB;
             }
 
-            return gl.GL_NONE;
+            return GL.GL_NONE;
         }
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace Ultraviolet.OpenGL.Graphics
         public static UInt32 GetFormatFromBytesPerPixel(Int32 bytesPerPixel)
         {
             if (bytesPerPixel == 4)
-                return gl.GL_RGBA;
+                return GL.GL_RGBA;
 
             if (bytesPerPixel == 3)
-                return gl.GL_RGB;
+                return GL.GL_RGB;
 
-            return gl.GL_NONE;
+            return GL.GL_NONE;
         }
     }
 }

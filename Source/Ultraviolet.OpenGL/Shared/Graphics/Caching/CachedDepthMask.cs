@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedDepthMask FromDevice()
         {
-            var value = gl.GetBoolean(gl.GL_DEPTH_WRITEMASK);
-            gl.ThrowIfError();
+            var value = GL.GetBoolean(GL.GL_DEPTH_WRITEMASK);
+            GL.ThrowIfError();
 
             return value;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.DepthMask(desired);
-            gl.ThrowIfError();
+            GL.DepthMask(desired);
+            GL.ThrowIfError();
 
             return true;
         }

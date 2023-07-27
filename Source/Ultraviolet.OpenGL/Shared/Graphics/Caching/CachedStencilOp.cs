@@ -19,31 +19,31 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
         {
             switch (face)
             {
-                case gl.GL_NONE:
-                case gl.GL_FRONT:
+                case GL.GL_NONE:
+                case GL.GL_FRONT:
                     {
-                        var sfail = (UInt32)gl.GetInteger(gl.GL_STENCIL_FAIL);
-                        gl.ThrowIfError();
+                        var sfail = (UInt32)GL.GetInteger(GL.GL_STENCIL_FAIL);
+                        GL.ThrowIfError();
 
-                        var dpfail = (UInt32)gl.GetInteger(gl.GL_STENCIL_PASS_DEPTH_FAIL);
-                        gl.ThrowIfError();
+                        var dpfail = (UInt32)GL.GetInteger(GL.GL_STENCIL_PASS_DEPTH_FAIL);
+                        GL.ThrowIfError();
 
-                        var dppass = (UInt32)gl.GetInteger(gl.GL_STENCIL_PASS_DEPTH_PASS);
-                        gl.ThrowIfError();
+                        var dppass = (UInt32)GL.GetInteger(GL.GL_STENCIL_PASS_DEPTH_PASS);
+                        GL.ThrowIfError();
 
                         return new CachedStencilOp(sfail, dpfail, dppass);
                     }
 
-                case gl.GL_BACK:
+                case GL.GL_BACK:
                     {
-                        var sfail = (UInt32)gl.GetInteger(gl.GL_STENCIL_BACK_FAIL);
-                        gl.ThrowIfError();
+                        var sfail = (UInt32)GL.GetInteger(GL.GL_STENCIL_BACK_FAIL);
+                        GL.ThrowIfError();
 
-                        var dpfail = (UInt32)gl.GetInteger(gl.GL_STENCIL_BACK_PASS_DEPTH_FAIL);
-                        gl.ThrowIfError();
+                        var dpfail = (UInt32)GL.GetInteger(GL.GL_STENCIL_BACK_PASS_DEPTH_FAIL);
+                        GL.ThrowIfError();
 
-                        var dppass = (UInt32)gl.GetInteger(gl.GL_STENCIL_BACK_PASS_DEPTH_PASS);
-                        gl.ThrowIfError();
+                        var dppass = (UInt32)GL.GetInteger(GL.GL_STENCIL_BACK_PASS_DEPTH_PASS);
+                        GL.ThrowIfError();
 
                         return new CachedStencilOp(sfail, dpfail, dppass);
                     }
@@ -59,8 +59,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.StencilOpSeparate(face, desired.sfail, desired.dpfail, desired.dppass);
-            gl.ThrowIfError();
+            GL.StencilOpSeparate(face, desired.sfail, desired.dpfail, desired.dppass);
+            GL.ThrowIfError();
 
             return true;
         }
@@ -76,8 +76,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
             front = desired;
             back = desired;
-            gl.StencilOp(desired.sfail, desired.dpfail, desired.dppass);
-            gl.ThrowIfError();
+            GL.StencilOp(desired.sfail, desired.dpfail, desired.dppass);
+            GL.ThrowIfError();
 
             return true;
         }

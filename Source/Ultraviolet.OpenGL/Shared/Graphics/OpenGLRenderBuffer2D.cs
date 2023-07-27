@@ -56,25 +56,25 @@ namespace Ultraviolet.OpenGL.Graphics
                         {
                             var texformat = OpenGLTextureUtil.GetFormatFromBytesPerPixel(4);
                             var texinternalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
-                            this.texture = new OpenGLTexture2D(uv, texinternalformat, width, height, texformat, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable, true);
+                            this.texture = new OpenGLTexture2D(uv, texinternalformat, width, height, texformat, GL.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable, true);
                             this.SrgbEncoded = this.texture.SrgbEncoded;
                         }
                         break;
 
                     case RenderBufferFormat.Depth24Stencil8:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable, true);
+                        this.texture = new OpenGLTexture2D(uv, GL.GL_DEPTH24_STENCIL8, width, height, GL.GL_DEPTH_STENCIL, GL.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Depth32:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable, true);
+                        this.texture = new OpenGLTexture2D(uv, GL.GL_DEPTH_COMPONENT32, width, height, GL.GL_DEPTH_COMPONENT, GL.GL_UNSIGNED_INT, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Depth16:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable, true);
+                        this.texture = new OpenGLTexture2D(uv, GL.GL_DEPTH_COMPONENT16, width, height, GL.GL_DEPTH_COMPONENT, GL.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Stencil8:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_STENCIL_INDEX8, width, height, gl.GL_STENCIL, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable, true);
+                        this.texture = new OpenGLTexture2D(uv, GL.GL_STENCIL_INDEX8, width, height, GL.GL_STENCIL, GL.GL_UNSIGNED_INT, IntPtr.Zero, immutable, true);
                         break;
 
                     default:
@@ -298,8 +298,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     {
                         Ultraviolet.QueueWorkItem((state) =>
                         {
-                            gl.DeleteRenderBuffers(glname);
-                            gl.ThrowIfError();
+                            GL.DeleteRenderBuffers(glname);
+                            GL.ThrowIfError();
                         }, null, WorkItemOptions.ReturnNullOnSynchronousExecution);
                     }
 
@@ -328,28 +328,28 @@ namespace Ultraviolet.OpenGL.Graphics
                     case RenderBufferFormat.Color:
                         {
                             var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, SrgbEncoded);
-                            gl.RenderbufferStorage(gl.GL_RENDERBUFFER, internalformat, width, height);
-                            gl.ThrowIfError();
+                            GL.RenderbufferStorage(GL.GL_RENDERBUFFER, internalformat, width, height);
+                            GL.ThrowIfError();
                         }
                         break;
 
                     case RenderBufferFormat.Depth24Stencil8:
-                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH24_STENCIL8, width, height);
-                        gl.ThrowIfError();
+                        GL.RenderbufferStorage(GL.GL_RENDERBUFFER, GL.GL_DEPTH24_STENCIL8, width, height);
+                        GL.ThrowIfError();
                         break;
 
                     case RenderBufferFormat.Depth32:
-                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT32, width, height);
-                        gl.ThrowIfError();
+                        GL.RenderbufferStorage(GL.GL_RENDERBUFFER, GL.GL_DEPTH_COMPONENT32, width, height);
+                        GL.ThrowIfError();
                         break;
 
                     case RenderBufferFormat.Depth16:
-                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT16, width, height);
-                        gl.ThrowIfError();
+                        GL.RenderbufferStorage(GL.GL_RENDERBUFFER, GL.GL_DEPTH_COMPONENT16, width, height);
+                        GL.ThrowIfError();
                         break;
 
                     case RenderBufferFormat.Stencil8:
-                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_STENCIL_INDEX8, width, height);
+                        GL.RenderbufferStorage(GL.GL_RENDERBUFFER, GL.GL_STENCIL_INDEX8, width, height);
                         break;
 
                     default:

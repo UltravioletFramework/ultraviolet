@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedFrontFace FromDevice()
         {
-            var value = (UInt32)gl.GetInteger(gl.GL_FRONT_FACE);
-            gl.ThrowIfError();
+            var value = (UInt32)GL.GetInteger(GL.GL_FRONT_FACE);
+            GL.ThrowIfError();
 
             return value;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.FrontFace(desired);
-            gl.ThrowIfError();
+            GL.FrontFace(desired);
+            GL.ThrowIfError();
 
             return true;
         }

@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedStencilMask FromDevice()
         {
-            var value = (uint)gl.GetInteger(gl.GL_STENCIL_WRITEMASK);
-            gl.ThrowIfError();
+            var value = (uint)GL.GetInteger(GL.GL_STENCIL_WRITEMASK);
+            GL.ThrowIfError();
 
             return value;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.StencilMask(desired);
-            gl.ThrowIfError();
+            GL.StencilMask(desired);
+            GL.ThrowIfError();
 
             return true;
         }

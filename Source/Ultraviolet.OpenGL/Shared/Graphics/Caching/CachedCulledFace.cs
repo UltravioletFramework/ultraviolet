@@ -19,8 +19,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedCulledFace FromDevice()
         {
-            var value = (UInt32)gl.GetInteger(gl.GL_CULL_FACE_MODE);
-            gl.ThrowIfError();
+            var value = (UInt32)GL.GetInteger(GL.GL_CULL_FACE_MODE);
+            GL.ThrowIfError();
 
             return value;
         }
@@ -31,8 +31,8 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.CullFace(desired);
-            gl.ThrowIfError();
+            GL.CullFace(desired);
+            GL.ThrowIfError();
 
             return true;
         }

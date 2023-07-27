@@ -13,14 +13,14 @@ using Ultraviolet.Core.Text;
 namespace Ultraviolet.OpenGL.Bindings
 {
     [SuppressUnmanagedCodeSecurity]
-    public static unsafe partial class gl
+    public static unsafe partial class GL
     {
         /// <summary>
         /// Initializes the gl type.
         /// </summary>
-        static gl()
+        static GL()
         {
-            miCreateDefaultDelegateException = typeof(gl).GetMethod(
+            miCreateDefaultDelegateException = typeof(GL).GetMethod(
                 "CreateDefaultDelegateException", BindingFlags.NonPublic | BindingFlags.Static);
         }
 
@@ -45,8 +45,8 @@ namespace Ultraviolet.OpenGL.Bindings
             LoadVersion();
             LoadExtensions();
 
-            gl.InitializeDSA();
-            gl.InitializeFeatureFlags();
+            GL.InitializeDSA();
+            GL.InitializeFeatureFlags();
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -57,11 +57,11 @@ namespace Ultraviolet.OpenGL.Bindings
                 }
             }
 
-            gl.DefaultFramebuffer = (UInt32)gl.GetInteger(gl.GL_FRAMEBUFFER_BINDING);
-            gl.ThrowIfError();
+            GL.DefaultFramebuffer = (UInt32)GL.GetInteger(GL.GL_FRAMEBUFFER_BINDING);
+            GL.ThrowIfError();
 
-            gl.DefaultRenderbuffer = (UInt32)gl.GetInteger(gl.GL_RENDERBUFFER_BINDING);
-            gl.ThrowIfError();
+            GL.DefaultRenderbuffer = (UInt32)GL.GetInteger(GL.GL_RENDERBUFFER_BINDING);
+            GL.ThrowIfError();
 
             Debug.WriteLine(BindingsStrings.LoadedOpenGLVersion.Format(GetString(GL_VERSION), GetString(GL_VENDOR)));
 
@@ -78,19 +78,19 @@ namespace Ultraviolet.OpenGL.Bindings
         {
             Contract.Ensure(initialized, BindingsStrings.OpenGLNotInitialized);
 
-            gl.DefaultFramebuffer = 0;
+            GL.DefaultFramebuffer = 0;
 
-            gl.isGLES = false;
-            gl.isEmulated = false;
-            gl.majorVersion = 0;
-            gl.minorVersion = 0;
-            gl.extensions.Clear();
+            GL.isGLES = false;
+            GL.isEmulated = false;
+            GL.majorVersion = 0;
+            GL.minorVersion = 0;
+            GL.extensions.Clear();
 
-            gl.dsaimpl = null;
-            gl.IsARBDirectStateAccessAvailable = false;
-            gl.IsEXTDirectStateAccessAvailable = false;
-            gl.IsTextureStorageAvailable = false;
-            gl.IsVertexAttribBindingAvailable = false;
+            GL.dsaimpl = null;
+            GL.IsARBDirectStateAccessAvailable = false;
+            GL.IsEXTDirectStateAccessAvailable = false;
+            GL.IsTextureStorageAvailable = false;
+            GL.IsVertexAttribBindingAvailable = false;
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -187,25 +187,25 @@ namespace Ultraviolet.OpenGL.Bindings
         [Conditional("DEBUG")]
         public static void ThrowIfError()
         {
-            var error = gl.GetError();
+            var error = GL.GetError();
             switch (error)
             {
-                case gl.GL_NO_ERROR:
+                case GL.GL_NO_ERROR:
                     return;
 
-                case gl.GL_INVALID_ENUM:
+                case GL.GL_INVALID_ENUM:
                     throw new ArgumentException("GL_INVALID_ENUM");
 
-                case gl.GL_INVALID_VALUE:
+                case GL.GL_INVALID_VALUE:
                     throw new ArgumentOutOfRangeException("GL_INVALID_VALUE");
 
-                case gl.GL_INVALID_OPERATION:
+                case GL.GL_INVALID_OPERATION:
                     throw new InvalidOperationException("GL_INVALID_OPERATION");
 
-                case gl.GL_INVALID_FRAMEBUFFER_OPERATION:
+                case GL.GL_INVALID_FRAMEBUFFER_OPERATION:
                     throw new InvalidOperationException("GL_INVALID_FRAMEBUFFER_OPERATION");
 
-                case gl.GL_OUT_OF_MEMORY:
+                case GL.GL_OUT_OF_MEMORY:
                     throw new OutOfMemoryException("GL_OUT_OF_MEMORY");
             }
         }
@@ -309,13 +309,13 @@ namespace Ultraviolet.OpenGL.Bindings
         }
 
         /// <summary>
-        /// Gets all of the fields of the <see cref="gl"/> type which represent bindings to OpenGL functions.
+        /// Gets all of the fields of the <see cref="GL"/> type which represent bindings to OpenGL functions.
         /// </summary>
         /// <returns>A collection containing the function binding fields.</returns>
         private static IEnumerable<FieldInfo> GetOpenGLFunctionFields()
         {
             var functions = 
-                from field in typeof(gl).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+                from field in typeof(GL).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 where
                     typeof(Delegate).IsAssignableFrom(field.FieldType) && !field.FieldType.IsGenericType && field.Name.StartsWith("gl")
                 select field;
@@ -332,7 +332,7 @@ namespace Ultraviolet.OpenGL.Bindings
         /// <returns>true if the function was loaded; otherwise, false.</returns>
         private static Boolean LoadFunction(IOpenGLInitializer initializer, String name, Boolean checkRequirements = true)
         {
-            var field = typeof(gl).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            var field = typeof(GL).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             if (field == null)
                 throw new MissingMethodException(name);
 
@@ -414,27 +414,27 @@ namespace Ultraviolet.OpenGL.Bindings
             var majorVersion = 0;
             var minorVersion = 0;
 
-            var version = gl.GetString(gl.GL_VERSION);
+            var version = GL.GetString(GL.GL_VERSION);
             
             isGLES = version.StartsWith("OpenGL ES");
             isEmulated = false;
 
-            gl.GetIntegerv(gl.GL_MAJOR_VERSION, &majorVersion);
+            GL.GetIntegerv(GL.GL_MAJOR_VERSION, &majorVersion);
 
-            if (gl.GetError() == gl.GL_INVALID_ENUM) 
+            if (GL.GetError() == GL.GL_INVALID_ENUM) 
             {
-                if (!TryParseOpenGLVersionFromString(version, out gl.majorVersion, out gl.minorVersion))
+                if (!TryParseOpenGLVersionFromString(version, out GL.majorVersion, out GL.minorVersion))
                 {
                     // Something is horribly wrong with our version string; be optimistic!
-                    gl.majorVersion = 4;
-                    gl.minorVersion = 0;
+                    GL.majorVersion = 4;
+                    GL.minorVersion = 0;
                 }
             }
             else
             {
-                gl.glGetIntegerv(GL_MINOR_VERSION, (IntPtr)(&minorVersion));
-                gl.majorVersion = majorVersion;
-                gl.minorVersion = minorVersion;
+                GL.glGetIntegerv(GL_MINOR_VERSION, (IntPtr)(&minorVersion));
+                GL.majorVersion = majorVersion;
+                GL.minorVersion = minorVersion;
             }
 
             // In the case of GLES, it's possible for the value reported by glGetIntegerv() to
@@ -444,13 +444,13 @@ namespace Ultraviolet.OpenGL.Bindings
             {
                 Int32 glesMajorVersion;
                 Int32 glesMinorVersion;
-                if (TryParseOpenGLVersionFromString(gl.GetString(gl.GL_VERSION), out glesMajorVersion, out glesMinorVersion))
+                if (TryParseOpenGLVersionFromString(GL.GetString(GL.GL_VERSION), out glesMajorVersion, out glesMinorVersion))
                 {
-                    if (glesMajorVersion != gl.majorVersion || glesMinorVersion != gl.minorVersion)
+                    if (glesMajorVersion != GL.majorVersion || glesMinorVersion != GL.minorVersion)
                     {
-                        gl.isEmulated = true;
-                        gl.majorVersion = glesMajorVersion;
-                        gl.minorVersion = glesMinorVersion;
+                        GL.isEmulated = true;
+                        GL.majorVersion = glesMajorVersion;
+                        GL.minorVersion = glesMinorVersion;
                     }
                 }
             }
@@ -465,7 +465,7 @@ namespace Ultraviolet.OpenGL.Bindings
 
             if (isGLES && majorVersion < 3)
             {
-                var reportedExtensions = gl.GetString(gl.GL_EXTENSIONS).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var reportedExtensions = GL.GetString(GL.GL_EXTENSIONS).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var extension in reportedExtensions)
                 {
                     extensions.Add(extension);
@@ -474,11 +474,11 @@ namespace Ultraviolet.OpenGL.Bindings
             else
             {
                 Int32 numExtensions;
-                gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, (IntPtr)(&numExtensions));
+                GL.glGetIntegerv(GL.GL_NUM_EXTENSIONS, (IntPtr)(&numExtensions));
 
                 for (var i = 0; i < numExtensions; i++)
                 {
-                    var extension = gl.GetStringi(gl.GL_EXTENSIONS, (UInt32)i);
+                    var extension = GL.GetStringi(GL.GL_EXTENSIONS, (UInt32)i);
                     extensions.Add(extension);
                 }
             }

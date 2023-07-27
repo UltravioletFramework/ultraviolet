@@ -47,8 +47,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 .Where(x => x.FieldType == typeof(OpenGLStateInteger))
                 .Select(x => (OpenGLStateInteger)x.GetValue(null)).ToArray();
 
-            GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
-            GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
+            GL_FRAMEBUFFER_BINDING.Update(GL.DefaultFramebuffer);
+            GL_RENDERBUFFER_BINDING.Update(GL.DefaultRenderbuffer);
 
             VerifyCache();
         }
@@ -70,32 +70,32 @@ namespace Ultraviolet.OpenGL.Graphics
             glTextureBinding2DByTextureUnit.Clear();
             glTextureBinding3DByTextureUnit.Clear();
 
-            GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
-            GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
+            GL_FRAMEBUFFER_BINDING.Update(GL.DefaultFramebuffer);
+            GL_RENDERBUFFER_BINDING.Update(GL.DefaultRenderbuffer);
 
             cachedClearColor = CachedClearColor.FromDevice();
             cachedClearDepth = CachedClearDepth.FromDevice();
             cachedClearStencil = CachedClearStencil.FromDevice();
             cachedColorMask = CachedColorMask.FromDevice();
-            cachedDepthTestEnabled = CachedCapability.FromDevice(gl.GL_DEPTH_TEST);
+            cachedDepthTestEnabled = CachedCapability.FromDevice(GL.GL_DEPTH_TEST);
             cachedDepthMask = CachedDepthMask.FromDevice();
             cachedDepthFunc = CachedDepthFunc.FromDevice();
-            cachedStencilTestEnabled = CachedCapability.FromDevice(gl.GL_STENCIL_TEST);
-            cachedStencilFuncFront = CachedStencilFunc.FromDevice(gl.GL_FRONT);
-            cachedStencilFuncBack = CachedStencilFunc.FromDevice(gl.GL_BACK);
-            cachedStencilOpFront = CachedStencilOp.FromDevice(gl.GL_FRONT);
-            cachedStencilOpBack = CachedStencilOp.FromDevice(gl.GL_BACK);
-            cachedBlendEnabled = CachedCapability.FromDevice(gl.GL_BLEND);
+            cachedStencilTestEnabled = CachedCapability.FromDevice(GL.GL_STENCIL_TEST);
+            cachedStencilFuncFront = CachedStencilFunc.FromDevice(GL.GL_FRONT);
+            cachedStencilFuncBack = CachedStencilFunc.FromDevice(GL.GL_BACK);
+            cachedStencilOpFront = CachedStencilOp.FromDevice(GL.GL_FRONT);
+            cachedStencilOpBack = CachedStencilOp.FromDevice(GL.GL_BACK);
+            cachedBlendEnabled = CachedCapability.FromDevice(GL.GL_BLEND);
             cachedBlendColor = CachedBlendColor.FromDevice();
             cachedBlendEquation = CachedBlendEquation.FromDevice();
             cachedBlendFunction = CachedBlendFunction.FromDevice();
-            cachedCullingEnabled = CachedCapability.FromDevice(gl.GL_CULL_FACE);
+            cachedCullingEnabled = CachedCapability.FromDevice(GL.GL_CULL_FACE);
             cachedCulledFace = CachedCulledFace.FromDevice();
             cachedFrontFace = CachedFrontFace.FromDevice();
-            cachedPolygonOffsetFillEnabled = CachedCapability.FromDevice(gl.GL_POLYGON_OFFSET_FILL);
+            cachedPolygonOffsetFillEnabled = CachedCapability.FromDevice(GL.GL_POLYGON_OFFSET_FILL);
             cachedPolygonOffset = CachedPolygonOffset.FromDevice();
             cachedPolygonMode = CachedPolygonMode.FromDevice();
-            cachedScissorTestEnabled = CachedCapability.FromDevice(gl.GL_SCISSOR_TEST);
+            cachedScissorTestEnabled = CachedCapability.FromDevice(GL.GL_SCISSOR_TEST);
         }
 
         /// <summary>
@@ -140,8 +140,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if (GL_ACTIVE_TEXTURE == texture)
                 return;
 
-            gl.ActiveTexture(texture);
-            gl.ThrowIfError();
+            GL.ActiveTexture(texture);
+            GL.ThrowIfError();
 
             glTextureBinding2DByTextureUnit.TryGetValue(texture, out var tb2d);
             glTextureBinding3DByTextureUnit.TryGetValue(texture, out var tb3d);
@@ -184,8 +184,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if (GL_TEXTURE_BINDING_2D == texture)
                 return;
 
-            gl.BindTexture(gl.GL_TEXTURE_2D, texture);
-            gl.ThrowIfError();
+            GL.BindTexture(GL.GL_TEXTURE_2D, texture);
+            GL.ThrowIfError();
 
             GL_TEXTURE_BINDING_2D.Update(texture);
             glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
@@ -225,8 +225,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if (GL_TEXTURE_BINDING_3D == texture)
                 return;
 
-            gl.BindTexture(gl.GL_TEXTURE_3D, texture);
-            gl.ThrowIfError();
+            GL.BindTexture(GL.GL_TEXTURE_3D, texture);
+            GL.ThrowIfError();
 
             GL_TEXTURE_BINDING_3D.Update(texture);
             glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
@@ -274,8 +274,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 return;
             }
 
-            gl.BindVertexArray(vertexArrayObject);
-            gl.ThrowIfError();
+            GL.BindVertexArray(vertexArrayObject);
+            GL.ThrowIfError();
 
             GL_VERTEX_ARRAY_BINDING.Update(vertexArrayObject);
             GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
@@ -310,11 +310,11 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="arrayBuffer">The array buffer to bind to the OpenGL context.</param>
         public static void BindArrayBuffer(UInt32 arrayBuffer)
         {
-            if (gl.GL_ARRAY_BUFFER_BINDING == arrayBuffer)
+            if (GL.GL_ARRAY_BUFFER_BINDING == arrayBuffer)
                 return;
 
-            gl.BindBuffer(gl.GL_ARRAY_BUFFER, arrayBuffer);
-            gl.ThrowIfError();
+            GL.BindBuffer(GL.GL_ARRAY_BUFFER, arrayBuffer);
+            GL.ThrowIfError();
 
             GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
             VerifyCache();
@@ -348,11 +348,11 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="elementArrayBuffer">The element array buffer to bind to the OpenGL context.</param>
         public static void BindElementArrayBuffer(UInt32 elementArrayBuffer)
         {
-            if (gl.GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
+            if (GL.GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
                 return;
 
-            gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
-            gl.ThrowIfError();
+            GL.BindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
+            GL.ThrowIfError();
 
             GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
             VerifyCache();
@@ -386,11 +386,11 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="framebuffer">The framebuffer to bind to the OpenGL context.</param>
         public static void BindFramebuffer(UInt32 framebuffer)
         {
-            if (gl.GL_FRAMEBUFFER_BINDING == framebuffer)
+            if (GL.GL_FRAMEBUFFER_BINDING == framebuffer)
                 return;
 
-            gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
-            gl.ThrowIfError();
+            GL.BindFramebuffer(GL.GL_FRAMEBUFFER, framebuffer);
+            GL.ThrowIfError();
 
             GL_FRAMEBUFFER_BINDING.Update(framebuffer);
             VerifyCache();
@@ -427,8 +427,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if (GL_RENDERBUFFER_BINDING == renderbuffer)
                 return;
 
-            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
-            gl.ThrowIfError();
+            GL.BindRenderbuffer(GL.GL_RENDERBUFFER, renderbuffer);
+            GL.ThrowIfError();
 
             GL_RENDERBUFFER_BINDING.Update(renderbuffer);
             VerifyCache();
@@ -466,8 +466,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if (GL_CURRENT_PROGRAM == oglname)
                 return;
 
-            gl.UseProgram(oglname);
-            gl.ThrowIfError();
+            GL.UseProgram(oglname);
+            GL.ThrowIfError();
 
             currentProgram = program;
 
@@ -672,8 +672,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_ActiveTexture()
         {
-            gl.ActiveTexture(newGL_ACTIVE_TEXTURE);
-            gl.ThrowIfError();
+            GL.ActiveTexture(newGL_ACTIVE_TEXTURE);
+            GL.ThrowIfError();
 
             glTextureBinding2DByTextureUnit.TryGetValue(newGL_ACTIVE_TEXTURE, out var tb2d);
             glTextureBinding3DByTextureUnit.TryGetValue(newGL_ACTIVE_TEXTURE, out var tb3d);
@@ -685,10 +685,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindTexture2D()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_2D, newGL_TEXTURE_BINDING_2D);
-                gl.ThrowIfError();
+                GL.BindTexture(GL.GL_TEXTURE_2D, newGL_TEXTURE_BINDING_2D);
+                GL.ThrowIfError();
 
                 oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(newGL_TEXTURE_BINDING_2D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_2D;
@@ -697,10 +697,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindTexture3D()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_3D, newGL_TEXTURE_BINDING_3D);
-                gl.ThrowIfError();
+                GL.BindTexture(GL.GL_TEXTURE_3D, newGL_TEXTURE_BINDING_3D);
+                GL.ThrowIfError();
 
                 oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(newGL_TEXTURE_BINDING_3D);
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_3D;
@@ -709,10 +709,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindVertexArrayObject()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindVertexArray(newGL_VERTEX_ARRAY_BINDING);
-                gl.ThrowIfError();
+                GL.BindVertexArray(newGL_VERTEX_ARRAY_BINDING);
+                GL.ThrowIfError();
 
                 oldGL_VERTEX_ARRAY_BINDING = OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(newGL_VERTEX_ARRAY_BINDING);
                 oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(newGL_ELEMENT_ARRAY_BUFFER_BINDING);
@@ -721,10 +721,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindArrayBuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, newGL_ARRAY_BUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindBuffer(GL.GL_ARRAY_BUFFER, newGL_ARRAY_BUFFER_BINDING);
+                GL.ThrowIfError();
 
                 oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(newGL_ARRAY_BUFFER_BINDING);
             }
@@ -732,10 +732,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindElementArrayBuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, newGL_ELEMENT_ARRAY_BUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, newGL_ELEMENT_ARRAY_BUFFER_BINDING);
+                GL.ThrowIfError();
 
                 oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(newGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
@@ -743,10 +743,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindFramebuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, newGL_FRAMEBUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindFramebuffer(GL.GL_FRAMEBUFFER, newGL_FRAMEBUFFER_BINDING);
+                GL.ThrowIfError();
 
                 oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(newGL_FRAMEBUFFER_BINDING);
             }
@@ -754,10 +754,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_BindRenderbuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindRenderbuffer(gl.GL_RENDERBUFFER, newGL_RENDERBUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindRenderbuffer(GL.GL_RENDERBUFFER, newGL_RENDERBUFFER_BINDING);
+                GL.ThrowIfError();
 
                 oldGL_RENDERBUFFER_BINDING = GL_RENDERBUFFER_BINDING.Update(newGL_RENDERBUFFER_BINDING);
             }
@@ -765,8 +765,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_UseProgram()
         {
-            gl.UseProgram(newGL_CURRENT_PROGRAM);
-            gl.ThrowIfError();
+            GL.UseProgram(newGL_CURRENT_PROGRAM);
+            GL.ThrowIfError();
 
             oldCurrentProgram = currentProgram;
             currentProgram = newCurrentProgram;
@@ -776,20 +776,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateElementArrayBuffer(out UInt32 buffer)
         {
-            if (gl.IsDirectStateAccessCreateAvailable)
+            if (GL.IsDirectStateAccessCreateAvailable)
             {
-                buffer = gl.CreateBuffer();
-                gl.ThrowIfError();
+                buffer = GL.CreateBuffer();
+                GL.ThrowIfError();
             }
             else
             {
-                buffer = gl.GenBuffer();
-                gl.ThrowIfError();
+                buffer = GL.GenBuffer();
+                GL.ThrowIfError();
 
-                if (!gl.IsDirectStateAccessAvailable)
+                if (!GL.IsDirectStateAccessAvailable)
                 {
-                    gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-                    gl.ThrowIfError();
+                    GL.BindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, buffer);
+                    GL.ThrowIfError();
 
                     newGL_ELEMENT_ARRAY_BUFFER_BINDING = buffer;
                     oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
@@ -799,20 +799,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateArrayBuffer(out UInt32 buffer)
         {
-            if (gl.IsDirectStateAccessCreateAvailable)
+            if (GL.IsDirectStateAccessCreateAvailable)
             {
-                buffer = gl.CreateBuffer();
-                gl.ThrowIfError();
+                buffer = GL.CreateBuffer();
+                GL.ThrowIfError();
             }
             else
             {
-                buffer = gl.GenBuffer();
-                gl.ThrowIfError();
+                buffer = GL.GenBuffer();
+                GL.ThrowIfError();
 
-                if (!gl.IsDirectStateAccessAvailable)
+                if (!GL.IsDirectStateAccessAvailable)
                 {
-                    gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
-                    gl.ThrowIfError();
+                    GL.BindBuffer(GL.GL_ARRAY_BUFFER, buffer);
+                    GL.ThrowIfError();
 
                     newGL_ARRAY_BUFFER_BINDING = buffer;
                     oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(buffer);
@@ -822,20 +822,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateTexture2D(out UInt32 texture)
         {
-            if (gl.IsDirectStateAccessCreateAvailable)
+            if (GL.IsDirectStateAccessCreateAvailable)
             {
-                texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
-                gl.ThrowIfError();
+                texture = GL.CreateTexture(GL.GL_TEXTURE_2D);
+                GL.ThrowIfError();
             }
             else
             {
-                texture = gl.GenTexture();
-                gl.ThrowIfError();
+                texture = GL.GenTexture();
+                GL.ThrowIfError();
 
-                if (!gl.IsDirectStateAccessAvailable)
+                if (!GL.IsDirectStateAccessAvailable)
                 {
-                    gl.BindTexture(gl.GL_TEXTURE_2D, texture);
-                    gl.ThrowIfError();
+                    GL.BindTexture(GL.GL_TEXTURE_2D, texture);
+                    GL.ThrowIfError();
 
                     newGL_TEXTURE_BINDING_2D = texture;
                     oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(texture);
@@ -846,20 +846,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateTexture3D(out UInt32 texture)
         {
-            if (gl.IsDirectStateAccessCreateAvailable)
+            if (GL.IsDirectStateAccessCreateAvailable)
             {
-                texture = gl.CreateTexture(gl.GL_TEXTURE_3D);
-                gl.ThrowIfError();
+                texture = GL.CreateTexture(GL.GL_TEXTURE_3D);
+                GL.ThrowIfError();
             }
             else
             {
-                texture = gl.GenTexture();
-                gl.ThrowIfError();
+                texture = GL.GenTexture();
+                GL.ThrowIfError();
 
-                if (!gl.IsDirectStateAccessAvailable)
+                if (!GL.IsDirectStateAccessAvailable)
                 {
-                    gl.BindTexture(gl.GL_TEXTURE_3D, texture);
-                    gl.ThrowIfError();
+                    GL.BindTexture(GL.GL_TEXTURE_3D, texture);
+                    GL.ThrowIfError();
 
                     newGL_TEXTURE_BINDING_3D = texture;
                     oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(texture);
@@ -870,19 +870,19 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateFramebuffer(out UInt32 framebuffer)
         {
-            if (gl.IsDirectStateAccessCreateAvailable)
+            if (GL.IsDirectStateAccessCreateAvailable)
             {
-                framebuffer = gl.CreateFramebuffer();
+                framebuffer = GL.CreateFramebuffer();
             }
             else
             {
-                framebuffer = gl.GenFramebuffer();
-                gl.ThrowIfError();
+                framebuffer = GL.GenFramebuffer();
+                GL.ThrowIfError();
 
-                if (!gl.IsDirectStateAccessAvailable)
+                if (!GL.IsDirectStateAccessAvailable)
                 {
-                    gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
-                    gl.ThrowIfError();
+                    GL.BindFramebuffer(GL.GL_FRAMEBUFFER, framebuffer);
+                    GL.ThrowIfError();
 
                     newGL_FRAMEBUFFER_BINDING = framebuffer;
                     oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
@@ -892,19 +892,19 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateRenderbuffer(out UInt32 renderbuffer)
         {
-            if (gl.IsDirectStateAccessCreateAvailable)
+            if (GL.IsDirectStateAccessCreateAvailable)
             {
-                renderbuffer = gl.CreateRenderbuffer();
+                renderbuffer = GL.CreateRenderbuffer();
             }
             else
             {
-                renderbuffer = gl.GenRenderbuffer();
-                gl.ThrowIfError();
+                renderbuffer = GL.GenRenderbuffer();
+                GL.ThrowIfError();
 
-                if (!gl.IsDirectStateAccessAvailable)
+                if (!GL.IsDirectStateAccessAvailable)
                 {
-                    gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
-                    gl.ThrowIfError();
+                    GL.BindRenderbuffer(GL.GL_RENDERBUFFER, renderbuffer);
+                    GL.ThrowIfError();
 
                     newGL_RENDERBUFFER_BINDING = renderbuffer;
                     oldGL_RENDERBUFFER_BINDING = GL_RENDERBUFFER_BINDING.Update(renderbuffer);
@@ -997,8 +997,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_ActiveTexture()
         {
-            gl.ActiveTexture(oldGL_ACTIVE_TEXTURE);
-            gl.ThrowIfError();
+            GL.ActiveTexture(oldGL_ACTIVE_TEXTURE);
+            GL.ThrowIfError();
 
             glTextureBinding2DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out var tb2d);
             glTextureBinding3DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out var tb3d);
@@ -1010,10 +1010,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindTexture2D()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
-                gl.ThrowIfError();
+                GL.BindTexture(GL.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
+                GL.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
@@ -1022,10 +1022,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindTexture3D()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
-                gl.ThrowIfError();
+                GL.BindTexture(GL.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
+                GL.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
@@ -1034,10 +1034,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindVertexArrayObject()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindVertexArray(oldGL_VERTEX_ARRAY_BINDING);
-                gl.ThrowIfError();
+                GL.BindVertexArray(oldGL_VERTEX_ARRAY_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(oldGL_VERTEX_ARRAY_BINDING);
                 OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
@@ -1046,10 +1046,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindArrayBuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindBuffer(GL.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(oldGL_ARRAY_BUFFER_BINDING);
             }
@@ -1057,10 +1057,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindElementArrayBuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
@@ -1068,10 +1068,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindFramebuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindFramebuffer(GL.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_FRAMEBUFFER_BINDING.Update(oldGL_FRAMEBUFFER_BINDING);
             }
@@ -1079,10 +1079,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_BindRenderbuffer()
         {
-            if (forced || !gl.IsDirectStateAccessAvailable)
+            if (forced || !GL.IsDirectStateAccessAvailable)
             {
-                gl.BindRenderbuffer(gl.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindRenderbuffer(GL.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
+                GL.ThrowIfError();
 
                 GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
             }
@@ -1090,8 +1090,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_UseProgram()
         {
-            gl.UseProgram(oldGL_CURRENT_PROGRAM);
-            gl.ThrowIfError();
+            GL.UseProgram(oldGL_CURRENT_PROGRAM);
+            GL.ThrowIfError();
 
             currentProgram = oldCurrentProgram;
 
@@ -1100,10 +1100,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateArrayBuffer()
         {
-            if (!gl.IsDirectStateAccessAvailable)
+            if (!GL.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindBuffer(GL.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(oldGL_ARRAY_BUFFER_BINDING);
             }
@@ -1111,10 +1111,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateElementArrayBuffer()
         {
-            if (!gl.IsDirectStateAccessAvailable)
+            if (!GL.IsDirectStateAccessAvailable)
             {
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
@@ -1122,10 +1122,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateTexture2D()
         {
-            if (!gl.IsDirectStateAccessAvailable)
+            if (!GL.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
-                gl.ThrowIfError();
+                GL.BindTexture(GL.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
+                GL.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
@@ -1134,10 +1134,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateTexture3D()
         {
-            if (!gl.IsDirectStateAccessAvailable)
+            if (!GL.IsDirectStateAccessAvailable)
             {
-                gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
-                gl.ThrowIfError();
+                GL.BindTexture(GL.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
+                GL.ThrowIfError();
 
                 GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
@@ -1146,10 +1146,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateFramebuffer()
         {
-            if (!gl.IsDirectStateAccessAvailable)
+            if (!GL.IsDirectStateAccessAvailable)
             {
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindFramebuffer(GL.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
+                GL.ThrowIfError();
 
                 OpenGLState.GL_FRAMEBUFFER_BINDING.Update(oldGL_FRAMEBUFFER_BINDING);
             }
@@ -1157,10 +1157,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateRenderbuffer()
         {
-            if (!gl.IsDirectStateAccessAvailable)
+            if (!GL.IsDirectStateAccessAvailable)
             {
-                gl.BindRenderbuffer(gl.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
-                gl.ThrowIfError();
+                GL.BindRenderbuffer(GL.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
+                GL.ThrowIfError();
 
                 GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
             }
@@ -1216,7 +1216,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static Boolean DepthTestEnabled
         {
             get { return (Boolean)cachedDepthTestEnabled; }
-            set { CachedCapability.TryUpdate(gl.GL_DEPTH_TEST, ref cachedDepthTestEnabled, value); }
+            set { CachedCapability.TryUpdate(GL.GL_DEPTH_TEST, ref cachedDepthTestEnabled, value); }
         }
 
         /// <summary>
@@ -1243,7 +1243,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static Boolean StencilTestEnabled
         {
             get { return (Boolean)cachedStencilTestEnabled; }
-            set { CachedCapability.TryUpdate(gl.GL_STENCIL_TEST, ref cachedStencilTestEnabled, value); }
+            set { CachedCapability.TryUpdate(GL.GL_STENCIL_TEST, ref cachedStencilTestEnabled, value); }
         }
 
         /// <summary>
@@ -1261,7 +1261,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static CachedStencilFunc StencilFuncFront
         {
             get { return cachedStencilFuncFront; }
-            set { CachedStencilFunc.TryUpdate(gl.GL_FRONT, ref cachedStencilFuncFront, value); }
+            set { CachedStencilFunc.TryUpdate(GL.GL_FRONT, ref cachedStencilFuncFront, value); }
         }
 
         /// <summary>
@@ -1270,7 +1270,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static CachedStencilFunc StencilFuncBack
         {
             get { return cachedStencilFuncFront; }
-            set { CachedStencilFunc.TryUpdate(gl.GL_BACK, ref cachedStencilFuncBack, value); }
+            set { CachedStencilFunc.TryUpdate(GL.GL_BACK, ref cachedStencilFuncBack, value); }
         }
 
         /// <summary>
@@ -1288,7 +1288,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static CachedStencilOp StencilOpFront
         {
             get { return cachedStencilOpFront; }
-            set { CachedStencilOp.TryUpdate(gl.GL_FRONT, ref cachedStencilOpFront, value); }
+            set { CachedStencilOp.TryUpdate(GL.GL_FRONT, ref cachedStencilOpFront, value); }
         }
 
         /// <summary>
@@ -1297,7 +1297,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static CachedStencilOp StencilOpBack
         {
             get { return cachedStencilOpBack; }
-            set { CachedStencilOp.TryUpdate(gl.GL_BACK, ref cachedStencilOpBack, value); }
+            set { CachedStencilOp.TryUpdate(GL.GL_BACK, ref cachedStencilOpBack, value); }
         }
 
         /// <summary>
@@ -1315,7 +1315,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static Boolean BlendEnabled
         {
             get { return (Boolean)cachedBlendEnabled; }
-            set { CachedCapability.TryUpdate(gl.GL_BLEND, ref cachedBlendEnabled, value); }
+            set { CachedCapability.TryUpdate(GL.GL_BLEND, ref cachedBlendEnabled, value); }
         }
 
         /// <summary>
@@ -1351,7 +1351,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static Boolean CullingEnabled
         {
             get { return (Boolean)cachedCullingEnabled;  }
-            set { CachedCapability.TryUpdate(gl.GL_CULL_FACE, ref cachedCullingEnabled, value); }
+            set { CachedCapability.TryUpdate(GL.GL_CULL_FACE, ref cachedCullingEnabled, value); }
         }
 
         /// <summary>
@@ -1378,7 +1378,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static Boolean PolygonOffsetEnabled
         {
             get { return (Boolean)cachedPolygonOffsetFillEnabled; }
-            set { CachedCapability.TryUpdate(gl.GL_POLYGON_OFFSET_FILL, ref cachedPolygonOffsetFillEnabled, value); }
+            set { CachedCapability.TryUpdate(GL.GL_POLYGON_OFFSET_FILL, ref cachedPolygonOffsetFillEnabled, value); }
         }
 
         /// <summary>
@@ -1405,7 +1405,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public static Boolean ScissorTestEnabled
         {
             get { return (Boolean)cachedScissorTestEnabled; }
-            set { CachedCapability.TryUpdate(gl.GL_SCISSOR_TEST, ref cachedScissorTestEnabled, value); }
+            set { CachedCapability.TryUpdate(GL.GL_SCISSOR_TEST, ref cachedScissorTestEnabled, value); }
         }
 
         /// <summary>
@@ -1458,7 +1458,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private Boolean disposed;
         private Boolean forced;
 
-        private UInt32 newGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
+        private UInt32 newGL_ACTIVE_TEXTURE = GL.GL_TEXTURE0;
         private UInt32 newGL_TEXTURE_BINDING_2D;
         private UInt32 newGL_TEXTURE_BINDING_3D;
         private UInt32 newGL_VERTEX_ARRAY_BINDING;
@@ -1469,7 +1469,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private UInt32 newGL_CURRENT_PROGRAM;
         private OpenGLShaderProgram newCurrentProgram;
 
-        private UInt32 oldGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
+        private UInt32 oldGL_ACTIVE_TEXTURE = GL.GL_TEXTURE0;
         private UInt32 oldGL_TEXTURE_BINDING_2D;
         private UInt32 oldGL_TEXTURE_BINDING_3D;
         private UInt32 oldGL_VERTEX_ARRAY_BINDING;
@@ -1482,15 +1482,15 @@ namespace Ultraviolet.OpenGL.Graphics
 
         // Cached OpenGL state values.
         private static readonly OpenGLStateInteger[] glCachedIntegers;
-        private static readonly OpenGLStateInteger glActiveTexture = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE, (int)gl.GL_TEXTURE0);
-        private static readonly OpenGLStateInteger glTextureBinding2D = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
-        private static readonly OpenGLStateInteger glTextureBinding3D = new OpenGLStateInteger("GL_TEXTURE_BINDING_3D", gl.GL_TEXTURE_BINDING_3D);
-        private static readonly OpenGLStateInteger glVertexArrayBinding = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
-        private static readonly OpenGLStateInteger glArrayBufferBinding = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
-        private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", gl.GL_ELEMENT_ARRAY_BUFFER_BINDING);
-        private static readonly OpenGLStateInteger glFramebufferBinding = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
-        private static readonly OpenGLStateInteger glRenderbufferBinding = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
-        private static readonly OpenGLStateInteger glCurrentProgram = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
+        private static readonly OpenGLStateInteger glActiveTexture = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", GL.GL_ACTIVE_TEXTURE, (int)GL.GL_TEXTURE0);
+        private static readonly OpenGLStateInteger glTextureBinding2D = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", GL.GL_TEXTURE_BINDING_2D);
+        private static readonly OpenGLStateInteger glTextureBinding3D = new OpenGLStateInteger("GL_TEXTURE_BINDING_3D", GL.GL_TEXTURE_BINDING_3D);
+        private static readonly OpenGLStateInteger glVertexArrayBinding = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", GL.GL_VERTEX_ARRAY_BINDING);
+        private static readonly OpenGLStateInteger glArrayBufferBinding = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", GL.GL_ARRAY_BUFFER_BINDING);
+        private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", GL.GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        private static readonly OpenGLStateInteger glFramebufferBinding = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", GL.GL_FRAMEBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glRenderbufferBinding = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", GL.GL_RENDERBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glCurrentProgram = new OpenGLStateInteger("GL_CURRENT_PROGRAM", GL.GL_CURRENT_PROGRAM);
 
         private static OpenGLShaderProgram currentProgram;
 

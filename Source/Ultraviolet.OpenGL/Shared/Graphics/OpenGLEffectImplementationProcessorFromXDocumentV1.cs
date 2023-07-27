@@ -193,7 +193,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The asset path of the specified shader.</returns>
         internal static String GetShader(XElement element, String shader)
         {
-            if (gl.IsGLES)
+            if (GL.IsGLES)
             {
                 var vert = (String)element.Element(shader + "ES");
                 if (vert == null)

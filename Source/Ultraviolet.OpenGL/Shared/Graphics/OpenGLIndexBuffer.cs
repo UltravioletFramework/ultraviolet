@@ -32,8 +32,8 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 using (OpenGLState.ScopedCreateElementArrayBuffer(out buffer))
                 {
-                    gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, size, null, usage);
-                    gl.ThrowIfError();
+                    GL.NamedBufferData(buffer, GL.GL_ELEMENT_ARRAY_BUFFER, size, null, usage);
+                    GL.ThrowIfError();
                 }
             }).Wait();
 
@@ -115,18 +115,18 @@ namespace Ultraviolet.OpenGL.Graphics
                     var isDiscarding = (options == SetDataOptions.Discard);
                     if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
-                        gl.ThrowIfError();
+                        GL.NamedBufferData(buffer, GL.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
+                        GL.ThrowIfError();
                     }
 
                     if (isPartialUpdate)
                     {
                         if (caps.MinMapBufferAlignment >= 0)
                         {
-                            var bufferRangeAccess = gl.GL_MAP_WRITE_BIT | (options == SetDataOptions.NoOverwrite ? gl.GL_MAP_UNSYNCHRONIZED_BIT : 0);
-                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, 
+                            var bufferRangeAccess = GL.GL_MAP_WRITE_BIT | (options == SetDataOptions.NoOverwrite ? GL.GL_MAP_UNSYNCHRONIZED_BIT : 0);
+                            var bufferRangePtr = (Byte*)GL.MapNamedBufferRange(buffer, GL.GL_ELEMENT_ARRAY_BUFFER, 
                                 (IntPtr)bufferOffset, (IntPtr)bufferSize, bufferRangeAccess);
-                            gl.ThrowIfError();
+                            GL.ThrowIfError();
 
                             var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * inputElemSize);
                             var sourceSizeInBytes = dataCount * inputElemSize;
@@ -134,14 +134,14 @@ namespace Ultraviolet.OpenGL.Graphics
                             for (int i = 0; i < sourceSizeInBytes; i++)
                                 *bufferRangePtr++ = *sourceRangePtr++;
 
-                            gl.UnmapNamedBuffer(buffer, gl.GL_ELEMENT_ARRAY_BUFFER);
-                            gl.ThrowIfError();
+                            GL.UnmapNamedBuffer(buffer, GL.GL_ELEMENT_ARRAY_BUFFER);
+                            GL.ThrowIfError();
                         }
                         else
                         {
-                            gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER,
+                            GL.NamedBufferSubData(buffer, GL.GL_ELEMENT_ARRAY_BUFFER,
                                 (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * inputElemSize));
-                            gl.ThrowIfError();
+                            GL.ThrowIfError();
                         }
                     }
                 }
@@ -202,8 +202,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteBuffer(glname);
-                        gl.ThrowIfError();                        
+                        GL.DeleteBuffer(glname);
+                        GL.ThrowIfError();                        
                     }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
 
@@ -272,14 +272,14 @@ namespace Ultraviolet.OpenGL.Graphics
                 var isDiscarding = (options == SetDataOptions.Discard);
                 if (isDiscarding || !isPartialUpdate)
                 {
-                    gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : (void*)data, usage);
-                    gl.ThrowIfError();
+                    GL.NamedBufferData(buffer, GL.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : (void*)data, usage);
+                    GL.ThrowIfError();
                 }
 
                 if (isPartialUpdate)
                 {
-                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, (void*)data);
-                    gl.ThrowIfError();
+                    GL.NamedBufferSubData(buffer, GL.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, (void*)data);
+                    GL.ThrowIfError();
                 }
             }
         }
