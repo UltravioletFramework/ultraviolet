@@ -20,7 +20,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
       <group targetFramework="net6.0"/>
-      <group targetFramework="net6.0-android"/>
+      <group targetFramework="net6.0-android31.0"/>
     </dependencies>
   </metadata>
   <files>
@@ -38,11 +38,11 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Dependencies\ImGui\x64\osx\libcimgui.dylib" target="build\net6.0\x64\osx\libcimgui.dylib"/>
 
     <!-- Android -->  
-    <file src="Ultraviolet.ImGuiViewProvider.Native\build\net6.0-android\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\net6.0-android\Ultraviolet.ImGuiViewProvider.Native.targets"/>
-    <file src="_._" target="lib\net6.0-android\_._"/>
-    <file src="..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so" target="build\net6.0-android\lib\armeabi-v7a\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\Android\arm64-v8a\libcimgui.so" target="build\net6.0-android\lib\arm64-v8a\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\Android\x86\libcimgui.so" target="build\net6.0-android\lib\x86\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\Android\x86_64\libcimgui.so" target="build\net6.0-android\lib\x86_64\libcimgui.so"/>
+    <file src="Ultraviolet.ImGuiViewProvider.Native\build\net6.0-android\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\net6.0-android31.0\Ultraviolet.ImGuiViewProvider.Native.targets"/>
+    <file src="_._" target="lib\net6.0-android31.0\_._"/>
+    <file src="..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so" target="build\net6.0-android31.0\lib\armeabi-v7a\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\Android\arm64-v8a\libcimgui.so" target="build\net6.0-android31.0\lib\arm64-v8a\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\Android\x86\libcimgui.so" target="build\net6.0-android31.0\lib\x86\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\Android\x86_64\libcimgui.so" target="build\net6.0-android31.0\lib\x86_64\libcimgui.so"/>
   </files>  
 </package>

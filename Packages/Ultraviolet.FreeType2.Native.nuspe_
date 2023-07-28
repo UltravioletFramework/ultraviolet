@@ -17,7 +17,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
       <group targetFramework="net6.0"/>
-      <group targetFramework="net6.0-android"/>
+      <group targetFramework="net6.0-android31.0"/>
     </dependencies>
   </metadata>
   <files>  
@@ -45,19 +45,19 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib" target="build\net6.0\x64\osx\libpng16.16.dylib"/>
 
     <!-- Android -->
-    <file src="Ultraviolet.FreeType2.Native\build\net6.0-android\Ultraviolet.FreeType2.Native.targets" target="build\net6.0-android\Ultraviolet.FreeType2.Native.targets"/>
-    <file src="_._" target="lib\net6.0-android\_._"/>
-    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so" target="build\net6.0-android\lib\armeabi-v7a\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so" target="build\net6.0-android\lib\armeabi-v7a\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so" target="build\net6.0-android\lib\armeabi-v7a\libpng16.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libfreetype.so" target="build\net6.0-android\lib\arm64-v8a\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libharfbuzz.so" target="build\net6.0-android\lib\arm64-v8a\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libpng16.so" target="build\net6.0-android\lib\arm64-v8a\libpng16.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86\libfreetype.so" target="build\net6.0-android\lib\x86\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\x86\libharfbuzz.so" target="build\net6.0-android\lib\x86\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86\libpng16.so" target="build\net6.0-android\lib\x86\libpng16.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86_64\libfreetype.so" target="build\net6.0-android\lib\x86_64\libfreetype.so"/>
-    <file src="..\Dependencies\FreeType2\Android\x86_64\libharfbuzz.so" target="build\net6.0-android\lib\x86_64\libharfbuzz.so"/>	
-    <file src="..\Dependencies\FreeType2\Android\x86_64\libpng16.so" target="build\net6.0-android\lib\x86_64\libpng16.so"/>	
+    <file src="Ultraviolet.FreeType2.Native\build\net6.0-android\Ultraviolet.FreeType2.Native.targets" target="build\net6.0-android31.0\Ultraviolet.FreeType2.Native.targets"/>
+    <file src="_._" target="lib\net6.0-android31.0\_._"/>
+    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so" target="build\net6.0-android31.0\lib\armeabi-v7a\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so" target="build\net6.0-android31.0\lib\armeabi-v7a\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so" target="build\net6.0-android31.0\lib\armeabi-v7a\libpng16.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libfreetype.so" target="build\net6.0-android31.0\lib\arm64-v8a\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libharfbuzz.so" target="build\net6.0-android31.0\lib\arm64-v8a\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\arm64-v8a\libpng16.so" target="build\net6.0-android31.0\lib\arm64-v8a\libpng16.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86\libfreetype.so" target="build\net6.0-android31.0\lib\x86\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\x86\libharfbuzz.so" target="build\net6.0-android31.0\lib\x86\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86\libpng16.so" target="build\net6.0-android31.0\lib\x86\libpng16.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86_64\libfreetype.so" target="build\net6.0-android31.0\lib\x86_64\libfreetype.so"/>
+    <file src="..\Dependencies\FreeType2\Android\x86_64\libharfbuzz.so" target="build\net6.0-android31.0\lib\x86_64\libharfbuzz.so"/>	
+    <file src="..\Dependencies\FreeType2\Android\x86_64\libpng16.so" target="build\net6.0-android31.0\lib\x86_64\libpng16.so"/>	
   </files>  
 </package>

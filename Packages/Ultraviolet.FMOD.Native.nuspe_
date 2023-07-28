@@ -20,7 +20,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
       <group targetFramework="net6.0"/>
-      <group targetFramework="net6.0-android"/>
+      <group targetFramework="net6.0-android31.0"/>
     </dependencies>
   </metadata>
   <files>
@@ -38,11 +38,11 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Dependencies\FMOD\x64\osx\libfmod.dylib" target="build\net6.0\x64\osx\libfmod.dylib"/>
     
     <!-- Android -->
-    <file src="Ultraviolet.FMOD.Native\build\net6.0-android\Ultraviolet.FMOD.Native.targets" target="build\net6.0-android\Ultraviolet.FMOD.Native.targets"/>
-    <file src="_._" target="lib\net6.0-android\_._"/>
-    <file src="..\Dependencies\FMOD\Android\armeabi-v7a\libfmod.so" target="build\net6.0-android\lib\armeabi-v7a\libfmod.so"/>
-    <file src="..\Dependencies\FMOD\Android\arm64-v8a\libfmod.so" target="build\net6.0-android\lib\arm64-v8a\libfmod.so"/>
-    <file src="..\Dependencies\FMOD\Android\x86\libfmod.so" target="build\net6.0-android\lib\x86\libfmod.so"/>
-    <file src="..\Dependencies\FMOD\Android\x86_64\libfmod.so" target="build\net6.0-android\lib\x86_64\libfmod.so"/>
+    <file src="Ultraviolet.FMOD.Native\build\net6.0-android\Ultraviolet.FMOD.Native.targets" target="build\net6.0-android31.0\Ultraviolet.FMOD.Native.targets"/>
+    <file src="_._" target="lib\net6.0-android31.0\_._"/>
+    <file src="..\Dependencies\FMOD\Android\armeabi-v7a\libfmod.so" target="build\net6.0-android31.0\lib\armeabi-v7a\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\Android\arm64-v8a\libfmod.so" target="build\net6.0-android31.0\lib\arm64-v8a\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\Android\x86\libfmod.so" target="build\net6.0-android31.0\lib\x86\libfmod.so"/>
+    <file src="..\Dependencies\FMOD\Android\x86_64\libfmod.so" target="build\net6.0-android31.0\lib\x86_64\libfmod.so"/>
   </files>  
 </package>

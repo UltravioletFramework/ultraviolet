@@ -20,7 +20,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
       <group targetFramework="net6.0"/>
-      <group targetFramework="net6.0-android"/>
+      <group targetFramework="net6.0-android31.0"/>
     </dependencies>
   </metadata>
   <files>
@@ -38,11 +38,11 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\net6.0\x64\osx\libbass.dylib"/>
     
     <!-- Android -->
-    <file src="Ultraviolet.BASS.Native\build\net6.0-android\Ultraviolet.BASS.Native.targets" target="build\net6.0-android\Ultraviolet.BASS.Native.targets"/>
-    <file src="_._" target="lib\net6.0-android\_._"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\net6.0-android\lib\armeabi-v7a\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\arm64-v8a\libbass.so" target="build\net6.0-android\lib\arm64-v8a\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\net6.0-android\lib\x86\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\x86_64\libbass.so" target="build\net6.0-android\lib\x86_64\libbass.so"/>
+    <file src="Ultraviolet.BASS.Native\build\net6.0-android\Ultraviolet.BASS.Native.targets" target="build\net6.0-android31.0\Ultraviolet.BASS.Native.targets"/>
+    <file src="_._" target="lib\net6.0-android31.0\_._"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\net6.0-android31.0\lib\armeabi-v7a\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\arm64-v8a\libbass.so" target="build\net6.0-android31.0\lib\arm64-v8a\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\net6.0-android31.0\lib\x86\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\x86_64\libbass.so" target="build\net6.0-android31.0\lib\x86_64\libbass.so"/>
   </files>  
 </package>
