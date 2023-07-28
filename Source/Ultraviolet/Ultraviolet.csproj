@@ -90,7 +90,7 @@
     </PackageReference>
     <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0020" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" NoWarn="NU5104" />
   </ItemGroup>
 
 </Project>

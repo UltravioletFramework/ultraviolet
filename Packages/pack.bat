@@ -46,7 +46,7 @@ nuget pack Ultraviolet.Shims.NETCore.nuspec -Symbols -SymbolPackageFormat snupkg
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
 powershell -Command "(gc Ultraviolet.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.nuspec"
-nuget pack Ultraviolet.nuspec -Symbols -SymbolPackageFormat snupkg
+nuget pack Ultraviolet.nuspec -Properties NoWarn=NU5104 -Symbols -SymbolPackageFormat snupkg
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
 powershell -Command "(gc Ultraviolet.OpenGL.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.OpenGL.nuspec"
