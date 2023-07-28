@@ -1,19 +1,13 @@
-_For questions and discussion, check out our [Gitter](https://gitter.im/ultraviolet-framework/Lobby)._
-
-### Builds
-| Branch       | Integration | Release |
-|--------------|-------------|---------|
-| master       | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-NEW)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-NEWREL) |
-| develop      | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-NEW0-12)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-NEWREL0) |
+_For questions and discussion, check out our [Discord](https://discord.gg/ehQMumHJ)._
 
 What is Ultraviolet?
 ====================
 
-[![Join the chat at https://gitter.im/ultraviolet-framework/Lobby](https://badges.gitter.im/ultraviolet-framework/Lobby.svg)](https://gitter.im/ultraviolet-framework/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://discord.gg/ehQMumHJ]](https://discord.gg/ehQMumHJ)
 
 Ultraviolet is a cross-platform, .NET game development framework written in C# and released under the [MIT License](http://opensource.org/licenses/MIT). It is heavily inspired by Microsoft's XNA Framework, and is intended to be easy for XNA developers to quickly pick up and start using. However, unlike [MonoGame](http://www.monogame.net/) and similar projects, Ultraviolet is not intended to be a drop-in replacement for XNA. Its current implementation is written on top of [SDL2](https://www.libsdl.org/) and [OpenGL](https://www.opengl.org/), but its modular design makes it (relatively) easy to re-implement using other technologies if it becomes necessary to do so in the future.
 
-At present, Ultraviolet officially supports Windows, Linux, and macOS using .NET Core 3.1, as well as Android through Xamarin. Support for iOS is no longer provided due to a lack of the requisite development hardware. If anyone wants to take responsibility for providing this support, please contact me at [cole.campbell@twistedlogik.net](mailto:cole.campbell@twistedlogik.net).
+At present, Ultraviolet officially supports Windows, Linux, and macOS using .NET Core 3.1, as well as Android through Xamarin. Support for iOS is no longer provided due to a lack of the requisite development hardware. If anyone wants to take responsibility for providing this support, please [Create an issue](https://github.com/UltravioletFramework/ultraviolet/issues).
 
 Some core features of the Ultraviolet Framework:
 
@@ -41,16 +35,16 @@ Some core features of the Ultraviolet Framework:
    
    Ultraviolet's object loader allows you to easily create complicated hierarchies of objects from simple XML files. This is more than just an XML serializer&mdash;because it is integrated with Ultraviolet, it has direct knowledge of your game's content assets and object lists, making it possible to reference them in a simple, flexible, and readable way.
 
-The Ultraviolet Framework's source code is [available on GitHub](https://github.com/tlgkccampbell/ultraviolet).
+The Ultraviolet Framework's source code is [available on GitHub](https://github.com/UltravioletFramework/ultraviolet).
 
 Getting Started
 ===============
 
 If you don't want to build Ultraviolet yourself, official packages are available through [NuGet](https://www.nuget.org/packages?q=ultraviolet).
 
-The wiki contains a [quick start guide](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-with-.NET-Core-3.1) for development using .NET Core 3.1.
+The wiki contains a [quick start guide](https://github.com/UltravioletFramework/ultraviolet/wiki/Getting-Started) for development using .NET Core 3.1.
 
-A [dedicated repository](https://github.com/tlgkccampbell/ultraviolet-samples) contains a number of sample projects which demonstrate various features of the Framework.
+A [dedicated repository](https://github.com/UltravioletFramework/ultraviolet-samples) contains a number of sample projects which demonstrate various features of the Framework.
 
 Requirements
 ============
