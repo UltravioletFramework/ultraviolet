@@ -66,7 +66,7 @@
     <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Tooling.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Image/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Image.*">
+    <CreateItem Include="Source/Ultraviolet.Image/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Image.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Image"/>
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Core)" DestinationFiles="@(Ultraviolet_Core->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
