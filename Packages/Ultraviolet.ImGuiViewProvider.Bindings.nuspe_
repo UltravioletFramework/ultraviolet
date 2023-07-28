@@ -24,7 +24,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
         <dependency id="Ultraviolet.Core" version="UV_VERSION" />
         <dependency id="Ultraviolet" version="UV_VERSION" />
         <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />    
-        <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.7.0" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="5.0.0" />
       </group>
     </dependencies>
   </metadata>
