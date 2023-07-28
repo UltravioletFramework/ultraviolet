@@ -88,10 +88,10 @@ namespace Ultraviolet.Graphics.Graphics3D
                 {
                     var gltfNode = input.LogicalNodes[n.LogicalIndex];
 
-                    var animScale = animation.FindScaleSampler(gltfNode);
-                    var animTranslation = animation.FindTranslationSampler(gltfNode);
-                    var animRotation = animation.FindRotationSampler(gltfNode);
-                    var animMorphWeights = animation.FindMorphSampler(gltfNode);
+                    var animScale = animation.FindScaleChannel(gltfNode)?.GetScaleSampler();
+                    var animTranslation = animation.FindTranslationChannel(gltfNode)?.GetTranslationSampler();
+                    var animRotation = animation.FindRotationChannel(gltfNode)?.GetRotationSampler();
+                    var animMorphWeights = animation.FindMorphChannel(gltfNode)?.GetMorphSampler();
 
                     if (animScale != null || animRotation != null || animTranslation != null || animMorphWeights != null)
                     {
