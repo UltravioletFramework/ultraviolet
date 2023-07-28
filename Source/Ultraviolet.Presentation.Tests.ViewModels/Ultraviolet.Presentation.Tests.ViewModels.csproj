@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Ultraviolet.Presentation.Tests.ViewModels</AssemblyName>
+    <RootNamespace>Ultraviolet.Presentation.Tests.ViewModels</RootNamespace>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
+    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+  </ItemGroup>
+
+</Project>

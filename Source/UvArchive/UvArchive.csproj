@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>uvarchive</AssemblyName>
+    <RootNamespace>UvArchive</RootNamespace>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Tooling\Ultraviolet.Tooling.csproj" />
+    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,13 +2,11 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Shims.NETCore</AssemblyName>
-    <RootNamespace>Ultraviolet.Shims.NETCore</RootNamespace>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Ultraviolet.OpenGL.Environment</AssemblyName>
+    <RootNamespace>Ultraviolet.OpenGL.Environment</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,31 +22,26 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="icon.ico" />
-  </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Image\Ultraviolet.Image.csproj" />
     <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
   </ItemGroup>
 

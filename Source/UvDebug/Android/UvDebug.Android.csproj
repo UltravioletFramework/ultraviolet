@@ -129,59 +129,20 @@
     </AndroidNativeLibrary>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard21\Ultraviolet.BASS.NETStandard21.csproj">
-      <Project>{69adb61d-c5b5-4e5e-82d6-8afd9216d28e}</Project>
-      <Name>Ultraviolet.BASS.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj">
-      <Project>{5084f479-1233-477c-87d8-9df47055dd80}</Project>
-      <Name>Ultraviolet.Core.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.FMOD\NETStandard21\Ultraviolet.FMOD.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard21\Ultraviolet.FreeType2.NETStandard21.csproj">
-      <Project>{9e47b77d-b108-4954-b441-2569fa888041}</Project>
-      <Name>Ultraviolet.FreeType2.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\NETStandard21\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard21.csproj">
-      <Project>{2c86ec33-c71f-4369-940d-f9fdb69eb165}</Project>
-      <Name>Ultraviolet.ImGuiViewProvider.Bindings.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard21\Ultraviolet.ImGuiViewProvider.NETStandard21.csproj">
-      <Project>{195eae48-23a4-47cd-84f8-6fdc61faa236}</Project>
-      <Name>Ultraviolet.ImGuiViewProvider.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard21\Ultraviolet.OpenGL.Bindings.NETStandard21.csproj">
-      <Project>{083ebc74-51be-46e4-981f-09f5384ea856}</Project>
-      <Name>Ultraviolet.OpenGL.Bindings.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Environment\NETStandard21\Ultraviolet.OpenGL.Environment.NETStandard21.csproj">
-      <Project>{233375b6-7250-41ee-b6e9-440995405539}</Project>
-      <Name>Ultraviolet.OpenGL.Environment.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard21\Ultraviolet.OpenGL.NETStandard21.csproj">
-      <Project>{2102c259-b359-465f-93dc-3a317ff09762}</Project>
-      <Name>Ultraviolet.OpenGL.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard21\Ultraviolet.Presentation.Uvss.NETStandard21.csproj">
-      <Project>{c51252da-60c9-4b3b-a08e-c94f9d1a9f35}</Project>
-      <Name>Ultraviolet.Presentation.Uvss.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard21\Ultraviolet.Presentation.NETStandard21.csproj">
-      <Project>{73860779-6975-440d-9f01-dce0fba2f703}</Project>
-      <Name>Ultraviolet.Presentation.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard21\Ultraviolet.SDL2.NETStandard21.csproj">
-      <Project>{4eff1892-2cdf-45a4-8bb0-61cec0875963}</Project>
-      <Name>Ultraviolet.SDL2.NETStandard21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
-      <Project>{19bc2d12-6e14-4a15-9f33-5c6dc92bdeaf}</Project>
-      <Name>Ultraviolet.Shims.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj">
-      <Project>{60ecc362-96e4-4a54-b280-23cb5cdb6903}</Project>
-      <Name>Ultraviolet.NETStandard21</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.BASS\Ultraviolet.BASS.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.Core\Ultraviolet.Core.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.FMOD\Ultraviolet.FMOD.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Ultraviolet.ImGuiViewProvider.Bindings.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Ultraviolet.ImGuiViewProvider.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Ultraviolet.OpenGL.Bindings.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Environment\Ultraviolet.OpenGL.Environment.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet\Ultraviolet.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Ultraviolet.Presentation.CompiledExpressions.dll" />

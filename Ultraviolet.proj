@@ -18,55 +18,55 @@
 
   <!-- STANDARD BINARIES -->
   <Target Name="CopyStandardBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Core.*">
+    <CreateItem Include="Source/Ultraviolet.Core/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Core.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Core"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Bindings.*">
+    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Bindings.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.*">
+    <CreateItem Include="Source/Ultraviolet/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.BASS.*">
+    <CreateItem Include="Source/Ultraviolet.BASS/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.BASS.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_BASS"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FMOD/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FMOD.*">
+    <CreateItem Include="Source/Ultraviolet.FMOD/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FMOD.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.*">
+    <CreateItem Include="Source/Ultraviolet.OpenGL/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Environment/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Environment.*">
+    <CreateItem Include="Source/Ultraviolet.OpenGL.Environment/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Environment.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Environment"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.SDL2.*">
+    <CreateItem Include="Source/Ultraviolet.SDL2/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.SDL2.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.*">
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.Bindings.*">
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.Bindings.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.*">
+    <CreateItem Include="Source/Ultraviolet.Presentation/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Uvss.*">
+    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Uvss.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Compiler/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Compiler.*">
+    <CreateItem Include="Source/Ultraviolet.Presentation.Compiler/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Compiler.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.RoslynCompiler.*">
+    <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.RoslynCompiler.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.FreeType2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FreeType2.*">
+    <CreateItem Include="Source/Ultraviolet.FreeType2/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FreeType2.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Tooling/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Tooling.*">
+    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Tooling.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Image/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Image.*">
+    <CreateItem Include="Source/Ultraviolet.Image/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Image.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Image"/>
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Core)" DestinationFiles="@(Ultraviolet_Core->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -90,13 +90,13 @@
 
   <!-- TOOLS BINARIES -->
   <Target Name="CopyToolsBinaries">
-    <CreateItem Include="Source/UvFont/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
+    <CreateItem Include="Source/UvFont/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
         <Output TaskParameter="Include" ItemName="uvfont"/>
     </CreateItem>
-    <CreateItem Include="Source/UvArchive/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
+    <CreateItem Include="Source/UvArchive/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
         <Output TaskParameter="Include" ItemName="uvarchive"/>
     </CreateItem>
-    <CreateItem Include="Source/UvAssetList/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
+    <CreateItem Include="Source/UvAssetList/bin/$(Configuration)$(NETCoreSuffix)/publish/**/*">
         <Output TaskParameter="Include" ItemName="uvassetlist"/>
     </CreateItem>
     <Copy SourceFiles="@(uvfont)" DestinationFiles="@(uvfont->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvfont/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -104,12 +104,10 @@
     <Copy SourceFiles="@(uvassetlist)" DestinationFiles="@(uvassetlist->'Binaries/$(BinaryDir)/$(Configuration)/Tools/uvassetlist/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 
-  <!-- NETCORE 3 -->
+  <!-- NETCORE -->
   <Target Name="SetNETCoreBuildParameters">
     <PropertyGroup>
         <BinaryDir>NETCore</BinaryDir>
-        <UvLibPlatform>NETStandard21</UvLibPlatform>
-        <UvAppPlatform>NETCore</UvAppPlatform>
         <NETStandardSuffix>/netstandard2.1</NETStandardSuffix>
         <NETCoreSuffix>/net6.0</NETCoreSuffix>
     </PropertyGroup>
@@ -121,9 +119,9 @@
     <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore_Solution)&quot; -c $(Configuration)"/>
   </Target>
   <Target Name="BuildNETCoreTools" AfterTargets="BuildNETCore" Condition="'$(BuildTools)' == 'true'">
-    <Exec Command="dotnet publish &quot;Source/UvFont/NETCore/UvFont.NETCore.csproj&quot; -c $(Configuration)" />
-    <Exec Command="dotnet publish &quot;Source/UvArchive/NETCore/UvArchive.NETCore.csproj&quot; -c $(Configuration)" />
-    <Exec Command="dotnet publish &quot;Source/UvAssetList/NETCore/UvAssetList.NETCore.csproj&quot; -c $(Configuration)" />
+    <Exec Command="dotnet publish &quot;Source/UvFont/UvFont.csproj&quot; -c $(Configuration)" />
+    <Exec Command="dotnet publish &quot;Source/UvArchive/UvArchive.csproj&quot; -c $(Configuration)" />
+    <Exec Command="dotnet publish &quot;Source/UvAssetList/UvAssetList.csproj&quot; -c $(Configuration)" />
   </Target>
   <Target Name="CopyNETCoreBinaries" AfterTargets="BuildNETCore">
     <CreateItem Include="Source/Ultraviolet.Shims.NETCore/bin/$(Configuration)$(NETCoreSuffix)/Ultraviolet.Shims.NETCore.*">
@@ -134,7 +132,7 @@
     <Copy SourceFiles="@(Ultraviolet_Shims_NETCore)" DestinationFiles="@(Ultraviolet_Shims_NETCore->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
   <Target Name="CopyWindowsFormsBinaries" AfterTargets="BuildNETCore" Condition="'$(BuildWindowsForms)' == 'true'">
-    <CreateItem Include="Source/Ultraviolet.Windows.Forms/$(UvAppPlatform)/bin/$(Configuration)$(NETCoreSuffix)-windows/Ultraviolet.Windows.Forms.*">
+    <CreateItem Include="Source/Ultraviolet.Windows.Forms/bin/$(Configuration)$(NETCoreSuffix)-windows/Ultraviolet.Windows.Forms.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Windows_Forms"/>
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Windows_Forms)" DestinationFiles="@(Ultraviolet_Windows_Forms->'Binaries/$(BinaryDir)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -144,8 +142,6 @@
   <Target Name="SetAndroidBuildParameters">
     <PropertyGroup>
         <BinaryDir>Android</BinaryDir>
-        <UvLibPlatform>NETStandard21</UvLibPlatform>
-        <UvAppPlatform>NETCore</UvAppPlatform>
         <NETStandardSuffix>/netstandard2.1</NETStandardSuffix>
         <NETCoreSuffix>/net6.0</NETCoreSuffix>
     </PropertyGroup>

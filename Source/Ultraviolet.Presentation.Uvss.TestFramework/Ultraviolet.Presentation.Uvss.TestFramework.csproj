@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Shims.NETCore</AssemblyName>
-    <RootNamespace>Ultraviolet.Shims.NETCore</RootNamespace>
-    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AssemblyName>Ultraviolet.Presentation.Uvss.TestFramework</AssemblyName>
+    <RootNamespace>Ultraviolet.Presentation.Uvss.TestFramework</RootNamespace>
+    <PackageId>Ultraviolet.Presentation.Uvss.TestFramework.$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
@@ -17,13 +17,6 @@
     <AssemblyOriginatorKeyFile>..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
@@ -32,24 +25,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="icon.ico" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
-    <ProjectReference Include="..\Ultraviolet.Image\Ultraviolet.Image.csproj" />
-    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj" />
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.csproj" />
   </ItemGroup>
 
 </Project>

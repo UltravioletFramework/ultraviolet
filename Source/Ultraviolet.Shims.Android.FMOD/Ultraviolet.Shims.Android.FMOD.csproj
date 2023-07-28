@@ -33,11 +33,11 @@
     </EmbeddedJar>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.FMOD\NETStandard21\Ultraviolet.FMOD.NETStandard21.csproj">
+    <ProjectReference Include="..\Ultraviolet.FMOD\Ultraviolet.FMOD.csproj">
       <Project>{2d9f99fd-93ee-4d9e-8ec9-718e6c67595e}</Project>
       <Name>Ultraviolet.FMOD.NETStandard21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj">
+    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj">
       <Project>{60ecc362-96e4-4a54-b280-23cb5cdb6903}</Project>
       <Name>Ultraviolet.NETStandard21</Name>
     </ProjectReference>

@@ -3,26 +3,26 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>uvdebug</AssemblyName>
+    <AssemblyName>UvDebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard21\Ultraviolet.BASS.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.FMOD\NETStandard21\Ultraviolet.FMOD.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard21\Ultraviolet.FreeType2.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\NETStandard21\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard21\Ultraviolet.ImGuiViewProvider.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard21\Ultraviolet.OpenGL.Bindings.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard21\Ultraviolet.OpenGL.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard21\Ultraviolet.Presentation.Compiler.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard21\Ultraviolet.Presentation.Uvss.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard21\Ultraviolet.Presentation.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard21\Ultraviolet.SDL2.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.BASS\Ultraviolet.BASS.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FMOD\Ultraviolet.FMOD.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Ultraviolet.ImGuiViewProvider.Bindings.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Ultraviolet.ImGuiViewProvider.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Ultraviolet.OpenGL.Bindings.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\Ultraviolet.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

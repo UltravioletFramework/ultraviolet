@@ -1,0 +1,141 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Ultraviolet.OpenGL</AssemblyName>
+    <RootNamespace>Ultraviolet.OpenGL</RootNamespace>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Ultraviolet.OpenGL.Bindings.csproj" />
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Environment\Ultraviolet.OpenGL.Environment.csproj" />
+    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
+  </ItemGroup>
+    
+  <!--
+  <ItemGroup>
+    <EmbeddedResource Update="C:\Dev\Repositories\Git\ultraviolet\Source\Ultraviolet.OpenGL\Resources\BlurEffectUnrolledES.frag">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlurEffectUnrolledES.tt</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  -->
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffectPreamble.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedPixelLightingFourBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedPixelLightingTwoBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedPixelLightingOneBone.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedOneLightFourBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedOneLightTwoBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedVertexLightingFourBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedOneLightOneBone.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedVertexLightingTwoBones.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_VSSkinnedVertexLightingOneBone.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_PSSkinnedPixelLighting.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_PSSkinnedVertexLightingNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SkinnedEffect_PSSkinnedVertexLighting.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicPixelLightingTx.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicPixelLighting.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingTxNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingTx.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLightingNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicVertexLighting.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicTxNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicTx.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasicNoFog.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLightingTxVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLightingTx.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLightingVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicPixelLighting.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLightTxVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLightTx.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLightVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicOneLight.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicVertexLightingTxVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicVertexLightingTx.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicVertexLightingVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicVertexLighting.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicTxVcNoFog.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicTxVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicTxNoFog.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicTx.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicVcNoFog.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicVc.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasicNoFog.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_VSBasic.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectPreamble.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CommonFog.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CommonVert.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffect_PSBasic.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffect.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SharedHeader.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.vert" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CommonLighting.glsl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CommonSrgb.glsl" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffect.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\uv64.png" />
+  </ItemGroup>
+
+</Project>

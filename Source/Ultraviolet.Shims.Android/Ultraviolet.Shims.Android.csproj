@@ -33,11 +33,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj">
       <Project>{5084f479-1233-477c-87d8-9df47055dd80}</Project>
-      <Name>Ultraviolet.Core.NETStandard21</Name>
+      <Name>Ultraviolet.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj">
+    <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj">
       <Project>{60ecc362-96e4-4a54-b280-23cb5cdb6903}</Project>
       <Name>Ultraviolet.NETStandard21</Name>
     </ProjectReference>
