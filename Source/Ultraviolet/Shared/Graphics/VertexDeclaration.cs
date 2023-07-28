@@ -161,6 +161,10 @@ namespace Ultraviolet.Graphics
                     case VertexElementFormat.NormalizedUnsignedShort4:
                         value += sizeof(Int16) * 4;
                         break;
+						
+                    case VertexElementFormat.Byte4:
+                        value += sizeof(Byte) * 4;
+                        break;
 
                     default:
                         throw new InvalidOperationException(UltravioletStrings.UnsupportedVertexFormat);
