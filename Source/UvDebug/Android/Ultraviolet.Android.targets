@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="UvFindContentDirectory">
+    <PropertyGroup>
+      <UltravioletContentProjectPathNoSlash>$([System.IO.Path]::GetFullPath($([System.IO.Path]::Combine('..', '$(UltravioletContentProject)'))))</UltravioletContentProjectPathNoSlash>
+      <UltravioletContentProjectPath>$([System.String]::Concat('$(UltravioletContentProjectPathNoSlash)', $([System.IO.Path]::DirectorySeparatorChar)))</UltravioletContentProjectPath>
+      <UltravioletContentPath>$([System.IO.Path]::Combine('$(UltravioletContentProjectPath)', '$(UltravioletContentDirectory)'))</UltravioletContentPath>
+    </PropertyGroup>
+    <Error Text="The UltravioletContentProject property is not set for this project." Condition="'$(UltravioletContentProject)' == ''"/>
+    <Error Text="The UltravioletContentDirectory property is not set for this project." Condition="'$(UltravioletContentDirectory)' == ''"/>
+    <Error Text="Could not locate the Ultraviolet content directory (Project: $(UltravioletContentProject), Directory: $(UltravioletContentDirectory))." Condition="!Exists('$(UltravioletContentProjectPath)')"/>
+  </Target>
+  <Target Name="UvCreateAndroidAssets" BeforeTargets="PrepareForBuild" DependsOnTargets="UvFindContentDirectory">
+    <ItemGroup>
+      <UltravioletContent Include="@(None)" Condition="$([System.String]::Copy('%(None.RelativeDir)').StartsWith($(UltravioletContentPath)))">
+        <ContentPath>$([System.String]::Copy("%(None.FullPath)").Substring($(UltravioletContentProjectPath.Length)))</ContentPath>
+      </UltravioletContent>
+      <AndroidAsset Include="@(UltravioletContent)">
+        <Link>%(UltravioletContent.ContentPath)</Link>
+      </AndroidAsset>
+      <None Remove="@(UltravioletContent)" />
+    </ItemGroup>
+    <Message Text="Creating Android assets for Ultraviolet content files."/>
+  </Target>
+</Project>

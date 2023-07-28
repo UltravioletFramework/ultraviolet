@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(true)]
 
@@ -21,3 +22,4 @@ using System.Runtime.InteropServices;
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
 [assembly: Guid("062bf97c-1eb9-4816-b287-32b84e22b08d")]
+[assembly: SupportedOSPlatform("windows7.0")]

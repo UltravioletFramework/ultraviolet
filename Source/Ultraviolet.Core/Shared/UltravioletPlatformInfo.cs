@@ -36,7 +36,7 @@ namespace Ultraviolet.Core
         /// <returns><see langword="true"/> if the specified platform supports runtime code generation; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsRuntimeCodeGenerationSupported(UltravioletPlatform platform)
         {
-            if (platform == UltravioletPlatform.iOS)
+            if (platform == UltravioletPlatform.iOS || platform == UltravioletPlatform.Android)
                 return false;
 
             return true;
@@ -74,8 +74,8 @@ namespace Ultraviolet.Core
         /// </summary>
         private static Version DetectCurrentRuntimeVersion()
         {
-            return (Environment.Version.Major == 4) ?
-                new Version(2, 0, 0) : Environment.Version;
+            return (Environment.Version.Major < 6) ?
+                new Version(6, 0, 0) : Environment.Version;
         }
 
         /// <summary>
@@ -83,11 +83,11 @@ namespace Ultraviolet.Core
         /// </summary>
         private static UltravioletRuntime DetectCurrentRuntime()
         {
+            if (Type.GetType("Mono.RuntimeStructs") != null)
+                return UltravioletRuntime.Mono;
+
             if (String.Equals("System.Private.CoreLib", typeof(Object).Assembly.GetName().Name, StringComparison.Ordinal))
                 return UltravioletRuntime.CoreCLR;
-
-            if (Type.GetType("Mono.Runtime") != null)
-                return UltravioletRuntime.Mono;
 
             return UltravioletRuntime.CLR;
         }

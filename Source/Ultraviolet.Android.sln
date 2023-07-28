@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.SDL2.NETStandar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.NETStandard21", "Ultraviolet.OpenGL\NETStandard21\Ultraviolet.OpenGL.NETStandard21.csproj", "{2102C259-B359-465F-93DC-3A317FF09762}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETCore3", "Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj", "{6DE9B8AD-3CBD-499B-9A17-5DB198B7E6B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETCore", "Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj", "{6DE9B8AD-3CBD-499B-9A17-5DB198B7E6B1}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Tests", "Ultraviolet.Tests\Shared\Ultraviolet.Tests.shproj", "{084C6292-2DE5-4F12-A40F-6B9BDD6154F5}"
 EndProject
@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.ImGuiViewProvid
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebug", "UvDebug\Shared\UvDebug.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore3", "UvDebug\NETCore3\UvDebug.NETCore3.csproj", "{0A52123E-EFA1-4A86-8223-FB7B807C162A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore", "UvDebug\NETCore\UvDebug.NETCore.csproj", "{0A52123E-EFA1-4A86-8223-FB7B807C162A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Shared\Ultraviolet.Tooling.shproj", "{C2D3AC48-2AE7-4DA8-9ED2-E591A8218B3B}"
 EndProject
@@ -79,13 +79,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tooling.NETStan
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvArchive", "UvArchive\Shared\UvArchive.shproj", "{F6EB09D1-242B-4F29-BDC9-E9288711D7D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvArchive.NETCore3", "UvArchive\NETCore3\UvArchive.NETCore3.csproj", "{099981E0-206B-4E1E-A806-87761B1D238D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvArchive.NETCore", "UvArchive\NETCore\UvArchive.NETCore.csproj", "{099981E0-206B-4E1E-A806-87761B1D238D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvFont.NETCore3", "UvFont\NETCore3\UvFont.NETCore3.csproj", "{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvFont.NETCore", "UvFont\NETCore\UvFont.NETCore.csproj", "{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvFont", "UvFont\Shared\UvFont.shproj", "{7342634B-B04C-4FA0-840E-BE26DBBEB430}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvAssetList.NETCore3", "UvAssetList\NETCore3\UvAssetList.NETCore3.csproj", "{AC122D65-34DB-4577-BEDF-07A4736DD6B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvAssetList.NETCore", "UvAssetList\NETCore\UvAssetList.NETCore.csproj", "{AC122D65-34DB-4577-BEDF-07A4736DD6B7}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvAssetList", "UvAssetList\Shared\UvAssetList.shproj", "{33752A23-FDD9-493A-A5CE-76F4E953D49D}"
 EndProject
@@ -93,7 +93,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Te
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.TestApplication", "Ultraviolet.TestApplication\Shared\Ultraviolet.TestApplication.shproj", "{AF8BB24E-1EF6-4585-9E6B-78EFF64AB44F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.TestApplication.NETCore3", "Ultraviolet.TestApplication\NETCore3\Ultraviolet.TestApplication.NETCore3.csproj", "{A7EBA919-81B2-49A0-8381-EF3656145289}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.TestApplication.NETCore", "Ultraviolet.TestApplication\NETCore\Ultraviolet.TestApplication.NETCore.csproj", "{A7EBA919-81B2-49A0-8381-EF3656145289}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Tests.Content", "Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.shproj", "{0E2B1BC3-D1C3-4626-8AA3-37BF3039E43F}"
 EndProject
@@ -101,19 +101,19 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Tests.ViewModels.NETStandard21", "Ultraviolet.Presentation.Tests.ViewModels\NETStandard21\Ultraviolet.Presentation.Tests.ViewModels.NETStandard21.csproj", "{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Core.TestFramework.NETCore3", "Ultraviolet.Core.TestFramework\NETCore3\Ultraviolet.Core.TestFramework.NETCore3.csproj", "{0C80B5C4-C509-4A14-93A0-6C2835F55B17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Core.TestFramework.NETCore", "Ultraviolet.Core.TestFramework\NETCore\Ultraviolet.Core.TestFramework.NETCore.csproj", "{0C80B5C4-C509-4A14-93A0-6C2835F55B17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Core.Tests.NETCore3", "Ultraviolet.Core.Tests\NETCore3\Ultraviolet.Core.Tests.NETCore3.csproj", "{AAD0995C-4ADD-47C7-97EC-F60C47327C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Core.Tests.NETCore", "Ultraviolet.Core.Tests\NETCore\Ultraviolet.Core.Tests.NETCore.csproj", "{AAD0995C-4ADD-47C7-97EC-F60C47327C87}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.TestFramework.NETCore3", "Ultraviolet.TestFramework\NETCore3\Ultraviolet.TestFramework.NETCore3.csproj", "{A17FC00D-EED4-4C6C-A84D-CCB1C39C4CB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.TestFramework.NETCore", "Ultraviolet.TestFramework\NETCore\Ultraviolet.TestFramework.NETCore.csproj", "{A17FC00D-EED4-4C6C-A84D-CCB1C39C4CB6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.TestFramework.NETCore3", "Ultraviolet.Presentation.Uvss.TestFramework\NETCore3\Ultraviolet.Presentation.Uvss.TestFramework.NETCore3.csproj", "{4B107EB9-B8A3-45C2-A435-BC57E663FCD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.TestFramework.NETCore", "Ultraviolet.Presentation.Uvss.TestFramework\NETCore\Ultraviolet.Presentation.Uvss.TestFramework.NETCore.csproj", "{4B107EB9-B8A3-45C2-A435-BC57E663FCD8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.Tests.NETCore3", "Ultraviolet.Presentation.Uvss.Tests\NETCore3\Ultraviolet.Presentation.Uvss.Tests.NETCore3.csproj", "{B1A6291D-DA1A-4F85-9843-E814E5602928}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.Tests.NETCore", "Ultraviolet.Presentation.Uvss.Tests\NETCore\Ultraviolet.Presentation.Uvss.Tests.NETCore.csproj", "{B1A6291D-DA1A-4F85-9843-E814E5602928}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Tests.NETCore3", "Ultraviolet.Presentation.Tests\NETCore3\Ultraviolet.Presentation.Tests.NETCore3.csproj", "{86D72245-262C-45FE-B81F-937B23C29B6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Tests.NETCore", "Ultraviolet.Presentation.Tests\NETCore\Ultraviolet.Presentation.Tests.NETCore.csproj", "{86D72245-262C-45FE-B81F-937B23C29B6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tests.NETCore3", "Ultraviolet.Tests\NETCore3\Ultraviolet.Tests.NETCore3.csproj", "{375D70B8-EEE0-4455-AE7C-897CD57B18EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tests.NETCore", "Ultraviolet.Tests\NETCore\Ultraviolet.Tests.NETCore.csproj", "{375D70B8-EEE0-4455-AE7C-897CD57B18EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebug.Android", "UvDebug\Android\UvDebug.Android.csproj", "{BFEBD22B-7789-43A8-A1EA-550C316C29FD}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -325,7 +325,7 @@ Global
 		UvAssetList\Shared\UvAssetList.projitems*{ac122d65-34db-4577-bedf-07a4736dd6b7}*SharedItemsImports = 5
 		Ultraviolet.TestApplication\Shared\Ultraviolet.TestApplication.projitems*{af8bb24e-1ef6-4585-9e6b-78eff64ab44f}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss.Tests\Shared\Ultraviolet.Presentation.Uvss.Tests.projitems*{b1a6291d-da1a-4f85-9843-e814e5602928}*SharedItemsImports = 5
-		UvDebug\Shared\UvDebug.projitems*{bfebd22b-7789-43a8-a1ea-550c316c29fd}*SharedItemsImports = 4
+		UvDebug\Shared\UvDebug.projitems*{bfebd22b-7789-43a8-a1ea-550c316c29fd}*SharedItemsImports = 5
 		Ultraviolet.Core.TestFramework\Shared\Ultraviolet.Core.TestFramework.projitems*{c0ef7ba7-4f67-4063-84f7-8c04e4fcc632}*SharedItemsImports = 13
 		Ultraviolet.Tooling\Shared\Ultraviolet.Tooling.projitems*{c2d3ac48-2ae7-4da8-9ed2-e591a8218b3b}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{c51252da-60c9-4b3b-a08e-c94f9d1a9f35}*SharedItemsImports = 5

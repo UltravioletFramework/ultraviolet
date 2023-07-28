@@ -7,7 +7,7 @@ What is Ultraviolet?
 
 Ultraviolet is a cross-platform, .NET game development framework written in C# and released under the [MIT License](http://opensource.org/licenses/MIT). It is heavily inspired by Microsoft's XNA Framework, and is intended to be easy for XNA developers to quickly pick up and start using. However, unlike [MonoGame](http://www.monogame.net/) and similar projects, Ultraviolet is not intended to be a drop-in replacement for XNA. Its current implementation is written on top of [SDL2](https://www.libsdl.org/) and [OpenGL](https://www.opengl.org/), but its modular design makes it (relatively) easy to re-implement using other technologies if it becomes necessary to do so in the future.
 
-At present, Ultraviolet officially supports Windows, Linux, and macOS using .NET Core 3.1, as well as Android through Xamarin. Support for iOS is no longer provided due to a lack of the requisite development hardware. If anyone wants to take responsibility for providing this support, please [Create an issue](https://github.com/UltravioletFramework/ultraviolet/issues).
+At present, Ultraviolet officially supports Windows, Linux, and macOS using .NET 6, as well as Android through Xamarin. Support for iOS is no longer provided due to a lack of the requisite development hardware. If anyone wants to take responsibility for providing this support, please [Create an issue](https://github.com/UltravioletFramework/ultraviolet/issues).
 
 Some core features of the Ultraviolet Framework:
 
@@ -42,7 +42,7 @@ Getting Started
 
 If you don't want to build Ultraviolet yourself, official packages are available through [NuGet](https://www.nuget.org/packages?q=ultraviolet).
 
-The wiki contains a [quick start guide](https://github.com/UltravioletFramework/ultraviolet/wiki/Getting-Started) for development using .NET Core 3.1.
+The wiki contains a [quick start guide](https://github.com/UltravioletFramework/ultraviolet/wiki/Getting-Started) for development using .NET 6.
 
 A [dedicated repository](https://github.com/UltravioletFramework/ultraviolet-samples) contains a number of sample projects which demonstrate various features of the Framework.
 
@@ -51,7 +51,7 @@ Requirements
 
 Ultraviolet can be used with any version of .NET which supports .NET Standard 2.1.
 
-Building Ultraviolet requires .NET Core SDK 3.1.
+Building Ultraviolet requires .NET 6 SDK.
 
 Building the mobile projects requires the appropriate Xamarin tools to be installed.
 
@@ -61,7 +61,7 @@ The following platforms are supported for building the Framework:
 * Android
 * macOS
 
-Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work, assuming that they can run .NET Core 3.1 and you can provide appropriate versions of the native dependencies, but only Ubuntu has been thoroughly tested.
+Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work, assuming that they can run .NET 6 and you can provide appropriate versions of the native dependencies, but only Ubuntu has been thoroughly tested.
 
 Building
 ========

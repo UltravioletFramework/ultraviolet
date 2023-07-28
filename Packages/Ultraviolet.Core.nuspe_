@@ -29,8 +29,8 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
 
     <!-- .NET Standard 2.1 -->
-    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Core.dll" target="lib\netstandard2.1\"/>
-    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Core.XML" target="lib\netstandard2.1\"/>
-    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Core.pdb" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore\Release\Ultraviolet.Core.dll" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore\Release\Ultraviolet.Core.XML" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore\Release\Ultraviolet.Core.pdb" target="lib\netstandard2.1\"/>
   </files>  
 </package>

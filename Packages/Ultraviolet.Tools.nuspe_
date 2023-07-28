@@ -21,6 +21,6 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </metadata>
   <files>
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
-    <file src="..\Binaries\NETCore3\Release\Tools\**\*.*" target="tools"/>
+    <file src="..\Binaries\NETCore\Release\Tools\**\*.*" target="tools"/>
   </files>  
 </package>

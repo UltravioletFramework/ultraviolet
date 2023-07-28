@@ -1,82 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BFEBD22B-7789-43A8-A1EA-550C316C29FD}</ProjectGuid>
-    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TemplateGuid>{122416d6-6b49-4ee2-a1e8-b825f31c79fe}</TemplateGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UvDebug</RootNamespace>
-    <AssemblyName>UvDebug</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <AndroidApplication>True</AndroidApplication>
-    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
-    <AndroidResgenClass>Resource</AndroidResgenClass>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
-    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
-    <AndroidUseAapt2>true</AndroidUseAapt2>
-    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <UltravioletContentDirectory>Content</UltravioletContentDirectory>
+    <UltravioletContentProject>Shared</UltravioletContentProject>
     <IncludeUltravioletContentFiles>false</IncludeUltravioletContentFiles>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
-    <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis>
-    </AndroidSupportedAbis>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFramework>net6.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationId>com.companyname.uvdebug.android</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <RootNamespace>UvDebug</RootNamespace>
+    <AssemblyName>UvDebug</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>True</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ANDROID;RELEASE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
-  </PropertyGroup>
+  <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
+  <Import Project="Ultraviolet.Android.targets" />
   <ItemGroup>
     <Reference Include="org.libsdl.app">
       <HintPath>..\..\..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Game.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass.so">
@@ -183,57 +129,6 @@
     </AndroidNativeLibrary>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Properties\AndroidManifest.xml" />
-    <None Include="Assets\AboutAssets.txt" />
-    <AndroidAsset Include="Ultraviolet.Presentation.CompiledExpressions.dll" />
-    <EmbeddedResource Include="Content.uvarc" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_main.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\values\colors.xml" />
-    <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
-    <AndroidResource Include="Resources\values\strings.xml" />
-    <AndroidResource Include="Resources\values\styles.xml" />
-    <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher.xml" />
-    <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher_round.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher_round.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_foreground.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\drawable\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.UI">
-      <Version>1.0.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData">
-      <Version>2.3.1</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
-    <PackageReference Include="Xamarin.Google.Android.Material">
-      <Version>1.3.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard21\Ultraviolet.BASS.NETStandard21.csproj">
       <Project>{69adb61d-c5b5-4e5e-82d6-8afd9216d28e}</Project>
       <Name>Ultraviolet.BASS.NETStandard21</Name>
@@ -242,6 +137,7 @@
       <Project>{5084f479-1233-477c-87d8-9df47055dd80}</Project>
       <Name>Ultraviolet.Core.NETStandard21</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.FMOD\NETStandard21\Ultraviolet.FMOD.NETStandard21.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard21\Ultraviolet.FreeType2.NETStandard21.csproj">
       <Project>{9e47b77d-b108-4954-b441-2569fa888041}</Project>
       <Name>Ultraviolet.FreeType2.NETStandard21</Name>
@@ -287,12 +183,10 @@
       <Name>Ultraviolet.NETStandard21</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Ultraviolet.Presentation.CompiledExpressions.dll" />
+    <EmbeddedResource Include="Content.uvarc" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">
@@ -300,12 +194,13 @@
     <Target Name="AfterBuild">
     </Target>
   -->
-  <Target Name="BeforeBuild">
-    <Exec Command="dotnet run -compile:content -compile:expressions" WorkingDirectory="$(SolutionDir)UvDebug\NETCore3" />
+  <Target Name="CustomBeforeBuild" BeforeTargets="BeforeBuild">
+    <Message Text="Precompiling content." />
+    <Exec Command="dotnet run --configuration $(Configuration) -compile:content -compile:expressions" WorkingDirectory="$(SolutionDir)UvDebug\NETCore" />
   </Target>
-  <Target Name="BeforeBuildCopyResults" AfterTargets="BeforeBuild">
-    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore3\bin\Debug\netcoreapp3.1\Content.uvarc" DestinationFolder="$(SolutionDir)UvDebug\Android" />
-    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore3\bin\Debug\netcoreapp3.1\Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(SolutionDir)UvDebug\Android" />
+  <Target Name="BeforeBuildCopyResults" AfterTargets="CustomBeforeBuild">
+    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore\bin\$(Configuration)\net6.0\Content.uvarc" DestinationFolder="$(SolutionDir)UvDebug\Android" />
+    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore\bin\$(Configuration)\net6.0\Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(SolutionDir)UvDebug\Android" />
   </Target>
   <Target Name="BeforeBuildValidation" AfterTargets="BeforeBuildCopyResults">
     <Error Condition="!Exists('Content.uvarc')" Text="Failed to generate content archive for UvDebug.Android." />

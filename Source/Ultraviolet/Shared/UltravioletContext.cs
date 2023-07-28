@@ -925,16 +925,19 @@ namespace Ultraviolet
                         case 0:
                         case 1:
                         case 2:
+                        case 3:
                         case 4:
+                        case 5:
                             throw new NotSupportedException();
 
                         default:
-                            shim = Assembly.Load("Ultraviolet.Shims.NETCore3, PublicKey=" + publicKeyString);
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore, PublicKey=" + publicKeyString);
                             break;
                     }
                 }
-                else
+                else if(Runtime == UltravioletRuntime.Mono)
                 {
+                    // this is Mono on CoreCLR
                     switch (Platform)
                     {
                         case UltravioletPlatform.Android:
@@ -948,6 +951,10 @@ namespace Ultraviolet
                         default:
                             throw new NotSupportedException();
                     }
+                }
+                else
+                {
+                    throw new NotSupportedException();
                 }
 
                 if (shim != null)
