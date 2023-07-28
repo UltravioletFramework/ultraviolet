@@ -150,13 +150,13 @@
     <MSBuild Projects="@(Ultraviolet_Android_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildAndroid" DependsOnTargets="SetAndroidBuildParameters">
-    <MSBuild Projects="@(Ultraviolet_Android_Solution)" Properties="Configuration=$(Configuration)" Targets="Restore;Build"/>
+    <MSBuild Projects="@(Ultraviolet_Android_Solution)" Properties="Configuration=$(Configuration)" Targets="Restore;Ultraviolet_Shims_Android_FMOD;Ultraviolet_Shims_Android"/>
   </Target>
   <Target Name="CopyAndroidBinaries" AfterTargets="BuildAndroid">
-    <CreateItem Include="Source/Ultraviolet.Shims.Android/bin/$(Configuration)/Ultraviolet.Shims.Android.*">
+    <CreateItem Include="Source/Ultraviolet.Shims.Android/bin/$(Configuration)/$(NETCoreSuffix)-android/Ultraviolet.Shims.Android.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.Android.FMOD/bin/$(Configuration)/Ultraviolet.Shims.Android.FMOD.*">
+    <CreateItem Include="Source/Ultraviolet.Shims.Android.FMOD/bin/$(Configuration)/$(NETCoreSuffix)-android/Ultraviolet.Shims.Android.FMOD.*">
       <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android_FMOD"/>
     </CreateItem>
     <CallTarget Targets="CopyStandardBinaries"/>
