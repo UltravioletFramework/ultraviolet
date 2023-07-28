@@ -20,15 +20,17 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (indexSelector == null)
                 indexSelector = (item, ix) => ix;
 
-            var count = items.Count();
+            var count = items?.Count() ?? 0;
             storage = new TItem[count];
-
-            var index = 0;
-            foreach (var item in items)
+            if (count > 0)
             {
-                var trueIndex = indexSelector(item, index);
-                storage[trueIndex] = item;
-                index++;
+                var index = 0;
+                foreach (var item in items)
+                {
+                    var trueIndex = indexSelector(item, index);
+                    storage[trueIndex] = item;
+                    index++;
+                }
             }
         }
 
