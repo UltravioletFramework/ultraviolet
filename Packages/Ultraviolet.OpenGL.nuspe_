@@ -26,6 +26,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </metadata>
   <files>
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
+    <file src="..\README.md" target=""/>
 
     <!-- .NET Standard 2.1 -->
     <file src="..\Binaries\NETCore\Release\Ultraviolet.OpenGL.dll" target="lib\netstandard2.1\"/>

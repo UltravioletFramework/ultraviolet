@@ -24,6 +24,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </metadata>
   <files>
     <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
+    <file src="..\README.md" target=""/>
     <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.dll" target="lib\net6.0-android31.0\Ultraviolet.Shims.Android.dll"/>
     <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.pdb" target="lib\net6.0-android31.0\Ultraviolet.Shims.Android.pdb"/>
   </files>  
