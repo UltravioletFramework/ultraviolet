@@ -11,9 +11,12 @@
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Ultraviolet.Image is a library for loading images, used by the Ultraviolet Framework.</description>
+    <readme>README.md</readme>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <group targetFramework="netstandard2.1">
+      <dependency id="StbImageSharp" version="2.27.13" />
+      <dependency id="StbImageWriteSharp" version="1.16.7" />
     </group>
   </dependencies>
   </metadata>

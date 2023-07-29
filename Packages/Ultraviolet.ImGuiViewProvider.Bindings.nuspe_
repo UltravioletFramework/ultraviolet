@@ -16,6 +16,7 @@ This package is based on ImGui.NET by Eric Mellino, available on GitHub at https
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/UltravioletFramework/ultraviolet/wiki
 
 Additional licensing information is available at https://www.ultraviolet.tl/licenses</description>
+    <readme>README.md</readme>
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
       <group targetFramework="netstandard2.1">
