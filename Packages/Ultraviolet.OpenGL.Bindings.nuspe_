@@ -3,7 +3,7 @@
   <metadata>
     <id>Ultraviolet.OpenGL.Bindings</id>
     <version>UV_VERSION</version>
-    <authors>Cole Campbell</authors>
+    <authors>Cole Campbell,Robert Campbell</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/UltravioletFramework/ultraviolet</projectUrl>
     <repository type="git" url="https://github.com/UltravioletFramework/ultraviolet" />
