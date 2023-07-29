@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(false)]
 
@@ -21,3 +22,4 @@ using System.Runtime.InteropServices;
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
 [assembly: Guid("c95daec3-ec8e-4037-b1fc-cc3dd48de30b")]
+[assembly: SupportedOSPlatform("android24.0")]
