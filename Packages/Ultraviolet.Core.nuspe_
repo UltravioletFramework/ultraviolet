@@ -4,13 +4,11 @@
     <id>Ultraviolet.Core</id>
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
-    <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/UltravioletFramework/ultraviolet</projectUrl>
     <repository type="git" url="https://github.com/UltravioletFramework/ultraviolet" />
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet core library, which implements basic data structures, collections, and algorithms used throughout the Framework.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet core library, which implements basic data structures, collections, and algorithms used throughout the Framework.
 
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/UltravioletFramework/ultraviolet/wiki

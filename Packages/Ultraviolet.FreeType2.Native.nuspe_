@@ -4,7 +4,6 @@
     <id>Ultraviolet.FreeType2.Native</id>
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
-    <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/UltravioletFramework/ultraviolet</projectUrl>
     <repository type="git" url="https://github.com/UltravioletFramework/ultraviolet" />
