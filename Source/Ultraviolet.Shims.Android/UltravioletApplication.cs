@@ -74,7 +74,7 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
         {
-            if (Ultraviolet != null && !Ultraviolet.Disposed)
+            if (created && Ultraviolet != null && !Ultraviolet.Disposed)
             {
                 var display = Ultraviolet.GetPlatform().Displays[0];
                 var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
