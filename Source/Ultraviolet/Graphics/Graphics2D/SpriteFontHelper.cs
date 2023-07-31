@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using Ultraviolet.Graphics;
 
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Contains methods for processing sprite fonts.
     /// </summary>
-    public static class OpenGLSpriteFontHelper
+    public static class SpriteFontHelper
     {
         /// <summary>
         /// Identifies the positions of the glyphs on the specified surface.

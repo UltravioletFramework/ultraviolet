@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Ultraviolet.Graphics.Graphics2D;
 
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// An internal representation of a <see cref="SpriteFontFace"/> used during content processing.

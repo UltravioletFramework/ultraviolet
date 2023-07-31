@@ -6,13 +6,13 @@ using System.Xml.Linq;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics.Graphics2D;
 
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Loads sprite font assets.
     /// </summary>
     [ContentProcessor]
-    internal sealed class OpenGLSpriteFontProcessorFromXDocument : ContentProcessor<XDocument, SpriteFont>
+    internal sealed class SpriteFontProcessorFromXDocument : ContentProcessor<XDocument, SpriteFont>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete) =>
@@ -126,7 +126,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         }
 
         // The internal processor which converts SpriteFontDescription -> SpriteFont.
-        private readonly OpenGLSpriteFontProcessor implProcessor = new OpenGLSpriteFontProcessor();
+        private readonly SpriteFontProcessor implProcessor = new SpriteFontProcessor();
     }
 }
         

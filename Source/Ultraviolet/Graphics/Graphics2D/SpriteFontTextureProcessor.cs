@@ -5,13 +5,13 @@ using Ultraviolet.Content;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Loads sprite font assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class OpenGLSpriteFontTextureProcessor : ContentProcessor<PlatformNativeSurface, SpriteFont>
+    public sealed class SpriteFontTextureProcessor : ContentProcessor<PlatformNativeSurface, SpriteFont>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, PlatformNativeSurface input, Boolean delete)
@@ -25,7 +25,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             writer.Write(imgData.Length);
             writer.Write(imgData);
 
-            var glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
+            var glyphs = SpriteFontHelper.IdentifyGlyphs(input);
 
             writer.Write(glyphs.Count());
             writer.Write('?');
@@ -72,7 +72,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
-            var positions = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
+            var positions = SpriteFontHelper.IdentifyGlyphs(input);
             var texture = manager.Process<PlatformNativeSurface, Texture2D>(input);
             var face = new SpriteFontFace(manager.Ultraviolet, texture, null, positions, null, true);
             return new SpriteFont(manager.Ultraviolet, face);
