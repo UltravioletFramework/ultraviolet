@@ -19,19 +19,19 @@ namespace Ultraviolet.Shims.NETCore.Platform
 
             var asmResourceNames = asmEntry.GetManifestResourceNames();
             var asmResourcePrefix = GetLongestCommonResourcePrefix(asmResourceNames);
-            var asmResourceIcon = String.IsNullOrEmpty(asmResourcePrefix) && asmResourceNames.Length == 1 && asmResourceNames[0].EndsWith(".icon.ico") ?
-                asmResourceNames[0] : $"{asmResourcePrefix}.icon.ico";
+            var asmResourceIcon = String.IsNullOrEmpty(asmResourcePrefix) && asmResourceNames.Length == 1 && asmResourceNames[0].EndsWith(".icon.png") ?
+                asmResourceNames[0] : $"{asmResourcePrefix}.icon.png";
 
             var iconStream = 
                 asmEntry.GetManifestResourceStream(asmResourceIcon) ??
-                asmLoader.GetManifestResourceStream($"Ultraviolet.Shims.NETCore.icon.ico");
+                asmLoader.GetManifestResourceStream($"Ultraviolet.Shims.NETCore.icon.png");
 
             if (iconStream != null)
             {
-                //using (var source = SurfaceSource.Create(iconStream))
-                //{
-                //    return Surface2D.Create(source, SurfaceOptions.SrgbColor);
-                //}
+                using (var source = SurfaceSource.Create(iconStream))
+                {
+                    return Surface2D.Create(source, SurfaceOptions.SrgbColor);
+                }
             }
 
             return null;
