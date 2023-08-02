@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using Ultraviolet.Content;
-using Ultraviolet.Graphics;
-using Ultraviolet.OpenGL.Bindings;
 
-namespace Ultraviolet.OpenGL.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Loads 3D texture assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class OpenGLTexture3DProcessor : ContentProcessor<PlatformNativeSurface, Texture3D>
+    public sealed class Texture3DProcessor : ContentProcessor<PlatformNativeSurface, Texture3D>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, PlatformNativeSurface input, Boolean delete)
         {
-            var mdat = metadata.As<OpenGLTexture3DProcessorMetadata>();
+            var mdat = metadata.As<Texture3DProcessorMetadata>();
             var caps = manager.Ultraviolet.GetGraphics().Capabilities;
             var srgbEncoded = (mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForTexture3D) && caps.SrgbEncodingEnabled;
 
@@ -84,12 +82,15 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 var layerWidth = layerSurfaces[0].Width;
                 var layerHeight = layerSurfaces[0].Height;
+                var layerCount = layerSurfaces.Count;
 
-                var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
-                var format = (layerSurfaces[0].DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
+                // var format = (layerSurfaces[0].DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
+                // todo: specify the format when creating texture
+                // create an enum Texture format in the abstraction layer and add mapping to/from backend formats
 
-                return new OpenGLTexture3D(manager.Ultraviolet, internalformat, layerWidth, layerHeight, format, 
-                    GL.GL_UNSIGNED_BYTE, layerPointers, true);
+                var options = TextureOptions.Default | (srgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+
+                return Texture3D.CreateTexture(layerPointers, layerWidth, layerHeight, 4, options);
             }
             finally
             {
@@ -101,7 +102,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Texture3D Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
-            var mdat = metadata.As<OpenGLTexture3DProcessorMetadata>();
+            var mdat = metadata.As<Texture3DProcessorMetadata>();
             var caps = manager.Ultraviolet.GetGraphics().Capabilities;
             var srgbEncoded = (mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForTexture3D) && caps.SrgbEncodingEnabled;
 

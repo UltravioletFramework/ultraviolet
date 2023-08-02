@@ -1,21 +1,19 @@
 ﻿using System;
 using System.IO;
 using Ultraviolet.Content;
-using Ultraviolet.Graphics;
-using Ultraviolet.OpenGL.Bindings;
 
-namespace Ultraviolet.OpenGL.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Loads 2D texture assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class OpenGLTexture2DProcessor : ContentProcessor<PlatformNativeSurface, Texture2D>
+    public sealed class Texture2DProcessor : ContentProcessor<PlatformNativeSurface, Texture2D>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, PlatformNativeSurface input, Boolean delete)
         {
-            var mdat = metadata.As<OpenGLTexture2DProcessorMetadata>();
+            var mdat = metadata.As<Texture2DProcessorMetadata>();
             var caps = manager.Ultraviolet.GetGraphics().Capabilities;
             var srgbEncoded = mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForTexture2D;
             var surfOptions = srgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
@@ -60,11 +58,13 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 using (var source = SurfaceSource.Create(stream))
                 {
-                    var format = (source.DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
-                    var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
+                    // var format = (source.DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
+                    // todo: specify the format when creating texture
+                    // create an enum Texture format in the abstraction layer and add mapping to/from backend formats
 
-                    return new OpenGLTexture2D(manager.Ultraviolet, internalformat,
-                        source.Width, source.Height, format, GL.GL_UNSIGNED_BYTE, source.Data, true);
+                    var options = TextureOptions.ImmutableStorage | (srgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+
+                    return Texture2D.CreateTexture(source.Data, source.Width, source.Height, 4, options);
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Texture2D Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
             var caps = manager.Ultraviolet.GetGraphics().Capabilities;
-            var mdat = metadata.As<OpenGLTexture2DProcessorMetadata>();
+            var mdat = metadata.As<Texture2DProcessorMetadata>();
             var srgbEncoded = mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForTexture2D;
             var surfOptions = srgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
 

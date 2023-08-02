@@ -1,29 +1,29 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Ultraviolet.OpenGL.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
-    /// Contains metadata for OpenGLTexture3DProcessor.
+    /// Contains metadata for Texture2DProcessor.
     /// </summary>
-    internal sealed class OpenGLTexture3DProcessorMetadata
+    internal sealed class Texture2DProcessorMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenGLTexture3DProcessorMetadata"/> class.
+        /// Initializes a new instance of the <see cref="Texture2DProcessorMetadata"/> class.
         /// </summary>
-        public OpenGLTexture3DProcessorMetadata()
+        public Texture2DProcessorMetadata()
         {
             PremultiplyAlpha = true;
-            Opaque = true;
+            Opaque = false;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenGLTexture2DProcessorMetadata"/> class.
+        /// Initializes a new instance of the <see cref="Texture2DProcessorMetadata"/> class.
         /// </summary>
         /// <param name="premultiplyAlpha">A value indicating whether to premultiply the texture's alpha.</param>
         /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
         [JsonConstructor]
-        public OpenGLTexture3DProcessorMetadata(Boolean premultiplyAlpha, Boolean opaque)
+        public Texture2DProcessorMetadata(Boolean premultiplyAlpha, Boolean opaque)
         {
             PremultiplyAlpha = premultiplyAlpha;
             Opaque = opaque;
@@ -41,7 +41,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <summary>
         /// Gets or sets a value indicating whether the texture is SRGB encoded. If no value is provided,
-        /// the default specified by the <see cref="UltravioletContextProperties.SrgbDefaultForTexture3D"/>
+        /// the default specified by the <see cref="UltravioletContextProperties.SrgbDefaultForTexture2D"/>
         /// property is used.
         /// </summary>
         public Boolean? SrgbEncoded { get; private set; }
