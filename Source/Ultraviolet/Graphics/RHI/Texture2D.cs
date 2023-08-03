@@ -10,10 +10,10 @@ namespace Ultraviolet.Graphics
     /// <param name="pixels">A pointer to the raw pixel data with which to populate the texture.</param>
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
-    /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+    /// <param name="format">The format of each pixel in the raw data.</param>
     /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-    public delegate Texture2D Texture2DFromRawDataFactory(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options);
+    public delegate Texture2D Texture2DFromRawDataFactory(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, TextureFormat format, TextureOptions options);
 
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="Texture2D"/> class.
@@ -46,16 +46,16 @@ namespace Ultraviolet.Graphics
         /// <param name="pixels">A pointer to the raw pixel data with which to populate the texture.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        /// <param name="format">The format of each pixel in the raw data.</param>
         /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D CreateTexture(IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options = TextureOptions.Default)
+        public static Texture2D CreateTexture(IntPtr pixels, Int32 width, Int32 height, TextureFormat format, TextureOptions options = TextureOptions.Default)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture2DFromRawDataFactory>()(uv, pixels, width, height, bytesPerPixel, options);
+            return uv.GetFactoryMethod<Texture2DFromRawDataFactory>()(uv, pixels, width, height, format, options);
         }
 
         /// <summary>

@@ -18,14 +18,14 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="pixels">A pointer to the raw pixel data with which to populate the texture.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        /// <param name="format">The format of each pixel in the raw data.</param>
         /// <param name="options">The texture's configuration options.</param>
-        public OpenGLTexture2D(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options)
+        public OpenGLTexture2D(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, TextureFormat format, TextureOptions options)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
-            Contract.EnsureRange(bytesPerPixel >= 3 || bytesPerPixel <= 4, nameof(bytesPerPixel));
+            Contract.EnsureRange(format == TextureFormat.RGB || format == TextureFormat.BGR || format == TextureFormat.RGBA || format == TextureFormat.BGRA, nameof(format));
 
             var isSrgb = (options & TextureOptions.SrgbColor) == TextureOptions.SrgbColor;
             var isLinear = (options & TextureOptions.LinearColor) == TextureOptions.LinearColor;
@@ -35,13 +35,13 @@ namespace Ultraviolet.OpenGL.Graphics
             var caps = uv.GetGraphics().Capabilities;
             var srgbEncoded = (isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForTexture2D)) && caps.SrgbEncodingEnabled;
 
-            var format = OpenGLTextureUtil.GetFormatFromBytesPerPixel(bytesPerPixel);
-            var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(bytesPerPixel, srgbEncoded);
+            var glFormat = OpenGLTextureUtil.GetGLFormatFromTextureFormat(format);
+            var internalformat = OpenGLTextureUtil.GetInternalGLFormatFromTextureFormat(format, srgbEncoded);
 
-            if (format == GL.GL_NONE || internalformat == GL.GL_NONE)
+            if (glFormat == GL.GL_NONE || internalformat == GL.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
-            CreateNativeTexture(uv, internalformat, width, height, format,
+            CreateNativeTexture(uv, internalformat, width, height, glFormat,
                 GL.GL_UNSIGNED_BYTE, (void*)pixels, (options & TextureOptions.ImmutableStorage) == TextureOptions.ImmutableStorage);
         }
 
@@ -54,7 +54,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of Texture2D that was created.</returns>
         public OpenGLTexture2D(UltravioletContext uv, Int32 width, Int32 height, TextureOptions options)
-            : this(uv, IntPtr.Zero, width, height, 4, options)
+            : this(uv, IntPtr.Zero, width, height, TextureFormat.RGBA, options)
         { }
 
         /// <summary>

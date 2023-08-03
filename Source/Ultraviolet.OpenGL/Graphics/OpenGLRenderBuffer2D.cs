@@ -54,8 +54,9 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     case RenderBufferFormat.Color:
                         {
-                            var texformat = OpenGLTextureUtil.GetFormatFromBytesPerPixel(4);
-                            var texinternalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
+                            var rhiFormat = TextureFormat.RGBA;
+                            var texformat = OpenGLTextureUtil.GetGLFormatFromTextureFormat(rhiFormat);
+                            var texinternalformat = OpenGLTextureUtil.GetInternalGLFormatFromTextureFormat(rhiFormat, srgbEncoded);
                             this.texture = new OpenGLTexture2D(uv, texinternalformat, width, height, texformat, GL.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable, true);
                             this.SrgbEncoded = this.texture.SrgbEncoded;
                         }
@@ -327,7 +328,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 {
                     case RenderBufferFormat.Color:
                         {
-                            var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, SrgbEncoded);
+                            var rhiFormat = TextureFormat.RGBA;
+                            var internalformat = OpenGLTextureUtil.GetInternalGLFormatFromTextureFormat(rhiFormat, SrgbEncoded);
                             GL.RenderbufferStorage(GL.GL_RENDERBUFFER, internalformat, width, height);
                             GL.ThrowIfError();
                         }

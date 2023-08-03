@@ -84,13 +84,11 @@ namespace Ultraviolet.Graphics
                 var layerHeight = layerSurfaces[0].Height;
                 var layerCount = layerSurfaces.Count;
 
-                // var format = (layerSurfaces[0].DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
-                // todo: specify the format when creating texture
-                // create an enum Texture format in the abstraction layer and add mapping to/from backend formats
+                TextureFormat format = layerSurfaces[0].DataFormat == SurfaceSourceDataFormat.RGBA ? TextureFormat.RGBA : TextureFormat.BGRA;
 
                 var options = TextureOptions.Default | (srgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
 
-                return Texture3D.CreateTexture(layerPointers, layerWidth, layerHeight, 4, options);
+                return Texture3D.CreateTexture(layerPointers, layerWidth, layerHeight, format, options);
             }
             finally
             {

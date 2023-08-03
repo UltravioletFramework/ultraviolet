@@ -135,7 +135,7 @@ namespace Ultraviolet.SDL2.Graphics
                 }
 
                 var options = TextureOptions.ImmutableStorage | (SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
-                return Texture3D.CreateTexture(surfsdata, Width, Height, BytesPerPixel, options);
+                return Texture3D.CreateTexture(surfsdata, Width, Height, TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, BytesPerPixel), options);
             }
             finally
             {

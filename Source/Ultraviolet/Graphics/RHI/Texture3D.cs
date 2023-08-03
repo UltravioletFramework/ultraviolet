@@ -11,10 +11,10 @@ namespace Ultraviolet.Graphics
     /// <param name="layers">A pointer to the raw pixel data for each of the texture's layers.</param>
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
-    /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+    /// <param name="format">The format each each pixel in the raw data.</param>
     /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-    public delegate Texture3D Texture3DFromRawDataFactory(UltravioletContext uv, IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options);
+    public delegate Texture3D Texture3DFromRawDataFactory(UltravioletContext uv, IList<IntPtr> layers, Int32 width, Int32 height, TextureFormat format, TextureOptions options);
 
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="Texture3D"/> class.
@@ -66,18 +66,18 @@ namespace Ultraviolet.Graphics
         /// <param name="layers">A pointer to the raw pixel data for each of the texture's layers.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        /// <param name="format">The format of each pixel in the raw data.</param>
         /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-        public static Texture3D CreateTexture(IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options = TextureOptions.Default)
+        public static Texture3D CreateTexture(IList<IntPtr> layers, Int32 width, Int32 height, TextureFormat format, TextureOptions options = TextureOptions.Default)
         {
             Contract.Require(layers, nameof(layers));
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
-            Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
+            Contract.EnsureRange(format == TextureFormat.RGB || format == TextureFormat.BGR || format == TextureFormat.RGBA || format == TextureFormat.BGRA, nameof(format));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture3DFromRawDataFactory>()(uv, layers, width, height, bytesPerPixel, options);
+            return uv.GetFactoryMethod<Texture3DFromRawDataFactory>()(uv, layers, width, height, format, options);
         }
 
         /// <summary>

@@ -247,7 +247,8 @@ namespace Ultraviolet.SDL2.Graphics
             if (unprocessed)
             {
                 var options = TextureOptions.ImmutableStorage | (SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
-                return Texture2D.CreateTexture((IntPtr)NativePtr->pixels, Width, Height, BytesPerPixel, options);
+                var format = TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, BytesPerPixel);
+                return Texture2D.CreateTexture((IntPtr)NativePtr->pixels, Width, Height, format, options);
             }
             else
             {
@@ -260,7 +261,8 @@ namespace Ultraviolet.SDL2.Graphics
                         SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None);
 
                     var options = TextureOptions.ImmutableStorage | (SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
-                    return Texture2D.CreateTexture((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel, options);
+                    var format = TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, copysurf.BytesPerPixel);
+                    return Texture2D.CreateTexture((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, format, options);
                 }
             }
         }

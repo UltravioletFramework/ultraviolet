@@ -18,15 +18,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="data">A list of pointers to the raw pixel data for each of the texture's layers.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        /// <param name="format">The format of each pixel in the raw data.</param>
         /// <param name="options">The texture's configuration options.</param>
-        public OpenGLTexture3D(UltravioletContext uv, IList<IntPtr> data, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options)
+        public OpenGLTexture3D(UltravioletContext uv, IList<IntPtr> data, Int32 width, Int32 height, TextureFormat format, TextureOptions options)
             : base(uv)
         {
             Contract.Require(data, nameof(data));
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
-            Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
+            Contract.EnsureRange(format == TextureFormat.RGB || format == TextureFormat.BGR || format == TextureFormat.RGBA || format == TextureFormat.BGRA, nameof(format));
 
             var isLinear = (options & TextureOptions.LinearColor) == TextureOptions.LinearColor;
             var isSrgb = (options & TextureOptions.SrgbColor) == TextureOptions.SrgbColor;
@@ -36,17 +36,18 @@ namespace Ultraviolet.OpenGL.Graphics
             var caps = uv.GetGraphics().Capabilities;
             var srgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForSurface3D) && caps.SrgbEncodingEnabled;
 
-            var format = OpenGLTextureUtil.GetFormatFromBytesPerPixel(bytesPerPixel);
-            var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(bytesPerPixel, srgbEncoded);
+            var glFormat = OpenGLTextureUtil.GetGLFormatFromTextureFormat(format);
+            var internalformat = OpenGLTextureUtil.GetInternalGLFormatFromTextureFormat(format, srgbEncoded);
 
-            if (format == GL.GL_NONE || internalformat == GL.GL_NONE)
+            if (glFormat == GL.GL_NONE || internalformat == GL.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
             var pixels = IntPtr.Zero;
             try
             {
-                pixels = CreateConcatenatedPixelBuffer(data, width * height * bytesPerPixel);
-                CreateNativeTexture(uv, internalformat, width, height, data.Count, format, 
+                var componentsPerPixel = OpenGLTextureUtil.GetComponentCountFromTextureFormat(format);
+                pixels = CreateConcatenatedPixelBuffer(data, width * height * componentsPerPixel);
+                CreateNativeTexture(uv, internalformat, width, height, data.Count, glFormat, 
                     GL.GL_UNSIGNED_BYTE, (void*)pixels, true);
             }
             finally
@@ -79,10 +80,11 @@ namespace Ultraviolet.OpenGL.Graphics
             var caps = uv.GetGraphics().Capabilities;
             var srgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForSurface3D) && caps.SrgbEncodingEnabled;
 
-            var format = OpenGLTextureUtil.GetFormatFromBytesPerPixel(4);
-            var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
+            TextureFormat format = TextureFormat.RGBA;
+            var glFormat = OpenGLTextureUtil.GetGLFormatFromTextureFormat(format);
+            var internalformat = OpenGLTextureUtil.GetInternalGLFormatFromTextureFormat(format, srgbEncoded);
 
-            CreateNativeTexture(uv, internalformat, width, height, depth, format, GL.GL_UNSIGNED_BYTE, null, immutable);
+            CreateNativeTexture(uv, internalformat, width, height, depth, glFormat, GL.GL_UNSIGNED_BYTE, null, immutable);
         }
 
         /// <summary>

@@ -58,13 +58,11 @@ namespace Ultraviolet.Graphics
             {
                 using (var source = SurfaceSource.Create(stream))
                 {
-                    // var format = (source.DataFormat == SurfaceSourceDataFormat.RGBA) ? GL.GL_RGBA : GL.GL_BGRA;
-                    // todo: specify the format when creating texture
-                    // create an enum Texture format in the abstraction layer and add mapping to/from backend formats
+                    TextureFormat format = source.DataFormat == SurfaceSourceDataFormat.RGBA ? TextureFormat.RGBA : TextureFormat.BGRA;
 
                     var options = TextureOptions.ImmutableStorage | (srgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
 
-                    return Texture2D.CreateTexture(source.Data, source.Width, source.Height, 4, options);
+                    return Texture2D.CreateTexture(source.Data, source.Width, source.Height, format, options);
                 }
             }
         }
