@@ -268,7 +268,7 @@ namespace Ultraviolet.TestApplication
         }
 
         /// <inheritdoc/>
-        protected override UltravioletContext OnCreatingUltravioletContext()
+        protected override UltravioletContext OnCreatingUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             var configuration = new SDL2UltravioletConfiguration();
             configuration.Headless = headless;
@@ -300,7 +300,7 @@ namespace Ultraviolet.TestApplication
 
             configurer?.Invoke(configuration);
 
-            return new SDL2UltravioletContext(this, configuration);
+            return new SDL2UltravioletContext(this, configuration, factoryInitializer);
         }
 
         /// <inheritdoc/>

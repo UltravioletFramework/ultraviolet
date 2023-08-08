@@ -10,8 +10,12 @@ using System.Xml;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
 using Ultraviolet.Messages;
 using Ultraviolet.Platform;
+using Ultraviolet.Shims.Android.Graphics;
+using Ultraviolet.Shims.Android.Input;
 using Ultraviolet.Shims.Android.Platform;
 
 namespace Ultraviolet
@@ -101,7 +105,19 @@ namespace Ultraviolet
 
             OnInitializing();
 
-            CreateUltravioletContext();
+            CreateUltravioletContext((context, factory) => 
+            {
+                factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new AndroidSurfaceSource(stream));
+                factory.SetFactoryMethod<SurfaceSaverFactory>(() => new AndroidSurfaceSaver());
+                factory.SetFactoryMethod<IconLoaderFactory>(() => new AndroidIconLoader());
+                factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
+                factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new AndroidScreenRotationService(display));
+                factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new AndroidScreenDensityService(display));
+                factory.SetFactoryMethod<AssemblyLoaderServiceFactory>(() => new AndroidAssemblyLoaderService());
+
+                var softwareKeyboardService = new AndroidSoftwareKeyboardService();
+                factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);
+            });
 
             OnInitialized();
 
@@ -295,8 +311,9 @@ namespace Ultraviolet
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
+        /// <param name="factoryInitializer">A factory which is executed when the context is being initialized.</param>
         /// <returns>The Ultraviolet context.</returns>
-        protected abstract UltravioletContext OnCreatingUltravioletContext();
+        protected abstract UltravioletContext OnCreatingUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer);
 
         /// <inheritdoc/>
         protected override void OnCreate(Bundle savedInstanceState)
@@ -728,12 +745,13 @@ namespace Ultraviolet
 
         /// <summary>
         /// Creates the application's Ultraviolet context.
+        /// <param name="factoryInitializer">A delegate which is executed when the factory is being initialized.</param>
         /// </summary>
-        private void CreateUltravioletContext()
+        private void CreateUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             LoadSettings();
 
-            uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext);
+            uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext, factoryInitializer);
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 

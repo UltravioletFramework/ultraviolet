@@ -53,8 +53,9 @@ namespace UvDebug
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
+        /// <param name="factoryInitializer">A delegate which is executed when the context's factory is being initialized.</param>
         /// <returns>The Ultraviolet context.</returns>
-        protected override UltravioletContext OnCreatingUltravioletContext()
+        protected override UltravioletContext OnCreatingUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             var graphicsConfig = OpenGLGraphicsConfiguration.Default;
             graphicsConfig.MultiSampleBuffers = 1;
@@ -81,7 +82,7 @@ namespace UvDebug
             };
 #endif
 
-            return new SDL2UltravioletContext(this, contextConfig);
+            return new SDL2UltravioletContext(this, contextConfig, factoryInitializer);
         }
 
         /// <summary>

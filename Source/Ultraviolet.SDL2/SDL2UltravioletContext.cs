@@ -32,8 +32,9 @@ namespace Ultraviolet.SDL2
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        public unsafe SDL2UltravioletContext(IUltravioletHost host, SDL2UltravioletConfiguration configuration)
-            : base(host, configuration)
+        /// <param name="factoryInitializer">A delegate that is executed when the context's factory is being initialized.</param>
+        public unsafe SDL2UltravioletContext(IUltravioletHost host, SDL2UltravioletConfiguration configuration, Action<UltravioletContext, UltravioletFactory> factoryInitializer)
+            : base(host, configuration, factoryInitializer)
         {
             Contract.Require(configuration, nameof(configuration));
 

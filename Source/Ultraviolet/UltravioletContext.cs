@@ -64,7 +64,8 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        public UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
+        /// <param name="factoryInitializer">A delegate that is executed when the context's factory is being initialized.</param>
+        public UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration, Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             Contract.Require(host, nameof(host));
             Contract.Require(configuration, nameof(configuration));
@@ -101,6 +102,10 @@ namespace Ultraviolet
             this.taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
             this.taskFactory = new TaskFactory(taskScheduler);
 
+            if(factoryInitializer != null)
+            {
+                factoryInitializer(this, factory);
+            }
             Configure();
             InitializeFactory(configuration);
         }
@@ -110,14 +115,15 @@ namespace Ultraviolet
         /// then the current context is immediately disposed. This method should only be called by Ultraviolet host implementations.
         /// </summary>
         /// <param name="fn">The function which will create the Ultraviolet context.</param>
+        /// <param name="factoryInitializer"></param>
         /// <returns>The Ultraviolet context that was created.</returns>
-        public static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
+        public static UltravioletContext EnsureSuccessfulCreation(Func<Action<UltravioletContext, UltravioletFactory>, UltravioletContext> fn, Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             Contract.Require(fn, nameof(fn));
 
             try
             {
-                var context = fn();
+                var context = fn(factoryInitializer);
                 if (context == null)
                 {
                     throw new InvalidOperationException();
