@@ -698,25 +698,6 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Initializes any factory methods that are exposed by the specified assembly.
-        /// </summary>
-        /// <param name="asm">The assembly for which to initialize factory methods.</param>
-        protected void InitializeFactoryMethodsInAssembly(Assembly asm)
-        {
-            Contract.Require(asm, nameof(asm));
-
-            var initializerTypes = from t in asm.GetTypes()
-                                   where t.IsClass && !t.IsAbstract && typeof(IUltravioletFactoryInitializer).IsAssignableFrom(t)
-                                   select t;
-
-            foreach (var initializerType in initializerTypes)
-            {
-                var initializerInstance = (IUltravioletFactoryInitializer)Activator.CreateInstance(initializerType);
-                initializerInstance.Initialize(this, Factory);
-            }
-        }
-
-        /// <summary>
         /// Initializes the context's view provider.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>

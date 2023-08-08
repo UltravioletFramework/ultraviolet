@@ -26,7 +26,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameMenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameScreenBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactoryInitializer.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(IncludeUltravioletContentFiles)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)Content\Cursors\Cursors.xml">
