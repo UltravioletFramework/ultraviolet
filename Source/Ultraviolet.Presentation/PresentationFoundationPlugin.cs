@@ -1,4 +1,6 @@
-﻿namespace Ultraviolet.Presentation
+﻿using Ultraviolet.UI;
+
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a plugin for the Ultraviolet Framework which provides user interface views using the Ultraviolet Presentation Foundation.
@@ -12,6 +14,24 @@
         public PresentationFoundationPlugin(PresentationFoundationConfiguration presentationConfig = null)
         {
             this.presentationConfig = presentationConfig;
+        }
+
+        /// <inheritdoc/>
+        public override void Configure(UltravioletContext uv, UltravioletFactory factory)
+        {
+            {
+                factory.SetFactoryMethod<UIViewProviderInitializerFactory>(() => new PresentationFoundationInitializer());
+                factory.SetFactoryMethod<UIViewFactory>((uv, uiPanel, uiPanelDefinition, vmfactory) => PresentationFoundationView.Load(uv, uiPanel, uiPanelDefinition, vmfactory));
+                factory.SetFactoryMethod<MessageBoxScreenFactory>((mb, mbowner) => new MessageBoxScreen(mb, mbowner.GlobalContent));
+            }
+            base.Initialize(uv, factory);
+        }
+
+        /// <inheritdoc/>
+        public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
+        {
+            uv.GetContent().RegisterImportersAndProcessors(typeof(PresentationFoundationPlugin).Assembly);
+            base.Initialize(uv, factory);
         }
 
         /// <inheritdoc/>

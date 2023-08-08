@@ -101,6 +101,7 @@ namespace Ultraviolet
             this.taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
             this.taskFactory = new TaskFactory(taskScheduler);
 
+            Configure();
             InitializeFactory(configuration);
         }
 
@@ -562,11 +563,6 @@ namespace Ultraviolet
         public Assembly PlatformCompatibilityShimAssembly => platformCompatibilityShimAssembly;
 
         /// <summary>
-        /// Gets the assembly which implements views for the user interface subsystem.
-        /// </summary>
-        public Assembly ViewProviderAssembly => viewProviderAssembly;
-
-        /// <summary>
         /// Gets or sets a value indicating whether the context is currently processing messages
         /// from the physical input devices.
         /// </summary>
@@ -692,7 +688,8 @@ namespace Ultraviolet
         protected void InitializeContext()
         {
             IsInitialized = true;
-            
+
+            GetContent().RegisterImportersAndProcessors(typeof(UltravioletContext).Assembly);
             GetContent().Processors
                 .SetFallbackType<UltravioletFont>(typeof(SpriteFont));
 
@@ -731,6 +728,16 @@ namespace Ultraviolet
                 var initializer = initializerFactory();
                 initializer.Initialize(this, configuration.ViewProviderConfiguration);
             }
+        }
+
+        /// <summary>
+        /// Configures the context
+        /// </summary>
+        protected virtual void Configure()
+        {
+            factory.SetFactoryMethod(IsRunningInServiceMode ?
+                new SpriteBatchFactory((uv) => null) :
+                new SpriteBatchFactory((uv) => new SpriteBatch(uv)));
         }
 
         /// <summary>
@@ -905,13 +912,7 @@ namespace Ultraviolet
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
         private void InitializeFactory(UltravioletConfiguration configuration)
         {
-            var asmCore = typeof(UltravioletContext).Assembly;
-            var asmImpl = GetType().Assembly;
-
-            InitializeFactoryMethodsInAssembly(asmCore);
-            InitializeFactoryMethodsInAssembly(asmImpl);
             InitializeFactoryMethodsInCompatibilityShim();
-            InitializeFactoryMethodsInViewProvider(configuration);
             
             var asmEntry = Assembly.GetEntryAssembly();
             if (asmEntry != null)
@@ -979,35 +980,6 @@ namespace Ultraviolet
                 throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
             }
         }
-        
-        /// <summary>
-        /// Initializes any factory methods exposed by the registered view provider.
-        /// </summary>
-        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        private void InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
-        {
-            if (String.IsNullOrEmpty(configuration.ViewProviderAssembly))
-                return;
-
-            Assembly asm;
-            try
-            {
-                asm = Assembly.Load(configuration.ViewProviderAssembly);
-                InitializeFactoryMethodsInAssembly(asm);
-
-                viewProviderAssembly = asm;
-            }
-            catch (Exception e)
-            {
-                if (e is FileNotFoundException ||
-                    e is FileLoadException ||
-                    e is BadImageFormatException)
-                {
-                    throw new InvalidOperationException(UltravioletStrings.InvalidViewProviderAssembly, e);
-                }
-                throw;
-            }
-        }
 
         /// <summary>
         /// Updates the context's list of tasks.
@@ -1065,7 +1037,6 @@ namespace Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly Thread thread;
         private Assembly platformCompatibilityShimAssembly;
-        private Assembly viewProviderAssembly;
 
         // The context's list of pending tasks.
         private readonly TaskScheduler taskScheduler;

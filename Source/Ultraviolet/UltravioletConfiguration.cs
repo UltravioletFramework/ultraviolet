@@ -32,22 +32,6 @@ namespace Ultraviolet
         public UltravioletGraphicsConfiguration GraphicsConfiguration { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the assembly that implements the graphics subsystem.
-        /// </summary>
-        public String GraphicsSubsystemAssembly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the assembly that implements the audio subsystem.
-        /// </summary>
-        public String AudioSubsystemAssembly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full name of the assembly which is responsible for
-        /// creating and managing instances of the <see cref="Ultraviolet.UI.UIView"/> class.
-        /// </summary>
-        public String ViewProviderAssembly { get; set; }
-
-        /// <summary>
         /// Gets or sets an object which provides configuration values for the view provider.
         /// </summary>
         public Object ViewProviderConfiguration { get; set; }

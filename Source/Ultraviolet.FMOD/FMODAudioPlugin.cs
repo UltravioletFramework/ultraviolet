@@ -1,4 +1,10 @@
-﻿using Ultraviolet.Core;
+﻿using System.IO;
+using System.Reflection;
+using System;
+using Ultraviolet.Audio;
+using Ultraviolet.Core;
+using Ultraviolet.FMOD.Audio;
+using System.Linq;
 
 namespace Ultraviolet.FMOD
 {
@@ -11,16 +17,43 @@ namespace Ultraviolet.FMOD
         public override void Configure(UltravioletContext uv, UltravioletFactory factory)
         {
             factory.SetFactoryMethod<UltravioletAudioFactory>((uv, configuration) => new FMODUltravioletAudio(uv, configuration));
+
+            {
+                factory.SetFactoryMethod<SongPlayerFactory>((uv) => new FMODSongPlayer(uv));
+                factory.SetFactoryMethod<SoundEffectPlayerFactory>((uv) => new FMODSoundEffectPlayer(uv));
+
+                try
+                {
+                    if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Android)
+                    {
+                        var shim = Assembly.Load("Ultraviolet.Shims.Android.FMOD.dll");
+                        var type = shim.GetTypes().Where(x => x.IsClass && !x.IsAbstract && typeof(FMODPlatformSpecificImplementationDetails).IsAssignableFrom(x)).SingleOrDefault();
+                        if (type == null)
+                            throw new InvalidOperationException(FMODStrings.CannotFindPlatformShimClass);
+
+                        factory.SetFactoryMethod<FMODPlatformSpecificImplementationDetailsFactory>(
+                            (uv) => (FMODPlatformSpecificImplementationDetails)Activator.CreateInstance(type));
+                    }
+                }
+                catch (FileNotFoundException e)
+                {
+                    throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
+                }
+            }
             base.Configure(uv, factory);
+        }
+
+        /// <inheritdoc/>
+        public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
+        {
+            uv.GetContent().RegisterImportersAndProcessors(typeof(FMODAudioPlugin).Assembly);
+            base.Initialize(uv, factory);
         }
 
         /// <inheritdoc/>
         public override void Register(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, nameof(configuration));
-
-            var asm = typeof(FMODAudioPlugin).Assembly;
-            configuration.AudioSubsystemAssembly = $"{asm.GetName().Name}, Version={asm.GetName().Version}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
 
             base.Register(configuration);
         }

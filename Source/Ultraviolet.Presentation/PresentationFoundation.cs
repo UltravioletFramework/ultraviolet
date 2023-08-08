@@ -45,7 +45,6 @@ namespace Ultraviolet.Presentation
         {
             Contract.Require(ultravioletConfig, nameof(ultravioletConfig));
 
-            ultravioletConfig.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
             ultravioletConfig.ViewProviderConfiguration = presentationConfig;
         }
         

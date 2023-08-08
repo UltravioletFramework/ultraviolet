@@ -6,7 +6,9 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
+using Ultraviolet.OpenGL;
 using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
@@ -48,7 +50,6 @@ namespace Ultraviolet.SDL2
             SDL_SetEventFilter(eventFilterPtr, IntPtr.Zero);
 
             ConfigurePlugins(configuration);
-            LoadSubsystemAssemblies(configuration);
             this.swapChainManager = IsRunningInServiceMode ? new DummySwapChainManager(this) : SwapChainManager.Create();
             
             this.platform = InitializePlatformSubsystem(configuration);
@@ -142,16 +143,6 @@ namespace Ultraviolet.SDL2
         /// <inheritdoc/>
         public override IUltravioletUI GetUI() => ui;
 
-        /// <summary>
-        /// Gets the assembly that implements the graphics subsystem.
-        /// </summary>
-        public Assembly GraphicsSubsystemAssembly { get; private set; }
-
-        /// <summary>
-        /// Gets the assembly that implements the audio subsystem.
-        /// </summary>
-        public Assembly AudioSubsystemAssembly { get; private set; }
-
         /// <inheritdoc/>
         protected override void OnShutdown()
         {
@@ -161,49 +152,33 @@ namespace Ultraviolet.SDL2
             base.OnShutdown();
         }
 
-        /// <summary>
-        /// Loads the context's subsystem assemblies.
-        /// </summary>
-        /// <param name="configuration">The context's configuration settings.</param>
-        private void LoadSubsystemAssemblies(UltravioletConfiguration configuration)
+        /// <inheritdoc/>
+        protected override void Configure()
         {
-            if (IsRunningInServiceMode)
-                return;
+            base.Configure();
 
-            Assembly LoadSubsystemAssembly(String name)
-            {
-                try
-                {
-                    return Assembly.Load(name);
-                }
-                catch (Exception e)
-                {
-                    if (e is FileNotFoundException || e is FileLoadException || e is BadImageFormatException)
-                    {
-                        return null;
-                    }
-                    throw;
-                }
-            }
+            // Core classes.
+            Factory.SetFactoryMethod<PlatformNativeSurfaceFactory>((source) => new SDL2PlatformNativeSurface(source));
+            Factory.SetFactoryMethod<Surface2DFactory>((uv, width, height, options) => new SDL2Surface2D(uv, width, height, options));
+            Factory.SetFactoryMethod<Surface2DFromSourceFactory>((uv, source, options) => new SDL2Surface2D(uv, source, options));
+            Factory.SetFactoryMethod<Surface2DFromNativeSurfaceFactory>((uv, surface, options) => new SDL2Surface2D(uv, surface, options));
+            Factory.SetFactoryMethod<Surface3DFactory>((uv, width, height, depth, bytesPerPixel, options) => new SDL2Surface3D(uv, width, height, depth, bytesPerPixel, options));
+            Factory.SetFactoryMethod<CursorFactory>((uv, surface, hx, hv) => new SDL2Cursor(uv, surface, hx, hv));
 
-            if (String.IsNullOrEmpty(configuration.GraphicsSubsystemAssembly))
-                throw new InvalidOperationException(SDL2Strings.MissingGraphicsAssembly);
+            // Platform services
+            var msgboxService = new SDL2MessageBoxService();
+            Factory.SetFactoryMethod<MessageBoxServiceFactory>(() => msgboxService);
 
-            if (String.IsNullOrEmpty(configuration.AudioSubsystemAssembly))
-                throw new InvalidOperationException(SDL2Strings.MissingAudioAssembly);
+            var clipboardService = new SDL2ClipboardService();
+            Factory.SetFactoryMethod<ClipboardServiceFactory>(() => clipboardService);
 
-            this.GraphicsSubsystemAssembly = LoadSubsystemAssembly(configuration.GraphicsSubsystemAssembly);
-            if (this.GraphicsSubsystemAssembly == null)
-                throw new InvalidOperationException(SDL2Strings.InvalidGraphicsAssembly);
+            var powerManagementService = new SDL2PowerManagementService();
+            Factory.SetFactoryMethod<PowerManagementServiceFactory>(() => powerManagementService);
 
-            this.AudioSubsystemAssembly = LoadSubsystemAssembly(configuration.AudioSubsystemAssembly);
-            if (this.AudioSubsystemAssembly == null)
-                throw new InvalidOperationException(SDL2Strings.InvalidAudioAssembly);
-
-            var distinctAssemblies = new[] { this.GraphicsSubsystemAssembly, this.AudioSubsystemAssembly }.Distinct();
-            foreach (var distinctAssembly in distinctAssemblies)
-                InitializeFactoryMethodsInAssembly(distinctAssembly);
+            // Graphics API services
+            Factory.SetFactoryMethod<OpenGLEnvironmentFactory>((uv) => new SDL2OpenGLEnvironment(uv));
         }
+
 
         /// <summary>
         /// Initializes the context's platform subsystem.
@@ -231,8 +206,8 @@ namespace Ultraviolet.SDL2
         private IUltravioletContent InitializeContentSubsystem()
         {
             var content = new UltravioletContent(this);
-            content.RegisterImportersAndProcessors(new[] { GraphicsSubsystemAssembly, AudioSubsystemAssembly }.Distinct());
             content.Importers.RegisterImporter<XmlContentImporter>("prog");
+            content.RegisterImportersAndProcessors(typeof(SDL2UltravioletContext).Assembly);
             return content;
         }
 

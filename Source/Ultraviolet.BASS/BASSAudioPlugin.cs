@@ -1,4 +1,6 @@
-﻿using Ultraviolet.Core;
+﻿using Ultraviolet.Audio;
+using Ultraviolet.BASS.Audio;
+using Ultraviolet.Core;
 
 namespace Ultraviolet.BASS
 {
@@ -11,16 +13,25 @@ namespace Ultraviolet.BASS
         public override void Configure(UltravioletContext uv, UltravioletFactory factory)
         {
             factory.SetFactoryMethod<UltravioletAudioFactory>((uv, configuration) => new BASSUltravioletAudio(uv));
+
+            {
+                factory.SetFactoryMethod<SongPlayerFactory>((uv) => new BASSSongPlayer(uv));
+                factory.SetFactoryMethod<SoundEffectPlayerFactory>((uv) => new BASSSoundEffectPlayer(uv));
+            }
             base.Configure(uv, factory);
+        }
+
+        /// <inheritdoc/>
+        public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
+        {
+            uv.GetContent().RegisterImportersAndProcessors(typeof(BASSAudioPlugin).Assembly);
+            base.Initialize(uv, factory);
         }
 
         /// <inheritdoc/>
         public override void Register(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, nameof(configuration));
-
-            var asm = typeof(BASSAudioPlugin).Assembly;
-            configuration.AudioSubsystemAssembly = $"{asm.GetName().Name}, Version={asm.GetName().Version}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
 
             base.Register(configuration);
         }

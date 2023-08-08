@@ -41,9 +41,8 @@ namespace Ultraviolet.Content
             var asmImpl = Ultraviolet.GetType().Assembly;
             var asmEntry = Assembly.GetEntryAssembly();
             var asmShim = Ultraviolet.PlatformCompatibilityShimAssembly;
-            var asmViews = Ultraviolet.ViewProviderAssembly;
 
-            var assemblies = new[] { asmCore, asmImpl, asmShim, asmViews }
+            var assemblies = new[] { asmCore, asmImpl, asmShim }
                 .Union(additionalAssemblies ?? Enumerable.Empty<Assembly>()).Where(x => x != null).Distinct();
 
             foreach (var asm in assemblies)
