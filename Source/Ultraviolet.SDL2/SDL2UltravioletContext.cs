@@ -154,9 +154,9 @@ namespace Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
-        protected override void Configure()
+        protected override void InitializeFactory()
         {
-            base.Configure();
+            base.InitializeFactory();
 
             // Core classes.
             Factory.SetFactoryMethod<PlatformNativeSurfaceFactory>((source) => new SDL2PlatformNativeSurface(source));

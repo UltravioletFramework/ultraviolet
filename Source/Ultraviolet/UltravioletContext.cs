@@ -106,8 +106,7 @@ namespace Ultraviolet
             {
                 factoryInitializer(this, factory);
             }
-            Configure();
-            InitializeFactory(configuration);
+            InitializeFactory();
         }
 
         /// <summary>
@@ -564,11 +563,6 @@ namespace Ultraviolet
         public IMessageQueue<UltravioletMessageID> Messages => messages;
 
         /// <summary>
-        /// Gets the assembly which provides compatibility services for the current platform.
-        /// </summary>
-        public Assembly PlatformCompatibilityShimAssembly => platformCompatibilityShimAssembly;
-
-        /// <summary>
         /// Gets or sets a value indicating whether the context is currently processing messages
         /// from the physical input devices.
         /// </summary>
@@ -739,7 +733,7 @@ namespace Ultraviolet
         /// <summary>
         /// Configures the context
         /// </summary>
-        protected virtual void Configure()
+        protected virtual void InitializeFactory()
         {
             factory.SetFactoryMethod(IsRunningInServiceMode ?
                 new SpriteBatchFactory((uv) => null) :
@@ -913,81 +907,6 @@ namespace Ultraviolet
             ContextInvalidated?.Invoke(null, EventArgs.Empty);
 
         /// <summary>
-        /// Initializes the context's object factory.
-        /// </summary>
-        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        private void InitializeFactory(UltravioletConfiguration configuration)
-        {
-            InitializeFactoryMethodsInCompatibilityShim();
-            
-            var asmEntry = Assembly.GetEntryAssembly();
-            if (asmEntry != null)
-                InitializeFactoryMethodsInAssembly(asmEntry);
-        }
-
-        /// <summary>
-        /// Initializes any factory methods exposed by the current platform compatibility shim.
-        /// </summary>
-        private void InitializeFactoryMethodsInCompatibilityShim()
-        {
-            var publicKeyString = String.Join(String.Empty,
-                typeof(UltravioletContext).Assembly.GetName().GetPublicKey().Select(x => x.ToString("x2")));
-
-            try
-            {
-                var shim = default(Assembly);
-
-                if (Runtime == UltravioletRuntime.CoreCLR)
-                {
-                    switch (RuntimeVersion?.Major ?? 0)
-                    {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                            throw new NotSupportedException();
-
-                        default:
-                            shim = Assembly.Load("Ultraviolet.Shims.NETCore, PublicKey=" + publicKeyString);
-                            break;
-                    }
-                }
-                else if(Runtime == UltravioletRuntime.Mono)
-                {
-                    // this is Mono on CoreCLR
-                    switch (Platform)
-                    {
-                        case UltravioletPlatform.Android:
-                            shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
-                            break;
-
-                        case UltravioletPlatform.iOS:
-                            shim = Assembly.Load("Ultraviolet.Shims.iOS.dll");
-                            break;
-
-                        default:
-                            throw new NotSupportedException();
-                    }
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
-
-                if (shim != null)
-                    InitializeFactoryMethodsInAssembly(shim);
-
-                platformCompatibilityShimAssembly = shim;
-            }
-            catch (FileNotFoundException e)
-            {
-                throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
-            }
-        }
-
-        /// <summary>
         /// Updates the context's list of tasks.
         /// </summary>
         private void UpdateTasks()
@@ -1042,7 +961,6 @@ namespace Ultraviolet
         private readonly UltravioletSynchronizationContext syncContext;
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly Thread thread;
-        private Assembly platformCompatibilityShimAssembly;
 
         // The context's list of pending tasks.
         private readonly TaskScheduler taskScheduler;
