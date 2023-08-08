@@ -47,6 +47,7 @@ namespace Ultraviolet.SDL2
             eventFilterPtr = Marshal.GetFunctionPointerForDelegate(eventFilter);
             SDL_SetEventFilter(eventFilterPtr, IntPtr.Zero);
 
+            ConfigurePlugins(configuration);
             LoadSubsystemAssemblies(configuration);
             this.swapChainManager = IsRunningInServiceMode ? new DummySwapChainManager(this) : SwapChainManager.Create();
             
@@ -205,45 +206,6 @@ namespace Ultraviolet.SDL2
         }
 
         /// <summary>
-        /// Attempts to create a new instance of the specified Ultraviolet subsystem by dynamically loading it from the specified assembly.
-        /// </summary>
-        /// <typeparam name="TSubsystem">The subsystem interface type.</typeparam>
-        /// <param name="assembly">The assembly from which to load the subsystem implementation.</param>
-        /// <param name="configuration">The Ultraviolet context configuration.</param>
-        /// <param name="instance">The subsystem instance that was created.</param>
-        /// <returns><see langword="true"/> if the subsystem instance was created; otherwise, <see langword="false"/>.</returns>
-        private Boolean TryCreateSubsystemInstance<TSubsystem>(Assembly assembly, UltravioletConfiguration configuration, out TSubsystem instance)
-        {
-            var types = (from t in assembly.GetTypes()
-                         where
-                          t.IsClass && !t.IsAbstract &&
-                          t.GetInterfaces().Contains(typeof(TSubsystem))
-                         select t).ToList();
-
-            if (!types.Any() || types.Count > 1)
-                throw new InvalidOperationException(SDL2Strings.InvalidAudioAssembly);
-
-            var type = types.Single();
-
-            var ctorWithConfig = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(UltravioletConfiguration) });
-            if (ctorWithConfig != null)
-            {
-                instance = (TSubsystem)ctorWithConfig.Invoke(new object[] { this, configuration });
-                return true;
-            }
-
-            var ctorWithoutConfig = type.GetConstructor(new[] { typeof(UltravioletContext) });
-            if (ctorWithoutConfig != null)
-            {
-                instance = (TSubsystem)ctorWithoutConfig.Invoke(new object[] { this });
-                return true;
-            }
-
-            instance = default(TSubsystem);
-            return false;
-        }
-
-        /// <summary>
         /// Initializes the context's platform subsystem.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
@@ -284,8 +246,13 @@ namespace Ultraviolet.SDL2
             if (IsRunningInServiceMode)
                 return new DummyUltravioletGraphics(this);
 
-            if (!TryCreateSubsystemInstance<IUltravioletGraphics>(GraphicsSubsystemAssembly, configuration, out var graphics))
-                throw new InvalidOperationException(SDL2Strings.InvalidGraphicsAssembly);
+            var factory = Factory.TryGetFactoryMethod<UltravioletGraphicsFactory>();
+            if (factory == null)
+            {
+                throw new InvalidOperationException(SDL2Strings.MissingGraphicsFactory);
+            }
+
+            var graphics = factory(this, configuration);
 
             return graphics;
         }
@@ -300,8 +267,13 @@ namespace Ultraviolet.SDL2
             if (IsRunningInServiceMode)
                 return new DummyUltravioletAudio(this);
 
-            if (!TryCreateSubsystemInstance<IUltravioletAudio>(AudioSubsystemAssembly, configuration, out var audio))
-                throw new InvalidOperationException(SDL2Strings.InvalidAudioAssembly);
+            var factory = Factory.TryGetFactoryMethod<UltravioletAudioFactory>();
+            if (factory == null)
+            {
+                throw new InvalidOperationException(SDL2Strings.MissingAudioFactory);
+            }
+
+            var audio = factory(this, configuration);
 
             return audio;
         }

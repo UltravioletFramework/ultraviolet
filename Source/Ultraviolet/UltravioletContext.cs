@@ -734,6 +734,18 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Configures the context's plugins.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        protected void ConfigurePlugins(UltravioletConfiguration configuration)
+        {
+            foreach (var plugin in configuration.Plugins)
+            {
+                plugin.Configure(this, Factory);
+            }
+        }
+
+        /// <summary>
         /// Initializes the context's plugins.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>

@@ -4,6 +4,13 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet
 {
     /// <summary>
+    /// Initializes a new instance of the IUltravioletGraphics implementation.
+    /// </summary>
+    /// <param name="context">The Ultraviolet context.</param>
+    /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
+    public delegate IUltravioletGraphics UltravioletGraphicsFactory(UltravioletContext context, UltravioletConfiguration configuration);
+
+    /// <summary>
     /// Represents the Ultraviolet Framework's graphics subsystem.
     /// </summary>
     public interface IUltravioletGraphics : IUltravioletSubsystem

@@ -8,6 +8,13 @@ namespace Ultraviolet.BASS
     public class BASSAudioPlugin : UltravioletPlugin
     {
         /// <inheritdoc/>
+        public override void Configure(UltravioletContext uv, UltravioletFactory factory)
+        {
+            factory.SetFactoryMethod<UltravioletAudioFactory>((uv, configuration) => new BASSUltravioletAudio(uv));
+            base.Configure(uv, factory);
+        }
+
+        /// <inheritdoc/>
         public override void Register(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, nameof(configuration));

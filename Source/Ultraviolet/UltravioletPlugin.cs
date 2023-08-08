@@ -14,6 +14,13 @@ namespace Ultraviolet
         public virtual void Register(UltravioletConfiguration configuration) { }
 
         /// <summary>
+        /// Configures the plugin for the specified Ultraviolet context.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="factory">The Ultraviolet factory.</param>
+        public virtual void Configure(UltravioletContext uv, UltravioletFactory factory) { }
+
+        /// <summary>
         /// Initializes the plugin for the specified Ultraviolet context.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>

@@ -5,6 +5,13 @@ using Ultraviolet.Audio;
 namespace Ultraviolet
 {
     /// <summary>
+    /// Initializes a new instance of the IUltravioletAudio implementation.
+    /// </summary>
+    /// <param name="context">The Ultraviolet context.</param>
+    /// <param name="configuration">The Ultraviolet configuration settings for the current context.</param>
+    public delegate IUltravioletAudio UltravioletAudioFactory(UltravioletContext context, UltravioletConfiguration configuration);
+
+    /// <summary>
     /// Represents the Ultraviolet Framework's audio subsystem.
     /// </summary>
     public interface IUltravioletAudio : IUltravioletSubsystem

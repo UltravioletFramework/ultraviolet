@@ -17,6 +17,13 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
+        public override void Configure(UltravioletContext uv, UltravioletFactory factory)
+        {
+            factory.SetFactoryMethod<UltravioletGraphicsFactory>((uv, configuration) => new OpenGLUltravioletGraphics(uv, configuration));
+            base.Configure(uv, factory);
+        }
+
+        /// <inheritdoc/>
         public override void Register(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, nameof(configuration));

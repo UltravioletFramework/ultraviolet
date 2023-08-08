@@ -45,6 +45,16 @@
       <Variant>Invalid audio subsystem assembly.</Variant>
     </en-US>
   </String>
+  <String Key="MISSING_GRAPHICS_FACTORY">
+    <en-US>
+      <Variant>Missing graphics factory.</Variant>
+    </en-US>
+  </String>
+  <String Key="MISSING_AUDIO_FACTORY">
+    <en-US>
+      <Variant>Missing audio factory.</Variant>
+    </en-US>
+  </String>
   <String Key="PRIMARY_WINDOW_ALREADY_INITIALIZED">
     <en-US>
       <Variant>The application's primary window has already been initialized.</Variant>

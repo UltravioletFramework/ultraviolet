@@ -8,6 +8,13 @@ namespace Ultraviolet.FMOD
     public class FMODAudioPlugin : UltravioletPlugin
     {
         /// <inheritdoc/>
+        public override void Configure(UltravioletContext uv, UltravioletFactory factory)
+        {
+            factory.SetFactoryMethod<UltravioletAudioFactory>((uv, configuration) => new FMODUltravioletAudio(uv, configuration));
+            base.Configure(uv, factory);
+        }
+
+        /// <inheritdoc/>
         public override void Register(UltravioletConfiguration configuration)
         {
             Contract.Require(configuration, nameof(configuration));

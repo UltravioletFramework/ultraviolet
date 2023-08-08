@@ -32,6 +32,8 @@ namespace Ultraviolet.SDL2
         public static readonly StringResource InvalidGraphicsAssembly             = new StringResource(StringDatabase, "INVALID_GRAPHICS_ASSEMBLY");
         public static readonly StringResource MissingAudioAssembly                = new StringResource(StringDatabase, "MISSING_AUDIO_ASSEMBLY");
         public static readonly StringResource InvalidAudioAssembly                = new StringResource(StringDatabase, "INVALID_AUDIO_ASSEMBLY");
+        public static readonly StringResource MissingGraphicsFactory              = new StringResource(StringDatabase, "MISSING_GRAPHICS_FACTORY");
+        public static readonly StringResource MissingAudioFactory                 = new StringResource(StringDatabase, "MISSING_AUDIO_FACTORY");
 #pragma warning restore 1591
     }
 }
