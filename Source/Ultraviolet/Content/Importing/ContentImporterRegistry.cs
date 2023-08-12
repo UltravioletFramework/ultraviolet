@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Content
@@ -19,38 +17,6 @@ namespace Ultraviolet.Content
         {
             this.internalByteArrayImporter = new InternalByteArrayImporter();
             this.internalMemoryStreamImporter = new InternalMemoryStreamImporter();
-        }
-
-        /// <summary>
-        /// Registers the importers in the specified assembly.
-        /// </summary>
-        /// <param name="asm">The assembly that contains the importers to register.</param>
-        public void RegisterAssembly(Assembly asm)
-        {
-            Contract.Require(asm, nameof(asm));
-
-            var importers = from type in asm.GetTypes()
-                            let attrs = type.GetCustomAttributes(typeof(ContentImporterAttribute), false).Cast<ContentImporterAttribute>()
-                            where attrs != null && attrs.Count() > 0
-                            select new { Type = type, Attributes = attrs };
-
-            foreach (var importer in importers)
-            {
-                var baseImporterType = GetBaseContentImporterType(importer.Type);
-                if (baseImporterType == null)
-                    throw new InvalidOperationException(UltravioletStrings.ImporterInvalidBaseClass.Format(importer.Type.FullName));
-
-                var instance = CreateImporterInstance(importer.Type);
-                foreach (var attr in importer.Attributes)
-                {
-                    if (registeredImporters.ContainsKey(attr.Extension))
-                    {
-                        throw new InvalidOperationException(
-                            UltravioletStrings.ImporterAlreadyRegistered.Format(importer.Type.FullName, attr.Extension));
-                    }
-                    registeredImporters[attr.Extension] = new RegistryEntry(instance);
-                }
-            }
         }
         
         /// <summary>
@@ -92,24 +58,29 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
-        /// Registers a content importer for the specified file extension.
+        /// Registers a content importer for the specified file extensions.
         /// </summary>
         /// <typeparam name="T">The type of content importer to register.</typeparam>
-        /// <param name="extension">The file extension for which to register the importer.</param>
-        public void RegisterImporter<T>(String extension) where T : IContentImporter
+        /// <param name="extensions">The file extensions for which to register the importer.</param>
+        public void RegisterImporter<T>(params String[] extensions) where T : IContentImporter
         {
-            Contract.RequireNotEmpty(extension, nameof(extension));
+            Contract.Require(extensions, nameof(extensions));
 
             var baseImporterType = GetBaseContentImporterType(typeof(T));
             if (baseImporterType == null)
                 throw new InvalidOperationException(UltravioletStrings.ImporterInvalidBaseClass.Format(typeof(T).FullName));
 
-            if (registeredImporters.ContainsKey(extension))
+            foreach (var extension in extensions)
             {
-                throw new InvalidOperationException(
-                    UltravioletStrings.ImporterAlreadyRegistered.Format(typeof(T).FullName, extension));
+                Contract.RequireNotEmpty(extension, nameof(extension));
+
+                if (registeredImporters.ContainsKey(extension))
+                {
+                    throw new InvalidOperationException(
+                        UltravioletStrings.ImporterAlreadyRegistered.Format(typeof(T).FullName, extensions));
+                }
+                registeredImporters[extension] = new RegistryEntry(CreateImporterInstance(typeof(T)));
             }
-            registeredImporters[extension] = new RegistryEntry(CreateImporterInstance(typeof(T)));
         }
 
         /// <summary>

@@ -30,7 +30,12 @@ namespace Ultraviolet.FreeType2
                 }
             }
 
-            content.RegisterImportersAndProcessors(typeof(FreeTypeFontPlugin).Assembly);
+            content.Importers.RegisterImporter<FreeTypeFontImporter>(FreeTypeFontImporter.SupportedExtensions);
+
+            content.Processors.RegisterProcessor<FreeTypeFontProcessor>();
+            content.Processors.RegisterProcessor<UltravioletFontProcessorFromFreeType>();
+            content.Processors.RegisterProcessor<UltravioletFontProcessorFromJObject>();
+            content.Processors.RegisterProcessor<UltravioletFontProcessorFromXDocument>();
 
             factory.SetFactoryMethod<TextShaperFactory>((uvctx, capacity) => new HarfBuzzTextShaper(uvctx, capacity));
         }

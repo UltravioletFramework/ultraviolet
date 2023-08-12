@@ -46,7 +46,13 @@ namespace Ultraviolet.FMOD
         /// <inheritdoc/>
         public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
         {
-            uv.GetContent().RegisterImportersAndProcessors(typeof(FMODAudioPlugin).Assembly);
+            var content = uv.GetContent();
+            {
+                content.Importers.RegisterImporter<FMODMediaImporter>(FMODMediaImporter.SupportedExtensions);
+
+                content.Processors.RegisterProcessor<FMODSongProcessor>();
+                content.Processors.RegisterProcessor<FMODSoundEffectProcessor>();
+            }
             base.Initialize(uv, factory);
         }
 

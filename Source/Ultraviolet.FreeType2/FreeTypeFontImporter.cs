@@ -16,6 +16,11 @@ namespace Ultraviolet.FreeType2
     [ContentImporter(".fnt")]
     public sealed class FreeTypeFontImporter : ContentImporter<FreeTypeFontInfo>
     {
+        /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".ttf", ".ttc", ".otf", ".otc", ".fnt" };
+
         /// <inheritdoc/>
         public override FreeTypeFontInfo Import(IContentImporterMetadata metadata, Stream stream)
         {

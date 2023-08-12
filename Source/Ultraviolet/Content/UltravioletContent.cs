@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Ultraviolet.Core;
+﻿using Ultraviolet.Core;
 
 namespace Ultraviolet.Content
 {
@@ -19,38 +15,6 @@ namespace Ultraviolet.Content
             : base(uv)
         {
 
-        }
-
-        /// <inheritdoc/>
-        public void RegisterImportersAndProcessors(Assembly asm)
-        {
-            Contract.Require(asm, nameof(asm));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            importers.RegisterAssembly(asm);
-            processors.RegisterAssembly(asm);
-        }
-
-        /// <inheritdoc/>
-        public void RegisterImportersAndProcessors(IEnumerable<Assembly> additionalAssemblies = null)
-        {
-            Contract.EnsureNot(registered, UltravioletStrings.ContentHandlersAlreadyRegistered);
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var asmCore = typeof(UltravioletContext).Assembly;
-            var asmImpl = Ultraviolet.GetType().Assembly;
-            var asmEntry = Assembly.GetEntryAssembly();
-
-            var assemblies = new[] { asmCore, asmImpl }
-                .Union(additionalAssemblies ?? Enumerable.Empty<Assembly>()).Where(x => x != null).Distinct();
-
-            foreach (var asm in assemblies)
-                RegisterImportersAndProcessors(asm);
-
-            if (asmEntry != null)
-                RegisterImportersAndProcessors(asmEntry);
-
-            registered = true;
         }
 
         /// <inheritdoc/>
@@ -81,7 +45,6 @@ namespace Ultraviolet.Content
             Updating?.Invoke(this, time);
         
         // Registered content importers and processors.
-        private Boolean registered;
         private readonly ContentManifestRegistry manifests = new ContentManifestRegistry();
         private readonly ContentImporterRegistry importers = new ContentImporterRegistry();
         private readonly ContentProcessorRegistry processors = new ContentProcessorRegistry();

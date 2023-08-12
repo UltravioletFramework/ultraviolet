@@ -7,10 +7,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
+using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics3D;
 using Ultraviolet.Platform;
+using Ultraviolet.SDL2;
 using Ultraviolet.UI;
 
 namespace Ultraviolet
@@ -689,9 +693,58 @@ namespace Ultraviolet
         {
             IsInitialized = true;
 
-            GetContent().RegisterImportersAndProcessors(typeof(UltravioletContext).Assembly);
-            GetContent().Processors
-                .SetFallbackType<UltravioletFont>(typeof(SpriteFont));
+            var content = GetContent();
+            {
+                content.Processors
+                    .SetFallbackType<UltravioletFont>(typeof(SpriteFont));
+
+                // Content
+                content.Importers.RegisterImporter<JsonContentImporter>(".json");
+                content.Importers.RegisterImporter<TextContentImporter>(".txt");
+                content.Importers.RegisterImporter<XmlContentImporter>(".xml");
+
+                content.Processors.RegisterProcessor<JsonContentProcessor>();
+                content.Processors.RegisterProcessor<PassthroughContentProcessor>();
+                content.Processors.RegisterProcessor<XmlContentProcessor>();
+
+                content.Processors.RegisterProcessor<CursorCollectionProcessorFromJObject>();
+                content.Processors.RegisterProcessor<CursorCollectionProcessorFromXDocument>();
+
+                // Graphics 2D
+                content.Importers.RegisterImporter<SpriteImporterToJObject>(".jssprite");
+                content.Importers.RegisterImporter<SpriteImporterToXDocument>(".sprite");
+
+                content.Processors.RegisterProcessor<SpriteProcessorFromJObject>();
+                content.Processors.RegisterProcessor<SpriteProcessorFromXDocument>();
+
+                content.Processors.RegisterProcessor<SpriteFontProcessor>();
+                content.Processors.RegisterProcessor<SpriteFontProcessorFromJObject>();
+                content.Processors.RegisterProcessor<SpriteFontProcessorFromXDocument>();
+                content.Processors.RegisterProcessor<SpriteFontTextureProcessor>();
+
+                // Graphics 3D
+                content.Importers.RegisterImporter<GlbModelImporter>(".glb");
+                content.Importers.RegisterImporter<GltfModelImporter>(".gltf");
+                content.Importers.RegisterImporter<StlModelImporter>(".stl");
+
+                content.Processors.RegisterProcessor<GltfModelProcessor>();
+                content.Processors.RegisterProcessor<GltfSkinnedModelProcessor>();
+                content.Processors.RegisterProcessor<StlModelProcessor>();
+
+                // Graphics
+                content.Processors.RegisterProcessor<TextureAtlasProcessorFromJObject>();
+                content.Processors.RegisterProcessor<TextureAtlasProcessorFromXDocument>();
+
+                // Graphics/RHI
+                content.Processors.RegisterProcessor<Texture2DProcessor>();
+                content.Processors.RegisterProcessor<Texture3DProcessor>();
+
+                // Curve
+                content.Processors.RegisterProcessor<CurveProcessor>();
+
+                // UI
+                content.Processors.RegisterProcessor<UIPanelDefinitionProcessor>();
+            }
 
             OnInitialized();
             OnContextInitialized();

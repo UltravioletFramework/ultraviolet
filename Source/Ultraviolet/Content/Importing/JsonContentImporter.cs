@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json.Linq;
 
 namespace Ultraviolet.Content
@@ -9,6 +10,11 @@ namespace Ultraviolet.Content
     [ContentImporter(".json")]
     public sealed class JsonContentImporter : ContentImporter<JObject>
     {
+        /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".json" };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonContentImporter"/> class.
         /// </summary>

@@ -26,7 +26,6 @@ namespace Ultraviolet.ImGuiViewProvider
         /// <inheritdoc/>
         public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
         {
-            uv.GetContent().RegisterImportersAndProcessors(typeof(ImGuiPlugin).Assembly);
             base.Initialize(uv, factory);
         }
     }

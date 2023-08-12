@@ -207,8 +207,15 @@ namespace Ultraviolet.SDL2
         private IUltravioletContent InitializeContentSubsystem()
         {
             var content = new UltravioletContent(this);
-            content.Importers.RegisterImporter<XmlContentImporter>("prog");
-            content.RegisterImportersAndProcessors(typeof(SDL2UltravioletContext).Assembly);
+            {
+                content.Importers.RegisterImporter<XmlContentImporter>("prog");
+
+                content.Importers.RegisterImporter<SDL2PlatformNativeSurfaceImporter>(SDL2PlatformNativeSurfaceImporter.SupportedExtensions);
+
+                content.Processors.RegisterProcessor<SDL2Surface2DProcessor>();
+                content.Processors.RegisterProcessor<SDL2Surface3DProcessor>();
+                content.Processors.RegisterProcessor<SDL2CursorProcessor>();
+            }
             return content;
         }
 

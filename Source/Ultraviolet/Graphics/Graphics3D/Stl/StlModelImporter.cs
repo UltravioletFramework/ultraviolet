@@ -12,6 +12,11 @@ namespace Ultraviolet.Graphics.Graphics3D
     [ContentImporter(".stl")]
     public sealed class StlModelImporter : ContentImporter<StlModelDescription>
     {
+        /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".stl" };
+
         /// <inheritdoc/>
         public override StlModelDescription Import(IContentImporterMetadata metadata, Stream stream)
         {

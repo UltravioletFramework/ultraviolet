@@ -24,7 +24,13 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
         {
-            uv.GetContent().RegisterImportersAndProcessors(typeof(BASSAudioPlugin).Assembly);
+            var content = uv.GetContent();
+            {
+                content.Importers.RegisterImporter<BASSMediaImporter>(BASSMediaImporter.SupportedExtensions);
+
+                content.Processors.RegisterProcessor<BASSSongProcessor>();
+                content.Processors.RegisterProcessor<BASSSoundEffectProcessor>();
+            }
             base.Initialize(uv, factory);
         }
 

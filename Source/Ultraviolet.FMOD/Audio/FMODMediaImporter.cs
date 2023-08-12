@@ -21,6 +21,11 @@ namespace Ultraviolet.FMOD.Audio
     [ContentImporter(".wav")]
     public sealed class FMODMediaImporter : ContentImporter<FMODMediaDescription>
     {
+        /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".aif", ".aiff", ".flac", ".it", ".m3u", ".mid", ".mod", ".mp2", ".mp3", ".ogg", ".s3m", ".wav" };
+
         /// <inheritdoc/>
         public override FMODMediaDescription Import(IContentImporterMetadata metadata, Stream stream)
         {

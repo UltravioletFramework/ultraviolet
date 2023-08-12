@@ -15,6 +15,11 @@ namespace Ultraviolet.SDL2.Graphics
     public unsafe sealed class SDL2PlatformNativeSurfaceImporter : ContentImporter<PlatformNativeSurface>
     {
         /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".bmp", ".png", ".jpg", ".jpeg" };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SDL2PlatformNativeSurfaceImporter"/> class.
         /// </summary>
         public SDL2PlatformNativeSurfaceImporter() { }

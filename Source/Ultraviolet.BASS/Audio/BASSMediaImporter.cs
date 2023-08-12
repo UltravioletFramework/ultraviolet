@@ -12,6 +12,11 @@ namespace Ultraviolet.BASS.Audio
     [ContentImporter(".wav")]
     public sealed class BASSMediaImporter : ContentImporter<BASSMediaDescription>
     {
+        /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".mp3", ".ogg", ".wav" };
+
         /// <inheritdoc/>
         public override BASSMediaDescription Import(IContentImporterMetadata metadata, Stream stream)
         {

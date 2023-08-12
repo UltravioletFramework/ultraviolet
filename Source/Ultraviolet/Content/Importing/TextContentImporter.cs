@@ -11,6 +11,11 @@ namespace Ultraviolet.Content
     public sealed class TextContentImporter : ContentImporter<String[]>
     {
         /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".txt" };
+
+        /// <summary>
         /// Imports the data from the specified file.
         /// </summary>
         /// <param name="metadata">The asset metadata for the asset to import.</param>

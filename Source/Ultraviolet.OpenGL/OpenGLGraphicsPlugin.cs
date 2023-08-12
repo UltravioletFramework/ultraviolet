@@ -104,7 +104,25 @@ namespace Ultraviolet.OpenGL
         /// <inheritdoc/>
         public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
         {
-            uv.GetContent().RegisterImportersAndProcessors(typeof(OpenGLGraphicsPlugin).Assembly);
+            var content = uv.GetContent();
+            {
+                content.Importers.RegisterImporter<OpenGLFragmentShaderImporter>(OpenGLFragmentShaderImporter.SupportedExtensions);
+
+                content.Importers.RegisterImporter<OpenGLVertexShaderImporter>(OpenGLVertexShaderImporter.SupportedExtensions);
+
+                content.Processors.RegisterProcessor<OpenGLEffectImplementationProcessorFromJObject>();
+                content.Processors.RegisterProcessor<OpenGLEffectImplementationProcessorFromShaderSource>();
+                content.Processors.RegisterProcessor<OpenGLEffectImplementationProcessorFromXDocument>();
+                content.Processors.RegisterProcessor<OpenGLEffectProcessorFromJObject>();
+                content.Processors.RegisterProcessor<OpenGLEffectProcessorFromShaderSource>();
+                content.Processors.RegisterProcessor<OpenGLEffectProcessorFromXDocument>();
+                content.Processors.RegisterProcessor<OpenGLEffectSourceProcessorFromJObject>();
+                content.Processors.RegisterProcessor<OpenGLEffectSourceProcessorFromShaderSource>();
+                content.Processors.RegisterProcessor<OpenGLEffectSourceProcessorFromXDocument>();
+                content.Processors.RegisterProcessor<OpenGLFragmentShaderProcessor>();
+                content.Processors.RegisterProcessor<OpenGLVertexShaderProcessor>();
+                content.Processors.RegisterProcessor<ShaderSourceProcessor>();
+            }
             base.Initialize(uv, factory);
         }
 

@@ -1,4 +1,5 @@
-﻿using Ultraviolet.UI;
+﻿using Ultraviolet.Presentation.Styles;
+using Ultraviolet.UI;
 
 namespace Ultraviolet.Presentation
 {
@@ -30,7 +31,12 @@ namespace Ultraviolet.Presentation
         /// <inheritdoc/>
         public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
         {
-            uv.GetContent().RegisterImportersAndProcessors(typeof(PresentationFoundationPlugin).Assembly);
+            var content = uv.GetContent();
+            {
+                content.Importers.RegisterImporter<UvssDocumentImporter>(".uvss");
+
+                content.Processors.RegisterProcessor<UvssDocumentProcessor>();
+            }
             base.Initialize(uv, factory);
         }
 

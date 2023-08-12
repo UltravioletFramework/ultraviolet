@@ -3,7 +3,7 @@
 namespace Ultraviolet.Content
 {
     /// <summary>
-    /// Represents a content processor which loads XML documents.
+    /// Represents a content processor which loads JSON documents.
     /// </summary>
     [ContentProcessor]
     public sealed class JsonContentProcessor : ContentProcessor<JObject, JObject>

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Content
@@ -17,41 +15,6 @@ namespace Ultraviolet.Content
         internal ContentProcessorRegistry()
         {
 
-        }
-
-        /// <summary>
-        /// Registers any content processors which are defined in the specified assembly.
-        /// </summary>
-        /// <param name="asm">The assembly that contains the content processors to register.</param>
-        public void RegisterAssembly(Assembly asm)
-        {
-            Contract.Require(asm, nameof(asm));
-
-            var processors = from type in asm.GetTypes()
-                             let attrs = type.GetCustomAttributes(typeof(ContentProcessorAttribute), false).Cast<ContentProcessorAttribute>()
-                             where attrs != null && attrs.Count() > 0
-                             select new { Type = type, Attribute = attrs.First() };
-
-            foreach (var processor in processors)
-            {
-                var instance = CreateProcessorInstance(processor.Type);
-
-                var baseProcessorType = GetBaseContentProcessorType(processor.Type);
-                if (baseProcessorType == null)
-                    throw new InvalidOperationException(UltravioletStrings.ProcessorInvalidBaseClass.Format(processor.Type.FullName));
-                
-                var args = baseProcessorType.GetGenericArguments();
-                var input = args[0];
-                var output = args[1];
-
-                var key = new RegistryKey(input, output);
-                if (registeredProcessors.ContainsKey(key))
-                {
-                    throw new InvalidOperationException(
-                        UltravioletStrings.ProcessorAlreadyRegistered.Format(processor.Type.FullName, input.FullName, output.FullName));
-                }
-                registeredProcessors[key] = instance;
-            }
         }
 
         /// <summary>

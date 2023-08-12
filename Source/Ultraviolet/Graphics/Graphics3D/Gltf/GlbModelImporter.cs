@@ -11,6 +11,11 @@ namespace Ultraviolet.Graphics.Graphics3D
     [ContentImporter(".glb"), CLSCompliant(false)]
     public class GlbModelImporter : ContentImporter<ModelRoot>
     {
+        /// <summary>
+        /// An array of file extensions supported by this importer 
+        /// </summary>
+        public static String[] SupportedExtensions { get; } = new string[] { ".glb" };
+
         /// <inheritdoc/>
         public override ModelRoot Import(IContentImporterMetadata metadata, Stream stream)
         {
