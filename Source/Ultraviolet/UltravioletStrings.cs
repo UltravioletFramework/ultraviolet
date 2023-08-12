@@ -146,6 +146,7 @@ namespace Ultraviolet
         public static readonly StringResource SpriteFontMissingGlyphs              = new StringResource(StringDatabase, "SPRITE_FONT_MISSING_GLYPHS");
         public static readonly StringResource IncompatibleSurfaceLayer             = new StringResource(StringDatabase, "INCOMPATIBLE_SURFACE_LAYER");
         public static readonly StringResource SurfaceLayerEncodingMismatch         = new StringResource(StringDatabase, "SURFACE_LAYER_ENCODING_MISMATCH");
+        public static readonly StringResource SurfaceIsNotComplete                 = new StringResource(StringDatabase, "SURFACE_IS_NOT_COMPLETE");
         public static readonly StringResource SurfaceCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "SURFACE_CANNOT_HAVE_MULTIPLE_ENCODINGS");
         public static readonly StringResource TextureCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "TEXTURE_CANNOT_HAVE_MULTIPLE_ENCODINGS");
         public static readonly StringResource BuffersCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "BUFFERS_CANNOT_HAVE_MULTIPLE_ENCODINGS");

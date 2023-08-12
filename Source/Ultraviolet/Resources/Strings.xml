@@ -600,6 +600,11 @@
       <Variant>This surface cannot be converted to a texture because one or more of its layers do not match the sRGB encoding of the surface.</Variant>
     </en-US>
   </String>
+  <String Key="SURFACE_IS_NOT_COMPLETE">
+    <en-US>
+      <Variant>The specified surface does not contain a complete set of layers.</Variant>
+    </en-US>
+  </String>
   <String Key="SURFACE_CANNOT_HAVE_MULTIPLE_ENCODINGS">
     <en-US>
       <Variant>A surface cannot specify both SurfaceOptions.LinearColor and SurfaceOptions.SrgbColor.</Variant>

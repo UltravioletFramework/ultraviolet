@@ -15,11 +15,6 @@
       <Variant>The surface has already been prepared for export.</Variant>
     </en-US>
   </String>
-  <String Key="SURFACE_IS_NOT_COMPLETE">
-    <en-US>
-      <Variant>The specified surface does not contain a complete set of layers.</Variant>
-    </en-US>
-  </String>
   <String Key="SURFACE_MUST_HAVE_SQUARE_LAYERS">
     <en-US>
       <Variant>A Surface3D which is loaded from a single file must consist of square layers arranged from left to right, and the file must contain no excess space.</Variant>

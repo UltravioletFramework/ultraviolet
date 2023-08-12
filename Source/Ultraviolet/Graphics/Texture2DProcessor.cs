@@ -80,7 +80,7 @@ namespace Ultraviolet.Graphics
                 var flipdir = manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None;
                 surface.FlipAndProcessAlpha(flipdir, mdat.PremultiplyAlpha, mdat.Opaque ? null : (Color?)Color.Magenta);
 
-                return surface.CreateTexture(unprocessed: true);
+                return Texture2D.CreateTextureFromSurface(surface, unprocessed: true);
             }
         }
 

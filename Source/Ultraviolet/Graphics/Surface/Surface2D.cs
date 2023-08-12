@@ -211,16 +211,6 @@ namespace Ultraviolet.Graphics
         public abstract Surface2D CreateSurface(Rectangle region);
 
         /// <summary>
-        /// Creates a texture from the surface.
-        /// </summary>
-        /// <param name="unprocessed">A value indicating whether the surface data should be passed
-        /// through to the texture without any further processing, regardless of the platform's
-        /// requirements. For example, an unprocessed texture will not be flipped vertically on
-        /// the OpenGL implementation.</param>
-        /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
-        public abstract Texture2D CreateTexture(Boolean unprocessed = false);
-
-        /// <summary>
         /// Saves the surface as a JPEG image to the specified stream.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>

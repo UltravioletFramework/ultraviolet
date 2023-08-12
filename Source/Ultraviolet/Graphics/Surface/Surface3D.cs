@@ -112,16 +112,6 @@ namespace Ultraviolet.Graphics
         public abstract Surface3D CreateSurface();
 
         /// <summary>
-        /// Creates a texture from the surface.
-        /// </summary>
-        /// <param name="unprocessed">A value indicating whether the surface data should be passed
-        /// through to the texture without any further processing, regardless of the platform's
-        /// requirements. For example, an unprocessed texture will not be flipped vertically on
-        /// the OpenGL implementation.</param>
-        /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
-        public abstract Texture3D CreateTexture(Boolean unprocessed);
-
-        /// <summary>
         /// Saves the surface as a JPEG image to the specified stream.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>

@@ -41,6 +41,42 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Creates a texture from the surface.
+        /// </summary>
+        /// <param name="surface">The surface</param>
+        /// <param name="unprocessed">A value indicating whether the surface data should be passed
+        /// through to the texture without any further processing, regardless of the platform's
+        /// requirements. For example, an unprocessed texture will not be flipped vertically on
+        /// the OpenGL implementation.</param>
+        /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
+        public static Texture2D CreateTextureFromSurface(Surface2D surface, Boolean unprocessed = false)
+        {
+            Contract.EnsureNotDisposed(surface, surface?.Disposed ?? true);
+
+            var uv = UltravioletContext.DemandCurrent();
+
+            if (unprocessed)
+            {
+                var options = TextureOptions.ImmutableStorage | (surface.SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+                var format = TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, surface.BytesPerPixel);
+                return Texture2D.CreateTexture((IntPtr)surface.Pixels, surface.Width, surface.Height, format, options);
+            }
+            else
+            {
+                surface.CreateSurface();
+                using (var copysurf = surface.CreateSurface())
+                {
+                    copysurf.Flip(uv.GetGraphics().Capabilities.FlippedTextures ?
+                        SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None); // todo uvj: is this needed?
+
+                    var options = TextureOptions.ImmutableStorage | (surface.SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+                    var format = TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, copysurf.BytesPerPixel);
+                    return Texture2D.CreateTexture((IntPtr)copysurf.Pixels, copysurf.Width, copysurf.Height, format, options);
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a new instance of the <see cref="Texture2D"/> class.
         /// </summary>
         /// <param name="pixels">A pointer to the raw pixel data with which to populate the texture.</param>

@@ -113,7 +113,7 @@ namespace Ultraviolet.Graphics
                     layer.SrgbEncoded = srgbEncoded;
                     layer.FlipAndProcessAlpha(flipdir, mdat.PremultiplyAlpha, mdat.Opaque ? null : (Color?)Color.Magenta);
                 }
-                return surface.CreateTexture(unprocessed: true);
+                return Texture3D.CreateTextureFromSurface(surface, unprocessed: true);
             }
         }
 

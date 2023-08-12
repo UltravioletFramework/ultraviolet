@@ -240,34 +240,6 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Texture2D CreateTexture(Boolean unprocessed)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            if (unprocessed)
-            {
-                var options = TextureOptions.ImmutableStorage | (SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
-                var format = TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, BytesPerPixel);
-                return Texture2D.CreateTexture((IntPtr)NativePtr->pixels, Width, Height, format, options);
-            }
-            else
-            {
-                using (var copysurf = new SDL2PlatformNativeSurface(Width, Height))
-                {
-                    if (SDL_BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
-                        throw new SDL2Exception();
-
-                    copysurf.Flip(Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? 
-                        SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None);
-
-                    var options = TextureOptions.ImmutableStorage | (SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
-                    var format = TextureUtils.GetTextureFormatFromSurfaceFormat(SurfaceSourceDataFormat.RGBA, copysurf.BytesPerPixel);
-                    return Texture2D.CreateTexture((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, format, options);
-                }
-            }
-        }
-
-        /// <inheritdoc/>
         public override void SaveAsJpeg(Stream stream)
         {
             Contract.EnsureNotDisposed(this, Disposed);
