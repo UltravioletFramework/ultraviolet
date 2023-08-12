@@ -263,8 +263,8 @@ namespace Ultraviolet
         {
             Ray result;
 
-            result.Position = Tweening.Lerp(this.Position, target.Position, t);
-            result.Direction = Tweening.Lerp(this.Direction, target.Direction, t);
+            result.Position = this.Position.Interpolate(target.Position, t);
+            result.Direction = this.Direction.Interpolate(target.Direction, t);
 
             return result;
         }
