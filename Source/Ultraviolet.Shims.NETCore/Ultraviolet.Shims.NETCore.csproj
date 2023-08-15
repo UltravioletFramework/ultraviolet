@@ -50,6 +50,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
     <ProjectReference Include="..\Ultraviolet.Image\Ultraviolet.Image.csproj" />
+    <ProjectReference Include="..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj" />
     <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj" />
   </ItemGroup>
 

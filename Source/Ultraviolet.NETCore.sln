@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.ImGuiViewProvid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.ImGuiViewProvider", "Ultraviolet.ImGuiViewProvider\Ultraviolet.ImGuiViewProvider.csproj", "{195EAE48-23A4-47CD-84F8-6FDC61FAA236}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebug", "UvDebug\Shared\UvDebug.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore", "UvDebug\NETCore\UvDebug.NETCore.csproj", "{0A52123E-EFA1-4A86-8223-FB7B807C162A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{A528808D-F58D-4132-9D79-13C23341FE52}"
@@ -70,6 +68,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.Environment", "Ultraviolet.OpenGL.Environment\Ultraviolet.OpenGL.Environment.csproj", "{EE29FED4-F3FC-4DED-9550-C0BC5467C1F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Image", "Ultraviolet.Image\Ultraviolet.Image.csproj", "{4CFFD74B-8246-4A57-98DB-19B6CADD7C4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug", "UvDebug\Shared\UvDebug.csproj", "{3BCD551B-9E93-4BED-8B93-B38F2AFD9A9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -205,6 +205,10 @@ Global
 		{4CFFD74B-8246-4A57-98DB-19B6CADD7C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CFFD74B-8246-4A57-98DB-19B6CADD7C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CFFD74B-8246-4A57-98DB-19B6CADD7C4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BCD551B-9E93-4BED-8B93-B38F2AFD9A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BCD551B-9E93-4BED-8B93-B38F2AFD9A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BCD551B-9E93-4BED-8B93-B38F2AFD9A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BCD551B-9E93-4BED-8B93-B38F2AFD9A9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,10 +217,8 @@ Global
 		SolutionGuid = {5692BF08-52C2-4A45-9DA9-F6B390321257}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		UvDebug\Shared\UvDebug.projitems*{0a52123e-efa1-4a86-8223-fb7b807c162a}*SharedItemsImports = 5
 		Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems*{0e2b1bc3-d1c3-4626-8aa3-37bf3039e43f}*SharedItemsImports = 13
 		Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems*{375d70b8-eee0-4455-ae7c-897cd57b18ea}*SharedItemsImports = 5
-		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems*{86d72245-262c-45fe-b81f-937b23c29b6f}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution

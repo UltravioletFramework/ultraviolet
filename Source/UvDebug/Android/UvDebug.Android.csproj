@@ -15,9 +15,8 @@
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <RootNamespace>UvDebug</RootNamespace>
-    <AssemblyName>UvDebug</AssemblyName>
+    <AssemblyName>UvDebug.Android</AssemblyName>
   </PropertyGroup>
-  <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <Import Project="Ultraviolet.Android.targets" />
   <ItemGroup>
     <Reference Include="org.libsdl.app">
@@ -129,20 +128,21 @@
     </AndroidNativeLibrary>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.BASS\Ultraviolet.BASS.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.Core\Ultraviolet.Core.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.BASS\Ultraviolet.BASS.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\Ultraviolet.Core.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.FMOD\Ultraviolet.FMOD.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Ultraviolet.ImGuiViewProvider.Bindings.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Ultraviolet.ImGuiViewProvider.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Ultraviolet.OpenGL.Bindings.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Environment\Ultraviolet.OpenGL.Environment.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj"/>
-    <ProjectReference Include="..\..\Ultraviolet\Ultraviolet.csproj"/>
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Ultraviolet.ImGuiViewProvider.Bindings.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Ultraviolet.ImGuiViewProvider.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Ultraviolet.OpenGL.Bindings.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Environment\Ultraviolet.OpenGL.Environment.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\Ultraviolet.csproj" />
+    <ProjectReference Include="..\Shared\UvDebug.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Ultraviolet.Presentation.CompiledExpressions.dll" />

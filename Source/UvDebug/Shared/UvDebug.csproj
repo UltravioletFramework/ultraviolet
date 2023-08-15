@@ -1,32 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-    <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>41b16059-bfe0-4704-8eee-44339b3834c5</SharedGUID>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>UvDebug</Import_RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\AvailableVertexColor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TriangleColorSelector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TriangleDisplay.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.DialogScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.DialogScreenVM.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\ImGuiViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\ImGuiScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GamePlayScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameMenuScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GamePlayViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameMenuViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameScreenBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />
-  </ItemGroup>
+  
   <ItemGroup Condition="'$(IncludeUltravioletContentFiles)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)Content\Cursors\Cursors.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -142,4 +119,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.BASS\Ultraviolet.BASS.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FMOD\Ultraviolet.FMOD.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Ultraviolet.FreeType2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Ultraviolet.OpenGL.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\Ultraviolet.Presentation.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\Ultraviolet.csproj" />
+  </ItemGroup>
+
 </Project>

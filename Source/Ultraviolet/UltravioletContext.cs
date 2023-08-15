@@ -118,15 +118,19 @@ namespace Ultraviolet
         /// then the current context is immediately disposed. This method should only be called by Ultraviolet host implementations.
         /// </summary>
         /// <param name="fn">The function which will create the Ultraviolet context.</param>
+        /// <param name="configuration">The configuration to supply to the context</param>
         /// <param name="factoryInitializer"></param>
         /// <returns>The Ultraviolet context that was created.</returns>
-        public static UltravioletContext EnsureSuccessfulCreation(Func<Action<UltravioletContext, UltravioletFactory>, UltravioletContext> fn, Action<UltravioletContext, UltravioletFactory> factoryInitializer)
+        public static UltravioletContext EnsureSuccessfulCreation(
+            Func<UltravioletConfiguration, Action<UltravioletContext, UltravioletFactory>, UltravioletContext> fn, 
+            UltravioletConfiguration configuration, 
+            Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             Contract.Require(fn, nameof(fn));
 
             try
             {
-                var context = fn(factoryInitializer);
+                var context = fn(configuration, factoryInitializer);
                 if (context == null)
                 {
                     throw new InvalidOperationException();

@@ -17,45 +17,29 @@ using Ultraviolet.Presentation.Styles;
 using Ultraviolet.SDL2;
 using UvDebug.Input;
 using UvDebug.UI;
+using UvDebug.UI.Screens;
 
 namespace UvDebug
 {
     /// <summary>
     /// Represents the main application object.
     /// </summary>
-    public partial class Game : UltravioletApplication
+    public partial class Game : UltravioletApplicationAdapter
     {
         /// <summary>
         /// Initializes a new instance of the Game 
         /// </summary>
-        public Game() : base("Ultraviolet", "UvDebug")
+        public Game(String[] args, IUltravioletApplicationAdapterHost host) : base(host)
         {
+            resolveContent = args?.Contains("-resolve:content") ?? false;
+            compileContent = args?.Contains("-compile:content") ?? false;
+            compileExpressions = args?.Contains("-compile:expressions") ?? false;
+
             Diagnostics.DrawDiagnosticsVisuals = true;
-            PlatformSpecificInitialization();
         }
 
-        /// <summary>
-        /// The application's entry point.
-        /// </summary>
-        /// <param name="args">An array containing the application's command line arguments.</param>
-        public static void Main(String[] args)
-        {
-            using (var game = new Game())
-            {
-                game.resolveContent = args.Contains("-resolve:content");
-                game.compileContent = args.Contains("-compile:content");
-                game.compileExpressions = args.Contains("-compile:expressions");
-
-                game.Run();
-            }
-        }
-
-        /// <summary>
-        /// Called when the application is creating its Ultraviolet context.
-        /// </summary>
-        /// <param name="factoryInitializer">A delegate which is executed when the context's factory is being initialized.</param>
-        /// <returns>The Ultraviolet context.</returns>
-        protected override UltravioletContext OnCreatingUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer)
+        /// <inheritdoc/>
+        protected override void OnConfiguring(UltravioletConfiguration configuration)
         {
             var graphicsConfig = OpenGLGraphicsConfiguration.Default;
             graphicsConfig.MultiSampleBuffers = 1;
@@ -63,37 +47,22 @@ namespace UvDebug
             graphicsConfig.SrgbBuffersEnabled = false;
             graphicsConfig.SrgbDefaultForTexture2D = false;
 
-            var contextConfig = new SDL2UltravioletConfiguration();
-            contextConfig.SupportsHighDensityDisplayModes = true;
-            contextConfig.EnableServiceMode = ShouldRunInServiceMode();
-            contextConfig.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
-            contextConfig.Plugins.Add(new OpenGLGraphicsPlugin(graphicsConfig));
-            contextConfig.Plugins.Add(new BASSAudioPlugin());
-            contextConfig.Plugins.Add(new FreeTypeFontPlugin());
-            contextConfig.Plugins.Add(new PresentationFoundationPlugin());
-            PopulateConfiguration(contextConfig);
+            configuration.SupportsHighDensityDisplayModes = true;
+            configuration.EnableServiceMode = ShouldRunInServiceMode();
+            configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
+            configuration.Plugins.Add(new OpenGLGraphicsPlugin(graphicsConfig));
+            configuration.Plugins.Add(new BASSAudioPlugin());
+            configuration.Plugins.Add(new FreeTypeFontPlugin());
+            configuration.Plugins.Add(new PresentationFoundationPlugin());
 
 #if DEBUG
-            contextConfig.Debug = true;
-            contextConfig.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
-            contextConfig.DebugCallback = (uv, level, message) =>
+            configuration.Debug = true;
+            configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
+            configuration.DebugCallback = (uv, level, message) =>
             {
                 System.Diagnostics.Debug.WriteLine(message);
             };
 #endif
-
-            return new SDL2UltravioletContext(this, contextConfig, factoryInitializer);
-        }
-
-        /// <summary>
-        /// Called after the application has been initialized.
-        /// </summary>
-        protected override void OnInitialized()
-        {
-            if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
-                UsePlatformSpecificFileSource();
-
-            base.OnInitialized();
         }
 
         /// <summary>
@@ -167,7 +136,7 @@ namespace UvDebug
         /// </summary>
         protected void LoadInputBindings()
         {
-            var inputBindingsPath = Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
+            var inputBindingsPath = Path.Combine(Host.GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
             Ultraviolet.GetInput().GetActions().Load(inputBindingsPath, throwIfNotFound: false);
         }
 
@@ -176,7 +145,7 @@ namespace UvDebug
         /// </summary>
         protected void SaveInputBindings()
         {
-            var inputBindingsPath = Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
+            var inputBindingsPath = Path.Combine(Host.GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
             Ultraviolet.GetInput().GetActions().Save(inputBindingsPath);
         }
 
@@ -311,7 +280,7 @@ namespace UvDebug
         {
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
             {
-                Exit();
+                this.Host.Exit();
             }
             base.OnUpdating(time);
         }
@@ -392,11 +361,6 @@ namespace UvDebug
             }
             base.Dispose(disposing);
         }
-
-        /// <summary>
-        /// Performs any platform-specific initialization.
-        /// </summary>
-        partial void PlatformSpecificInitialization();
 
         /// <summary>
         /// Gets a value indicating whether the game should run in service mode.

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.TestApplication
 {
-    partial class UltravioletTestApplication
+    partial class UltravioletTestApplicationAdapter
     {
         /// <summary>
         /// Represents an action to perform on a particular frame.

@@ -20,7 +20,7 @@ namespace Ultraviolet.Presentation.Tests
         /// <typeparam name="T">The type of element which is expected to have focus.</typeparam>
         /// <param name="app">The Ultraviolet test application.</param>
         /// <returns>The element which currently has focus.</returns>
-        protected T GetElementWithFocus<T>(IUltravioletTestApplication app) where T : UIElement
+        protected T GetElementWithFocus<T>(IUltravioletTestApplicationAdapter app) where T : UIElement
         {
             var screen = app.Ultraviolet.GetUI().GetScreens().Peek();
             if (screen == null)
@@ -38,7 +38,7 @@ namespace Ultraviolet.Presentation.Tests
         /// </summary>
         /// <param name="app">The test application.</param>
         /// <returns>The wrapped element.</returns>
-        protected ObjectResult<UIElement> TheElementWithFocus(IUltravioletTestApplication app)
+        protected ObjectResult<UIElement> TheElementWithFocus(IUltravioletTestApplicationAdapter app)
         {
             return TheResultingObject(GetElementWithFocus<UIElement>(app));
         }
@@ -48,7 +48,7 @@ namespace Ultraviolet.Presentation.Tests
         /// </summary>
         /// <param name="app">The test application.</param>
         /// <returns>The wrapped element.</returns>
-        protected ObjectResult<T> TheElementWithFocus<T>(IUltravioletTestApplication app) where T : UIElement
+        protected ObjectResult<T> TheElementWithFocus<T>(IUltravioletTestApplicationAdapter app) where T : UIElement
         {
             return TheResultingObject(GetElementWithFocus<T>(app));
         }
@@ -56,7 +56,7 @@ namespace Ultraviolet.Presentation.Tests
         /// <summary>
         /// Initializes a test application which displays the specified Presentation Foundation view.
         /// </summary>
-        protected IUltravioletTestApplication GivenAPresentationFoundationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
+        protected IUltravioletTestApplicationAdapter GivenAPresentationFoundationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
         {
             var globalStyleSheet = default(GlobalStyleSheet);
             var screen = default(UIScreen);

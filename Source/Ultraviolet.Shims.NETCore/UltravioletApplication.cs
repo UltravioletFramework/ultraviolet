@@ -8,6 +8,7 @@ using Ultraviolet.Core.Messages;
 using Ultraviolet.Graphics;
 using Ultraviolet.Input;
 using Ultraviolet.Platform;
+using Ultraviolet.SDL2;
 using Ultraviolet.Shims.NETCore.Graphics;
 using Ultraviolet.Shims.NETCore.Input;
 using Ultraviolet.Shims.NETCore.Platform;
@@ -21,6 +22,7 @@ namespace Ultraviolet
         IMessageSubscriber<UltravioletMessageID>,
         IUltravioletComponent,
         IUltravioletHost,
+        IUltravioletApplicationAdapterHost,
         IDisposable
     {
         /// <summary>
@@ -48,6 +50,8 @@ namespace Ultraviolet
             this.DeveloperName = developerName;
             this.ApplicationName = applicationName;
 
+            applicationAdapter = OnCreatingApplicationAdapter();
+
             InitializeApplication();
         }
 
@@ -73,9 +77,14 @@ namespace Ultraviolet
         {
             Contract.EnsureNotDisposed(this, disposed);
 
+            var configuration = new SDL2UltravioletConfiguration();
+
+            OnConfiguring(configuration);
+            applicationAdapter.Configure(configuration);
+
             OnInitializing();
 
-            CreateUltravioletContext((context, factory) => 
+            CreateUltravioletContext(configuration, (context, factory) => 
             {
                 factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new NETCoreSurfaceSource(stream));
                 factory.SetFactoryMethod<SurfaceSaverFactory>(() => new NETCoreSurfaceSaver());
@@ -278,9 +287,29 @@ namespace Ultraviolet
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
+        /// <param name="configuration">The configuration to supply to the context</param>
         /// <param name="factoryInitializer">A delegate that is executed when the context's factory is being initialized.</param>
         /// <returns>The Ultraviolet context.</returns>
-        protected abstract UltravioletContext OnCreatingUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer);
+        protected UltravioletContext OnCreatingUltravioletContext(UltravioletConfiguration configuration, Action<UltravioletContext, UltravioletFactory> factoryInitializer)
+        {
+            PopulateConfiguration(configuration);
+            return new SDL2UltravioletContext(this, (SDL2UltravioletConfiguration)configuration, factoryInitializer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
+        protected virtual void OnConfiguring(UltravioletConfiguration configuration)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>The host</returns>
+        protected abstract UltravioletApplicationAdapter OnCreatingApplicationAdapter();
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -323,7 +352,7 @@ namespace Ultraviolet
         /// </summary>
         protected virtual void OnInitializing()
         {
-
+            applicationAdapter.Initializing();
         }
 
         /// <summary>
@@ -331,7 +360,7 @@ namespace Ultraviolet
         /// </summary>
         protected virtual void OnInitialized()
         {
-
+            applicationAdapter.Initialized();
         }
 
         /// <summary>
@@ -339,7 +368,7 @@ namespace Ultraviolet
         /// </summary>
         protected virtual void OnLoadingContent()
         {
-
+            applicationAdapter.LoadingContent();
         }
 
         /// <summary>
@@ -348,7 +377,7 @@ namespace Ultraviolet
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
         {
-
+            applicationAdapter.Updating(time);
         }
 
         /// <summary>
@@ -357,7 +386,7 @@ namespace Ultraviolet
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         protected virtual void OnDrawing(UltravioletTime time)
         {
-
+            applicationAdapter.Drawing(time);
         }
 
         /// <summary>
@@ -367,7 +396,7 @@ namespace Ultraviolet
         /// <param name="window">The window that is about to be drawn.</param>
         protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window)
         {
-
+            applicationAdapter.WindowDrawing(time, window);
         }
 
         /// <summary>
@@ -377,7 +406,7 @@ namespace Ultraviolet
         /// <param name="window">The window that was just drawn.</param>
         protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window)
         {
-
+            applicationAdapter.WindowDrawn(time, window);
         }
 
         /// <summary>
@@ -387,6 +416,7 @@ namespace Ultraviolet
         /// from a thread other than the main Ultraviolet thread.</remarks>
         protected internal virtual void OnSuspending()
         {
+            applicationAdapter.Suspending();
         }
 
         /// <summary>
@@ -397,6 +427,7 @@ namespace Ultraviolet
         protected internal virtual void OnSuspended()
         {
             SaveSettings();
+            applicationAdapter.Suspended();
         }
 
         /// <summary>
@@ -406,7 +437,7 @@ namespace Ultraviolet
         /// from a thread other than the main Ultraviolet thread.</remarks>
         protected internal virtual void OnResuming()
         {
-
+            applicationAdapter.Resuming();
         }
 
         /// <summary>
@@ -416,7 +447,7 @@ namespace Ultraviolet
         /// from a thread other than the main Ultraviolet thread.</remarks>
         protected internal virtual void OnResumed()
         {
-
+            applicationAdapter.Resumed();
         }
 
         /// <summary>
@@ -426,7 +457,7 @@ namespace Ultraviolet
         /// from a thread other than the main Ultraviolet thread.</remarks>
         protected internal virtual void OnReclaimingMemory()
         {
-
+            applicationAdapter.ReclaimingMemory();
         }
 
         /// <summary>
@@ -434,7 +465,7 @@ namespace Ultraviolet
         /// </summary>
         protected virtual void OnShutdown()
         {
-
+            applicationAdapter.Shutdown();
         }
 
         /// <summary>
@@ -572,24 +603,16 @@ namespace Ultraviolet
             PopulateConfigurationFromSettings(configuration);
         }
 
-        /// <summary>
-        /// Gets the directory that contains the application's local configuration files.
-        /// If the directory does not already exist, it will be created.
-        /// </summary>
-        /// <returns>The directory that contains the application's local configuration files.</returns>
-        protected String GetLocalApplicationSettingsDirectory()
+        /// <inheritdoc/>
+        public String GetLocalApplicationSettingsDirectory()
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DeveloperName, ApplicationName);
             Directory.CreateDirectory(path);
             return path;
         }
 
-        /// <summary>
-        /// Gets the directory that contains the application's roaming configuration files.
-        /// If the directory does not already exist, it will be created.
-        /// </summary>
-        /// <returns>The directory that contains the application's roaming configuration files.</returns>
-        protected String GetRoamingApplicationSettingsDirectory()
+        /// <inheritdoc/>
+        public String GetRoamingApplicationSettingsDirectory()
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DeveloperName, ApplicationName);
             Directory.CreateDirectory(path);
@@ -623,13 +646,14 @@ namespace Ultraviolet
 
         /// <summary>
         /// Creates the application's Ultraviolet context.
+        /// <param name="configuration">The configuration to supply to the context</param>
         /// <param name="factoryInitializer">A delegate which is executed when the context is being initialized.</param>
         /// </summary>
-        private void CreateUltravioletContext(Action<UltravioletContext, UltravioletFactory> factoryInitializer)
+        private void CreateUltravioletContext(SDL2UltravioletConfiguration configuration, Action<UltravioletContext, UltravioletFactory> factoryInitializer)
         {
             LoadSettings();
 
-            uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext, factoryInitializer);
+            uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext, configuration, factoryInitializer);
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 
@@ -762,6 +786,11 @@ namespace Ultraviolet
             OnWindowDrawn(time, window);
         }
 
+        /// <summary>
+        /// Gets the application adapter
+        /// </summary>
+        public UltravioletApplicationAdapter ApplicationAdapter => applicationAdapter;
+
         // Property values.
         private UltravioletContext uv;
 
@@ -778,5 +807,7 @@ namespace Ultraviolet
         private Boolean isFixedTimeStep = UltravioletTimingLogic.DefaultIsFixedTimeStep;
         private TimeSpan targetElapsedTime = UltravioletTimingLogic.DefaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = UltravioletTimingLogic.DefaultInactiveSleepTime;
+
+        private UltravioletApplicationAdapter applicationAdapter = null;
     }
 }

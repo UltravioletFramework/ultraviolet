@@ -1,6 +1,6 @@
 ﻿namespace Ultraviolet.TestApplication
 {
-    partial class UltravioletTestApplication
+    partial class UltravioletTestApplicationAdapter
     {
         /// <summary>
         /// Represents the types of frame actions which can be included in a test.

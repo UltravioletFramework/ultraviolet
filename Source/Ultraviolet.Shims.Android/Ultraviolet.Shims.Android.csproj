@@ -16,6 +16,12 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   
   <ItemGroup>
     <Reference Include="org.libsdl.app">
@@ -37,6 +43,7 @@
       <Project>{5084f479-1233-477c-87d8-9df47055dd80}</Project>
       <Name>Ultraviolet.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj" />
     <ProjectReference Include="..\Ultraviolet\Ultraviolet.csproj">
       <Project>{60ecc362-96e4-4a54-b280-23cb5cdb6903}</Project>
       <Name>Ultraviolet.NETStandard21</Name>

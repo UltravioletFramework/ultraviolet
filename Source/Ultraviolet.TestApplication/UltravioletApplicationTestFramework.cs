@@ -86,9 +86,9 @@ namespace Ultraviolet.TestApplication
         /// must be managed manually by the caller of this method.
         /// </summary>
         /// <returns>The test application that was created.</returns>
-        protected static IUltravioletTestApplication GivenAThrowawayUltravioletApplication()
+        protected static IUltravioletTestApplicationAdapter GivenAThrowawayUltravioletApplication()
         {
-            return new UltravioletTestApplication();
+            return (new UltravioletTestApplication()).Adapter;
         }
 
         /// <summary>
@@ -96,51 +96,51 @@ namespace Ultraviolet.TestApplication
         /// must be managed manually by the caller of this method.
         /// </summary>
         /// <returns>The test application that was created.</returns>
-        protected static IUltravioletTestApplication GivenAThrowawayUltravioletApplicationWithNoWindow()
+        protected static IUltravioletTestApplicationAdapter GivenAThrowawayUltravioletApplicationWithNoWindow()
         {
-            return new UltravioletTestApplication(true);
+            return (new UltravioletTestApplication(true)).Adapter;
         }
 
         /// <summary>
         /// Creates an Ultraviolet Framework test application.
         /// </summary>
         /// <returns>The test application that was created.</returns>
-        protected IUltravioletTestApplication GivenAnUltravioletApplication()
+        protected IUltravioletTestApplicationAdapter GivenAnUltravioletApplication()
         {
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
 
             application = new UltravioletTestApplication();
 
-            return application;
+            return application.Adapter;
         }
 
         /// <summary>
         /// Creates an Ultraviolet Framework test application with a headless Ultraviolet context.
         /// </summary>
         /// <returns>The test application that was created.</returns>
-        protected IUltravioletTestApplication GivenAnUltravioletApplicationWithNoWindow()
+        protected IUltravioletTestApplicationAdapter GivenAnUltravioletApplicationWithNoWindow()
         {
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
 
             application = new UltravioletTestApplication(headless: true);
 
-            return application;
+            return application.Adapter;
         }
 
         /// <summary>
         /// Creates an Ultraviolet Framework test application with an Ultraviolet context in service mode.
         /// </summary>
         /// <returns>The test application that was created.</returns>
-        protected IUltravioletTestApplication GivenAnUltravioletApplicationInServiceMode()
+        protected IUltravioletTestApplicationAdapter GivenAnUltravioletApplicationInServiceMode()
         {
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
 
             application = new UltravioletTestApplication(headless: true, serviceMode: true);
 
-            return application;
+            return application.Adapter;
         }
 
         /// <summary>

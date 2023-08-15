@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>UvDebug</AssemblyName>
+    <AssemblyName>UvDebug.NETCore</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
   </PropertyGroup>
@@ -23,10 +23,11 @@
     <ProjectReference Include="..\..\Ultraviolet.SDL2\Ultraviolet.SDL2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\Ultraviolet.csproj" />
+    <ProjectReference Include="..\Shared\UvDebug.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <StartupObject>UvDebug.Game</StartupObject>
+    <StartupObject>UvDebug.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
@@ -36,8 +37,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;RELEASE</DefineConstants>
   </PropertyGroup>
-
-  <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   
   <ItemGroup>
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
@@ -146,6 +145,10 @@
       <Link>x64\osx\libpng16.16.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>  
 
 </Project>
