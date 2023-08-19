@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpGLTF.Runtime;
 using SharpGLTF.Schema2;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics.PackedVector;
@@ -93,11 +94,16 @@ namespace Ultraviolet.Graphics.Graphics3D
             if (mesh == null)
                 return null;
 
+            var decoder = mesh.Decode();
+
             var uvModelMeshGeometries = new List<ModelMeshGeometry>();
-            foreach (var primitive in mesh.Primitives)
+            for (Int32 i = 0; i < mesh.Primitives.Count; i++)
             {
+                // mesh.Primitives with decoder.Primitives are parallel arrays
+                var primitive = mesh.Primitives[i];
+
                 var uvPrimitiveGeometryStream = GeometryStream.Create();
-                var vCount = AttachVertexBuffer(primitive, uvPrimitiveGeometryStream);
+                var vCount = AttachVertexBuffer(decoder.Primitives[i], primitive, uvPrimitiveGeometryStream);
                 var iCount = AttachIndexBuffer(primitive, uvPrimitiveGeometryStream);
 
                 var uvPrimitiveMaterial = materialLoader.CreateMaterialForPrimitive(contentManager, primitive);
@@ -270,7 +276,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// <summary>
         /// Gets a <see cref="VertexElementUsage"/> instance which represents the specified accessor.
         /// </summary>
-        private static VertexElementUsage? GetVertexElementUsageFromAccessor(String attributeName, out Int32 index)
+        private static VertexElementUsage? GetVertexElementUsage(String attributeName, out Int32 index)
         {
             if (String.Equals("POSITION", attributeName, StringComparison.OrdinalIgnoreCase))
             {
@@ -331,7 +337,7 @@ namespace Ultraviolet.Graphics.Graphics3D
         /// </summary>
         private static VertexElement? CreateVertexElementFromAccessor(String attributeName, Accessor accessor, ref Int32 position)
         {
-            var usage = GetVertexElementUsageFromAccessor(attributeName, out var index);
+            var usage = GetVertexElementUsage(attributeName, out var index);
             if (usage == null)
                 return null;
 
@@ -341,7 +347,38 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             return result;
         }
-        
+
+        /// <summary>
+        /// Creates a <see cref="VertexElement"/> instance from the specified accessor.
+        /// </summary>
+        private static VertexElement? CreateVertexElement(String attributeName, VertexElementFormat format, ref Int32 position)
+        {
+            var usage = GetVertexElementUsage(attributeName, out var index);
+            if (usage == null)
+                return null;
+
+            Int32 sizeInBytes = 0;
+
+            switch (format)
+            {
+                case VertexElementFormat.Vector3:
+                    sizeInBytes = sizeof(Single) * 3;
+                    break;
+
+                case VertexElementFormat.Vector4:
+                    sizeInBytes = sizeof(Single) * 4;
+                    break;
+
+                default:
+                    throw new Exception("Format not implemented yet.");
+            }
+
+            var result = new VertexElement(position, format, usage.Value, index);
+            position += sizeInBytes;
+
+            return result;
+        }
+
         /// <summary>
         /// Populates a vertex data with the specified attribute data.
         /// </summary>
@@ -364,9 +401,27 @@ namespace Ultraviolet.Graphics.Graphics3D
         }
 
         /// <summary>
+        /// Populates a vertex data with the specified attribute data.
+        /// </summary>
+        private static void PopulateVertexBufferAttributeData<TData>(VertexBuffer vBuffer, IList<TData> data, Int32 position, Int32 size)
+            where TData : unmanaged
+        {
+            var offset = 0;
+            for (var i = 0; i < data.Count; i++)
+            {
+                unsafe
+                {
+                    var vdata = data[i];
+                    vBuffer.SetRawData((IntPtr)(&vdata), 0, offset + position, size, SetDataOptions.NoOverwrite);
+                    offset += vBuffer.VertexDeclaration.VertexStride;
+                }
+            }
+        }
+
+        /// <summary>
         /// Attaches a vertex buffer representing the specified primitive's vertices to the specified geometry stream.
         /// </summary>
-        private static Int32 AttachVertexBuffer(MeshPrimitive primitive, GeometryStream geometryStream)
+        private static Int32 AttachVertexBuffer(IMeshPrimitiveDecoder primitiveDecoder, MeshPrimitive primitive, GeometryStream geometryStream)
         {
             if (!primitive.VertexAccessors.Any())
                 return 0;
@@ -376,8 +431,33 @@ namespace Ultraviolet.Graphics.Graphics3D
             var vElementsByAttribute = new Dictionary<String, VertexElement>();
             var vElementPosition = 0;
 
+            // position, normal, and tangent must always be present
+            {
+                // position
+                {
+                    var vElement = CreateVertexElement("POSITION", VertexElementFormat.Vector3, ref vElementPosition);
+                    vElementsByAttribute["POSITION"] = vElement.Value;
+                    vElements.Add(vElement.Value);
+                }
+                // normal
+                {
+                    var vElement = CreateVertexElement("NORMAL", VertexElementFormat.Vector3, ref vElementPosition);
+                    vElementsByAttribute["NORMAL"] = vElement.Value;
+                    vElements.Add(vElement.Value);
+                }
+                // tangent
+                {
+                    var vElement = CreateVertexElement("TANGENT", VertexElementFormat.Vector4, ref vElementPosition);
+                    vElementsByAttribute["TANGENT"] = vElement.Value;
+                    vElements.Add(vElement.Value);
+                }
+            }
+
             foreach (var accessor in primitive.VertexAccessors)
             {
+                if (vElementsByAttribute.Keys.Any(k => k.Equals(accessor.Key, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+
                 var vElement = CreateVertexElementFromAccessor(accessor.Key, accessor.Value, ref vElementPosition);
                 if (vElement == null)
                     continue;
@@ -388,6 +468,32 @@ namespace Ultraviolet.Graphics.Graphics3D
 
             var vDecl = new VertexDeclaration(vElements);
             var vBuffer = VertexBuffer.Create(vDecl, vCount);
+
+            if (!primitive.VertexAccessors.Any(a => a.Key.Equals("NORMAL", StringComparison.OrdinalIgnoreCase))
+                && vElementsByAttribute.ContainsKey("NORMAL"))
+            {
+                var vElement = vElementsByAttribute["NORMAL"];
+                var normals = new List<System.Numerics.Vector3>();
+                for (int i = 0; i < primitiveDecoder.VertexCount; i++)
+                {
+                    var normal = primitiveDecoder.GetNormal(i);
+                    normals.Add(normal);
+                }
+                PopulateVertexBufferAttributeData(vBuffer, normals, vElement.Position, sizeof(Single) * 3);
+            }
+
+            if (!primitive.VertexAccessors.Any(a => a.Key.Equals("TANGENT", StringComparison.OrdinalIgnoreCase))
+                && vElementsByAttribute.ContainsKey("TANGENT"))
+            {
+                var vElement = vElementsByAttribute["TANGENT"];
+                var tangents = new List<System.Numerics.Vector4>();
+                for (int i = 0; i < primitiveDecoder.VertexCount; i++)
+                {
+                    var tangent = primitiveDecoder.GetTangent(i);
+                    tangents.Add(tangent);
+                }
+                PopulateVertexBufferAttributeData(vBuffer, tangents, vElement.Position, sizeof(Single) * 4);
+            }
 
             foreach (var accessor in primitive.VertexAccessors)
             {
