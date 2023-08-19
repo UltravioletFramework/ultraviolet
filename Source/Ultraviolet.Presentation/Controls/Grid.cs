@@ -1207,7 +1207,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         // A buffer used to sort spanned definitions during measurement.
-        [ThreadStatic]
         private readonly List<DefinitionBase> spanEnumerationBuffer = new List<DefinitionBase>(8);
         private static readonly FunctorComparer<DefinitionBase> cmpByPreferredDesiredDimension;
         private static readonly FunctorComparer<DefinitionBase> cmpByMaxDimension;
