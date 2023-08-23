@@ -11,8 +11,9 @@
   </Target>
   <Target Name="UvCreateAndroidAssets" BeforeTargets="PrepareForBuild" DependsOnTargets="UvFindContentDirectory">
     <ItemGroup>
-      <UltravioletContent Include="@(None)" Condition="$([System.String]::Copy('%(None.RelativeDir)').StartsWith($(UltravioletContentPath)))">
-        <ContentPath>$([System.String]::Copy("%(None.FullPath)").Substring($(UltravioletContentProjectPath.Length)))</ContentPath>
+      <UltravioletContentFile Include="$(UltravioletContentPath)\**\*.*"/>
+      <UltravioletContent Include="@(UltravioletContentFile)" Condition="$([System.String]::Copy('%(UltravioletContentFile.RelativeDir)').StartsWith($(UltravioletContentPath)))">
+        <ContentPath>$([System.String]::Copy("%(UltravioletContentFile.FullPath)").Substring($(UltravioletContentProjectPath.Length)))</ContentPath>
       </UltravioletContent>
       <AndroidAsset Include="@(UltravioletContent)">
         <Link>%(UltravioletContent.ContentPath)</Link>
